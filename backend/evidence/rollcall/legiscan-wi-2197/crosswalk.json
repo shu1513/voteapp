@@ -1,0 +1,667 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "WI",
+  "sessionId": 2197,
+  "entries": [
+    {
+      "people_id": 3815,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 26 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 3819,
+      "candidate_id": "14b20d74-7be1-4046-9c5b-19737050e319",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 3820,
+      "candidate_id": "7c435828-69f5-4ec4-ad1e-6fc398a491a9",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 3835,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 22 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 3846,
+      "candidate_id": "396eafec-b103-459f-98be-cbb090bd0f5f",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 3847,
+      "candidate_id": "0e4eae31-7e2a-4046-9390-2848dec6d49b",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 3876,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 3916,
+      "candidate_id": "3caa9c90-a0c3-44d1-baac-fff050aac94b",
+      "note": "proposed and accepted: first_prefix, seat agrees"
+    },
+    {
+      "people_id": 3933,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 3942,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 3946,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 12262,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 12267,
+      "candidate_id": "753ac867-49bc-48c5-8964-8a25b32e9a0b",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 12269,
+      "candidate_id": "96f52e69-e887-48c4-a4bd-514c97a8e59e",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 12276,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 12277,
+      "candidate_id": "1aace776-e566-454c-9fd3-151b74c7d905",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 12291,
+      "candidate_id": "c64c4739-6c9b-4500-ad3a-2ade795ec7a4",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 12299,
+      "candidate_id": "0b15296a-169f-49be-b86a-f6311342bec9",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 12304,
+      "candidate_id": "e688370a-768e-4346-a7c8-e6229a2df311",
+      "note": "proposed and accepted: first_prefix, seat agrees"
+    },
+    {
+      "people_id": 13126,
+      "candidate_id": "7032f350-3f41-4b99-9155-d03c3437bb19",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 13347,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 13657,
+      "candidate_id": "a71239b6-999b-4f49-af94-8af9a8d99750",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 14585,
+      "candidate_id": "f5378b25-84d0-4006-b6f6-d89c1f076050",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 15091,
+      "candidate_id": "cb859dd8-ff88-4c9f-aa6f-79849c6afee1",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 15092,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 12 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 15093,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 15094,
+      "candidate_id": "7911a764-682f-433b-8b2e-775c3bf401ff",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 15096,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 15099,
+      "candidate_id": "15a84d74-f640-49c5-b3f6-a9937c50f6a4",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 15100,
+      "candidate_id": "805e8ded-ac04-4e17-95db-d42afe3fa632",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 15362,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 6 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 15719,
+      "candidate_id": "a640b8a6-7ca8-4733-a6a5-4fcc407f2404",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 16023,
+      "candidate_id": "1ea8e5a7-3d24-4e6b-b736-f7e68440aaa3",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 16062,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 16407,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 16418,
+      "candidate_id": "307500c6-3b49-446d-9871-ca9cd9eb5d86",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 16422,
+      "candidate_id": "648cadf3-52cc-41fd-a41d-2a0e10c196a1",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 16423,
+      "candidate_id": "4cd7ec2f-d2aa-41bc-8160-96a9a02c3ae9",
+      "note": "proposed and accepted: first_and_last, seat differs because the member is a sitting legislator running for a different seat in 2026"
+    },
+    {
+      "people_id": 16425,
+      "candidate_id": "31eb6ce6-d66d-4b3d-b5ab-7636762e99b1",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 16426,
+      "candidate_id": "9b87f34b-2b4e-47e6-9cc6-3911d8d1d4dc",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 16428,
+      "candidate_id": "cfbe7888-6293-4cb6-bd68-a4d2cee07c8c",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 16429,
+      "candidate_id": "c0671372-35ea-4340-a3ef-0752e2e9524e",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 17720,
+      "candidate_id": "f145a4e7-a78f-42a0-8b48-e25a662a8c0e",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 18356,
+      "candidate_id": "c77a0ad4-0168-43c8-a46f-b779cb3d7180",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 18357,
+      "candidate_id": "d48a86ee-254e-4998-bc46-bd1e3556b2a9",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 18358,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 10 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 18359,
+      "candidate_id": "8e0ba99c-d2ac-4b7d-9a08-751f618cb06f",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 18360,
+      "candidate_id": "7275b2bc-37a3-4e66-beb5-8c16aaae7045",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 18361,
+      "candidate_id": "0b54817e-2c5d-4159-8ccf-06d90f4bd4bd",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 18362,
+      "candidate_id": "a8455a45-6a55-442a-9caa-7fee7a49b02d",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 18363,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 20 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 18364,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 24 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 19568,
+      "candidate_id": "fefb72a0-6b7d-4f30-9f21-ed51c4239940",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 19637,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 20178,
+      "candidate_id": "a6e0140b-f387-4378-84bc-a0ff94991771",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 20179,
+      "candidate_id": "e48faec2-2f58-495b-bd88-77f9bc49bb46",
+      "note": "hand-added: LegiScan first_name is the legal Jodene, nickname Jodi; name matches our candidate exactly and HD-091 agrees"
+    },
+    {
+      "people_id": 20181,
+      "candidate_id": "f4de2279-c4de-4b38-a005-1fca426506ec",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 20182,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 20183,
+      "candidate_id": "9709978e-16ad-4d06-a66a-baae5e6aafee",
+      "note": "hand-added: LegiScan first_name is the legal Anthony, nickname Tony; name matches our candidate exactly and HD-041 agrees"
+    },
+    {
+      "people_id": 20188,
+      "candidate_id": "813e78f8-0ad8-4a05-9d85-bdfb4fa56b97",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 20189,
+      "candidate_id": "b5d18f59-5732-48a4-9ae2-d8f46fc79527",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 20190,
+      "candidate_id": "5c3e918c-83d3-488e-895b-6e24ad8d8898",
+      "note": "proposed and accepted: first_and_last, seat differs because the member is a sitting legislator running for a different seat in 2026"
+    },
+    {
+      "people_id": 20191,
+      "candidate_id": "3cf5218d-d657-4a6d-870f-89e3e0570d0b",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 20615,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 21362,
+      "candidate_id": "e85db54b-e54b-4dcd-acb4-5ef82dcf0cc7",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 21984,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 28 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 21985,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 32 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 21986,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 2 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 21987,
+      "candidate_id": "f5e70fb7-2e83-409c-89d7-34c1f71524e1",
+      "note": "proposed and accepted: first_prefix, seat agrees"
+    },
+    {
+      "people_id": 21988,
+      "candidate_id": "d7015288-fed0-4348-b3ba-071346be6c9c",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 21990,
+      "candidate_id": "0745e43a-57fb-4b68-925a-8bfbbcd493af",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 21991,
+      "candidate_id": "45cbbcb6-4040-460c-b0ed-f19bac7b525c",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 21993,
+      "candidate_id": "e3f64c43-cd74-425d-b980-828d9d30027b",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 21994,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 4 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 21995,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 21996,
+      "candidate_id": "d2b070ba-5f3e-4396-a410-96503665036b",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 21997,
+      "candidate_id": "0dc0183f-1a0d-40e2-a13f-e70e2a71a99b",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 21998,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 22002,
+      "candidate_id": "1cc222a0-46d2-48d8-bbe4-4614d19beaed",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 22924,
+      "candidate_id": "9539dc4b-b23f-4ca3-95d7-03f63a065cc4",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 22945,
+      "candidate_id": "dcad11cb-8cc9-4ed5-9da0-a04cab05b63c",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23583,
+      "candidate_id": "dbfce109-23e9-41f3-b21d-117cb22c3c95",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23584,
+      "candidate_id": "4f690c22-ddc4-426e-b9e4-b0e141e2d08f",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23587,
+      "candidate_id": "ced0a2e3-4b4f-4d79-899a-bdf6512bad39",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23588,
+      "candidate_id": "a266d8c0-e9b4-428a-b531-4613546b85df",
+      "note": "hand-added: LegiScan first_name is the legal Robert, nickname Bob; name matches our candidate exactly and HD-061 agrees"
+    },
+    {
+      "people_id": 23589,
+      "candidate_id": "648d30d0-99a1-45b3-9612-ed293b321b23",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23590,
+      "candidate_id": "3db7712f-2e8b-4b79-8908-fca304dd56ed",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23591,
+      "candidate_id": "9591a243-6857-47f6-8d23-df3c0c17aad2",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23592,
+      "candidate_id": "1ea055d4-a796-48cc-97d5-085394055081",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23593,
+      "candidate_id": "c6316d06-ff2e-4cc7-8ccc-999e1154c579",
+      "note": "proposed and accepted: first_and_last, seat differs because the member is a sitting legislator running for a different seat in 2026"
+    },
+    {
+      "people_id": 23594,
+      "candidate_id": "1809ab09-3077-4622-950f-fbfd1bd489c2",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23595,
+      "candidate_id": "d9a7404e-a1e2-4764-9d26-b28e008b00e1",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23597,
+      "candidate_id": "0d306ab8-f032-446c-948f-d2cd43ee62b0",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23598,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: the seat is on the November 2026 ballot but this member is not among its candidates in our roster"
+    },
+    {
+      "people_id": 23599,
+      "candidate_id": "10328cfa-1b1e-4e22-b54e-328d0a0c7b23",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23600,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 16 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 23605,
+      "candidate_id": "6b280264-6493-4134-8336-f55550c893c0",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 23606,
+      "candidate_id": "0684aa44-6fd8-4404-b000-41392a0117fd",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 24954,
+      "candidate_id": "d0c16a43-aa05-4f2d-910a-b6286dc1fecb",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26074,
+      "candidate_id": "00234db9-4fbd-4cdb-a3e2-07e3c78b9828",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26075,
+      "candidate_id": "88a066ea-5411-4480-8f84-4b160255fd82",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26076,
+      "candidate_id": "eb6e8513-5048-4630-bb92-36c21dc5d1fc",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26077,
+      "candidate_id": "30cd492f-156c-45d0-a367-3362fdbcdb61",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26078,
+      "candidate_id": "bbacea3a-7706-40be-b26a-6d2da7680e35",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26079,
+      "candidate_id": "97b8e9e7-113a-417f-b66e-36291f6cda5d",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26080,
+      "candidate_id": "963cee7f-3ac7-427a-8428-6fbda451edfa",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26081,
+      "candidate_id": "e2e22971-6d3e-450f-87fd-47adcb2a2ce2",
+      "note": "proposed and accepted: first_prefix, seat agrees"
+    },
+    {
+      "people_id": 26082,
+      "candidate_id": "941f44ab-49f4-4675-a3b0-a3f730899bd4",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26083,
+      "candidate_id": "c23c55ce-68b2-4d09-9112-d17e77f71317",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26084,
+      "candidate_id": "bbae018b-9070-497e-912c-b53cfc9a6764",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26085,
+      "candidate_id": "89ccbfe4-7731-45f8-990a-09e027bceaee",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26086,
+      "candidate_id": "4c17226a-d168-49db-beec-1eaee53b5ae5",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26087,
+      "candidate_id": "4facf6b7-e3af-42a5-af38-5668f8228cd6",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26088,
+      "candidate_id": "55e46642-d34e-457b-b479-96aef6bf7ff7",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26089,
+      "candidate_id": "6024064d-0391-489d-82d7-1f279b8fa005",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26090,
+      "candidate_id": "50c911e9-fe5e-4b64-990c-1c40b51fecd0",
+      "note": "hand-added: LegiScan first_name is the legal Vincent, nickname Vinnie; name matches our candidate exactly and HD-071 agrees"
+    },
+    {
+      "people_id": 26091,
+      "candidate_id": "1bd55d41-6a03-411b-837e-61c4217f4a87",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26092,
+      "candidate_id": "89ad5ef1-31a3-4825-a9a0-cdede05e9db8",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26093,
+      "candidate_id": "736dc91f-e65f-4d0d-8008-dad17ae2c690",
+      "note": "hand-added: LegiScan spells the first name Pricilla, our roster and the state spell it Priscilla. Same surname, same seat HD-009, sitting member; the feed drops one letter"
+    },
+    {
+      "people_id": 26094,
+      "candidate_id": "d4cb5696-6caa-465a-8e9d-b45e7786cae7",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26095,
+      "candidate_id": "8abf5f91-74c7-4f5b-82d5-ad54efc66f1e",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26096,
+      "candidate_id": "cd67a2c3-8278-43b1-87c1-5d714701214e",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26097,
+      "candidate_id": "d04cd8e6-a632-48b9-b72c-701995fdedaf",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26098,
+      "candidate_id": "54bc21b1-98e3-412b-839e-bc81d716e3c5",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26099,
+      "candidate_id": "1f34b45a-a9c2-47b0-9866-c9cf28cab60f",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26100,
+      "candidate_id": "e3046bec-d810-45f1-b8a2-64f57851d780",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26101,
+      "candidate_id": "57183a77-8e03-401c-80b2-85a14b139cb8",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26102,
+      "candidate_id": "dcf66a57-225c-4994-a961-8cabb12a2b87",
+      "note": "proposed and accepted: first_and_last, seat agrees"
+    },
+    {
+      "people_id": 26103,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 18 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 26104,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 8 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 26105,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 14 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    },
+    {
+      "people_id": 26106,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: Senate district 30 is not on the November 2026 ballot. Wisconsin elects its odd-numbered Senate districts that year"
+    }
+  ]
+}
