@@ -4134,6 +4134,110 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
     },
   },
+  // Iowa, 91st General Assembly (LegiScan 2177), which covers both the 2025
+  // and the 2026 sessions in ONE dataset. Iowa has no special sessions in
+  // LegiScan's list, so this single entry is the whole state. Surveyed
+  // 2026-09-09: 4,224 bills, 3,156 roll calls, 193 people, every bill on
+  // session 2177.
+  //
+  // Roster reach: all 100 House seats and 25 of the 50 Senate seats are on
+  // the Nov-2026 ballot (senators serve four-year staggered terms), so about
+  // half the sitting Senate will not match a candidate, by design. Every
+  // legislative election in scope is dated 2026-11-03 and the June 2026
+  // primary is past, so the default --scope-from of 2026-11-01 is correct.
+  //
+  // Pool as measured: 1,192 kept floor rolls on kept bill types, 297 closely
+  // divided, 205 divided AND enacted across 101 measures. Iowa's chambers
+  // agree to the other chamber's amendments by VOICE vote (108 concurrence
+  // actions in the session, one with a tally) and take no recorded vote on
+  // a conference report, so the first chamber's only recorded vote is often
+  // on a text the second chamber then changed. After that version check,
+  // 154 rolls across 92 measures are their chamber's vote on the text that
+  // became law.
+  //
+  // Iowa's vocabulary is tiny: the two chambers ask `Shall the bill pass?`
+  // on 1,184 of the 1,192 floor rolls. The committee cut works by tally
+  // here: every one of the 1,734 committee-report rolls totals between 6
+  // and 25 members against chambers of 100 and 50, so none needs a rule.
+  //
+  // ⚠ Iowa splices the journal's page banner into a few descriptions where
+  // the question should end, for example `Shall the House concur in the
+  // Senate amendment 111th Day SATURDAY, MAY 2, `. Three rolls carry one,
+  // and one of the three is a divided, enacted concurrence vote (HF 1003,
+  // 57-28). Every pattern below that can meet a banner is therefore
+  // anchored at the START only, never at the end.
+  //
+  // TALLY AUDIT, run over EVERY kept floor roll on a kept bill type and not
+  // only the divided ones (the Oregon SB 1565 lesson): Iowa prints the
+  // tally on its own history line (`Passed House, yeas 69, nays 22. H.J.
+  // 429.`), so every roll was matched to its own bill's line with no
+  // network. 1,189 of 1,192 match exactly. The three that do not are held
+  // below. Six more rolls match their line but carry the wrong DATE:
+  // LegiScan stamps them 2026-05-02 and Iowa's journal records them on
+  // 2026-05-03, the session's last night having run past midnight. House
+  // rolls on 2026-05-02 are correct, so the skew is per roll. Any of the six
+  // that reaches a batch needs the `official_vote_date` override.
+  //
+  // The dataset also re-issues an id for nine votes it already holds (eight
+  // House passage votes and one amendment vote, the second copy numbered
+  // 1613xxx). The fetcher keeps the lowest id of each pair, so a batch must
+  // be selected from the STORED rolls, never from the raw dataset. Four of
+  // the eight are closely divided and enacted (HF 316, HF 1049, SF 646,
+  // SF 647); each keeps its original id.
+  IA: {
+    jurisdiction: "IA",
+    sessionId: 2177,
+    chamberSizes: { house: 100, senate: 50 },
+    keptQuestions: [
+      // Passage in either chamber. Bills are "passed"; the exact same caption
+      // is used on the second chamber's vote after it amends a bill, which is
+      // the vote on the text that became law when the first chamber then
+      // concurs by voice.
+      { pattern: /^shall the bill pass\?$/, questionClass: "passage" },
+      // A joint resolution, which Iowa uses for its proposed constitutional
+      // amendments. The House asks one question and the Senate another, and
+      // Iowa's own history records both as `Passed House` / `Passed Senate`.
+      // Neither reaches the Governor, so neither can be status 4; they are
+      // kept so that a divided one (SJR 11, 32-15 and 57-21) is dispositioned
+      // rather than surfaced as unknown. Simple and concurrent resolutions
+      // ask the Senate's question too, but their bill types are rejected
+      // before this list is consulted.
+      { pattern: /^shall the joint resolution be adopted and agreed to\?$/, questionClass: "passage" },
+      { pattern: /^shall the resolution be adopted\?$/, questionClass: "passage" },
+      // The rare RECORDED concurrence. Anchored at the start because one of
+      // the three House captions ends in a spliced journal banner instead of
+      // the amendment number.
+      { pattern: /^shall the (?:house|senate) concur in the (?:senate|house) amendment\b/, questionClass: "concurrence" },
+      { pattern: /^shall the motion to concur be adopted\?$/, questionClass: "concurrence" },
+    ],
+    // Checked before the kept list. Together these dispose of all 219
+    // full-chamber rolls in the session that are not votes on a measure.
+    excludedQuestions: [
+      // Adopting an amendment (154 rolls). Anchored at the start; the
+      // captions name a different amendment each time and one ends in a
+      // spliced banner.
+      /^shall amendment\b/,
+      // Suspending the rules to take up an amendment (66 rolls).
+      /^shall the rules be suspended\b/,
+      // Three one-off motions, each verified against the bill's own history:
+      // a motion to defer HF 2542 (30-63, lost), a motion to move SF 2464 to
+      // the unfinished business calendar, and a failed motion to suspend the
+      // rules for amendment S-3166 on HF 639 that LegiScan captions only as
+      // `Shall the motion pass?` (15-34).
+      /^shall (?:house|senate) file \d+ be deferred\?$/,
+      /^shall the bill be moved to the unfinished business calendar\?$/,
+      /^shall the motion pass\?$/,
+    ],
+    // The three rolls whose feed disagrees with Iowa's own history line.
+    heldRollCallIds: {
+      1645790:
+        "HF 2253 House 2026-02-25: LegiScan reports 68-22 with 10 absent, but Iowa's journal (H.J. 429) records 69-22, so one member who voted yes is listed as absent. Divided either way, so it would have reached a batch with a wrong tally",
+      1693388:
+        "HF 639 House 2026-05-02, 79-6: filed under the wrong bill. HF 639 passed the House on 2025-03-26 at 85-10 and was vetoed; Iowa's journal (H.J. 1102) records 79-6 on 2026-05-02 as the House passage of SF 639, which carries no House roll in the dataset at all. Not divided, so nothing in the pool is lost",
+      1569998:
+        "HF 593 House 2025-05-12, 89-0: filed under the wrong bill. HF 593 never passed and was replaced by HF 825; Iowa's journal (H.J. 1139) records 89-0 on 2025-05-12 as the House passage of SF 593, which carries no House roll in the dataset at all. Unanimous",
+    },
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
