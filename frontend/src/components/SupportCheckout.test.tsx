@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SupportCheckout } from "./SupportCheckout";
 import { renderRoutes } from "../test/render";
@@ -57,7 +57,7 @@ describe("SupportCheckout", () => {
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     renderCheckout("monthly");
 
-    expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue(10);
+    expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue("10.00");
     expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeEnabled();
     expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
@@ -69,7 +69,7 @@ describe("SupportCheckout", () => {
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     renderCheckout("one_time");
 
-    expect(await screen.findByLabelText(/One-time support/)).toHaveValue(10);
+    expect(await screen.findByLabelText(/One-time support/)).toHaveValue("10.00");
     expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
     expect(screen.getByRole("link", { name: "Support monthly" })).toHaveAttribute("href", "/support/member");
     expect(screen.queryByLabelText(/Monthly amount/)).not.toBeInTheDocument();
@@ -108,6 +108,78 @@ describe("SupportCheckout", () => {
     await user.clear(input);
     await user.type(input, "1000");
     expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
+  });
+
+  it("accepts dollars and cents, and rejects a third decimal", async () => {
+    const user = userEvent.setup();
+    let checkoutBody: unknown = null;
+    stubApiRoutes({
+      "/api/me/membership": { body: NOT_MEMBER },
+      "/api/me/membership/checkout": (_url, init) => {
+        checkoutBody = JSON.parse(String(init?.body));
+        return { body: { url: "https://checkout.stripe.com/c/pay/cs_test_456" } };
+      },
+    });
+    renderCheckout("one_time");
+
+    const input = await screen.findByLabelText(/One-time support/);
+    await user.clear(input);
+    await user.type(input, "7.505");
+    expect(screen.getByText("Use at most two decimals, like 7.50.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Support once" })).toBeDisabled();
+
+    // Leaving the field tidies a valid amount to two decimals; a pasted
+    // "$1,000.00" style value is fine too.
+    await user.clear(input);
+    await user.type(input, "7.5");
+    await user.tab();
+    expect(input).toHaveValue("7.50");
+    await user.clear(input);
+    await user.type(input, "$1,000.00");
+    expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
+
+    await user.clear(input);
+    await user.type(input, "12.50");
+    await user.click(screen.getByRole("button", { name: "Support once" }));
+    await waitFor(() =>
+      expect(navigateExternal).toHaveBeenCalledWith("https://checkout.stripe.com/c/pay/cs_test_456")
+    );
+    expect(checkoutBody).toEqual({ kind: "one_time", amount_cents: 1250 });
+  });
+
+  it("fills the field from a preset chip and posts that amount", async () => {
+    const user = userEvent.setup();
+    let checkoutBody: unknown = null;
+    stubApiRoutes({
+      "/api/me/membership": { body: NOT_MEMBER },
+      "/api/me/membership/checkout": (_url, init) => {
+        checkoutBody = JSON.parse(String(init?.body));
+        return { body: { url: "https://checkout.stripe.com/c/pay/cs_test_789" } };
+      },
+    });
+    renderCheckout("one_time");
+
+    const input = await screen.findByLabelText(/One-time support/);
+    const presets = within(screen.getByRole("group", { name: "Suggested amounts" }));
+    // The $10 prefill is already the pressed chip.
+    expect(presets.getByRole("button", { name: "$10" })).toHaveAttribute("aria-pressed", "true");
+
+    await user.click(presets.getByRole("button", { name: "$25" }));
+    expect(input).toHaveValue("25.00");
+    expect(presets.getByRole("button", { name: "$25" })).toHaveAttribute("aria-pressed", "true");
+    expect(presets.getByRole("button", { name: "$10" })).toHaveAttribute("aria-pressed", "false");
+
+    // Typing another amount releases the chip.
+    await user.clear(input);
+    await user.type(input, "30");
+    expect(presets.getByRole("button", { name: "$25" })).toHaveAttribute("aria-pressed", "false");
+
+    await user.click(presets.getByRole("button", { name: "$50" }));
+    await user.click(screen.getByRole("button", { name: "Support once" }));
+    await waitFor(() =>
+      expect(navigateExternal).toHaveBeenCalledWith("https://checkout.stripe.com/c/pay/cs_test_789")
+    );
+    expect(checkoutBody).toEqual({ kind: "one_time", amount_cents: 5000 });
   });
 
   it("posts the amount in cents and redirects to the Checkout URL", async () => {

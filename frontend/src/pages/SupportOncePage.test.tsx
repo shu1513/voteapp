@@ -85,7 +85,7 @@ describe("SupportOncePage", () => {
     });
     renderPage();
 
-    expect(await screen.findByLabelText(/One-time support/)).toHaveValue(10);
+    expect(await screen.findByLabelText(/One-time support/)).toHaveValue("10.00");
     // The monthly form does not compete here — the visitor already chose.
     expect(screen.queryByLabelText(/Monthly amount/)).not.toBeInTheDocument();
 
@@ -104,7 +104,7 @@ describe("SupportOncePage", () => {
     renderPage();
 
     // A one-time gift on top of a membership is allowed, so no member branch here.
-    expect(await screen.findByLabelText(/One-time support/)).toHaveValue(10);
+    expect(await screen.findByLabelText(/One-time support/)).toHaveValue("10.00");
     expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
     expect(screen.queryByText(/Monthly supporter/)).not.toBeInTheDocument();
   });

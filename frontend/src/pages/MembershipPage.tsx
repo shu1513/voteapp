@@ -284,7 +284,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
               inputId="membership-amount-dollars"
               label="New monthly amount"
               buttonLabel={changeAmount.isPending ? "Saving…" : "Save new amount"}
-              initialDollars={String(membership.monthly_amount_cents / 100)}
+              initialCents={membership.monthly_amount_cents}
               disabled={busy}
               // Re-saving the current amount is a no-op — unless a change is
               // pending, when it withdraws that change.

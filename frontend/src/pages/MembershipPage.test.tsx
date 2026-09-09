@@ -108,7 +108,7 @@ describe("MembershipPage", () => {
     expect(await screen.findByText(/Because of supporters like you/)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Your membership" })).toBeInTheDocument();
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
-    expect(screen.getByLabelText("New monthly amount")).toHaveValue(10);
+    expect(screen.getByLabelText("New monthly amount")).toHaveValue("10.00");
     expect(screen.getByRole("button", { name: "Cancel membership…" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Keep membership" })).not.toBeInTheDocument();
