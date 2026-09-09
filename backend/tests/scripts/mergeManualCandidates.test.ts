@@ -125,6 +125,73 @@ function run(
   });
 }
 
+describe("runMergeCandidates record-identity transitions", () => {
+  const TRANSITION_COUNT = "already_on_survivor";
+  const REHOME_SQL = "UPDATE public.candidate_record_identity_transitions SET candidate_id";
+  const DEDUPE_SQL = "DELETE FROM public.candidate_record_identity_transitions d";
+
+  it("rehomes the duplicate's transition ledger onto the survivor", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({ [TRANSITION_COUNT]: [[{ total: "12", already_on_survivor: "0" }]] })
+    );
+
+    const result = await run({ query });
+
+    expect(result.recordIdentityTransitions).toEqual({ rehomed: 12, duplicatesDeleted: 0 });
+    expect(calls.some((c) => c.text.includes(REHOME_SQL))).toBe(true);
+    // Nothing to dedupe, so the delete must not run.
+    expect(calls.some((c) => c.text.includes(DEDUPE_SQL))).toBe(false);
+  });
+
+  it("does NOT refuse when both rows have transitions, and drops only identical pairs", async () => {
+    // The live case this unblocked: a duplicate with 1 transition and a survivor
+    // with 12, sharing one old key that maps to two different new keys. That is
+    // legal history, not a collision — the resolver keeps the newest successor.
+    const { query, calls } = buildClient(
+      happyResponses({ [TRANSITION_COUNT]: [[{ total: "5", already_on_survivor: "2" }]] })
+    );
+
+    const result = await run({ query });
+
+    expect(result.recordIdentityTransitions).toEqual({ rehomed: 3, duplicatesDeleted: 2 });
+    expect(calls.some((c) => c.text.includes(DEDUPE_SQL))).toBe(true);
+    expect(calls.some((c) => c.text.includes(REHOME_SQL))).toBe(true);
+  });
+
+  it("counts but writes nothing on a dry run", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({ [TRANSITION_COUNT]: [[{ total: "4", already_on_survivor: "1" }]] })
+    );
+
+    const result = await run({ query }, { dryRun: true });
+
+    expect(result.recordIdentityTransitions).toEqual({ rehomed: 3, duplicatesDeleted: 1 });
+    expect(calls.some((c) => c.text.includes(REHOME_SQL))).toBe(false);
+    expect(calls.some((c) => c.text.includes(DEDUPE_SQL))).toBe(false);
+  });
+
+  it("leaves the table out of the generic both-sides refusal", async () => {
+    const { query } = buildClient(
+      happyResponses({
+        "'public.candidates'::regclass": [
+          [
+            {
+              table_name: "public.candidate_record_identity_transitions",
+              column_name: "candidate_id",
+            },
+          ],
+        ],
+        [TRANSITION_COUNT]: [[{ total: "3", already_on_survivor: "0" }]],
+      })
+    );
+
+    const result = await run({ query });
+
+    expect(result.otherTables).toEqual([]);
+    expect(result.recordIdentityTransitions).toEqual({ rehomed: 3, duplicatesDeleted: 0 });
+  });
+});
+
 describe("runMergeCandidates", () => {
   it("rehomes links, records, follows, events, and finance rows, then marks the duplicate merged", async () => {
     const { query, calls } = buildClient(happyResponses());

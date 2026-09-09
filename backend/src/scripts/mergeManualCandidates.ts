@@ -29,6 +29,11 @@
 // - candidate_records: rehomed; rows whose record_identity_key already exists
 //   on the survivor are deleted as duplicates (area tags and record-update
 //   notification events cascade);
+// - candidate_record_identity_transitions: rehomed with the records they
+//   describe; a transition already present on the survivor as the identical
+//   (old key, new key) pair is dropped. NOT refused when both sides have rows —
+//   the resolver keeps the newest successor per old key, so two histories merge
+//   correctly (see the block itself for why);
 // - candidate_record_sweep_confirmations: the duplicate's confirmation is
 //   deleted; the survivor's is also deleted when the merge rehomed records,
 //   because its completeness claims describe the pre-merge record set;
@@ -89,6 +94,8 @@ export type MergeCandidatesResult = {
     retirementsPropagated: number;
   };
   sweepConfirmations: { mergedDeleted: boolean; survivorDeleted: boolean };
+  /** Append-only old-key -> new-key ledger for the records this merge moved. */
+  recordIdentityTransitions: { rehomed: number; duplicatesDeleted: number };
   follows: { rehomed: number; duplicatesDeleted: number };
   /** user_election_choices on duplicate links; choices on rehomed links ride
    * the FK's ON UPDATE CASCADE and are not counted here. */
@@ -208,6 +215,7 @@ const SPECIALLY_HANDLED_TABLES = new Set([
   // table has no unique keys to collide. Merges never hard-delete
   // candidates, so the FK stays valid.
   "public.candidate_rename_audit",
+  "public.candidate_record_identity_transitions",
 ]);
 
 function usage(): string {
@@ -882,6 +890,65 @@ export async function runMergeCandidates(
       );
     }
 
+    // Record-identity transitions: an append-only ledger mapping a record's old
+    // record_identity_key to the key it was rewritten to (rollcall
+    // normalization, plain-language rewrite, date repair). The merge has just
+    // moved this duplicate's records onto the survivor, so their key history
+    // must move with them — dropping it would leave promoteResearchData unable
+    // to match those rows against the keys production still holds.
+    //
+    // The generic both-sides refusal is wrong for this table. Its unique key is
+    // the (candidate_id, old_key, new_key) TRIPLE, and resolveIdentityTransitions
+    // already tolerates one old key with several successors: it orders by
+    // created_at (then id) and keeps the newest, then follows the chain. So
+    // rehoming stays correct even when both rows hold a transition for the same
+    // old key — the survivor's later edit wins, exactly as it would have if both
+    // histories had always been on one row. Only an IDENTICAL triple is a real
+    // duplicate; those are deleted rather than rehomed, because the constraint
+    // would reject them and the row says nothing the survivor's copy does not.
+    const transitionCounts = await client.query<{ total: string; already_on_survivor: string }>(
+      `
+        SELECT
+          count(*)::text AS total,
+          count(*) FILTER (
+            WHERE EXISTS (
+              SELECT 1
+              FROM public.candidate_record_identity_transitions s
+              WHERE s.candidate_id = $2::uuid
+                AND s.old_record_identity_key = d.old_record_identity_key
+                AND s.new_record_identity_key = d.new_record_identity_key
+            )
+          )::text AS already_on_survivor
+        FROM public.candidate_record_identity_transitions d
+        WHERE d.candidate_id = $1::uuid
+      `,
+      [mergedId, survivorId]
+    );
+    const transitionTotal = Number(transitionCounts.rows[0]?.total ?? "0");
+    const transitionDuplicates = Number(transitionCounts.rows[0]?.already_on_survivor ?? "0");
+    if (!dryRun && transitionTotal > 0) {
+      if (transitionDuplicates > 0) {
+        await client.query(
+          `
+            DELETE FROM public.candidate_record_identity_transitions d
+            WHERE d.candidate_id = $1::uuid
+              AND EXISTS (
+                SELECT 1
+                FROM public.candidate_record_identity_transitions s
+                WHERE s.candidate_id = $2::uuid
+                  AND s.old_record_identity_key = d.old_record_identity_key
+                  AND s.new_record_identity_key = d.new_record_identity_key
+              )
+          `,
+          [mergedId, survivorId]
+        );
+      }
+      await client.query(
+        `UPDATE public.candidate_record_identity_transitions SET candidate_id = $2::uuid WHERE candidate_id = $1::uuid`,
+        [mergedId, survivorId]
+      );
+    }
+
     // Everything else that references candidates — every state finance table,
     // the presidential tables, whatever ships next. Rehome when only the
     // duplicate has rows; refuse when both do (unique keys like
@@ -1070,6 +1137,10 @@ export async function runMergeCandidates(
       sweepConfirmations: {
         mergedDeleted: mergedConfirmationDeleted,
         survivorDeleted: survivorConfirmationDeleted,
+      },
+      recordIdentityTransitions: {
+        rehomed: transitionTotal - transitionDuplicates,
+        duplicatesDeleted: transitionDuplicates,
       },
       follows: { rehomed: rehomeFollowIds.length, duplicatesDeleted: duplicateFollowIds.length },
       choices: {
