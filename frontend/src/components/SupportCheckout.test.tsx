@@ -268,7 +268,7 @@ describe("SupportCheckout", () => {
     expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "/me/membership");
     expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
     // History and the portal moved to the membership page.
-    expect(screen.queryByText("Payment history")).not.toBeInTheDocument();
+    expect(screen.queryByText("Support history")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Manage membership" })).not.toBeInTheDocument();
   });
 
@@ -303,6 +303,18 @@ describe("SupportCheckout", () => {
     await waitFor(() => expect(router.state.location.search).toBe(""));
     // The banner survives the param removal (read once into state).
     expect(screen.getByText(/Thank you for your support!/)).toBeInTheDocument();
+  });
+
+  it("thanks a one-time contributor without linking the membership page", async () => {
+    stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
+    renderCheckout("one_time", "?membership=success");
+
+    expect(
+      await screen.findByText(
+        "Thank you for your support! Because of you, we can keep bringing you quality content and keep improving it."
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "membership page" })).not.toBeInTheDocument();
   });
 
   it("keeps the form locked after a successful Checkout until the webhook has landed", async () => {

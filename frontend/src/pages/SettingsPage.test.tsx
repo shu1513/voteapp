@@ -79,7 +79,7 @@ describe("SettingsPage", () => {
     expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
     expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
     // No payments, so no history to link.
-    expect(screen.queryByRole("link", { name: "Payment history" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Support history" })).not.toBeInTheDocument();
   });
 
   it("links a lapsed supporter to their payment history next to the invitation", async () => {
@@ -101,7 +101,7 @@ describe("SettingsPage", () => {
     });
     renderSettings();
 
-    expect(await screen.findByRole("link", { name: "Payment history" })).toHaveAttribute("href", "/me/membership");
+    expect(await screen.findByRole("link", { name: "Support history" })).toHaveAttribute("href", "/me/membership");
     expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
   });
 

@@ -114,7 +114,7 @@ describe("MembershipPage", () => {
     expect(screen.queryByRole("button", { name: "Keep membership" })).not.toBeInTheDocument();
 
     // History is there but folded away; the total lives inside it.
-    const details = screen.getByText("Recent payments").closest("details");
+    const details = screen.getByText("Support history").closest("details");
     expect(details).not.toHaveAttribute("open");
     expect(within(details as HTMLElement).getByText(/Total support to date/)).toHaveTextContent("$25.00");
     expect(within(details as HTMLElement).getByText(/\$5\.00 refunded/)).toBeInTheDocument();
@@ -281,7 +281,7 @@ describe("MembershipPage", () => {
     expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Cancel membership…" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
-    expect(screen.queryByText("Recent payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Support history")).not.toBeInTheDocument();
   });
 
   it("hides the amount form for an unpaid subscription", async () => {
@@ -300,7 +300,7 @@ describe("MembershipPage", () => {
     expect(await screen.findByText(/You don't have a monthly membership right now/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
     expect(screen.getByRole("link", { name: "Support once" })).toHaveAttribute("href", "/support/once");
-    expect(screen.getByText("Recent payments")).toBeInTheDocument();
+    expect(screen.getByText("Support history")).toBeInTheDocument();
     expect(screen.getByText(/Total support to date/)).toHaveTextContent("$15.00");
     expect(screen.queryByRole("button", { name: "Update payment method" })).not.toBeInTheDocument();
   });
@@ -310,7 +310,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByRole("link", { name: "Become an honorary member" })).toBeInTheDocument();
-    expect(screen.queryByText("Recent payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Support history")).not.toBeInTheDocument();
   });
 
   it("says payments are unavailable when Stripe is not configured", async () => {

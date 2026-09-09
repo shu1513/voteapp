@@ -77,7 +77,7 @@ function MembershipProfileLine({ me }: { me: Me }) {
       </Link>
       {payments.length > 0 ? (
         <Link to="/me/membership" className={membershipLinkClass}>
-          Payment history
+          Support history
         </Link>
       ) : null}
     </p>

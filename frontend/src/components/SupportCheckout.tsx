@@ -226,16 +226,25 @@ function useCheckoutMutation() {
   });
 }
 
-function OutcomeBanners({ outcome }: { outcome: string | null }) {
+/** A monthly sign-up gets pointed at the page that now manages it; a
+ * one-time gift gets a plain thank-you (user decision: no nudge toward the
+ * amounts right after giving). */
+function OutcomeBanners({ outcome, kind }: { outcome: string | null; kind: MembershipKind }) {
   return (
     <>
       {outcome === "success" ? (
         <p role="status" className="mt-2 rounded-lg border border-green-700/40 bg-green-50 px-3 py-2 text-sm text-green-900">
-          Thank you for your support! Your payment may take a moment to appear on your{" "}
-          <Link to="/me/membership" className={linkClass}>
-            membership page
-          </Link>
-          .
+          {kind === "monthly" ? (
+            <>
+              Thank you for your support! Your payment may take a moment to appear on your{" "}
+              <Link to="/me/membership" className={linkClass}>
+                membership page
+              </Link>
+              .
+            </>
+          ) : (
+            "Thank you for your support! Because of you, we can keep bringing you quality content and keep improving it."
+          )}
         </p>
       ) : null}
       {outcome === "canceled" ? (
@@ -311,7 +320,7 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
 
   return (
     <section className="rounded-xl border border-line bg-white p-4">
-      <OutcomeBanners outcome={outcome} />
+      <OutcomeBanners outcome={outcome} kind={kind} />
       {status.isError ? (
         <div className="mt-2">
           <ErrorNotice error={status.error} />

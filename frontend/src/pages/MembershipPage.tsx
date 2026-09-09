@@ -155,7 +155,7 @@ function PaymentHistory({ payments, totalNetCents }: { payments: MembershipPayme
   return (
     // Closed by default (user decision): the list is context, not the task.
     <details className="rounded-xl border border-line bg-white p-4">
-      <summary className="cursor-pointer text-heading font-semibold">Recent payments</summary>
+      <summary className="cursor-pointer text-heading font-semibold">Support history</summary>
       <p className="mt-2 text-sm text-ink">
         Total support to date: <strong>{formatCents(totalNetCents)}</strong>
       </p>
