@@ -904,8 +904,14 @@ export async function runMergeCandidates(
     // rehoming stays correct even when both rows hold a transition for the same
     // old key — the survivor's later edit wins, exactly as it would have if both
     // histories had always been on one row. Only an IDENTICAL triple is a real
-    // duplicate; those are deleted rather than rehomed, because the constraint
-    // would reject them and the row says nothing the survivor's copy does not.
+    // duplicate; the constraint rejects it, so the DUPLICATE's copy is dropped
+    // and the survivor's kept — timestamp regardless. That is deliberate, not a
+    // tie-break: promotion applies a resolved transition to the target row
+    // under the same candidate id, i.e. to the survivor's OWN record, whose
+    // lineage is the survivor's own history (same rule as candidate_records
+    // above, where the survivor's same-key row wins). Keeping the duplicate's
+    // newer copy would let another row's edit time rewrite which successor
+    // the survivor's record resolves to.
     const transitionCounts = await client.query<{ total: string; already_on_survivor: string }>(
       `
         SELECT
