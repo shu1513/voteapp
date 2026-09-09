@@ -1437,6 +1437,103 @@ describe("Georgia's vocabulary across its four registered sessions", () => {
   });
 });
 
+describe("Oklahoma, session 2219", () => {
+  const config = LEGISCAN_STATE_CONFIGS.OK!;
+  const ok = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps third reading, which is passage in the chamber where the measure starts", () => {
+    expect(ok("House: THIRD READING", 99)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ok("Senate: THIRD READING", 48, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // The 2025 dataset prints a stray comma on five rolls. The 2026 dataset
+    // has cleaned every one, so this only stops a reissued one going quiet.
+    expect(ok("House: ,                 THIRD READING", 99)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("keeps fourth reading, the originating chamber's vote on the other chamber's changes", () => {
+    expect(ok("House: FOURTH READING", 99)).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    expect(ok("Senate: FOURTH READING", 48, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+  });
+
+  it("keeps every veto-override spelling the two chambers use", () => {
+    for (const [desc, total, chamber] of [
+      ["House: VETO OVERRIDE WITHOUT EMERGENCY", 99, "house"],
+      ["Senate: VETO OVERRIDE NO EMERGENCY", 48, "senate"],
+      ["House: VETO OVERRIDE WITH EMERGENCY", 99, "house"],
+      ["House: VETO OVERRIDE WITHOUT EMER", 99, "house"],
+      ["Senate: VETO OVERRIDE", 48, "senate"],
+    ] as const) {
+      expect(ok(desc, total, chamber)).toMatchObject({ isFloorVote: true, questionClass: "veto_override" });
+    }
+  });
+
+  it("excludes the emergency clause WITHOUT swallowing the overrides", () => {
+    // Oklahoma votes a measure's emergency clause separately from the
+    // measure, so it is not a vote on the bill. But the word `emergency`
+    // also sits in every override caption, so an unanchored rule would
+    // delete all 111 override rolls, 26 of them closely divided. This test
+    // is the guard on that.
+    expect(ok("House: EMERGENCY", 99)).toMatchObject({ isFloorVote: false, questionClass: null });
+    expect(ok("House: VETO OVERRIDE WITHOUT EMERGENCY", 99)).toMatchObject({ isFloorVote: true });
+  });
+
+  it("excludes committee work under both spellings the feed uses", () => {
+    for (const [desc, total, chamber] of [
+      ["Senate: Appropriations Committee: DO PASS", 26, "senate"],
+      ["House: Appropriations and Budget Finance Subcommittee: DO PASS", 9, "house"],
+      ["Senate: Committee on Appropriations and Budget: DO PASS AMENDED CS", 26, "senate"],
+    ] as const) {
+      expect(ok(desc, total, chamber)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("leaves the empty-committee-name rolls unmatched so a human sees them", () => {
+    // Four 2026 rolls read `Senate:  Committee: DO PASS` with no committee
+    // named and a whole-chamber tally. Three are genuine Senate passage
+    // votes the feed mis-captioned; the fourth is a special-election
+    // question, not passage. No pattern can tell them apart, so they surface
+    // rather than being kept or dropped by rule.
+    expect(ok("Senate:  Committee: DO PASS", 48, "senate")).toMatchObject({
+      isFloorVote: null,
+      questionClass: null,
+    });
+  });
+
+  it("excludes the procedural floor questions", () => {
+    for (const [desc, total, chamber] of [
+      ["House: RECONSIDER MEASURE", 99, "house"],
+      ["Senate: RECONSIDER", 48, "senate"],
+      ["House: RECONSIDER EMERGENCY", 99, "house"],
+      ["House: ADOPT AMENDMENT", 99, "house"],
+      ["Senate: AMENDMENT", 48, "senate"],
+      ["House: TABLE", 99, "house"],
+      ["House: TABLE AMENDMENT", 99, "house"],
+      ["House: SUSPEND HOUSE RULES", 99, "house"],
+      ["Senate: SUSPEND RULE", 48, "senate"],
+      ["House: ADVANCE FROM GENERAL ORDER", 99, "house"],
+      ["House: APPEAL OF THE DECISION OF THE CHAIR", 99, "house"],
+      ["House: ADOPT MOTION", 99, "house"],
+    ] as const) {
+      expect(ok(desc, total, chamber)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("holds the rolls whose tally Oklahoma's own history contradicts", () => {
+    const held = LEGISCAN_STATE_CONFIGS.OK!.heldRollCallIds ?? {};
+    expect(Object.keys(held)).toHaveLength(20);
+    expect(held[1670674]).toContain("failed");
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -1506,6 +1603,7 @@ describe("getLegiscanStateConfig", () => {
       "ID-2246",
       "WV",
       "WV-2254",
+      "OK",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1542,6 +1640,7 @@ describe("getLegiscanStateConfig", () => {
       "ND",
       "ID",
       "WV",
+      "OK",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
