@@ -1,7 +1,6 @@
 {
- "source": "legiscan",
  "jurisdiction": "MI",
- "session_id": 2183,
+ "sessionId": 2183,
  "note": "The people records as the 2026-09-06 dataset held them, kept so a later run can diff the roster.",
  "people": [
   {
