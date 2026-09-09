@@ -30,6 +30,16 @@ type PageMetaInput = {
   title: string;
   description?: string;
   /**
+   * What the link preview says, when that should differ from the tab title
+   * and the search snippet. A search result answers an intent ("what's on my
+   * ballot"); a card in a friend's chat has to earn a tap on its own. The
+   * home page uses this: its card image already carries the whole pitch, so
+   * repeating the pitch as the card text wastes the one line under it.
+   * Defaults to title / description.
+   */
+  shareTitle?: string;
+  shareDescription?: string;
+  /**
    * Path with a leading slash, for routes that know their own URL. Omit it and
    * no og:url is emitted, which is deliberate: the root meta is the fallback
    * for every page without its own (the ballot, a candidate, an election), so
@@ -47,7 +57,14 @@ type PageMetaInput = {
   image?: { url: string; alt: string };
 };
 
-export function pageMeta({ title, description = DEFAULT_DESCRIPTION, path, image }: PageMetaInput): MetaDescriptor[] {
+export function pageMeta({
+  title,
+  description = DEFAULT_DESCRIPTION,
+  shareTitle = title,
+  shareDescription = description,
+  path,
+  image,
+}: PageMetaInput): MetaDescriptor[] {
   const imageUrl = image?.url ?? SHARE_IMAGE;
   const imageAlt = image?.alt ?? SHARE_IMAGE_ALT;
   return [
@@ -57,8 +74,8 @@ export function pageMeta({ title, description = DEFAULT_DESCRIPTION, path, image
     // Open Graph: read by iMessage, WhatsApp, Slack, Facebook, LinkedIn.
     { property: "og:type", content: "website" },
     { property: "og:site_name", content: APP_NAME },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
+    { property: "og:title", content: shareTitle },
+    { property: "og:description", content: shareDescription },
     ...(path
       ? [
           { property: "og:url", content: `${SITE_ORIGIN}${path}` },
@@ -79,8 +96,8 @@ export function pageMeta({ title, description = DEFAULT_DESCRIPTION, path, image
 
     // X/Twitter reads its own namespace and ignores og:* for the card size.
     { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
+    { name: "twitter:title", content: shareTitle },
+    { name: "twitter:description", content: shareDescription },
     { name: "twitter:image", content: imageUrl },
     { name: "twitter:image:alt", content: imageAlt },
   ];

@@ -7,11 +7,22 @@ import type { AddressLocation, AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { pageMeta } from "../lib/pageMeta";
 
+/** The one-line claim under the hero; also the share card's second line. */
+const TAGLINE = "Independent, nonpartisan, AI-assisted election research with linked sources.";
+
 // Server-rendered head for the home page: the same title useDocumentTitle
-// sets after hydration, so crawlers and share scrapers see it in the HTML
-// rather than the root's bare brand.
+// sets after hydration, so crawlers see it in the HTML rather than the root's
+// bare brand. The share card says something else on purpose: its image is
+// the hero sentence, so the text under it asks the question that sentence
+// answers, and the second line is the page's own claim of what this is,
+// not the pitch a third time.
 export const meta: MetaFunction = () =>
-  pageMeta({ title: `Find what's on your ballot · ${APP_NAME}`, path: "/" });
+  pageMeta({
+    title: `Find what's on your ballot · ${APP_NAME}`,
+    shareTitle: `What did these candidates actually do? · ${APP_NAME}`,
+    shareDescription: TAGLINE,
+    path: "/",
+  });
 import { FullAddressExplanation } from "../components/FullAddressExplanation";
 import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
 import { ErrorNotice } from "../components/Status";
@@ -307,7 +318,7 @@ export function HomePage() {
             label/input convention. Size and ink-mid set it apart as a
             standalone claim (ink-soft failed APCA for a must-read line). */}
         <p className="mt-3 text-base font-medium text-ink-mid">
-          Independent, nonpartisan, AI-assisted election research with linked sources.
+          {TAGLINE}
         </p>
       </div>
       <div className="mx-auto max-w-2xl px-4 py-8">
