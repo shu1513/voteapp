@@ -927,6 +927,14 @@ describe("website rotation (campaign sites change between races)", () => {
     expect(matched).toBe(true);
   });
 
+  it("does not match two junk (non-URL) LinkedIn values", () => {
+    const matched = matchesByHardIdentifier(
+      profile({ linkedin_url: "not a url" }),
+      { ...row, official_website_url: null, linkedin_url: "also not a url" }
+    );
+    expect(matched).toBe(false);
+  });
+
   it("does not match two junk (non-URL) website values", () => {
     const matched = matchesByHardIdentifier(
       profile({ official_website_url: "not a url" }),

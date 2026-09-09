@@ -346,11 +346,11 @@ export function resolveStoredCandidateParty(input: {
 }
 
 function matchesLinkedInUrl(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
-  return Boolean(
-    profile.linkedin_url &&
-      row.linkedin_url &&
-      normalizeOptionalUrl(profile.linkedin_url) === normalizeOptionalUrl(row.linkedin_url)
-  );
+  // Both sides must normalize: two junk (non-URL) values would otherwise
+  // compare null === null and match, as the website check already guards.
+  const profileUrl = normalizeOptionalUrl(profile.linkedin_url);
+  const rowUrl = normalizeOptionalUrl(row.linkedin_url);
+  return Boolean(profileUrl && rowUrl && profileUrl === rowUrl);
 }
 
 // The contract only checks that linkedin_url is an http(s) URL, so a company
