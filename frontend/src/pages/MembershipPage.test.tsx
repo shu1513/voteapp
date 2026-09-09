@@ -105,8 +105,9 @@ describe("MembershipPage", () => {
     renderMember(ACTIVE);
     renderPage();
 
-    expect(await screen.findByText(/Because of supporters like you/)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Your membership" })).toBeInTheDocument();
+    expect(await screen.findByText("Thank you. Your membership funds:")).toBeInTheDocument();
+    expect(screen.getByText("Deeper investigation of candidates' actions")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "My honorary membership" })).toBeInTheDocument();
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
     expect(screen.getByLabelText("New monthly amount")).toHaveValue("10.00");
     expect(screen.getByRole("button", { name: "Cancel membership…" })).toBeEnabled();
@@ -270,7 +271,7 @@ describe("MembershipPage", () => {
     const notice = await screen.findByText(/Your last payment didn't go through/);
     expect(within(notice.parentElement as HTMLElement).getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.getByLabelText("New monthly amount")).toBeInTheDocument();
-    expect(screen.queryByText(/Because of supporters like you/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Your membership funds/)).not.toBeInTheDocument();
   });
 
   it("hides the amount form and cancel for an incomplete first payment", async () => {
@@ -298,6 +299,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(/You don't have a monthly membership right now/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Honorary membership" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
     expect(screen.getByRole("link", { name: "Support once" })).toHaveAttribute("href", "/support/once");
     expect(screen.getByText("Support history")).toBeInTheDocument();

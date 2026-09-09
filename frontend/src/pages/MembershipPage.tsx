@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest, APP_NAME, useMe } from "@voteapp/api-client";
+import { apiRequest, useMe } from "@voteapp/api-client";
 import type { MembershipMembership, MembershipStatus } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { AmountForm, Disclaimer, formatCents, formatDate, secondaryButtonClass, SupportHistory } from "../components/SupportCheckout";
@@ -209,9 +209,16 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
     <>
       <section className="rounded-xl border border-line bg-white p-4">
         {status === "active" ? (
-          <p className="text-sm text-ink">
-            Thank you. Because of supporters like you, {APP_NAME} stays independent and free for every voter.
-          </p>
+          // What the money funds (things the site does today) — never member
+          // perks, which the Terms limit to the newsletter.
+          <>
+            <p className="text-sm text-ink">Thank you. Your membership funds:</p>
+            <ul className="mt-1 list-disc pl-5 text-sm text-ink">
+              <li>Deeper investigation of candidates&apos; actions</li>
+              <li>Closer analysis of what ballot measures would do</li>
+              <li>Ongoing research on the issues that matter most to you</li>
+            </ul>
+          </>
         ) : null}
         <p className="mt-2 font-medium text-ink">{planLine(membership)}</p>
         {status === "incomplete" ? (
@@ -310,24 +317,42 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
 
 function MembershipManager() {
   const status = useMembershipStatus();
+  // "My" only once there is a membership to call theirs; the same page
+  // serves non-members and lapsed members.
+  const isMember = status.isSuccess && status.data.enabled && status.data.membership !== null;
+  const heading = <h1 className="text-title font-bold">{isMember ? "My honorary membership" : "Honorary membership"}</h1>;
 
   if (status.isPending) {
-    return <LoadingNotice text="Loading…" />;
+    return (
+      <>
+        {heading}
+        <LoadingNotice text="Loading…" />
+      </>
+    );
   }
   if (status.isError) {
-    return <ErrorNotice error={status.error} />;
+    return (
+      <>
+        {heading}
+        <ErrorNotice error={status.error} />
+      </>
+    );
   }
   if (!status.data.enabled) {
     return (
-      <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
-        Payments are temporarily unavailable. Please check back later.
-      </p>
+      <>
+        {heading}
+        <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
+          Payments are temporarily unavailable. Please check back later.
+        </p>
+      </>
     );
   }
   const { membership, payments } = status.data;
 
   return (
     <>
+      {heading}
       {membership ? (
         <MemberPanel membership={membership} />
       ) : (
@@ -345,7 +370,7 @@ function MembershipManager() {
 }
 
 export function MembershipPage() {
-  useDocumentTitle("Your membership");
+  useDocumentTitle("Honorary membership");
   const { me, isLoading } = useMe();
 
   if (isLoading || me === undefined) {
@@ -374,7 +399,6 @@ export function MembershipPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-4 px-4 py-8">
-      <h1 className="text-title font-bold">Your membership</h1>
       <MembershipManager />
       <p className="text-sm">
         <Link to="/me/settings" className={linkClass}>
