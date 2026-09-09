@@ -180,12 +180,12 @@ describe("SupportCheckout", () => {
     await user.type(input, "30");
     expect(presets.getByRole("button", { name: "$25" })).toHaveAttribute("aria-pressed", "false");
 
-    await user.click(presets.getByRole("button", { name: "$50" }));
+    await user.click(presets.getByRole("button", { name: "$100" }));
     await user.click(screen.getByRole("button", { name: "Support once" }));
     await waitFor(() =>
       expect(navigateExternal).toHaveBeenCalledWith("https://checkout.stripe.com/c/pay/cs_test_789")
     );
-    expect(checkoutBody).toEqual({ kind: "one_time", amount_cents: 5000 });
+    expect(checkoutBody).toEqual({ kind: "one_time", amount_cents: 10_000 });
   });
 
   it("posts the amount in cents and redirects to the Checkout URL", async () => {

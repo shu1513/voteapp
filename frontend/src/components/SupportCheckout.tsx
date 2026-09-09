@@ -40,7 +40,7 @@ const presetClass =
 const presetSelectedClass = "rounded-full border border-ink bg-ink px-3 py-1 text-sm font-medium text-white";
 // The suggested amounts on the support pages (whole dollars; the field
 // takes anything else). $10 is the prefilled default.
-const CHECKOUT_PRESETS_CENTS = [500, 1000, 2500, 5000];
+const CHECKOUT_PRESETS_CENTS = [1000, 2500, 5000, 10_000];
 const linkClass = "font-medium underline hover:text-ink";
 
 const currency = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
