@@ -902,6 +902,46 @@ const WEST_VIRGINIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"]
   /\brefused to concur\b/,
 ];
 
+// Washington's floor questions. Measured from the 2166 survey, where every one
+// of the state's 2,038 floor rolls says "final passage" and not one of its
+// 2,966 committee rolls does.
+//
+// Order matters: `keptQuestions` is resolved by FIRST match, so the three
+// narrow rules that name a specific question come before the general passage
+// rule that would otherwise swallow them. The question class is report-only
+// metadata and is never persisted, but it should still read true.
+const WASHINGTON_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Both chambers voting the conference committee's text. The House spells it
+  // with "the" and the Senate without it, so the article is optional.
+  {
+    pattern: /final passage as recommended by (?:the )?conference committee/,
+    questionClass: "conference_report",
+  },
+  // A chamber voting on the OTHER chamber's amendments is a concurrence. The
+  // chamber that is voting leads the description, so these are anchored: a
+  // SENATE roll reading "as amended by the house" is the Senate taking the
+  // House's changes, and the mirror image is the House taking the Senate's.
+  // Anchoring is what keeps them off the Senate's own "as amended by the
+  // senate", which is that chamber passing its own amended bill.
+  { pattern: /^senate final passage as amended by the house/, questionClass: "concurrence" },
+  { pattern: /^house final passage as amended by the senate/, questionClass: "concurrence" },
+  // The Senate receding from its own amendments and passing the House text.
+  { pattern: /^senate final passage without senate amendments/, questionClass: "concurrence" },
+  // Everything else that reaches here is a chamber passing a bill: the plain
+  // third reading, a chamber passing its own amended version, and either
+  // chamber's vote on reconsideration.
+  { pattern: /final passage/, questionClass: "passage" },
+];
+
+const WASHINGTON_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // ⚠ The one description that says "final passage" without being a vote on
+  // the bill: a motion to BRING a measure to final passage. Excluded rules run
+  // before kept rules, which is the only reason the general "final passage"
+  // pattern above is safe. One roll in this session, on SB 5181, and it is
+  // also the session's only tally that disagrees with Washington's own record.
+  /motion to place measure on final passage/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -4133,6 +4173,65 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       1660050:
         "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
     },
+  },
+  // WASHINGTON, 2025-2026 Regular Session (LegiScan 2166). Washington runs a
+  // two-year biennium in ONE dataset, and its bulk list carries no special
+  // session at all, so this single entry covers the whole current term.
+  //
+  // Washington has the cleanest floor-versus-committee split measured so far.
+  // Every floor vote says FINAL PASSAGE and no committee vote does: the survey
+  // folded 5,038 rolls into 212 description families, and of those, 196 are
+  // spelled `<Chamber> Committee on <Name>: <question>` while the other 16 all
+  // contain "final passage". The overlap between the two sets is exactly zero
+  // rolls, checked over the whole dataset, so a single kept pattern does the
+  // work that other states need a dozen for.
+  //
+  // The tally cut is a comfortable second line rather than the mechanism.
+  // Committee rolls top out at 34 of 98 in the House and 24 of 49 in the
+  // Senate, while every floor roll is exactly 98 in the House and 48 or 49 in
+  // the Senate. Nothing lands in the band that would surface. The Senate
+  // margin is the narrow one — 24 against a cut of 24.5 — so if a future
+  // session seats a 25-member Senate committee, its rolls would surface rather
+  // than be rejected, which is the safe direction to fail.
+  //
+  // ⚠ THE ONE TRAP: "final passage" is NOT sufficient on its own, because
+  // Washington also prints `House Motion to Place Measure on Final Passage as
+  // Amended by the House`. That is a scheduling motion, not a vote on the
+  // bill, so the exclusion has to run first — which it does, by contract.
+  // There is exactly one such roll in the session, on SB 5181, and it is the
+  // ONLY roll in the whole dataset whose tally disagrees with Washington's own
+  // record (see the audit note below). Two independent signals condemn the
+  // same roll.
+  //
+  // TALLY AUDIT, run over EVERY floor roll and deliberately NOT bounded by the
+  // divided gate, because a tally error can itself decide whether a roll
+  // passes that gate (the Oregon SB 1565 lesson). Washington ships its own
+  // oracle: 2,038 bill-history action lines carry the state's tally in the
+  // form `Third reading, passed; yeas, 41; nays, 8; absent, 0; excused, 0`,
+  // one for every floor roll, so the audit needs no network. Result: 2,037 of
+  // 2,038 match exactly. The single exception is the procedural motion above,
+  // which is excluded by rule and sits on a bill that never became law. No
+  // roll needs holding, so this state has no `heldRollCallIds`.
+  //
+  // ⚠ ROLL IDS DO NOT ASCEND WITH DATE — 63 inversions in the House and 43 in
+  // the Senate. Anything picking a chamber's last vote must order by DATE and
+  // settle same-day ties from the bill history, never by roll_call_id.
+  //
+  // ⚠ VETOES: the session has 16 PARTIAL vetoes and 1 full veto, and no
+  // override roll exists at all. A partial veto means part of an enacted act
+  // never took effect, so any selected measure must be checked against the
+  // veto message before it is described.
+  //
+  // Constitutional amendments ride JOINT RESOLUTIONS, which is already a kept
+  // bill type, so the Georgia resolution gap does not arise. It is moot here
+  // in any case: all 27 joint resolutions in the session are still at
+  // introduced status and none ever reached a floor vote.
+  WA: {
+    jurisdiction: "WA",
+    sessionId: 2166,
+    chamberSizes: { house: 98, senate: 49 },
+    keptQuestions: WASHINGTON_KEPT_QUESTIONS,
+    excludedQuestions: WASHINGTON_EXCLUDED_QUESTIONS,
   },
 };
 
