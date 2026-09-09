@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   findFinanceLinkIdentityKey,
+  listLinkRowChildReferences,
   runMoveCandidateFinanceLinks,
 } from "../../src/scripts/moveManualCandidateFinanceLinks.js";
 
@@ -9,25 +10,37 @@ const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
 const FROM_ELECTION = "22222222-2222-2222-2222-222222222222";
 const TO_ELECTION = "33333333-3333-3333-3333-333333333333";
 
-function electionRows(overrides: { fromYear?: number; toYear?: number } = {}) {
+const DISTRICT = "dddddddd-dddd-dddd-dddd-dddddddddddd";
+const OFFICE = "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee";
+const SRC_ROW = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1";
+const TGT_ROW = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2";
+
+function electionRows(
+  overrides: { fromYear?: number; toYear?: number; toDistrict?: string; toOffice?: string | null } = {}
+) {
   return [
     {
       id: FROM_ELECTION,
       official_ballot_title: "State Representative",
       election_year: overrides.fromYear ?? 2026,
+      district_id: DISTRICT,
+      office_id: OFFICE,
     },
     {
       id: TO_ELECTION,
       official_ballot_title: "State Representative District 6",
       election_year: overrides.toYear ?? 2026,
+      district_id: overrides.toDistrict ?? DISTRICT,
+      office_id: overrides.toOffice === undefined ? OFFICE : overrides.toOffice,
     },
   ];
 }
 
 // Query order: BEGIN, lock both elections, target roster link, FK-table
 // catalog scan, then per table [row count, identity-key catalog lookup,
-// DELETE duplicates, UPDATE repoint], COMMIT/ROLLBACK. DELETE/UPDATE answer
-// with rowCount like pg does.
+// child-FK catalog lookup, then either a bulk DELETE of duplicates (no
+// children) or per-pair child counts + DELETE by id, UPDATE repoint],
+// COMMIT/ROLLBACK. DELETE/UPDATE answer with rowCount like pg does.
 function buildClient(responses: Record<string, unknown[][]>) {
   const calls: { text: string; values: unknown[] }[] = [];
   const queue = { ...responses };
@@ -58,6 +71,8 @@ function happyResponses(overrides: Partial<Record<string, unknown[][]>> = {}) {
     "contype IN ('u', 'p')": [
       [{ constraint_name: "fl_candidate_finance_links_unique", column_name: "committee_id" }],
     ],
+    // No child tables: the twins are interchangeable, bulk path.
+    "fa.attname = 'id'": [[]],
     // One duplicate dropped, one row repointed.
     "DELETE FROM public.fl_candidate_finance_links": [[{}]],
     "UPDATE public.fl_candidate_finance_links": [[{}]],
@@ -74,7 +89,7 @@ describe("runMoveCandidateFinanceLinks", () => {
     const result = await runMoveCandidateFinanceLinks({ query }, OPTIONS);
 
     expect(result.tables).toEqual([
-      { table: "public.fl_candidate_finance_links", repointed: 1, duplicatesDeleted: 1 },
+      { table: "public.fl_candidate_finance_links", repointed: 1, duplicatesDeleted: 1, emptyTargetsReplaced: 0 },
     ]);
     expect(result.toElectionTitle).toBe("State Representative District 6");
     const del = calls.find((call) => call.text.includes("DELETE FROM public.fl_candidate_finance_links"));
@@ -97,6 +112,59 @@ describe("runMoveCandidateFinanceLinks", () => {
     expect(result.dryRun).toBe(true);
     expect(result.tables[0]).toMatchObject({ repointed: 1, duplicatesDeleted: 1 });
     expect(calls.at(-1)?.text).toBe("ROLLBACK");
+  });
+
+  it("keeps the populated twin: a bare target is replaced by the from-row that holds the snapshot", async () => {
+    const children = [
+      { table_name: "public.fl_candidate_finance_summaries", column_name: "link_id" },
+      { table_name: "public.fl_candidate_finance_direct_breakdowns", column_name: "link_id" },
+    ];
+    const populatedSource = buildClient(happyResponses({
+      "fa.attname = 'id'": [children],
+      "SELECT src.id AS src_id": [[{ src_id: SRC_ROW, tgt_id: TGT_ROW }]],
+      // Source: 1 summary + 15 breakdowns; target: none.
+      "FROM public.fl_candidate_finance_summaries WHERE": [[{ n: "1" }], [{ n: "0" }]],
+      "FROM public.fl_candidate_finance_direct_breakdowns WHERE": [[{ n: "15" }], [{ n: "0" }]],
+      "DELETE FROM public.fl_candidate_finance_links": [[{}]],
+    }));
+
+    const result = await runMoveCandidateFinanceLinks({ query: populatedSource.query }, OPTIONS);
+
+    expect(result.tables[0]).toMatchObject({ repointed: 1, duplicatesDeleted: 0, emptyTargetsReplaced: 1 });
+    const del = populatedSource.calls.find((call) => call.text.includes("DELETE FROM public.fl_candidate_finance_links"));
+    expect(del?.values).toEqual([TGT_ROW]);
+
+    // Both populated (the sibling-shell-synced-twice case): the target wins.
+    const bothPopulated = buildClient(happyResponses({
+      "fa.attname = 'id'": [children],
+      "SELECT src.id AS src_id": [[{ src_id: SRC_ROW, tgt_id: TGT_ROW }]],
+      "FROM public.fl_candidate_finance_summaries WHERE": [[{ n: "1" }], [{ n: "1" }]],
+      "FROM public.fl_candidate_finance_direct_breakdowns WHERE": [[{ n: "15" }], [{ n: "15" }]],
+      "DELETE FROM public.fl_candidate_finance_links": [[{}]],
+    }));
+
+    const tie = await runMoveCandidateFinanceLinks({ query: bothPopulated.query }, OPTIONS);
+
+    expect(tie.tables[0]).toMatchObject({ duplicatesDeleted: 1, emptyTargetsReplaced: 0 });
+    const tieDelete = bothPopulated.calls.find((call) => call.text.includes("DELETE FROM public.fl_candidate_finance_links"));
+    expect(tieDelete?.values).toEqual([SRC_ROW]);
+  });
+
+  it("refuses a move that would change the stored district or office context", async () => {
+    const crossDistrict = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toDistrict: "ffffffff-ffff-ffff-ffff-ffffffffffff" })],
+    }));
+    await expect(runMoveCandidateFinanceLinks({ query: crossDistrict.query }, OPTIONS)).rejects.toThrow(
+      /differ in district or office/
+    );
+
+    const crossOffice = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toOffice: null })],
+    }));
+    await expect(runMoveCandidateFinanceLinks({ query: crossOffice.query }, OPTIONS)).rejects.toThrow(
+      /differ in district or office/
+    );
+    expect(crossOffice.calls.some((call) => /^\s*(UPDATE|DELETE)\b/i.test(call.text))).toBe(false);
   });
 
   it("refuses a cross-year move", async () => {
@@ -137,6 +205,24 @@ describe("runMoveCandidateFinanceLinks", () => {
     await expect(
       runMoveCandidateFinanceLinks({ query: missing.query }, { ...OPTIONS, toElectionId: FROM_ELECTION })
     ).rejects.toThrow(/must differ/);
+  });
+});
+
+describe("listLinkRowChildReferences", () => {
+  it("reports the child column that references the link id, composite keys included", async () => {
+    const { query, calls } = buildClient({
+      "fa.attname = 'id'": [
+        [
+          { table_name: "public.fl_candidate_finance_summaries", column_name: "link_id" },
+          { table_name: "public.fl_candidate_finance_direct_breakdowns", column_name: "link_id" },
+        ],
+      ],
+    });
+    expect(await listLinkRowChildReferences({ query }, "public.fl_candidate_finance_links")).toEqual([
+      { table: "public.fl_candidate_finance_summaries", column: "link_id" },
+      { table: "public.fl_candidate_finance_direct_breakdowns", column: "link_id" },
+    ]);
+    expect(calls[0]?.values).toEqual(["public.fl_candidate_finance_links"]);
   });
 });
 

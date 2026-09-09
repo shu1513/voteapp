@@ -16,9 +16,13 @@
 // - both elections exist, are row-locked, and share an election YEAR: the
 //   finance tables denormalise election_year next to election_id and their
 //   totals are computed for that cycle, so a cross-year repoint would make
-//   the row lie about its cycle. Dates and districts MAY differ — a
-//   primary-shell row moving to the general, or a wrong-district row moving
-//   to the right district, are the live cases;
+//   the row lie about its cycle. Dates MAY differ — a primary-shell row
+//   moving to the general is a live case;
+// - both elections share district_id AND office_id: the link row also stores
+//   the district and office name the auto-linker derived from the election,
+//   and every batch sync reads them back as matching context (Texas filters
+//   outside spending by that district). No wrapper reconciles those columns
+//   per state, so a move that would change them is refused;
 // - the candidate is linked to the TARGET election in candidate_elections:
 //   the batch syncs refresh a finance row only through that join, so a row
 //   on an election the roster does not show is exactly the stranding the
@@ -30,9 +34,12 @@
 // - each table's unique key containing (candidate_id, election_id) comes
 //   from the catalog. A from-row whose key already exists on the target is a
 //   duplicate of a row the same sync already wrote there (a sibling shell
-//   synced twice) and is deleted — its children cascade with it; every other
-//   row is repointed. A table holding rows for the pair without such a key
-//   is refused rather than guessed at;
+//   synced twice): the twin WITHOUT dependent rows (summaries, breakdowns —
+//   found through the catalog's foreign keys onto the link id) is deleted,
+//   the target twin on a tie, so an auto-linked bare target can never
+//   cascade away the only populated snapshot; every other row is repointed.
+//   A table holding rows for the pair without such a key is refused rather
+//   than guessed at;
 // - local-database guard, single transaction, --dry-run (executes everything
 //   and rolls back, so the reported counts are real).
 import { pathToFileURL } from "node:url";
@@ -64,14 +71,21 @@ export type MoveCandidateFinanceLinksResult = {
   fromElectionTitle: string;
   toElectionId: string;
   toElectionTitle: string;
-  /** One entry per table that held rows for (candidate, from-election). */
-  tables: { table: string; repointed: number; duplicatesDeleted: number }[];
+  /**
+   * One entry per table that held rows for (candidate, from-election).
+   * duplicatesDeleted: from-rows the target already held (target twin kept);
+   * emptyTargetsReplaced: bare target twins deleted because only the from-row
+   * carried dependent rows, which was then repointed in their place.
+   */
+  tables: { table: string; repointed: number; duplicatesDeleted: number; emptyTargetsReplaced: number }[];
 };
 
 type ElectionRow = {
   id: string;
   official_ballot_title: string;
   election_year: number;
+  district_id: string;
+  office_id: string | null;
 };
 
 /** Guarded as USER decisions by the link wrappers; never repointed here. */
@@ -156,6 +170,49 @@ export async function findFinanceLinkIdentityKey(
   };
 }
 
+/**
+ * Every foreign key onto the link table's id (single-column, or composite
+ * like (link_id, election_year) -> (id, election_year)), reported as the
+ * child column that references id — where summaries and breakdowns hang.
+ */
+export async function listLinkRowChildReferences(
+  client: MoveCandidateFinanceLinksClient,
+  table: string
+): Promise<{ table: string; column: string }[]> {
+  const result = await client.query<{ table_name: string; column_name: string }>(
+    `
+      SELECT DISTINCT c.conrelid::regclass::text AS table_name,
+             quote_ident(a.attname) AS column_name
+      FROM pg_constraint c
+      JOIN unnest(c.conkey, c.confkey) AS u(attnum, fattnum) ON true
+      JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = u.attnum
+      JOIN pg_attribute fa ON fa.attrelid = c.confrelid AND fa.attnum = u.fattnum
+      WHERE c.contype = 'f'
+        AND c.confrelid = $1::regclass
+        AND fa.attname = 'id'
+      ORDER BY 1, 2
+    `,
+    [table]
+  );
+  return result.rows.map((row) => ({ table: row.table_name, column: row.column_name }));
+}
+
+async function countChildRows(
+  client: MoveCandidateFinanceLinksClient,
+  children: { table: string; column: string }[],
+  rowId: string
+): Promise<number> {
+  let total = 0;
+  for (const { table, column } of children) {
+    const result = await client.query<{ n: string }>(
+      `SELECT count(*)::text AS n FROM ${table} WHERE ${column} = $1::uuid`,
+      [rowId]
+    );
+    total += Number(result.rows[0]?.n ?? "0");
+  }
+  return total;
+}
+
 export async function runMoveCandidateFinanceLinks(
   client: MoveCandidateFinanceLinksClient,
   options: MoveCandidateFinanceLinksOptions
@@ -176,7 +233,8 @@ export async function runMoveCandidateFinanceLinks(
     // guard cannot pass on a row a concurrent date correction is changing.
     const electionsResult = await client.query<ElectionRow>(
       `
-        SELECT id, official_ballot_title, extract(year FROM election_date)::int AS election_year
+        SELECT id, official_ballot_title, extract(year FROM election_date)::int AS election_year,
+               district_id, office_id
         FROM public.elections
         WHERE id = ANY($1::uuid[])
         ORDER BY id
@@ -192,6 +250,12 @@ export async function runMoveCandidateFinanceLinks(
       throw new Error(
         `Elections are in different years (${fromElection.election_year} vs ${toElection.election_year}); ` +
           "finance rows carry that cycle's totals and cannot change cycle"
+      );
+    }
+    if (fromElection.district_id !== toElection.district_id || fromElection.office_id !== toElection.office_id) {
+      throw new Error(
+        "Elections differ in district or office; the finance rows store the district and office name the " +
+          "syncs match against, and no wrapper reconciles them per state. Refusing (user decision)."
       );
     }
 
@@ -229,26 +293,52 @@ export async function runMoveCandidateFinanceLinks(
       // distinct), so a from-row is a duplicate only when the target holds
       // a row the constraint would reject on repoint.
       const sameIdentity = key.columns.map((column) => `AND tgt.${column} = src.${column}`).join(" ");
-      const deleted = await client.query(
-        `
-          DELETE FROM ${table} AS src
-          WHERE src.candidate_id = $1::uuid AND src.${electionColumn} = $2::uuid
-            AND EXISTS (
-              SELECT 1 FROM ${table} AS tgt
-              WHERE tgt.candidate_id = $1::uuid AND tgt.${electionColumn} = $3::uuid ${sameIdentity}
-            )
-        `,
-        [candidateId, fromElectionId, toElectionId]
-      );
+      let duplicatesDeleted = 0;
+      let emptyTargetsReplaced = 0;
+      const children = await listLinkRowChildReferences(client, table);
+      if (children.length === 0) {
+        // Nothing hangs off these rows, so the twins are interchangeable.
+        const deleted = await client.query(
+          `
+            DELETE FROM ${table} AS src
+            WHERE src.candidate_id = $1::uuid AND src.${electionColumn} = $2::uuid
+              AND EXISTS (
+                SELECT 1 FROM ${table} AS tgt
+                WHERE tgt.candidate_id = $1::uuid AND tgt.${electionColumn} = $3::uuid ${sameIdentity}
+              )
+          `,
+          [candidateId, fromElectionId, toElectionId]
+        );
+        duplicatesDeleted = deleted.rowCount ?? 0;
+      } else {
+        // Auto-linking writes a bare link first and the batch sync fills its
+        // summaries later, so a target twin can be empty while the from-row
+        // holds the only snapshot. Keep whichever twin has dependent rows;
+        // on a tie (both or neither) keep the target.
+        const pairs = await client.query<{ src_id: string; tgt_id: string }>(
+          `
+            SELECT src.id AS src_id, tgt.id AS tgt_id
+            FROM ${table} AS src
+            JOIN ${table} AS tgt
+              ON tgt.candidate_id = src.candidate_id AND tgt.${electionColumn} = $3::uuid ${sameIdentity}
+            WHERE src.candidate_id = $1::uuid AND src.${electionColumn} = $2::uuid
+          `,
+          [candidateId, fromElectionId, toElectionId]
+        );
+        for (const pair of pairs.rows) {
+          const sourceChildren = await countChildRows(client, children, pair.src_id);
+          const targetChildren = await countChildRows(client, children, pair.tgt_id);
+          const dropTarget = sourceChildren > 0 && targetChildren === 0;
+          await client.query(`DELETE FROM ${table} WHERE id = $1::uuid`, [dropTarget ? pair.tgt_id : pair.src_id]);
+          if (dropTarget) emptyTargetsReplaced += 1;
+          else duplicatesDeleted += 1;
+        }
+      }
       const repointed = await client.query(
         `UPDATE ${table} SET ${electionColumn} = $3::uuid WHERE candidate_id = $1::uuid AND ${electionColumn} = $2::uuid`,
         [candidateId, fromElectionId, toElectionId]
       );
-      tables.push({
-        table,
-        repointed: repointed.rowCount ?? 0,
-        duplicatesDeleted: deleted.rowCount ?? 0,
-      });
+      tables.push({ table, repointed: repointed.rowCount ?? 0, duplicatesDeleted, emptyTargetsReplaced });
     }
     if (unsupported.length > 0) {
       throw new Error(
