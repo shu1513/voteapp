@@ -4134,6 +4134,107 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
     },
   },
+  // Nebraska, the only state with one house. Surveyed 2026-09-09 against the
+  // 109th Legislature dataset (LegiScan session 2185, dated 2026-07-12):
+  // 1,847 bill files, 1,774 roll calls, 64 people. Both years of the
+  // Legislature sit in that ONE dataset, so there is no second session to
+  // register — every other Nebraska dataset LegiScan lists belongs to the
+  // 108th Legislature or earlier.
+  //
+  // Nebraska's members are State Senators, so the single house is `senate`
+  // and `chamberSizes` names nothing else. LegiScan prints the chamber as
+  // `L`, which parseLegiscanRollCall maps to `senate`.
+  //
+  // A bill moves through three floor stages: General File, Select File, and
+  // Final Reading. Only Final Reading is a vote on whether the measure
+  // passes; the two earlier stages are amend-and-advance steps, the analog
+  // of the second readings Texas, California, Missouri and Montana all
+  // exclude. So `Advanced to Enrollment and Review Initial` (407 rolls, the
+  // General File step) and `Advanced to Enrollment and Review for
+  // Engrossment` (38, the Select File step) are excluded, along with their
+  // failed and repeated spellings.
+  //
+  // Nebraska votes the emergency clause TOGETHER with the bill rather than
+  // separately the way Arkansas and West Virginia do, so `Passed on Final
+  // Reading with Emergency Clause` is passage and is kept. The clause needs
+  // 33 of 49 votes where the bill itself needs 25, and when the clause falls
+  // short the caption reads `Failed on Final Reading with Emergency Clause`
+  // — which is excluded, and which LegiScan nonetheless marks `passed: 1`,
+  // the bare-majority defect already recorded for Montana, Arizona and
+  // Indiana. LB 48 of 2025 is the worked example: it failed 26-22 with the
+  // clause, then passed 27-21 the same day with the clause stricken.
+  //
+  // THE TALLY IS PRINTED INSIDE THE DESCRIPTION (`Passed on Final Reading
+  // 49-0-0`, sometimes with an asterisk, `48-1*-0`), so no pattern may be
+  // anchored at the end of the string. The three numbers are yes, no, and
+  // not voting; the bill history prints the same vote with the middle column
+  // holding no votes PLUS present-and-not-voting, which is what the asterisk
+  // marks. Audited over all 373 kept rolls, not just the divided ones (the
+  // Oregon SB 1565 lesson): the history agrees with LegiScan's own yea/nay
+  // fields and member list on 372, and on LB 1187 the history simply prints
+  // the two trailing columns the other way round. Three descriptions
+  // understate the no votes against their own roll's member list (LB 396,
+  // LB 247, LB 377 of 2025), and NOT ONE divided roll has any disagreement,
+  // so nothing is held.
+  //
+  // Every remaining description names an amendment, a floor amendment, a
+  // motion, or an enrollment-and-review report by number (`Hansen AM1097
+  // lost`, `Conrad MO38 failed`, `Judiciary AM556 adopted`). Those are votes
+  // on a change to the measure, never on the measure, and they carry the
+  // sponsor's name first, so their exclusion is not anchored at either end.
+  // With these rules the whole dataset classifies: 373 kept, 1,401 excluded,
+  // NOTHING surfaced.
+  //
+  // TWO THINGS THE PIPELINE CANNOT REACH HERE, both recorded rather than
+  // patched. (1) Nebraska proposes constitutional amendments as legislative
+  // resolutions numbered `LR###CA`, LegiScan type `R`, which
+  // LEGISCAN_KEPT_BILL_TYPES drops before this config is read — the Georgia,
+  // Kansas and North Dakota gap. LR 19CA (legislative term limits) passed
+  // 39-10 and went to the voters. (2) `formatLegiscanMeasureId` requires a
+  // bill number of letters then digits, and 104 Nebraska bills end in a
+  // letter: 74 `LB####A` appropriation companion bills and those 30
+  // `LR###CA` resolutions. They are reported as file errors and the fetch
+  // exits non-zero, which is EXPECTED for Nebraska and is a signal rather
+  // than a rollback (the Montana precedent). Neither class is in scope
+  // anyway — appropriations are excluded by standing rule and type R is
+  // dropped — so no vote in the campaign's gate is lost.
+  //
+  // There are no committee votes at all in the dataset (West Virginia's
+  // shape): every roll's total is the full chamber, 49 or 48 where a seat
+  // was vacant. The feed also records no veto or override action anywhere in
+  // any of the 1,743 parsed bills, although Nebraska's governor does veto
+  // and 30 senators override; treat that as a limit of the feed, not a fact
+  // about the session.
+  NE: {
+    jurisdiction: "NE",
+    sessionId: 2185,
+    chamberSizes: { senate: 49 },
+    keptQuestions: [
+      // Covers the plain caption, the emergency-clause caption, and
+      // `Passed on Final Reading for General Election`, which is how a
+      // proposed constitutional amendment is sent to the ballot.
+      { pattern: /^passed on final reading\b/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      // The General File and Select File stages, and their re-runs.
+      /^(?:re)?advanced to enrollment and review\b/,
+      /^failed to advance to enrollment and review\b/,
+      // A Final Reading the measure lost, including one lost only because
+      // the emergency clause fell short of 33 votes.
+      /^failed on final reading\b/,
+      // Sending a bill back a stage so one amendment can be taken up.
+      /^returned to select file\b/,
+      /^motion to return to select file\b/,
+      // Adoption of a resolution. All seven in this session are type R,
+      // which is dropped before this config is read; the rule is here so a
+      // resolution riding a kept type could never be read as passage.
+      /^adopted\b/,
+      // Every amendment, floor amendment, motion, enrollment-and-review
+      // report and standing amendment vote names its own number. The
+      // sponsor's name comes first, so this cannot be anchored.
+      /\b(?:am|fa|mo|er|st)\d+\b/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

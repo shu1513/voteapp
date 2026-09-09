@@ -267,9 +267,16 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
   // Assembly (California, measured 2026-08-26: all 9,948 of CA 2172's lower
   // chamber rolls carry `A`; also NV/NJ/NY/WI). Both map to `house`, our
   // single lower-chamber key — the state's own name for the body is a
-  // display fact, never a data one. A third letter must still fail loudly.
-  if (chamberRaw !== "H" && chamberRaw !== "A" && chamberRaw !== "S") {
-    throw new Error(`${where}: chamber is not H, A or S: ${chamberRaw}`);
+  // display fact, never a data one.
+  //
+  // `L` is Nebraska, the one state with a single house. LegiScan prints `L`
+  // for its Legislature (measured 2026-09-09: all 1,774 rolls of NE 2185
+  // carry `L`, every one with chamber_id 64 and a full-chamber total of 48
+  // or 49). It maps to `senate` because Nebraska's members are State
+  // Senators and a Nebraska config names only `senate` in `chamberSizes`.
+  // A further letter must still fail loudly.
+  if (chamberRaw !== "H" && chamberRaw !== "A" && chamberRaw !== "S" && chamberRaw !== "L") {
+    throw new Error(`${where}: chamber is not H, A, L or S: ${chamberRaw}`);
   }
   if (raw.passed !== 0 && raw.passed !== 1 && raw.passed !== true && raw.passed !== false) {
     throw new Error(`${where}: passed is not a 0/1 flag`);
@@ -312,7 +319,7 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
     absent: readNonNegativeInt(raw, "absent", where),
     total: readNonNegativeInt(raw, "total", where),
     passed: raw.passed === 1 || raw.passed === true,
-    chamber: chamberRaw === "S" ? "senate" : "house",
+    chamber: chamberRaw === "S" || chamberRaw === "L" ? "senate" : "house",
     votes,
   };
   // An EMPTY member list beside non-zero tallies is a real publication
