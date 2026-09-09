@@ -1506,6 +1506,8 @@ describe("getLegiscanStateConfig", () => {
       "ID-2246",
       "WV",
       "WV-2254",
+      "WY",
+      "WY-2213",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1542,6 +1544,7 @@ describe("getLegiscanStateConfig", () => {
       "ND",
       "ID",
       "WV",
+      "WY",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1607,9 +1610,77 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("MN").sessionId).toBe(2151);
     expect(getLegiscanStateConfig("MN-2217")).toMatchObject({ jurisdiction: "MN", sessionId: 2217 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
-    expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
+    expect(getLegiscanStateConfig("WY")).toMatchObject({ jurisdiction: "WY", sessionId: 2157 });
+    expect(getLegiscanStateConfig("WY-2213")).toMatchObject({ jurisdiction: "WY", sessionId: 2213 });
+    expect(() => getLegiscanStateConfig("NE")).toThrow("no LegiScan state config for NE");
   });
 
+
+  it("keeps Wyoming's four floor questions and refuses its budget-session introduction votes", () => {
+    const config = getLegiscanStateConfig("WY-2213");
+    const classify = (desc: string, chamber: "house" | "senate", total: number) =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+
+    // Wyoming prints the tally inside the description, so no pattern may end
+    // at the question text.
+    expect(classify("3rd Reading:Passed 33-27-2-0-0", "house", 62)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(classify("3rd Reading:Failed 14-17-0-0-0", "senate", 31)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(classify("Concur:Passed 41-19-2-0-0", "house", 62)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    expect(classify("HB0199JC001 Adopted HB0199JC001: 42-19-1-0-0", "house", 62)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "conference_report",
+    });
+    expect(classify("SF0127VT001 Veto Override 21-10-0-0-0", "senate", 31)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "veto_override",
+    });
+
+    // A budget session admits a non-budget bill only by a two-thirds vote to
+    // introduce it. That vote is not a passage vote, and the spelling that
+    // names a committee is still a whole-chamber tally, so only the caption
+    // can reject it.
+    expect(classify("Failed Introduction 38-24-0-0-0", "house", 62)).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+    expect(classify("Introduced and Referred to H02 - Appropriations 43-19-0-0-0", "house", 62)).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+    expect(classify("Introduced and Referred to S10 - Labor 23-8-0-0-0", "senate", 31)).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+
+    // The other whole-chamber stages that are not passage.
+    for (const desc of [
+      "COW:Failed 24-34-4-0-0",
+      "2nd Reading:Suspension of Rules and Accelerated to 2nd Reading 30-1-0-0-0",
+      "HB0001H2001 Amendment failed 25-35-2-0-0",
+      "SF0041VT001 Line Item Veto Override 41-19-1-0-0",
+      "3rd Reading:S Bill Reconsideration Motion Passed by Roll Call 20-11-0-0-0",
+    ]) {
+      expect(classify(desc, "house", 62)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+  });
+
+  it("gives Wyoming's two sessions the same vocabulary and different session ids", () => {
+    const general = getLegiscanStateConfig("WY");
+    const budget = getLegiscanStateConfig("WY-2213");
+    expect(general.jurisdiction).toBe(budget.jurisdiction);
+    expect(general.keptQuestions).toBe(budget.keptQuestions);
+    expect(general.excludedQuestions).toBe(budget.excludedQuestions);
+    expect(general.sessionId).not.toBe(budget.sessionId);
+  });
 
   it("opts North Dakota's concurrent resolutions in only when the bill amends the state constitution", () => {
     const config = getLegiscanStateConfig("ND");
