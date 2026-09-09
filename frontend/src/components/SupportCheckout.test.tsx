@@ -58,7 +58,7 @@ describe("SupportCheckout", () => {
     renderCheckout("monthly");
 
     expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue("10.00");
-    expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
+    expect(screen.getByText(/isn't a political contribution, isn't tax-deductible/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeEnabled();
     expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
     expect(screen.getByRole("link", { name: "Support once" })).toHaveAttribute("href", "/support/once");

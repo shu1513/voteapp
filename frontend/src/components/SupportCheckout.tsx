@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest, APP_NAME } from "@voteapp/api-client";
+import { apiRequest } from "@voteapp/api-client";
 import type { MembershipKind, MembershipMembership, MembershipPayment } from "@voteapp/api-client";
 import { ErrorNotice } from "./Status";
 import { navigateExternal } from "../lib/externalNavigation";
@@ -259,9 +259,8 @@ function OutcomeBanners({ outcome, kind }: { outcome: string | null; kind: Membe
 export function Disclaimer() {
   return (
     <p className="mt-1 text-sm text-ink-soft">
-      {APP_NAME} is independently operated. Optional payments support operating the service, not any
-      candidate, campaign, committee, party, or charity. Payments provide no influence over our
-      content and are not eligible for a charitable-contribution receipt.
+      Your support keeps the site running. It isn&apos;t a political contribution, isn&apos;t tax-deductible,
+      and buys no influence over our content.
     </p>
   );
 }

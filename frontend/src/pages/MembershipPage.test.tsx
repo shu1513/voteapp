@@ -118,7 +118,7 @@ describe("MembershipPage", () => {
     expect(details).not.toHaveAttribute("open");
     expect(within(details as HTMLElement).queryByText(/Total support to date/)).not.toBeInTheDocument();
     expect(within(details as HTMLElement).getByText(/\$5\.00 refunded/)).toBeInTheDocument();
-    expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
+    expect(screen.getByText(/isn't a political contribution, isn't tax-deductible/)).toBeInTheDocument();
   });
 
   it("omits the date rather than inventing one", async () => {
