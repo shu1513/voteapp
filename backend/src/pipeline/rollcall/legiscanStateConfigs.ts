@@ -4204,10 +4204,15 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //
   // There are no committee votes at all in the dataset (West Virginia's
   // shape): every roll's total is the full chamber, 49 or 48 where a seat
-  // was vacant. The feed also records no veto or override action anywhere in
-  // any of the 1,743 parsed bills, although Nebraska's governor does veto
-  // and 30 senators override; treat that as a limit of the feed, not a fact
-  // about the session.
+  // was vacant.
+  //
+  // ⚠ NEBRASKA NEVER USES THE WORD VETO. Its history reads `Returned by
+  // Governor without approval`, and an override is `That the bill becomes
+  // law notwithstanding the objections of the Governor`. Searching for the
+  // word finds nothing and makes the session look veto-free; it is not.
+  // Five of the measures LegiScan marks enacted were vetoed and never became
+  // law, four of them after an override vote failed, so a measure's fate
+  // must be read off its own history and never off `status`.
   NE: {
     jurisdiction: "NE",
     sessionId: 2185,
@@ -4235,8 +4240,30 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       // Every amendment, floor amendment, motion, enrollment-and-review
       // report and standing amendment vote names its own number. The
       // sponsor's name comes first, so this cannot be anchored.
+      //
+      // ⚠ This also catches Nebraska's VETO OVERRIDE votes, which the
+      // Legislature takes as a numbered motion ("That the bill becomes law
+      // notwithstanding the objections of the Governor") and which LegiScan
+      // files under the bare caption `Rountree MO259 failed`. Nothing in the
+      // caption separates an override from any other motion; only the bill
+      // history names the question. Four such votes exist in this session,
+      // all of them close, and all on bills that stayed vetoed. Reaching
+      // them would need a per-roll disposition file, the design already
+      // parked for Maine's surfaced rolls.
       /\b(?:am|fa|mo|er|st)\d+\b/,
     ],
+    // Audited over all 373 kept rolls, comparing each roll's caption with
+    // the caption Nebraska's own bill history prints for that vote. Two
+    // disagree, and in both the feed claims a bill passed when the state
+    // says it failed — LegiScan's `passed` flag is a bare-majority check and
+    // does not know Nebraska's 33-vote thresholds, the same defect recorded
+    // for Montana, Arizona, Delaware and Indiana.
+    heldRollCallIds: {
+      1571011:
+        "LB 258, 2025-05-14, 31-17: LegiScan captions it `Passed on Final Reading`, but Nebraska's own history reads `Failed on Final Reading 31-17*-1`. The bill amends a law Nebraska's voters adopted by initiative, which takes 33 votes, so 31 was not enough. The Legislature passed it 33-16 on 2026-02-05, and that roll (1624711) is the one that stands",
+      1582140:
+        "LB 48A, 2025-05-30, 27-21: LegiScan captions it `Passed on Final Reading`, but Nebraska's own history reads `Failed on Final Reading with Emergency Clause 27-21*-1`. An emergency clause takes 33 votes, so the bill failed at 27",
+    },
   },
 };
 
