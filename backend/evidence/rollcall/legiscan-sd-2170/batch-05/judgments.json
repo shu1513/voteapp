@@ -1,0 +1,238 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1493771,
+      "measure_id": "HB 1260",
+      "vote_date": "2025-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1260, which would have written a biological definition of sex into vital records and driver's licenses. The vital records chapter, which governs birth and death certificates, would have defined female and male by the reproductive system a person naturally has, had, or would have had but for a congenital anomaly or a disruption. A driver's license, a learner's permit and every application for one would have had to state sex under that definition, in place of the word gender the law used. The South Dakota House rejected it, 35-35. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1260, which would have written a biological definition of sex into vital records and driver's licenses. The vital records chapter, which governs birth and death certificates, would have defined female and male by the reproductive system a person naturally has, had, or would have had but for a congenital anomaly or a disruption. A driver's license, a learner's permit and every application for one would have had to state sex under that definition, in place of the word gender the law used. The South Dakota House rejected it, 35-35. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1492315,
+      "measure_id": "SB 156",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 156, which would have set eighteen as the minimum age to marry. South Dakota lets a sixteen or seventeen year old marry if a parent or guardian files a notarized statement of consent. The bill would have repealed that route and the parental consent provisions behind it, leaving eighteen as the floor. Solemnizing a marriage while knowing a party is under the age of legal consent would have stayed a Class 1 misdemeanor. The South Dakota Senate rejected it, 16-19. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 156, which would have set eighteen as the minimum age to marry. South Dakota lets a sixteen or seventeen year old marry if a parent or guardian files a notarized statement of consent. The bill would have repealed that route and the parental consent provisions behind it, leaving eighteen as the floor. Solemnizing a marriage while knowing a party is under the age of legal consent would have stayed a Class 1 misdemeanor. The South Dakota Senate rejected it, 16-19. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1498526,
+      "measure_id": "SB 157",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 157, which would have required contractors on public projects to prove they carry workers' compensation insurance. Every contract for a public improvement would have had to contain a clause verifying that the contractor and all subcontractors hold workers' compensation insurance, which pays medical bills and lost wages when someone is hurt on the job. The rule would have reached any project a government subsidizes through a grant or tax increment financing. The Department of Labor and Regulation could have demanded subcontractor lists and payroll records to check. The South Dakota Senate passed it, 19-16. The South Dakota House never voted on it, so the bill did not become law.",
+      "nay_description": "Voted against Senate Bill 157, which would have required contractors on public projects to prove they carry workers' compensation insurance. Every contract for a public improvement would have had to contain a clause verifying that the contractor and all subcontractors hold workers' compensation insurance, which pays medical bills and lost wages when someone is hurt on the job. The rule would have reached any project a government subsidizes through a grant or tax increment financing. The Department of Labor and Regulation could have demanded subcontractor lists and payroll records to check. The South Dakota Senate passed it, 19-16. The South Dakota House never voted on it, so the bill did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1489112,
+      "measure_id": "SB 177",
+      "vote_date": "2025-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 177, which would have refunded sales tax to data center operators. A qualified business in a data center would have been entitled to a refund of state sales and use tax on computer hardware, servers, cooling and power equipment, racking, cabling and software bought to fit out the center, and on a substantial refurbishment later. City sales taxes were excluded. The Governor's Office of Economic Development would have decided who qualified. The South Dakota Senate rejected it, 17-18. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 177, which would have refunded sales tax to data center operators. A qualified business in a data center would have been entitled to a refund of state sales and use tax on computer hardware, servers, cooling and power equipment, racking, cabling and software bought to fit out the center, and on a substantial refurbishment later. City sales taxes were excluded. The Governor's Office of Economic Development would have decided who qualified. The South Dakota Senate rejected it, 17-18. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1499603,
+      "measure_id": "SB 188",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 188, which would have ended no-excuse absentee voting. Any registered South Dakota voter may vote absentee today without giving a reason. The bill would have allowed it only on a listed ground. The grounds were being away from the county on election day, a physical disability, illness, a religious holiday, attending college, or the hours of a job. The list also covered care in a nursing facility or hospital, jury service, being held in jail without a disqualifying felony, and serving overseas or in the military. The South Dakota Senate rejected it, 14-21. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 188, which would have ended no-excuse absentee voting. Any registered South Dakota voter may vote absentee today without giving a reason. The bill would have allowed it only on a listed ground. The grounds were being away from the county on election day, a physical disability, illness, a religious holiday, attending college, or the hours of a job. The list also covered care in a nursing facility or hospital, jury service, being held in jail without a disqualifying felony, and serving overseas or in the military. The South Dakota Senate rejected it, 14-21. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1492779,
+      "measure_id": "SB 196",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 196, which would have required tribal history and culture in the state's school standards. The Oceti Sakowin Essential Understandings are a set of teaching materials on the history and culture of South Dakota's tribes. As the Senate amended the bill, the Board of Education Standards would have had to build them into each set of content standards whenever it revised them, so students could learn the history, language, culture and heritage of the nine tribes in the state. The board would have consulted the Indian Education Advisory Council and each tribe's education director. The South Dakota Senate rejected it, 7-28. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 196, which would have required tribal history and culture in the state's school standards. The Oceti Sakowin Essential Understandings are a set of teaching materials on the history and culture of South Dakota's tribes. As the Senate amended the bill, the Board of Education Standards would have had to build them into each set of content standards whenever it revised them, so students could learn the history, language, culture and heritage of the nine tribes in the state. The board would have consulted the Indian Education Advisory Council and each tribe's education director. The South Dakota Senate rejected it, 7-28. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1497802,
+      "measure_id": "SB 198",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 198, which would have made a company try mediation before it could condemn private land. Condemnation is the court process by which a company or government takes private land for public use and a jury sets the price. The bill would have barred filing that petition until the taker had first met a set of conditions, beginning with good faith mediation with the affected landowner aimed at reaching an agreement. The South Dakota Senate passed it, 18-17. The South Dakota House never voted on it, so the bill did not become law.",
+      "nay_description": "Voted against Senate Bill 198, which would have made a company try mediation before it could condemn private land. Condemnation is the court process by which a company or government takes private land for public use and a jury sets the price. The bill would have barred filing that petition until the taker had first met a set of conditions, beginning with good faith mediation with the affected landowner aimed at reaching an agreement. The South Dakota Senate passed it, 18-17. The South Dakota House never voted on it, so the bill did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1506989,
+      "measure_id": "SB 201",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 201, which would have barred state candidates from taking money raised for a federal campaign. A candidate for state or local office in South Dakota, or that candidate's campaign committee, could not have accepted any contribution or loan from the authorized committee of a candidate for federal office. There is no such bar now, so money raised for a congressional race can be passed to state campaigns. The South Dakota House rejected it, 32-38. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 201, which would have barred state candidates from taking money raised for a federal campaign. A candidate for state or local office in South Dakota, or that candidate's campaign committee, could not have accepted any contribution or loan from the authorized committee of a candidate for federal office. There is no such bar now, so money raised for a congressional race can be passed to state campaigns. The South Dakota House rejected it, 32-38. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1496756,
+      "measure_id": "SB 202",
+      "vote_date": "2025-02-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 202, which would have created a standing fund for rural water projects. The water infrastructure development fund would have held legislative appropriations, federal grants for projects on the Bureau of Reclamation rural water list, investment interest and loan repayments. The Legislature would have had to appropriate money out of it for each project. The Board of Water and Natural Resources could have granted up to ten percent of a project's construction cost and lent up to half. The South Dakota Senate passed it, 21-12. The South Dakota House never voted on it, so the bill did not become law.",
+      "nay_description": "Voted against Senate Bill 202, which would have created a standing fund for rural water projects. The water infrastructure development fund would have held legislative appropriations, federal grants for projects on the Bureau of Reclamation rural water list, investment interest and loan repayments. The Legislature would have had to appropriate money out of it for each project. The Board of Water and Natural Resources could have granted up to ten percent of a project's construction cost and lent up to half. The South Dakota Senate passed it, 21-12. The South Dakota House never voted on it, so the bill did not become law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1482300,
+      "measure_id": "SB 50",
+      "vote_date": "2025-02-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 50, which would have barred county assessors from using drones to value property. A director of equalization or a deputy, the county officials who set property values for tax purposes, could not have used a drone or any information gathered by one in assessing real property. Doing so would have been a Class 2 misdemeanor. The South Dakota Senate rejected it, 17-16. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 50, which would have barred county assessors from using drones to value property. A director of equalization or a deputy, the county officials who set property values for tax purposes, could not have used a drone or any information gathered by one in assessing real property. Doing so would have been a Class 2 misdemeanor. The South Dakota Senate rejected it, 17-16. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1485223,
+      "measure_id": "SB 51",
+      "vote_date": "2025-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 51, which would have required the Ten Commandments to be displayed in every public school. The House amended the bill on the floor before voting, so it would have required the display in a prominent location within each public school rather than in every classroom. The poster had to be at least eight inches by fourteen, with the text of the Ten Commandments as its focus in large readable type, in the wording the bill set out. Further statements and documents would have had to be displayed alongside it and included in coursework. The South Dakota House rejected it, 31-37. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 51, which would have required the Ten Commandments to be displayed in every public school. The House amended the bill on the floor before voting, so it would have required the display in a prominent location within each public school rather than in every classroom. The poster had to be at least eight inches by fourteen, with the text of the Ten Commandments as its focus in large readable type, in the wording the bill set out. Further statements and documents would have had to be displayed alongside it and included in coursework. The South Dakota House rejected it, 31-37. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1475677,
+      "measure_id": "SB 51",
+      "vote_date": "2025-01-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 51, which would have required the Ten Commandments in every classroom. Each school board would have had to display the Ten Commandments in every classroom in the district, on a poster at least eight inches by fourteen, with the text as the focus and in large readable type. The bill set out the wording to be used. Further statements and documents would have had to be displayed alongside the poster and included in coursework. The South Dakota Senate passed it, 18-17. The South Dakota House rejected it, 31-37, so the bill did not become law.",
+      "nay_description": "Voted against Senate Bill 51, which would have required the Ten Commandments in every classroom. Each school board would have had to display the Ten Commandments in every classroom in the district, on a poster at least eight inches by fourteen, with the text as the focus and in large readable type. The bill set out the wording to be used. Further statements and documents would have had to be displayed alongside the poster and included in coursework. The South Dakota Senate passed it, 18-17. The South Dakota House rejected it, 31-37, so the bill did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1479243,
+      "measure_id": "SB 67",
+      "vote_date": "2025-02-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 67, which would have created a state office of apprenticeship. An apprenticeship pays a worker while they learn a trade on the job. The office would have sat inside the Department of Labor and Regulation as the state's sole apprenticeship agency, setting standards for registered programs, adopting an equal employment opportunity plan and resolving disputes between an apprentice and an employer. South Dakota currently leaves that work to the federal Department of Labor. The South Dakota Senate rejected it, 14-21. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 67, which would have created a state office of apprenticeship. An apprenticeship pays a worker while they learn a trade on the job. The office would have sat inside the Department of Labor and Regulation as the state's sole apprenticeship agency, setting standards for registered programs, adopting an equal employment opportunity plan and resolving disputes between an apprentice and an employer. South Dakota currently leaves that work to the federal Department of Labor. The South Dakota Senate rejected it, 14-21. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
