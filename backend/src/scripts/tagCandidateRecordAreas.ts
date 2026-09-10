@@ -4,7 +4,6 @@ import { Pool } from "pg";
 
 import {
   loadAllowedResearchAreasForOfficeId,
-  upsertCandidateRecordAreaTags,
   validateCandidateRecordAreaLabels,
   type AllowedResearchArea,
   type CandidateRecordAreaStance,
@@ -22,7 +21,9 @@ import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
  * the allowed set of the office the candidate is running for (their latest
  * office race), and the stance is validated by
  * validateCandidateRecordAreaLabels. Never touches an existing tag on the
- * same area — a different stance is reported as a conflict to untag first.
+ * same area — a different stance is reported as a conflict to untag first —
+ * and the write itself is guarded: the insert only lands while the record
+ * still holds the reviewed description and no tag on the area exists.
  *
  * Usage:
  *   npm run manual:records:tag -- --tags-file <path>
@@ -122,9 +123,12 @@ export function parseTagsFile(raw: string): TagInput[] {
     if (trimmedReason.length < 10) {
       throw new Error(`tags[${index}].reason must state why the record takes this stance (at least 10 characters)`);
     }
+    // Lowercased here, once: the lookup, the validator, and the write must
+    // all see the same slug, or a mixed-case manifest could miss an existing
+    // tag in the lookup and then overwrite it in the write.
     return {
       recordId: recordId.trim(),
-      researchAreaSlug: researchAreaSlug.trim(),
+      researchAreaSlug: researchAreaSlug.trim().toLowerCase(),
       stance,
       expectedDescription,
       reason: trimmedReason,
@@ -136,12 +140,17 @@ export function parseTagsFile(raw: string): TagInput[] {
 export type TagDeps = {
   loadRecord: (recordId: string, researchAreaSlug: string) => Promise<TagRecordRow | null>;
   loadAllowedAreas: (officeId: string) => Promise<AllowedResearchArea[]>;
+  /**
+   * Compare-and-swap: inserts only if the record still holds the reviewed
+   * description and carries no tag on the area. Returns the number of rows
+   * inserted (0 = the row moved since it was read).
+   */
   applyTag: (input: {
     recordId: string;
-    researchAreaSlug: string;
+    researchAreaId: string;
     stance: CandidateRecordAreaStance;
-    researchAreaIdBySlug: ReadonlyMap<string, string>;
-  }) => Promise<void>;
+    expectedDescription: string;
+  }) => Promise<number>;
 };
 
 export async function tagOneRecordArea(
@@ -194,12 +203,22 @@ export async function tagOneRecordArea(
       ...(tag.note ? { note: tag.note } : {}),
     };
   }
-  await deps.applyTag({
+  const researchAreaId = allowed.find((area) => area.slug === tag.researchAreaSlug)?.id;
+  if (!researchAreaId) {
+    return skipped(`no research area id for ${tag.researchAreaSlug}`);
+  }
+  // The INSERT predicate uses the MANIFEST description, not the fresh read:
+  // after the equality check above they are identical, so a mid-run rewrite
+  // or a concurrently added tag can only make the insert a no-op.
+  const inserted = await deps.applyTag({
     recordId: tag.recordId,
-    researchAreaSlug: tag.researchAreaSlug,
+    researchAreaId,
     stance: tag.stance,
-    researchAreaIdBySlug: new Map(allowed.map((area) => [area.slug, area.id])),
+    expectedDescription: tag.expectedDescription,
   });
+  if (inserted !== 1) {
+    return skipped("record or its tags changed after they were read (concurrent write); nothing was written — review the current content and re-run");
+  }
   return {
     recordId: tag.recordId,
     researchAreaSlug: tag.researchAreaSlug,
@@ -248,8 +267,18 @@ function buildPoolDeps(pool: Pool): TagDeps {
       return tag_present ? { ...rest, existing_stance: existing_stance ?? null } : rest;
     },
     loadAllowedAreas: (officeId) => loadAllowedResearchAreasForOfficeId(pool, officeId),
-    applyTag: async ({ recordId, researchAreaSlug, stance, researchAreaIdBySlug }) => {
-      await upsertCandidateRecordAreaTags(pool, [{ candidateRecordId: recordId, researchAreaSlug, stance }], researchAreaIdBySlug);
+    applyTag: async ({ recordId, researchAreaId, stance, expectedDescription }) => {
+      const result = await pool.query(
+        `INSERT INTO public.candidate_record_area_tags (candidate_record_id, research_area_id, stance)
+         SELECT cr.id, $2, $3
+           FROM public.candidate_records cr
+          WHERE cr.id = $1
+            AND cr.retired_at IS NULL
+            AND cr.description = $4
+         ON CONFLICT (candidate_record_id, research_area_id) DO NOTHING`,
+        [recordId, researchAreaId, stance, expectedDescription]
+      );
+      return result.rowCount ?? 0;
     },
   };
 }

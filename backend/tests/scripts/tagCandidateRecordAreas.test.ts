@@ -31,15 +31,15 @@ function makeDeps(overrides: Partial<TagDeps> = {}): TagDeps {
   return {
     loadRecord: async () => ({ ...RECORD }),
     loadAllowedAreas: async () => ALLOWED,
-    applyTag: async () => undefined,
+    applyTag: async () => 1,
     ...overrides,
   };
 }
 
 describe("parseTagsFile", () => {
-  it("parses valid entries and trims fields", () => {
-    const parsed = parseTagsFile(JSON.stringify([{ ...INPUT, recordId: " rec-1 ", researchAreaSlug: " slug " }]));
-    expect(parsed).toEqual([{ ...INPUT, recordId: "rec-1", researchAreaSlug: "slug" }]);
+  it("parses valid entries, trims fields, and lowercases the slug so lookup and write agree", () => {
+    const parsed = parseTagsFile(JSON.stringify([{ ...INPUT, recordId: " rec-1 ", researchAreaSlug: " AI_Regulation " }]));
+    expect(parsed).toEqual([{ ...INPUT, recordId: "rec-1", researchAreaSlug: "ai_regulation" }]);
   });
 
   it("rejects a null stance, a missing description, and a placeholder reason", () => {
@@ -55,25 +55,31 @@ describe("parseTagsFile", () => {
 
 describe("tagOneRecordArea", () => {
   it("dry-runs by default: reports would_tag with the office, writes nothing", async () => {
-    const applyTag = vi.fn(async () => undefined);
+    const applyTag = vi.fn(async () => 1);
     const outcome = await tagOneRecordArea(INPUT, makeDeps({ applyTag }), { apply: false });
     expect(outcome).toMatchObject({ status: "would_tag", stance: "for", office: RECORD.office_name });
     expect(applyTag).not.toHaveBeenCalled();
   });
 
-  it("applies through the validated slug → id map", async () => {
-    const applyTag = vi.fn(async () => undefined);
+  it("applies with the validated area id and the reviewed description as the write guard", async () => {
+    const applyTag = vi.fn(async () => 1);
     const outcome = await tagOneRecordArea(INPUT, makeDeps({ applyTag }), { apply: true });
     expect(outcome.status).toBe("tagged");
-    expect(applyTag).toHaveBeenCalledWith(
-      expect.objectContaining({ recordId: "rec-1", researchAreaSlug: "ai_regulation", stance: "for" })
-    );
-    const call = applyTag.mock.calls[0]![0] as { researchAreaIdBySlug: Map<string, string> };
-    expect(call.researchAreaIdBySlug.get("ai_regulation")).toBe("area-ai");
+    expect(applyTag).toHaveBeenCalledWith({
+      recordId: "rec-1",
+      researchAreaId: "area-ai",
+      stance: "for",
+      expectedDescription: RECORD.description,
+    });
+  });
+
+  it("reports a concurrent change when the guarded insert lands nothing", async () => {
+    const outcome = await tagOneRecordArea(INPUT, makeDeps({ applyTag: async () => 0 }), { apply: true });
+    expect(outcome).toMatchObject({ status: "skipped", reason: expect.stringMatching(/concurrent write/) });
   });
 
   it("skips when the description moved since review, even on apply", async () => {
-    const applyTag = vi.fn(async () => undefined);
+    const applyTag = vi.fn(async () => 1);
     const outcome = await tagOneRecordArea(
       INPUT,
       makeDeps({ loadRecord: async () => ({ ...RECORD, description: "rewritten" }), applyTag }),
