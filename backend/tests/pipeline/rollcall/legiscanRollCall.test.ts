@@ -1058,6 +1058,92 @@ describe("West Virginia's measured desc vocabulary", () => {
   });
 });
 
+describe("Iowa's desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.IA!;
+  const ia = (desc: string, chamber: "house" | "senate" = "house", rollCallId?: number, billType = "B") =>
+    classifyLegiscanRollCall({ desc, total: chamber === "house" ? 100 : 50, chamber, billType, config, rollCallId });
+
+  it("keeps passage in both chambers and both spellings of a joint resolution's adoption", () => {
+    expect(ia("Shall the bill pass?")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ia("Shall the bill pass?", "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ia("Shall the joint resolution be adopted and agreed to?", "house", 1, "JR")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(ia("Shall the resolution be adopted?", "senate", 1, "JR")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // The Senate's caption on a simple resolution is rejected by bill type
+    // before the pattern is consulted.
+    expect(ia("Shall the resolution be adopted?", "senate", 1, "R")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_measure:R",
+    });
+  });
+
+  it("keeps the recorded concurrence, including the caption that ends in a spliced journal banner", () => {
+    expect(ia("Shall the House concur in the Senate amendment H–1342?")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    // HF 1003, 57-28: Iowa spliced the journal's page banner into the desc
+    // where the amendment number should be. Anchoring at the start keeps it.
+    expect(
+      ia("Shall the House concur in the Senate amendment 111th Day                      SATURDAY, MAY 2, ")
+    ).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    expect(ia("Shall the motion to concur be adopted?", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+  });
+
+  it("excludes amendment adoption, rules suspension and the three one-off motions", () => {
+    for (const desc of [
+      "Shall amendment H–1030 be adopted?",
+      "Shall amendment H–1109, to amendment H–1075, be adopted?",
+      "Shall amendment H–8293, as amended, be 87th Day                       WEDNESDAY, APRIL 8, 2026 ",
+      "Shall amendment S–3033 to House amendment S–3030 be adopted?",
+      "Shall the rules be suspended to consider amendment H–1003?",
+      "Shall the rules be suspended to consider 53rd Day                       THURSDAY, MARCH 5, 2026",
+      "Shall House File 2542 be deferred?",
+      "Shall the bill be moved to the Unfinished Business Calendar?",
+      "Shall the motion pass?",
+    ]) {
+      expect(ia(desc)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+  });
+
+  it("rejects a committee report by its tally, with no rule needed", () => {
+    expect(
+      classifyLegiscanRollCall({
+        desc: "House Committee On Appropriations Report",
+        total: 25,
+        chamber: "house",
+        billType: "B",
+        config,
+      })
+    ).toMatchObject({ isFloorVote: false, reason: "committee_tally:25/100" });
+    // The largest Senate committee report in the session, 22 of 50.
+    expect(
+      classifyLegiscanRollCall({
+        desc: "Senate Appropriations Report",
+        total: 22,
+        chamber: "senate",
+        billType: "B",
+        config,
+      })
+    ).toMatchObject({ isFloorVote: false, reason: "committee_tally:22/50" });
+  });
+
+  it("holds the three rolls whose feed disagrees with Iowa's own journal line", () => {
+    for (const rollCallId of [1645790, 1693388, 1569998]) {
+      expect(ia("Shall the bill pass?", "house", rollCallId)).toMatchObject({ isFloorVote: null });
+    }
+    expect(ia("Shall the bill pass?", "house", 1645792)).toMatchObject({ isFloorVote: true });
+  });
+});
+
 describe("Michigan's measured desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS.MI!;
   const mi = (desc: string, chamber: "house" | "senate" = "house", total?: number, rollCallId?: number) =>
@@ -1938,6 +2024,7 @@ describe("getLegiscanStateConfig", () => {
       "ID-2246",
       "WV",
       "WV-2254",
+      "IA",
       "MI",
       "WI",
       "NE",
@@ -1984,6 +2071,7 @@ describe("getLegiscanStateConfig", () => {
       "ND",
       "ID",
       "WV",
+      "IA",
       "MI",
       "WI",
       "NE",
