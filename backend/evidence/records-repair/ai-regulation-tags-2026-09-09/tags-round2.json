@@ -1,0 +1,82 @@
+[
+  {
+    "recordId": "7d7cd616-412a-4931-a59f-bf536926b763",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Sponsored Maine LD 517, which the Governor signed on March 23, 2026 as Public Law Chapter 593. The bill started as a placeholder about First Amendment rights and was rewritten in committee. As enacted it is titled An Act Regarding Synthetic Media in Campaign Advertising. A campaign ad that uses synthetic media must now carry a notice saying the content has been manipulated or altered. Synthetic media means audio, video, or images changed to make a candidate appear to say or do something they did not. Satire, parody, and edits that only improve clarity are excluded. Broadcasters and newspapers are liable only if they knowingly run such an ad. A violation can draw a penalty of up to 500 percent of what was spent on the ad.",
+    "reason": "Sponsored the enacted synthetic-media warning rule for campaign ads.",
+    "note": "Amy Kuhn"
+  },
+  {
+    "recordId": "a6b3dd5f-8549-4c6a-9c38-29d604daac95",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Hunschofsky sponsored 2026 HB 659 imposing disclosure, age-verification, minor-protection, reporting, and civil-liability rules on companion-chatbot platforms; it died in the House Industries & Professional Activities Subcommittee.",
+    "reason": "Sponsored a bill imposing disclosure, age-verification and liability rules on companion chatbots.",
+    "note": "Christine Hunschofsky"
+  },
+  {
+    "recordId": "b48cb5ce-913d-4d14-ae9e-6d7b3b9a4a70",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Wisconsin Assembly member Clinton Anderson helped advance Assembly Bill 664, which Governor Evers signed as 2023 Wisconsin Act 123 on March 21, 2024; the law required disclosures for synthetic media in political advertisements.",
+    "reason": "Helped enact the law requiring disclosure of synthetic media in political ads.",
+    "note": "Clinton Anderson"
+  },
+  {
+    "recordId": "3ce71878-665a-497d-9ca1-debd784e08df",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Co-sponsored a bill proposing to bar police agencies from using biometric identification systems such as facial recognition. It also proposes limiting the Secretary of State's facial recognition to verifying mobile driver's licenses (House Bill 5521).",
+    "reason": "Co-sponsored a bill barring police use of facial-recognition systems.",
+    "note": "Diane Blair-Sherlock"
+  },
+  {
+    "recordId": "b5e08d76-5179-4005-b58b-3e6bb57f0874",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Sponsored a bill treating chatbots as products, making the companies behind them liable for injuries their chatbots cause and letting harmed users sue for damages, court orders, and legal fees (House Bill 5044). It was sent back to the Rules Committee in March 2026.",
+    "reason": "Sponsored a bill making chatbot companies liable for injuries their chatbots cause.",
+    "note": "Jennifer Gong-Gershowitz"
+  },
+  {
+    "recordId": "e5134e7c-3d39-4a63-abdc-cd79ee1069b6",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Sponsored House Bill 324, requiring age-verification and safeguards for artificial-intelligence chatbots.",
+    "reason": "Sponsored a bill requiring age verification and safeguards for AI chatbots.",
+    "note": "Parker Moore"
+  },
+  {
+    "recordId": "3786b691-aa12-4a8b-81e5-ef59484f0210",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Sponsored House Bill 325, treating undisclosed artificial-intelligence chatbots as an unfair or deceptive trade practice.",
+    "reason": "Sponsored a bill treating undisclosed AI chatbots as a deceptive trade practice.",
+    "note": "Parker Moore"
+  },
+  {
+    "recordId": "b1354b7c-2633-4ff7-a83e-a57e88575fc3",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Sponsored SB 168 to regulate use of chatbots by minors.",
+    "reason": "Sponsored a bill regulating chatbot use by minors.",
+    "note": "Liz Larson"
+  },
+  {
+    "recordId": "2dde4e3d-26eb-4e54-9e46-3e90a65d5b5f",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Introduced the No Robot Bosses Act, proposing to limit how employers use automated systems to make decisions about workers (S. 4833).",
+    "reason": "Introduced the No Robot Bosses Act limiting employers' automated decision systems.",
+    "note": "Ed Markey"
+  },
+  {
+    "recordId": "7610a7a1-48f5-41f6-870b-45c9c9867667",
+    "researchAreaSlug": "ai_regulation",
+    "stance": "for",
+    "expectedDescription": "Introduced a bipartisan bill setting criminal and civil penalties for creating or running chatbots that pose as minors in sexually explicit chats (Stopping Illegal Minor Simulations Act).",
+    "reason": "Introduced a bill penalizing chatbots that pose as minors in sexual chats.",
+    "note": "Jon Husted"
+  }
+]
