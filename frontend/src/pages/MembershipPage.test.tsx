@@ -53,8 +53,27 @@ function renderPage() {
   );
 }
 
+const EMAIL_PREFERENCES = {
+  email_digest: true,
+  email_election_reminders: false,
+  email_new_election_alerts: true,
+  email_issue_updates: true,
+  email_member_newsletter: true,
+};
+
+/** The amount form is folded behind "Change amount"; open it and return the input. */
+async function openAmountForm(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(await screen.findByRole("button", { name: "Change amount" }));
+  return screen.getByLabelText("New monthly amount");
+}
+
 function renderMember(status: unknown, routes: Parameters<typeof stubApiRoutes>[0] = {}) {
-  return stubApiRoutes({ "/api/me": { body: ME_VERIFIED }, "/api/me/membership": { body: status }, ...routes });
+  return stubApiRoutes({
+    "/api/me": { body: ME_VERIFIED },
+    "/api/me/membership": { body: status },
+    "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+    ...routes,
+  });
 }
 
 afterEach(() => {
@@ -105,20 +124,25 @@ describe("MembershipPage", () => {
     renderMember(ACTIVE);
     renderPage();
 
-    expect(await screen.findByText(/Because of supporters like you/)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Your membership" })).toBeInTheDocument();
+    expect(await screen.findByText("Your membership is bringing:")).toBeInTheDocument();
+    expect(screen.getByText("Deeper investigation of candidates' actions")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "My honorary membership" })).toBeInTheDocument();
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
-    expect(screen.getByLabelText("New monthly amount")).toHaveValue("10.00");
+    // The amount form is folded behind a button until asked for.
+    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(await openAmountForm(userEvent.setup())).toHaveValue("10.00");
     expect(screen.getByRole("button", { name: "Cancel membership…" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Keep membership" })).not.toBeInTheDocument();
+    // The reports opt-out lives here too, and stays separate from the plan.
+    expect(await screen.findByRole("checkbox", { name: /Send me the members-only reports/ })).toBeChecked();
 
-    // History is there but folded away; the total lives inside it.
-    const details = screen.getByText("Recent payments").closest("details");
+    // History is there but folded away, and carries no running total.
+    const details = screen.getByText("Support history").closest("details");
     expect(details).not.toHaveAttribute("open");
-    expect(within(details as HTMLElement).getByText(/Total support to date/)).toHaveTextContent("$25.00");
+    expect(within(details as HTMLElement).queryByText(/Total support to date/)).not.toBeInTheDocument();
     expect(within(details as HTMLElement).getByText(/\$5\.00 refunded/)).toBeInTheDocument();
-    expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
+    expect(screen.getByText(/isn't a political contribution, isn't tax-deductible/)).toBeInTheDocument();
   });
 
   it("omits the date rather than inventing one", async () => {
@@ -126,6 +150,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText("$10.00 per month")).toBeInTheDocument();
+    await openAmountForm(userEvent.setup());
     expect(screen.getByText(/Your new amount starts at a later renewal\. Nothing is charged today\./)).toBeInTheDocument();
   });
 
@@ -134,6 +159,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(`$10.00 per month · $20.00 from ${END_TEXT}`)).toBeInTheDocument();
+    await openAmountForm(userEvent.setup());
     // Re-saving the current amount now withdraws the change, so it is allowed.
     expect(screen.getByRole("button", { name: "Save new amount" })).toBeEnabled();
   });
@@ -143,7 +169,7 @@ describe("MembershipPage", () => {
     const fetchMock = renderMember(ACTIVE);
     renderPage();
 
-    const input = await screen.findByLabelText("New monthly amount");
+    const input = await openAmountForm(user);
     expect(screen.getByRole("button", { name: "Save new amount" })).toBeDisabled();
     expect(screen.getByText(`Your new amount starts on ${END_TEXT}. Nothing is charged today.`)).toBeInTheDocument();
 
@@ -167,13 +193,16 @@ describe("MembershipPage", () => {
     });
     renderPage();
 
-    const input = await screen.findByLabelText("New monthly amount");
+    const input = await openAmountForm(user);
     await user.clear(input);
     await user.type(input, "20");
     await user.click(screen.getByRole("button", { name: "Save new amount" }));
 
     expect(await screen.findByText(`Saved. $20.00 per month starts ${END_TEXT}.`)).toBeInTheDocument();
     expect(body).toEqual({ amount_cents: 2000 });
+    // Saved: the form folds away again.
+    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Change amount" })).toBeEnabled();
     expect(screen.getByText(`$10.00 per month · $20.00 from ${END_TEXT}`)).toBeInTheDocument();
     expect(navigateExternal).not.toHaveBeenCalled();
   });
@@ -185,12 +214,14 @@ describe("MembershipPage", () => {
     });
     renderPage();
 
-    const input = await screen.findByLabelText("New monthly amount");
+    const input = await openAmountForm(user);
     await user.clear(input);
     await user.type(input, "20");
     await user.click(screen.getByRole("button", { name: "Save new amount" }));
 
     expect(await screen.findByText(/already set for your next renewal/)).toBeInTheDocument();
+    // Refused: the form stays open with the error inside it.
+    expect(screen.getByLabelText("New monthly amount")).toBeInTheDocument();
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
   });
 
@@ -221,7 +252,7 @@ describe("MembershipPage", () => {
     expect(screen.getByRole("status", { name: "" })).toHaveTextContent(`Your membership will not renew after ${END_TEXT}.`);
     expect(screen.getByRole("button", { name: "Keep membership" })).toBeEnabled();
     // Nothing to change or cancel while it is ending.
-    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Change amount" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Cancel membership…" })).not.toBeInTheDocument();
   });
 
@@ -241,7 +272,7 @@ describe("MembershipPage", () => {
     expect(await screen.findByText("Welcome back — your membership continues.")).toBeInTheDocument();
     expect(resumeCalls).toBe(1);
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
-    expect(screen.getByLabelText("New monthly amount")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Change amount" })).toBeEnabled();
   });
 
   it("opens the portal's card screen and stays locked until the browser leaves", async () => {
@@ -269,8 +300,8 @@ describe("MembershipPage", () => {
 
     const notice = await screen.findByText(/Your last payment didn't go through/);
     expect(within(notice.parentElement as HTMLElement).getByRole("button", { name: "Update payment method" })).toBeEnabled();
-    expect(screen.getByLabelText("New monthly amount")).toBeInTheDocument();
-    expect(screen.queryByText(/Because of supporters like you/)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Change amount" })).toBeEnabled();
+    expect(screen.queryByText(/Your membership is bringing/)).not.toBeInTheDocument();
   });
 
   it("hides the amount form and cancel for an incomplete first payment", async () => {
@@ -278,10 +309,10 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(/Your first payment is still being confirmed/)).toBeInTheDocument();
-    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Change amount" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Cancel membership…" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
-    expect(screen.queryByText("Recent payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Support history")).not.toBeInTheDocument();
   });
 
   it("hides the amount form for an unpaid subscription", async () => {
@@ -289,7 +320,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(/Your last payment didn't go through/)).toBeInTheDocument();
-    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Change amount" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Cancel membership…" })).toBeEnabled();
   });
 
@@ -298,10 +329,13 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(/You don't have a monthly membership right now/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Honorary membership" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
     expect(screen.getByRole("link", { name: "Support once" })).toHaveAttribute("href", "/support/once");
-    expect(screen.getByText("Recent payments")).toBeInTheDocument();
-    expect(screen.getByText(/Total support to date/)).toHaveTextContent("$15.00");
+    expect(screen.getByText("Support history")).toBeInTheDocument();
+    expect(screen.getByText("$20.00")).toBeInTheDocument();
+    expect(screen.getByText(/\$5\.00 refunded/)).toBeInTheDocument();
+    expect(screen.queryByText(/Total support to date/)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Update payment method" })).not.toBeInTheDocument();
   });
 
@@ -310,7 +344,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByRole("link", { name: "Become an honorary member" })).toBeInTheDocument();
-    expect(screen.queryByText("Recent payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Support history")).not.toBeInTheDocument();
   });
 
   it("says payments are unavailable when Stripe is not configured", async () => {
