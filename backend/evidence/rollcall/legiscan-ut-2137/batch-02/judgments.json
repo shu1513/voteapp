@@ -1,0 +1,112 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1515024,
+   "measure_id": "HB 37",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 37, which adds new ways for a Utah city to meet the state's moderate income housing rules. A city may now grant a density bonus for homes that people own and live in, both for single houses and for apartments. When it does, it may attach conditions, such as reserving most of the homes for owner-occupiers for five years, keeping a quarter of them affordable, or giving local buyers a first look for up to 30 days. Joining the state's home investment program also now counts as one of the housing steps a city can take. The act separately lowers the number of people needed to form a new town from 100 to 75. The Utah House passed it 39-30 and it was signed into law.",
+   "nay_description": "Voted against House Bill 37, which adds new ways for a Utah city to meet the state's moderate income housing rules. A city may now grant a density bonus for homes that people own and live in, both for single houses and for apartments. When it does, it may attach conditions, such as reserving most of the homes for owner-occupiers for five years, keeping a quarter of them affordable, or giving local buyers a first look for up to 30 days. Joining the state's home investment program also now counts as one of the housing steps a city can take. The act separately lowers the number of people needed to form a new town from 100 to 75. The Utah House passed it 39-30 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1515023,
+   "measure_id": "HB 37",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 37, which adds new ways for a Utah city to meet the state's moderate income housing rules. A city may now grant a density bonus for homes that people own and live in, both for single houses and for apartments. When it does, it may attach conditions, such as reserving most of the homes for owner-occupiers for five years, keeping a quarter of them affordable, or giving local buyers a first look for up to 30 days. Joining the state's home investment program also now counts as one of the housing steps a city can take. The act separately lowers the number of people needed to form a new town from 100 to 75. The Utah Senate passed it 22-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 37, which adds new ways for a Utah city to meet the state's moderate income housing rules. A city may now grant a density bonus for homes that people own and live in, both for single houses and for apartments. When it does, it may attach conditions, such as reserving most of the homes for owner-occupiers for five years, keeping a quarter of them affordable, or giving local buyers a first look for up to 30 days. Joining the state's home investment program also now counts as one of the housing steps a city can take. The act separately lowers the number of people needed to form a new town from 100 to 75. The Utah Senate passed it 22-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1511363,
+   "measure_id": "HB 251",
+   "vote_date": "2025-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 251, which makes Utah's pollinator program permanent. It had been a three-year pilot due to end in 2026. The state may now pay up to 75% of the cost of planting native flowering plants on public or private land, where the pilot paid up to 25%. The act also removes the $60,000 yearly ceiling on that spending. The Utah House passed it 52-21 and it was signed into law.",
+   "nay_description": "Voted against House Bill 251, which makes Utah's pollinator program permanent. It had been a three-year pilot due to end in 2026. The state may now pay up to 75% of the cost of planting native flowering plants on public or private land, where the pilot paid up to 25%. The act also removes the $60,000 yearly ceiling on that spending. The Utah House passed it 52-21 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1509868,
+   "measure_id": "HB 49",
+   "vote_date": "2025-02-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 49, which lets more people with a felony record serve on a Utah jury. Before this act, a felony conviction barred someone from jury service unless it had been expunged. The act adds a second way back: a conviction that has been reduced to a misdemeanor no longer bars service. It also limits the bar to convictions from a state or federal court in the United States. The Utah House passed it 45-25 and it was signed into law.",
+   "nay_description": "Voted against House Bill 49, which lets more people with a felony record serve on a Utah jury. Before this act, a felony conviction barred someone from jury service unless it had been expunged. The act adds a second way back: a conviction that has been reduced to a misdemeanor no longer bars service. It also limits the bar to convictions from a state or federal court in the United States. The Utah House passed it 45-25 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1509871,
+   "measure_id": "HB 49",
+   "vote_date": "2025-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 49, which lets more people with a felony record serve on a Utah jury. Before this act, a felony conviction barred someone from jury service unless it had been expunged. The act adds a second way back: a conviction that has been reduced to a misdemeanor no longer bars service. It also limits the bar to convictions from a state or federal court in the United States. The Utah Senate passed it 16-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 49, which lets more people with a felony record serve on a Utah jury. Before this act, a felony conviction barred someone from jury service unless it had been expunged. The act adds a second way back: a conviction that has been reduced to a misdemeanor no longer bars service. It also limits the bar to convictions from a state or federal court in the United States. The Utah Senate passed it 16-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1514908,
+   "measure_id": "SB 181",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 181, which limits how big a city or county may require a parking space to be at a house or townhome. Covered parking may not be required to exceed 10 feet by 20, and uncovered parking nine feet by 20, and one space behind another or a two-car garage must count as two spaces. Those parking rules reach only larger local governments: cities in the four largest size classes, a smaller city of at least 5,000 people in a populous county, and the larger counties. Separately, and in every city and county, a garage may not be required at all for an owner-occupied home priced at 80% of the county's median home price, though parking on the lot may still be required. The law counts a home as owner-occupied only if the owner lives there as a main home for at least five years. The Utah House passed it 50-20 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 181, which limits how big a city or county may require a parking space to be at a house or townhome. Covered parking may not be required to exceed 10 feet by 20, and uncovered parking nine feet by 20, and one space behind another or a two-car garage must count as two spaces. Those parking rules reach only larger local governments: cities in the four largest size classes, a smaller city of at least 5,000 people in a populous county, and the larger counties. Separately, and in every city and county, a garage may not be required at all for an owner-occupied home priced at 80% of the county's median home price, though parking on the lot may still be required. The law counts a home as owner-occupied only if the owner lives there as a main home for at least five years. The Utah House passed it 50-20 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,550 @@
+{
+  "runId": "rollcall-legiscan-fetch-ut-20260909T232702Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "UT",
+  "startedAt": "2026-09-09T23:27:02.144Z",
+  "finishedAt": "2026-09-09T23:27:02.839Z",
+  "datasetDir": "~/legiscan-data/ut-2214",
+  "bills": 1016,
+  "votes": 4049,
+  "people": 104,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House/ passed 3rd reading",
+      "count": 655,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB0012",
+        "HB0011",
+        "HB0029"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Favorable Recommendation",
+      "count": 643,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 16,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0001",
+        "HR0002",
+        "HJR001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Comm - Favorable Recommendation",
+      "count": 632,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB0115",
+        "SB0087",
+        "SB0096"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate/ passed 3rd reading",
+      "count": 371,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB0030",
+        "SR0002",
+        "SB0101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate/ passed 2nd reading",
+      "count": 361,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB0030",
+        "SR0002",
+        "SJR003"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Substitute Recommendation",
+      "count": 257,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 16,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR0001",
+        "HJR001",
+        "HJR002"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate/ passed 2nd & 3rd readings/ suspension",
+      "count": 226,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB0018",
+        "SB0011",
+        "SB0032"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Comm - Substitute Recommendation",
+      "count": 167,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB0115",
+        "SB0087",
+        "SB0096"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Amendment Recommendation",
+      "count": 139,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 16,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB0017",
+        "HB0209",
+        "HB0078"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House/ concurs with Senate amendment",
+      "count": 129,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB0065",
+        "HB0045",
+        "HB0069"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Comm - Amendment Recommendation",
+      "count": 86,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB0058",
+        "SB0101",
+        "SB0075"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate/ concurs with House amendment",
+      "count": 85,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB0013",
+        "SB0027",
+        "SB0084"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Held",
+      "count": 61,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 16,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB0215",
+        "HB0160",
+        "HB0083"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Comm - Consent Calendar Recommendation",
+      "count": 50,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB0066",
+        "HB0012",
+        "HB0067"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Consent Calendar Recommendation",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0055",
+        "HB0211",
+        "HB0356"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Comm - Motion to Recommend Failed",
+      "count": 27,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0056",
+        "SB0209",
+        "SB0023"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House/ failed",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0120",
+        "SB0017",
+        "HB0104"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate/ failed",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB0115",
+        "SB0053",
+        "SCR003"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Comm - Held",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0070",
+        "SB0028",
+        "SB0188"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Motion to Recommend Failed",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 16,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB0080",
+        "HB0152",
+        "HR0004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Conference Committee - Final Passage",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR001",
+        "HB0165",
+        "HB0312"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Conference Committee - Final Passage",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR001",
+        "HB0165",
+        "HB0410"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Comm - Tabled",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0136",
+        "HB0288",
+        "HB0529"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Reconsider actions",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0540",
+        "HB0545"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Tabled",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0227",
+        "HB0360"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House/ substitute adoption failed",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0193",
+        "HB0136"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Amended out Comm amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0013"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Comm - Refer to Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0086"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House/ floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0559"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House/ motion to reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB0267"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House/ substituted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 75,
+      "maxTotal": 75,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB0386"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 931,
+    "CR": 25,
+    "JR": 48,
+    "R": 12
+  },
+  "sessionIds": {
+    "2214": 1016
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

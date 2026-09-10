@@ -1,0 +1,757 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "UT",
+  "session_id": 2137,
+  "note": "people_id to VoteApp candidate id for Utah. One file covers BOTH sessions in scope, the 2025 General Session (LegiScan 2137) and the 2026 General Session (2214), because LegiScan people_ids are stable across sessions: 101 of the 104 members appear in both files with the same name and seat, and the two resolve runs proposed the same candidate for every person they both matched, with no conflict. The union is 107 people: three left after 2025 (Jefferson Moss HD-051, Daniel Thatcher SD-011, Gay Lynn Bennion HD-041) and three arrived for 2026 (Leah Hansen, Emily Buss, John Arthur). 72 are mapped: 69 proposed by the resolver and accepted after checking each seat, and 3 added by hand where the ballot prints a nickname or an initial the proposer cannot reach. Two proposals disagree on seat and both are real: Jill Koford (HD-010) and Doug Fiefia (HD-048) are sitting representatives running for open Senate seats, corroborated against both ballots. 35 are explicit nulls with the reason in each note: 14 senators whose seats are not on the 2026 ballot, 6 senators whose seats are up but who are not on the ballot, 12 representatives not on the ballot, and the 3 who left. Five nulls carry a do-not-link note because our roster holds a different person with the same surname.",
+  "entries": [
+    {
+      "people_id": 8123,
+      "legiscan_name": "James Dunnigan",
+      "district": "HD-036",
+      "candidate_id": "6657e374-7fdd-4763-95b3-6170d31a9428",
+      "note": "James Dunnigan, HD-036; matched by hand: LegiScan first_name is James and nickname Jim; the ballot name is Jim Dunnigan; HD-036 agrees"
+    },
+    {
+      "people_id": 8131,
+      "legiscan_name": "Jerry Stevenson",
+      "district": "SD-006",
+      "candidate_id": null,
+      "note": "Jerry Stevenson, SD-006; no Nov-2026 state-legislative candidacy; the SD-006 ballot holds Jared Neal (Democratic); Joshua Smith (Forward); Tami Tran (Republican); Bob J Stevenson (HD-016) is a different person; do not link"
+    },
+    {
+      "people_id": 8148,
+      "legiscan_name": "Stuart Adams",
+      "district": "SD-007",
+      "candidate_id": null,
+      "note": "Stuart Adams, SD-007; no Nov-2026 state-legislative candidacy; the SD-007 ballot holds Garret Rushforth (Democratic); Jeffrey Ostler (Constitution); Stephanie Hollist (Republican)"
+    },
+    {
+      "people_id": 8150,
+      "legiscan_name": "Wayne Harper",
+      "district": "SD-016",
+      "candidate_id": null,
+      "note": "Wayne Harper, SD-016; no Nov-2026 candidacy; SD-016 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 8151,
+      "legiscan_name": "Ryan Wilcox",
+      "district": "HD-007",
+      "candidate_id": "f65c034a-e407-45ba-b89f-2d07c9afa5c1",
+      "note": "Ryan Wilcox, HD-007; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 8156,
+      "legiscan_name": "Keith Grover",
+      "district": "SD-023",
+      "candidate_id": "241929da-9e61-43de-aae5-00710a07fb47",
+      "note": "Keith Grover, SD-023; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 8165,
+      "legiscan_name": "David Hinkins",
+      "district": "SD-026",
+      "candidate_id": null,
+      "note": "David Hinkins, SD-026; no Nov-2026 candidacy; SD-026 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 8173,
+      "legiscan_name": "Carol Moss",
+      "district": "HD-034",
+      "candidate_id": null,
+      "note": "Carol Moss, HD-034; no Nov-2026 state-legislative candidacy; the HD-034 ballot holds Julie Jackson (Democratic)"
+    },
+    {
+      "people_id": 8186,
+      "legiscan_name": "Evan Vickers",
+      "district": "SD-028",
+      "candidate_id": "344fb540-6f8f-4941-9d4a-edddd3ea6cae",
+      "note": "Evan Vickers, SD-028; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 8193,
+      "legiscan_name": "Christine Watkins",
+      "district": "HD-067",
+      "candidate_id": null,
+      "note": "Christine Watkins, HD-067; no Nov-2026 state-legislative candidacy; the HD-067 ballot holds Carl Ingwell (Democratic); JR Bird (Republican)"
+    },
+    {
+      "people_id": 8196,
+      "legiscan_name": "Don Ipson",
+      "district": "SD-029",
+      "candidate_id": null,
+      "note": "Don Ipson, SD-029; no Nov-2026 candidacy; SD-029 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 8209,
+      "legiscan_name": "Luz Escamilla",
+      "district": "SD-010",
+      "candidate_id": null,
+      "note": "Luz Escamilla, SD-010; no Nov-2026 candidacy; SD-010 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 11713,
+      "legiscan_name": "Daniel Thatcher",
+      "district": "SD-011",
+      "candidate_id": null,
+      "note": "Daniel Thatcher, SD-011; left the Senate after the 2025 session; Emily Buss holds SD-011 in the 2026 file"
+    },
+    {
+      "people_id": 11842,
+      "legiscan_name": "Ken Ivory",
+      "district": "HD-039",
+      "candidate_id": "54f0ccbe-59bc-4048-826d-57da8064ae8f",
+      "note": "Ken Ivory, HD-039; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 11900,
+      "legiscan_name": "Val Peterson",
+      "district": "HD-056",
+      "candidate_id": "587ca4ea-59ca-4cc3-af76-f42d98ce954b",
+      "note": "Val Peterson, HD-056; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 12088,
+      "legiscan_name": "Steve Eliason",
+      "district": "HD-043",
+      "candidate_id": "039e27a2-3a33-4295-b936-ca627a6d5dd0",
+      "note": "Steve Eliason, HD-043; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 13764,
+      "legiscan_name": "Stewart Barlow",
+      "district": "HD-017",
+      "candidate_id": null,
+      "note": "Stewart Barlow, HD-017; no Nov-2026 state-legislative candidacy; the HD-017 ballot holds Eric Last (Democratic); Lili Bitner (Republican)"
+    },
+    {
+      "people_id": 13816,
+      "legiscan_name": "Todd Weiler",
+      "district": "SD-008",
+      "candidate_id": null,
+      "note": "Todd Weiler, SD-008; no Nov-2026 candidacy; SD-008 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 13830,
+      "legiscan_name": "Daniel McCay",
+      "district": "SD-018",
+      "candidate_id": null,
+      "note": "Daniel McCay, SD-018; no Nov-2026 state-legislative candidacy; the SD-018 ballot holds A Dane Anderson (Democratic); Doug Fiefia (Republican)"
+    },
+    {
+      "people_id": 14564,
+      "legiscan_name": "Angela Romero",
+      "district": "HD-025",
+      "candidate_id": "e87a23f8-fa7d-414b-ae20-6f8fba505aa6",
+      "note": "Angela Romero, HD-025; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 15452,
+      "legiscan_name": "Kay Christofferson",
+      "district": "HD-053",
+      "candidate_id": "0e8c5bdb-300d-4c14-9871-43f1565ba170",
+      "note": "Kay Christofferson, HD-053; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 15458,
+      "legiscan_name": "Mike McKell",
+      "district": "SD-025",
+      "candidate_id": null,
+      "note": "Mike McKell, SD-025; no Nov-2026 candidacy; SD-025 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 15461,
+      "legiscan_name": "Keven Stratton",
+      "district": "SD-024",
+      "candidate_id": null,
+      "note": "Keven Stratton, SD-024; no Nov-2026 candidacy; SD-024 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 16439,
+      "legiscan_name": "Scott Sandall",
+      "district": "SD-001",
+      "candidate_id": "d8563c8a-de41-4829-89d3-228333e0631f",
+      "note": "Scott Sandall, SD-001; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 16525,
+      "legiscan_name": "Mike Schultz",
+      "district": "HD-012",
+      "candidate_id": "838410e0-126c-4a27-880e-2074761b425a",
+      "note": "Mike Schultz, HD-012; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 16714,
+      "legiscan_name": "Scott Chew",
+      "district": "HD-068",
+      "candidate_id": "3f906f97-ad21-4b7c-a36f-4c1492c1c037",
+      "note": "Scott Chew, HD-068; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 17033,
+      "legiscan_name": "Raymond Ward",
+      "district": "HD-019",
+      "candidate_id": "55459eed-49e8-4c5b-829a-9af48ff45768",
+      "note": "Raymond Ward, HD-019; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 17396,
+      "legiscan_name": "Ann Millner",
+      "district": "SD-005",
+      "candidate_id": null,
+      "note": "Ann Millner, SD-005; no Nov-2026 state-legislative candidacy; the SD-005 ballot holds CJ Christina Hernandez (Democratic); Jill F. Koford (Republican)"
+    },
+    {
+      "people_id": 17448,
+      "legiscan_name": "Norman Thurston",
+      "district": "HD-062",
+      "candidate_id": "aa859721-4a94-4b1d-9d6c-9665a7a0e935",
+      "note": "Norman Thurston, HD-062; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 17527,
+      "legiscan_name": "Sandra Hollins",
+      "district": "HD-021",
+      "candidate_id": null,
+      "note": "Sandra Hollins, HD-021; no Nov-2026 state-legislative candidacy; the HD-021 ballot holds Stephen Otterstrom (Democratic)"
+    },
+    {
+      "people_id": 17719,
+      "legiscan_name": "Derrin Owens",
+      "district": "SD-027",
+      "candidate_id": null,
+      "note": "Derrin Owens, SD-027; no Nov-2026 candidacy; SD-027 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up); Doug Owens (HD-033) is a different person; do not link"
+    },
+    {
+      "people_id": 17849,
+      "legiscan_name": "Lincoln Fillmore",
+      "district": "SD-017",
+      "candidate_id": null,
+      "note": "Lincoln Fillmore, SD-017; no Nov-2026 candidacy; SD-017 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 17986,
+      "legiscan_name": "Walt Brooks",
+      "district": "HD-075",
+      "candidate_id": "f2515e3c-d170-476d-b125-ee0c40649e2f",
+      "note": "Walt Brooks, HD-075; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 18110,
+      "legiscan_name": "Carl Albrecht",
+      "district": "HD-070",
+      "candidate_id": "a6e55ac5-3c06-4f17-8be9-754538722bd8",
+      "note": "Carl Albrecht, HD-070; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 18777,
+      "legiscan_name": "Cory Maloy",
+      "district": "HD-052",
+      "candidate_id": "4d306642-e10c-4dcd-a1fe-628d696b8bb6",
+      "note": "Cory Maloy, HD-052; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 19010,
+      "legiscan_name": "Karen Kwan",
+      "district": "SD-012",
+      "candidate_id": "b939a6e8-e9f4-43d5-ad61-ca93e987498f",
+      "note": "Karen Kwan, SD-012; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 19072,
+      "legiscan_name": "Jefferson Moss",
+      "district": "HD-051",
+      "candidate_id": null,
+      "note": "Jefferson Moss, HD-051; left the House after the 2025 session; Leah Hansen holds HD-051 in the 2026 file"
+    },
+    {
+      "people_id": 19091,
+      "legiscan_name": "Karianne Lisonbee",
+      "district": "HD-014",
+      "candidate_id": null,
+      "note": "Karianne Lisonbee, HD-014; no Nov-2026 state-legislative candidacy; the HD-014 ballot holds Brandon Young (Democratic); John Taylor (Republican)"
+    },
+    {
+      "people_id": 19415,
+      "legiscan_name": "Cheryl Acton",
+      "district": "HD-038",
+      "candidate_id": null,
+      "note": "Cheryl Acton, HD-038; no Nov-2026 state-legislative candidacy; the HD-038 ballot holds Chris McConnehey (Republican); Sergio Sotelo (Unaffiliated)"
+    },
+    {
+      "people_id": 19707,
+      "legiscan_name": "Casey Snider",
+      "district": "HD-005",
+      "candidate_id": "2966b055-7ad3-4d03-92f9-1f1d48ab660d",
+      "note": "Casey Snider, HD-005; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 20380,
+      "legiscan_name": "Calvin Musselman",
+      "district": "SD-004",
+      "candidate_id": null,
+      "note": "Calvin Musselman, SD-004; no Nov-2026 candidacy; SD-004 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 20381,
+      "legiscan_name": "Stephanie Pitcher",
+      "district": "SD-014",
+      "candidate_id": "76fbce73-6558-4dab-a19d-4a6b878c21f8",
+      "note": "Stephanie Pitcher, SD-014; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 20383,
+      "legiscan_name": "Andrew Stoddard",
+      "district": "HD-040",
+      "candidate_id": "ac294f18-ce32-4fc1-89d6-27cbde0eb635",
+      "note": "Andrew Stoddard, HD-040; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 20471,
+      "legiscan_name": "Jennifer Dailey-Provost",
+      "district": "HD-022",
+      "candidate_id": "5c7d1430-f160-465b-930e-64a8bd1e1a18",
+      "note": "Jennifer Dailey-Provost, HD-022; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 21031,
+      "legiscan_name": "Mark Strong",
+      "district": "HD-047",
+      "candidate_id": "e72715bb-97d1-4801-97a1-a5884f69443d",
+      "note": "Mark Strong, HD-047; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 21046,
+      "legiscan_name": "Rex Shipp",
+      "district": "HD-071",
+      "candidate_id": "a3c7d7c3-b9b7-4be9-8d4a-e567a9e469d3",
+      "note": "Rex Shipp, HD-071; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 21049,
+      "legiscan_name": "Jon Hawkins",
+      "district": "HD-055",
+      "candidate_id": "f76cb3f8-3804-4e93-8f10-6833996277d7",
+      "note": "Jon Hawkins, HD-055; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 21066,
+      "legiscan_name": "Kathleen Riebe",
+      "district": "SD-015",
+      "candidate_id": null,
+      "note": "Kathleen Riebe, SD-015; no Nov-2026 candidacy; SD-015 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 21100,
+      "legiscan_name": "Kirk Cullimore",
+      "district": "SD-019",
+      "candidate_id": "8fe8f6f8-7544-4f75-8045-59dd5cedf8f5",
+      "note": "Kirk Cullimore, SD-019; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 21104,
+      "legiscan_name": "Melissa Garff Ballard",
+      "district": "HD-020",
+      "candidate_id": "1fc5f8c0-d521-4e29-9d45-842e2b582682",
+      "note": "Melissa Garff Ballard, HD-020; matched by hand: LegiScan name is Melissa Garff Ballard and the ballot prints the middle name as an initial; HD-020 agrees"
+    },
+    {
+      "people_id": 21105,
+      "legiscan_name": "Brady Brammer",
+      "district": "SD-021",
+      "candidate_id": "fb8a9df6-bb06-4ee7-96fa-2af9f2805bb4",
+      "note": "Brady Brammer, SD-021; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 21108,
+      "legiscan_name": "Ronald Winterton",
+      "district": "SD-020",
+      "candidate_id": "ac13b78f-2c1a-4b12-b14c-c2136977ebd5",
+      "note": "Ronald Winterton, SD-020; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 21414,
+      "legiscan_name": "Candice Pierucci",
+      "district": "HD-049",
+      "candidate_id": "93d71370-ebcb-4afb-a5d5-842ac7f4919a",
+      "note": "Candice Pierucci, HD-049; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 22072,
+      "legiscan_name": "Jefferson Burton",
+      "district": "HD-064",
+      "candidate_id": null,
+      "note": "Jefferson Burton, HD-064; no Nov-2026 state-legislative candidacy; the HD-064 ballot holds Alan Wessman (Unaffiliated); Jackie Larson (Republican)"
+    },
+    {
+      "people_id": 22073,
+      "legiscan_name": "Matthew Gwynn",
+      "district": "HD-006",
+      "candidate_id": null,
+      "note": "Matthew Gwynn, HD-006; no Nov-2026 state-legislative candidacy; the HD-006 ballot holds James Rich (Forward); Rob Bishop (Republican)"
+    },
+    {
+      "people_id": 22074,
+      "legiscan_name": "John Johnson",
+      "district": "SD-003",
+      "candidate_id": null,
+      "note": "John Johnson, SD-003; no Nov-2026 candidacy; SD-003 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up); Celeste T. Johnson (HD-059) and Christine S. Johnson (Utah County) are different people; do not link"
+    },
+    {
+      "people_id": 22075,
+      "legiscan_name": "Mike Kohler",
+      "district": "HD-059",
+      "candidate_id": null,
+      "note": "Mike Kohler, HD-059; no Nov-2026 state-legislative candidacy; the HD-059 ballot holds Celeste T. Johnson (Democratic); Luke Searle (Republican)"
+    },
+    {
+      "people_id": 22124,
+      "legiscan_name": "Chris Wilson",
+      "district": "SD-002",
+      "candidate_id": null,
+      "note": "Chris Wilson, SD-002; no Nov-2026 candidacy; SD-002 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 22378,
+      "legiscan_name": "Jordan Teuscher",
+      "district": "HD-044",
+      "candidate_id": "a5b13ca0-316d-4efa-b62f-b9ff59ef56f5",
+      "note": "Jordan Teuscher, HD-044; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 22454,
+      "legiscan_name": "Nelson Abbott",
+      "district": "HD-057",
+      "candidate_id": "575374b4-930a-47fd-ae06-bebe2b461ddd",
+      "note": "Nelson Abbott, HD-057; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 22519,
+      "legiscan_name": "Gay Lynn Bennion",
+      "district": "HD-041",
+      "candidate_id": null,
+      "note": "Gay Lynn Bennion, HD-041; left the House after the 2025 session; John Arthur holds HD-041 in the 2026 file"
+    },
+    {
+      "people_id": 22521,
+      "legiscan_name": "Ashlee Matthews",
+      "district": "HD-037",
+      "candidate_id": "903b0652-7862-40ab-9fc2-94e15af3b4c3",
+      "note": "Ashlee Matthews, HD-037; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 22522,
+      "legiscan_name": "Michael Petersen",
+      "district": "HD-002",
+      "candidate_id": "cf48c52d-05e1-441e-90b8-e208279f82ec",
+      "note": "Michael Petersen, HD-002; matched by hand: LegiScan first_name is Michael and nickname Mike; the ballot name is Mike Petersen; HD-002 agrees"
+    },
+    {
+      "people_id": 22523,
+      "legiscan_name": "Doug Welton",
+      "district": "HD-065",
+      "candidate_id": "aac75de4-8aff-4ece-9c69-2a152995c7ea",
+      "note": "Doug Welton, HD-065; proposed by name match (first_prefix), seat agrees; the candidate's first name is a prefix match of the LegiScan first name"
+    },
+    {
+      "people_id": 22525,
+      "legiscan_name": "Doug Owens",
+      "district": "HD-033",
+      "candidate_id": "ba9fdcbd-60b3-46b0-a8ae-eca508b1ab25",
+      "note": "Doug Owens, HD-033; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 22968,
+      "legiscan_name": "Stephen Whyte",
+      "district": "HD-063",
+      "candidate_id": "25123d35-808d-4b4e-961d-326946401768",
+      "note": "Stephen Whyte, HD-063; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23044,
+      "legiscan_name": "Karen Peterson",
+      "district": "HD-013",
+      "candidate_id": null,
+      "note": "Karen Peterson, HD-013; no Nov-2026 state-legislative candidacy; the HD-013 ballot holds Erik R. Craythorne (Republican); Jeffrey Anderson (Democratic); Tony De Mille (Forward); Thomas W. Peterson (HD-001) and Val L. Peterson (HD-056) are different people; do not link"
+    },
+    {
+      "people_id": 23169,
+      "legiscan_name": "Colin Jack",
+      "district": "HD-073",
+      "candidate_id": "ab1c8526-12c8-4f7c-b17c-3b89d581e09f",
+      "note": "Colin Jack, HD-073; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23751,
+      "legiscan_name": "Jen Plumb",
+      "district": "SD-009",
+      "candidate_id": "ebefa550-73b1-4da2-959f-d8eda1cbcf1b",
+      "note": "Jen Plumb, SD-009; proposed by name match (first_prefix), seat agrees; the candidate's first name is a prefix match of the LegiScan first name"
+    },
+    {
+      "people_id": 23786,
+      "legiscan_name": "Anthony Loubet",
+      "district": "HD-027",
+      "candidate_id": "c9d6b44b-dd80-4d5e-b9c7-8257ae043cc9",
+      "note": "Anthony Loubet, HD-027; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23787,
+      "legiscan_name": "Katy Hall",
+      "district": "HD-011",
+      "candidate_id": "616f68b8-8719-41d0-b07e-49349903a59a",
+      "note": "Katy Hall, HD-011; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23788,
+      "legiscan_name": "Trevor Lee",
+      "district": "HD-016",
+      "candidate_id": null,
+      "note": "Trevor Lee, HD-016; no Nov-2026 state-legislative candidacy; the HD-016 ballot holds Abigail Treasure (Democratic); Bob J Stevenson (Republican)"
+    },
+    {
+      "people_id": 23789,
+      "legiscan_name": "Paul Cutler",
+      "district": "HD-018",
+      "candidate_id": "33e5d973-c199-4d28-a102-8c0aec85acf8",
+      "note": "Paul Cutler, HD-018; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23790,
+      "legiscan_name": "Sahara Hayes",
+      "district": "HD-032",
+      "candidate_id": "842a56eb-fa92-43fd-8985-a848306ce4f2",
+      "note": "Sahara Hayes, HD-032; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23791,
+      "legiscan_name": "Stephanie Gricius",
+      "district": "HD-050",
+      "candidate_id": "a88c5d51-8fa7-4abc-86be-dff7849ace9a",
+      "note": "Stephanie Gricius, HD-050; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23809,
+      "legiscan_name": "Jason Kyle",
+      "district": "HD-008",
+      "candidate_id": "eebc58fe-3ce7-4452-8ea1-98f37542a38e",
+      "note": "Jason Kyle, HD-008; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 23896,
+      "legiscan_name": "Neil Walter",
+      "district": "HD-074",
+      "candidate_id": "738c778f-3f06-4365-8608-9db0f308549e",
+      "note": "Neil Walter, HD-074; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 24492,
+      "legiscan_name": "Bridger Bolinder",
+      "district": "HD-029",
+      "candidate_id": null,
+      "note": "Bridger Bolinder, HD-029; no Nov-2026 state-legislative candidacy; the HD-029 ballot holds Jonathan Garrard (Constitution); Sara Snow (Democratic); Sheldon Birch (Republican); Tynley Bean (Forward)"
+    },
+    {
+      "people_id": 24493,
+      "legiscan_name": "Tyler Clancy",
+      "district": "HD-060",
+      "candidate_id": null,
+      "note": "Tyler Clancy, HD-060; no Nov-2026 state-legislative candidacy; the HD-060 ballot holds Grant Pace (Republican)"
+    },
+    {
+      "people_id": 24494,
+      "legiscan_name": "Joseph Elison",
+      "district": "HD-072",
+      "candidate_id": "807f6b89-e6d9-4141-96c6-caa34100992c",
+      "note": "Joseph Elison, HD-072; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 24496,
+      "legiscan_name": "Thomas Peterson",
+      "district": "HD-001",
+      "candidate_id": "b1e70aa5-646b-4aa5-8ac2-63eb897c94d1",
+      "note": "Thomas Peterson, HD-001; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 24499,
+      "legiscan_name": "Nate Blouin",
+      "district": "SD-013",
+      "candidate_id": null,
+      "note": "Nate Blouin, SD-013; no Nov-2026 state-legislative candidacy; the SD-013 ballot holds Colin Smith (Forward); Ryan L. Mahoney (Republican); Silvia Catten (Democratic)"
+    },
+    {
+      "people_id": 24964,
+      "legiscan_name": "Ariel Defay",
+      "district": "HD-015",
+      "candidate_id": "a59b5ef9-fc46-42b1-834f-6627c06d8a98",
+      "note": "Ariel Defay, HD-015; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 24965,
+      "legiscan_name": "Matt MacPherson",
+      "district": "HD-026",
+      "candidate_id": "dad43028-1d27-4dca-b427-2a21f0b86743",
+      "note": "Matt MacPherson, HD-026; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25016,
+      "legiscan_name": "Heidi Balderree",
+      "district": "SD-022",
+      "candidate_id": null,
+      "note": "Heidi Balderree, SD-022; no Nov-2026 candidacy; SD-022 is not on the 2026 ballot (Utah staggers Senate terms and 15 of 29 seats are up)"
+    },
+    {
+      "people_id": 25680,
+      "legiscan_name": "Tracy Miller",
+      "district": "HD-045",
+      "candidate_id": "866651d8-cef0-49b0-a90c-fde33b0d58ed",
+      "note": "Tracy Miller, HD-045; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25715,
+      "legiscan_name": "Jason Thompson",
+      "district": "HD-003",
+      "candidate_id": "76104905-6e7d-468d-a1b4-ea968cd3ca0f",
+      "note": "Jason Thompson, HD-003; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25716,
+      "legiscan_name": "Jake Sawyer",
+      "district": "HD-009",
+      "candidate_id": "e894b484-f07d-42f6-9d74-ce54a7cd8f0f",
+      "note": "Jake Sawyer, HD-009; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25717,
+      "legiscan_name": "Jill Koford",
+      "district": "HD-010",
+      "candidate_id": "26d644c1-b487-4ce3-a1cb-f275b370615c",
+      "note": "Jill Koford, HD-010; matched by hand: sitting HD-010 representative running for SD-005; the HD-010 ballot holds Jim Alvey and Rosemary T Lesser, the SD-005 ballot holds Jill F. Koford and CJ Christina Hernandez, and the sitting SD-005 senator Ann Millner is not on the ballot"
+    },
+    {
+      "people_id": 25718,
+      "legiscan_name": "Hoang Nguyen",
+      "district": "HD-023",
+      "candidate_id": "c9d93c44-9e85-4846-8911-97ae8cd336ae",
+      "note": "Hoang Nguyen, HD-023; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25719,
+      "legiscan_name": "Grant Miller",
+      "district": "HD-024",
+      "candidate_id": "88438392-d09a-462d-bf19-269c2e00d373",
+      "note": "Grant Miller, HD-024; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25720,
+      "legiscan_name": "Nicholeen Peck",
+      "district": "HD-028",
+      "candidate_id": "7e7020ea-b5d4-4d61-b94e-3bc90faf7a40",
+      "note": "Nicholeen Peck, HD-028; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25721,
+      "legiscan_name": "Jake Fitisemanu",
+      "district": "HD-030",
+      "candidate_id": "5c567e29-2620-4ec7-8c04-587b5ee7550c",
+      "note": "Jake Fitisemanu, HD-030; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25722,
+      "legiscan_name": "Verona Mauga",
+      "district": "HD-031",
+      "candidate_id": "5bd2e7fa-49b7-4334-9618-f504b756e861",
+      "note": "Verona Mauga, HD-031; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25723,
+      "legiscan_name": "Rosalba Dominguez",
+      "district": "HD-035",
+      "candidate_id": "183803f0-3402-4f77-809f-93c76e9f5b49",
+      "note": "Rosalba Dominguez, HD-035; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25724,
+      "legiscan_name": "Clinton Okerlund",
+      "district": "HD-042",
+      "candidate_id": "bc2c9966-d33f-45f1-a6eb-c895e7a2819b",
+      "note": "Clinton Okerlund, HD-042; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25725,
+      "legiscan_name": "Calvin Roberts",
+      "district": "HD-046",
+      "candidate_id": "57d23edf-d7c7-4f59-b5b6-707c9ea93a25",
+      "note": "Calvin Roberts, HD-046; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25726,
+      "legiscan_name": "Doug Fiefia",
+      "district": "HD-048",
+      "candidate_id": "9413c2dd-6e51-4900-a49e-df3ad026e3d6",
+      "note": "Doug Fiefia, HD-048; matched by hand: sitting HD-048 representative running for SD-018; the HD-048 ballot holds Benyde Walker and Jake Hunsaker, the SD-018 ballot holds Doug Fiefia and A Dane Anderson, and the sitting SD-018 senator Daniel McCay is not on the ballot"
+    },
+    {
+      "people_id": 25727,
+      "legiscan_name": "Kristen Chevrier",
+      "district": "HD-054",
+      "candidate_id": "766c4a40-f181-4ed9-9445-c76670ad85ef",
+      "note": "Kristen Chevrier, HD-054; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25728,
+      "legiscan_name": "David Shallenberger",
+      "district": "HD-058",
+      "candidate_id": "b902a90b-0f29-4153-b822-2cd1195ac732",
+      "note": "David Shallenberger, HD-058; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25729,
+      "legiscan_name": "Lisa Shepherd",
+      "district": "HD-061",
+      "candidate_id": "ae08a3f3-3b07-46d5-891b-7691591725ce",
+      "note": "Lisa Shepherd, HD-061; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25730,
+      "legiscan_name": "Troy Shelley",
+      "district": "HD-066",
+      "candidate_id": "43130ca0-cd05-45b6-a181-da7e4eea1dea",
+      "note": "Troy Shelley, HD-066; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 25731,
+      "legiscan_name": "Logan Monson",
+      "district": "HD-069",
+      "candidate_id": "6cfb43ad-4d67-4e04-aabf-216bdca5ed5f",
+      "note": "Logan Monson, HD-069; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 26358,
+      "legiscan_name": "Tiara Auxier",
+      "district": "HD-004",
+      "candidate_id": "bb4d9514-79e5-42c6-b38a-617bb25c297a",
+      "note": "Tiara Auxier, HD-004; proposed by name match (first_and_last), seat agrees"
+    },
+    {
+      "people_id": 26502,
+      "legiscan_name": "Leah Hansen",
+      "district": "HD-051",
+      "candidate_id": "b9081f72-e0e0-4fa5-bdbc-e9bccb48aa6f",
+      "note": "Leah Hansen, HD-051; proposed by name match (first_and_last), seat agrees; new member in the 2026 file"
+    },
+    {
+      "people_id": 26537,
+      "legiscan_name": "John Arthur",
+      "district": "HD-041",
+      "candidate_id": "7ef0f280-1bdc-4d04-93f7-715557aa451d",
+      "note": "John Arthur, HD-041; proposed by name match (first_and_last), seat agrees; new member in the 2026 file"
+    },
+    {
+      "people_id": 26562,
+      "legiscan_name": "Emily Buss",
+      "district": "SD-011",
+      "candidate_id": "b473760e-ecb3-4e5a-bdae-e12c917b8d85",
+      "note": "Emily Buss, SD-011; proposed by name match (first_and_last), seat agrees; new member in the 2026 file"
+    }
+  ]
+}
