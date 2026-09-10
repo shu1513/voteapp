@@ -48,14 +48,17 @@ Two of the five are enacted but **not yet in force**, and saying otherwise would
 wrong: House Bill 1155 takes effect on 30 June 2027 and House Bill 1163 on 1 May 2027.
 Their descriptions use "will require" and name the date. The other three are in force.
 
-## 56 duplicates retired BEFORE the import
+## 55 duplicates retired BEFORE the import
 
 Washington already had hand-researched vote records covering these bills, and the
 importer's URL-based duplicate check could not see them because they cite the bill page
 rather than the roll call. A precise sweep — the record must name the bill number AND the
-exact tally of one of the ten rolls — found **56 live hand-written records describing the
-very votes this batch imports**, on House Bills 1217, 1052 and 1163. All 56 were retired
-before the import, each with a reason naming the measure and the tally.
+exact tally of one of the ten rolls — found 56 live hand-written records describing the
+very votes this batch imports, on House Bills 1217, 1052 and 1163. **55 were retired**
+before the import, each with a reason naming the measure and the tally. The 56th, Mike
+Volz's Nay on the 54-44 House Bill 1217 vote, was retired at first and then restored on
+review: Volz is not in the Nov-2026 pool (crosswalk `people_id` 18500 is null), so the
+importer writes nothing for him and the hand-written record is his only copy of the vote.
 
 Records about a DIFFERENT vote on the same bill were deliberately left alone. The clearest
 case is House Bill 1217, where several records describe the earlier 53-42 House passage,
@@ -70,6 +73,10 @@ The 2026 measures (1155, 1604) had no hand-written coverage at all.
 - The dry run's own stamp matches **zero** rows, which is the positive proof that
   `--dry-run` writes nothing.
 - Convergence re-run: all 530 `unchanged`.
+- Review pass (PR #1270): the HB 1155 and HB 1217 sentences were corrected in
+  `judgments.json`, re-applied with `rollcall:judge`, and the importer re-run
+  (`import-rerun-report.json`) rewrote 213 records (107 HB 1217, 106 HB 1155) and left 317
+  `unchanged`; the dry run after it is 530 `unchanged` again.
 - **108 candidates = every member the crosswalk maps.** Washington's Speaker votes, so
   there is no shortfall of the kind Texas and Georgia have.
 - 375 area tags, and the arithmetic matches the label design exactly: `gun_control` is the

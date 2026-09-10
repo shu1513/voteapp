@@ -59,8 +59,10 @@ must make reasonable efforts to notify current and former workers by 1 October 2
 worker may sue for damages and fees.
 
 The carve-out is carried because it changes who is covered: an agreement to repay
-out-of-pocket education costs is not a noncompete if it ends within 18 months of the
-worker's start date.
+out-of-pocket education costs is not a noncompete only if it meets all three of the
+act's conditions (§3): it ends within 18 months of the worker's start date, repayment is
+prorated to the time left in those 18 months, and the debt is waived when the worker
+leaves for good cause under RCW 50.20.050. The description names all three.
 
 `corporate_accountability` rather than a labour area, because **the campaign has no labour
 research area** and the standing workaround is that a mandate running against employers
@@ -95,8 +97,9 @@ any rent once a tenant has moved out.
 
 The exemptions are carried because they decide who the law reaches: buildings first
 occupied within the past 12 years, public housing and regulated affordable housing, and
-certain owner-occupied homes where the owner rents no more than two units. The cap expires
-on 1 July 2040, which the description states.
+certain owner-occupied homes where the owner rents no more than two units. Only the
+residential cap (§101) expires on 1 July 2040; the 5 percent manufactured-home-lot cap
+(§201) has no sunset, and the description keeps the two apart.
 
 Nay is null on the Connecticut test: the strongest argument against a rent cap is that it
 discourages investment and so reduces supply, and that argument sits INSIDE

@@ -148,10 +148,6 @@
     "reason": "Duplicate of the imported roll-call record for House Bill 1052. This hand-written record describes the same vote, the one the Washington legislature recorded 59-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
   },
   {
-    "recordId": "5a2a6d22-fd65-4f12-b55d-c7e8649d775d",
-    "reason": "Duplicate of the imported roll-call record for House Bill 1217. This hand-written record describes the same vote, the one the Washington legislature recorded 54-44, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
-  },
-  {
     "recordId": "af3f9b9d-bc06-46a4-a47f-29f89a8be3bf",
     "reason": "Duplicate of the imported roll-call record for House Bill 1163. This hand-written record describes the same vote, the one the Washington legislature recorded 57-39, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
   },
