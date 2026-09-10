@@ -50,19 +50,27 @@ thirds, and the legislature never reached it against this governor.
 A vote is closely divided when the smaller side is at least a quarter of the
 larger.
 
-370 of the 572 rolls are passage questions, and 214 of those are closely divided.
+379 of the 572 rolls are passage questions, and 217 of those are closely divided.
 Counting only real bills, which are the only measures that can become law:
 
 | outcome | roll calls | measures |
 | --- | --- | --- |
 | became law | 24 | 23 |
-| vetoed by the governor | 124 | 75 |
+| vetoed by the governor | 126 | 75 |
 | died without becoming law | 49 | 47 |
 
 The vetoed group being five times the size of the enacted one is Wisconsin's
 divided government showing up in the data. The operator chose to work both scopes.
 
-Joint and senate resolutions add 17 more closely divided rolls. An adopted joint
+Nine of the passage rolls are the first chamber accepting the other chamber's
+amendment (`Senate: Assembly Substitute Amendment 7 concurred in`). When the
+second chamber `concurred in as amended`, the bill goes back and the first chamber
+votes on the changed text; that vote, not its earlier passage roll, is its last
+word on the bill. SB 622 is the example: Senate 22-11, Assembly substituted, Senate
+accepted the substitute 20-13. The first cut of the config excluded these under the
+blanket numbered-amendment rule, which also hid them from the superseded-stage gate.
+
+Joint and senate resolutions add 18 more closely divided rolls. An adopted joint
 resolution is not law — it goes to a second consecutive legislature and then to the
 voters — even though LegiScan marks it status 4. Of the 315 status-4 measures in
 this session, 246 were approved by the governor and 69 are resolutions that were
@@ -94,7 +102,10 @@ roll.
 Wisconsin's governor can veto parts of a bill. The history wording is `Report
 approved by the Governor with partial veto on 4-8-2026. 2025 Wisconsin Act 203` —
 not "approved in part" and not "vetoed in part", so a check written from another
-state's vocabulary misses it. That happened on the first pass here.
+state's vocabulary misses it. That happened on the first pass here, and
+`wi_audit.py` itself carried the wrong vocabulary until review caught it: it
+counted all 246 approved bills as approved whole. It now matches Wisconsin's
+wording and prints both partial vetoes.
 
 **AB 1034 and AB 650** are the two, and AB 1034 sits inside the closely divided
 enacted pool. In both cases the legislature tried to override the partial veto and

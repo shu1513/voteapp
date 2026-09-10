@@ -4187,9 +4187,9 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // governor and 69 are resolutions that were merely adopted. Selection has
   // to separate them; status alone cannot.
   //
-  // Pool measured before any batch was promised: 370 passage-question rolls,
-  // 214 of them closely divided. On real bills that is 197 divided rolls over
-  // 145 measures, split 24 rolls / 23 measures that became law, 124 rolls /
+  // Pool measured before any batch was promised: 379 passage-question rolls,
+  // 217 of them closely divided. On real bills that is 199 divided rolls over
+  // 145 measures, split 24 rolls / 23 measures that became law, 126 rolls /
   // 75 measures the governor vetoed, and 49 rolls / 47 measures that died.
   // The vetoed group being five times the enacted one is Wisconsin's divided
   // government showing up in the data.
@@ -4223,6 +4223,19 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       // The concurrence spelling used when a resolution is taken up the same
       // way. Two rolls, both Assembly.
       { pattern: /^(assembly|senate): concurred in( as amended)?$/, questionClass: "concurrence" },
+      // ⚠ THE FIRST CHAMBER'S FINAL DECISION when the second chamber changed
+      // its measure (`concurred in as amended` above). The bill comes back and
+      // the first chamber votes on accepting the other chamber's amendment —
+      // usually a substitute that replaced the whole text. That vote, not the
+      // earlier passage roll, is the chamber's last word on the bill, and the
+      // judge's superseded-stage gate can only see it if it is kept. SB 622:
+      // Senate passed 22-11, the Assembly substituted, the Senate accepted the
+      // substitute 20-13. Nine rolls, all Senate, three closely divided.
+      // Refusing (`nonconcurred in`, one roll) stays excluded below.
+      {
+        pattern: /^(assembly|senate): (?:assembly|senate) (?:substitute )?amendment \d+ concurred in$/,
+        questionClass: "concurrence",
+      },
     ],
     excludedQuestions: [
       // ⚠ THE BIGGEST EXCLUDED CLASS IN WISCONSIN, and it has no counterpart
@@ -4234,14 +4247,16 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       // measure. These divide on party lines and would otherwise look like
       // rich material.
       /^(assembly|senate): decision of the chair (upheld|stands as the judgment of the senate)$/,
-      // Every question about an amendment: adopting one, rejecting one,
-      // laying one on the table, or the second chamber concurring in the
-      // other chamber's. The numbered amendment identifies them, and no kept
-      // caption carries a numbered amendment — verified against all 91
-      // measured description families. Note that `read a third time and
-      // concurred in AS AMENDED` is a passage question and is untouched,
-      // because it names no amendment number.
-      /\bamendment \d+\b/,
+      // Every question about an amendment — adopting one, rejecting one,
+      // laying one on the table, refusing to concur in the other chamber's —
+      // EXCEPT the first chamber accepting the other chamber's amendment,
+      // which is its final decision on the bill and is kept above. The
+      // lookahead is what lets that one caption through; exclusions are
+      // checked first, so without it the kept rule would never be reached.
+      // Note that `read a third time and concurred in AS AMENDED` names no
+      // amendment number and is untouched. Verified against all 91 measured
+      // description families.
+      /\bamendment \d+\b(?! concurred in$)/,
       // Cutting off debate.
       /^(assembly|senate): move to call the question$/,
       // Sending a measure to a committee, declining to, and refusing to

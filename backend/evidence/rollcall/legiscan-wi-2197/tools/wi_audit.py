@@ -103,7 +103,9 @@ for b in bills.values():
         continue
     joined = ' ; '.join(h['action'] for h in b['history']
                         if re.search(r'approved|vetoe?d|act \d+', h['action'], re.I))
-    if re.search(r'partial(ly)?\s+vetoe?d|vetoed in part|approved in part', joined, re.I):
+    # Wisconsin's wording is `approved by the Governor with partial veto`; the
+    # other spellings are what a check written from another state would try.
+    if re.search(r'with partial veto|partial(ly)?\s+vetoe?d|vetoed in part|approved in part', joined, re.I):
         kinds['partial veto'] += 1
         print('  PARTIAL VETO', b['bill_number'], '|', joined[:220])
     elif re.search(r'approved by the governor', joined, re.I):

@@ -1086,7 +1086,6 @@ describe("Wisconsin's measured desc vocabulary", () => {
       "Senate: Senate Amendment 26 to Senate Substitute Amendment 2 adopted",
       "Assembly: Assembly Substitute Amendment 1 laid on table",
       "Assembly: Assembly Amendment 3 to Assembly Substitute Amendment 2 laid on table",
-      "Senate: Assembly Substitute Amendment 1 concurred in",
       "Senate: Assembly Substitute Amendment 1 nonconcurred in",
     ]) {
       expect(wi(desc, "senate")).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
@@ -1094,6 +1093,21 @@ describe("Wisconsin's measured desc vocabulary", () => {
     // The passage question says `as amended` and names no amendment number, so
     // the amendment rule must not claim it.
     expect(wi("Senate: Read a third time and concurred in as amended", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+  });
+
+  it("keeps the first chamber accepting the other chamber's amendment, its final decision on the bill", () => {
+    // SB 622: the Senate passed 22-11, the Assembly replaced the text with
+    // Substitute Amendment 7, and the Senate accepted that 20-13. The later
+    // roll is the Senate's last word, and the superseded-stage gate can only
+    // see it if it is kept.
+    expect(wi("Senate: Assembly Substitute Amendment 7 concurred in", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    expect(wi("Senate: Assembly Amendment 1 concurred in", "senate")).toMatchObject({
       isFloorVote: true,
       questionClass: "concurrence",
     });

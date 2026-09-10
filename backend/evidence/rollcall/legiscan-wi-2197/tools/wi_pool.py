@@ -24,7 +24,8 @@ print('bills', len(bills), 'rolls', len(votes))
 
 PASSAGE = re.compile(
     r'^(assembly|senate):\s*(read a third time and (passed|concurred in|adopted)'
-    r'(\s+as amended)?|concurred in(\s+as amended)?|adopted)$', re.I)
+    r'(\s+as amended)?|concurred in(\s+as amended)?|adopted'
+    r'|(assembly|senate) (substitute )?amendment \d+ concurred in)$', re.I)
 
 
 def divided(v):
