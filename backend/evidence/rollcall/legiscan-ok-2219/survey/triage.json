@@ -65,9 +65,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB1427": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The only change of substance lets banks claim an existing clean-burning vehicle fuel credit. Too narrow for a voter to recognise. Its Senate pool roll is also a failed 17-25 vote; the real passage vote, 45-0 in March 2026, is not in the feed."
  },
  "HB1543": {
   "class": "sunset or agency housekeeping",
@@ -105,9 +105,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB1727": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-06",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-06."
  },
  "HB1819": {
   "class": "sunset or agency housekeeping",
@@ -175,9 +175,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB2147": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act lets a city foreclose on rental, vacant or business property for unpaid code enforcement fines of $1,500 or more, and exempts owner-occupied homes. It pits property rights against clearing blighted buildings, and no research area carries either reading honestly."
  },
  "HB2153": {
   "class": "sunset or agency housekeeping",
@@ -460,9 +460,9 @@
   "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
  },
  "HB3644": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-06",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-06."
  },
  "HB3649": {
   "class": "appropriation",
@@ -500,9 +500,9 @@
   "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
  },
  "HB3834": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-06",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-06."
  },
  "HB3880": {
   "class": "economic-development incentive",
@@ -580,9 +580,9 @@
   "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
  },
  "HB4071": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-06",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-06."
  },
  "HB4072": {
   "class": "appropriation",
@@ -620,9 +620,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB4324": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Did not become law. The Governor vetoed it and only the House voted to override; the Senate never did, so the veto stands. It fails the enactment filter."
  },
  "HB4408": {
   "class": "sunset or agency housekeeping",
@@ -680,9 +680,9 @@
   "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
  },
  "SB1027": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act mixes rules that test the honesty of a petition, such as a plain and neutral summary and spending reports, with rules that limit who may take part, such as county signature caps and a ban on out-of-state money. Both strands fall in election_integrity and run opposite ways, so no single direction is honest."
  },
  "SB1028": {
   "class": "sunset or agency housekeeping",
@@ -850,9 +850,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB1255": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act only changes who may ask for a medical parole hearing, from the head of the Department of Corrections to its medical director. That is an administrative shift with no direction a voter could read."
  },
  "SB1327": {
   "class": "economic-development incentive",
@@ -870,9 +870,9 @@
   "reason": "Read in full. The act exempts Tourism Department gift shop stock from state purchasing rules up to $75,000. The subject is too narrow for a voter to recognise and less bidding reads both ways. Its House roll also carries a reconsideration the next day."
  },
  "SB137": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-06",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-06."
  },
  "SB139": {
   "class": "batch-01",
@@ -915,9 +915,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB1509": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act drops a required public hearing before groundwater well spacing rules and lets spacing be set as part of a basin's yield decision. It is procedural and could be read as streamlining or as less public input."
  },
  "SB1525": {
   "class": "economic-development incentive",
@@ -1215,9 +1215,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB713": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-06",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-06."
  },
  "SB743": {
   "class": "batch-05",
