@@ -1,0 +1,115 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1511410,
+   "measure_id": "HB 355",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 355, which widens what sand, gravel, and rock quarries may do over the objection of local government. A quarry that has been running legally now counts as a vested use, and the old cutoff of January 1, 2019 is gone. A vested quarry may spread onto next-door land it held by 2026. It may dig more, change its methods, and mix concrete and asphalt. A city or county cannot simply say no. It may step in only if it finds that an expansion puts public health or safety at risk. Even then it may ask only for steps no stricter than a state permit, and the quarry may accept them and go ahead. The act also puts the burden of proof on whoever argues that a quarry is not vested. The Utah House passed it 41-29 and it was signed into law.",
+   "nay_description": "Voted against House Bill 355, which widens what sand, gravel, and rock quarries may do over the objection of local government. A quarry that has been running legally now counts as a vested use, and the old cutoff of January 1, 2019 is gone. A vested quarry may spread onto next-door land it held by 2026. It may dig more, change its methods, and mix concrete and asphalt. A city or county cannot simply say no. It may step in only if it finds that an expansion puts public health or safety at risk. Even then it may ask only for steps no stricter than a state permit, and the quarry may accept them and go ahead. The act also puts the burden of proof on whoever argues that a quarry is not vested. The Utah House passed it 41-29 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1511409,
+   "measure_id": "HB 355",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 355, which widens what sand, gravel, and rock quarries may do over the objection of local government. A quarry that has been running legally now counts as a vested use, and the old cutoff of January 1, 2019 is gone. A vested quarry may spread onto next-door land it held by 2026. It may dig more, change its methods, and mix concrete and asphalt. A city or county cannot simply say no. It may step in only if it finds that an expansion puts public health or safety at risk. Even then it may ask only for steps no stricter than a state permit, and the quarry may accept them and go ahead. The act also puts the burden of proof on whoever argues that a quarry is not vested. The Utah Senate passed it 17-7 and it was signed into law.",
+   "nay_description": "Voted against House Bill 355, which widens what sand, gravel, and rock quarries may do over the objection of local government. A quarry that has been running legally now counts as a vested use, and the old cutoff of January 1, 2019 is gone. A vested quarry may spread onto next-door land it held by 2026. It may dig more, change its methods, and mix concrete and asphalt. A city or county cannot simply say no. It may step in only if it finds that an expansion puts public health or safety at risk. Even then it may ask only for steps no stricter than a state permit, and the quarry may accept them and go ahead. The act also puts the burden of proof on whoever argues that a quarry is not vested. The Utah Senate passed it 17-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1514324,
+   "measure_id": "SB 277",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 277, which changes who decides when the government must hand over a public record. Those appeals went to the State Records Committee. It had seven members, among them private citizens, a city or county official, and a person from the news media. The act ends the committee. The work goes to the director of a new Government Records Office, chosen by the governor and confirmed by the Senate. The director serves four years and can be fired only for cause. The law says the director must be able to rule on appeals fairly, and a survey of the director's work is taken every two years. A person who loses before the director may still go to court. The Utah House passed it 44-23 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 277, which changes who decides when the government must hand over a public record. Those appeals went to the State Records Committee. It had seven members, among them private citizens, a city or county official, and a person from the news media. The act ends the committee. The work goes to the director of a new Government Records Office, chosen by the governor and confirmed by the Senate. The director serves four years and can be fired only for cause. The law says the director must be able to rule on appeals fairly, and a survey of the director's work is taken every two years. A person who loses before the director may still go to court. The Utah House passed it 44-23 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1514325,
+   "measure_id": "SB 277",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 277, which changes who decides when the government must hand over a public record. Those appeals went to the State Records Committee. It had seven members, among them private citizens, a city or county official, and a person from the news media. The act ends the committee. The work goes to the director of a new Government Records Office, chosen by the governor and confirmed by the Senate. The director serves four years and can be fired only for cause. The law says the director must be able to rule on appeals fairly, and a survey of the director's work is taken every two years. A person who loses before the director may still go to court. The Utah Senate passed it 18-6 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 277, which changes who decides when the government must hand over a public record. Those appeals went to the State Records Committee. It had seven members, among them private citizens, a city or county official, and a person from the news media. The act ends the committee. The work goes to the director of a new Government Records Office, chosen by the governor and confirmed by the Senate. The director serves four years and can be fired only for cause. The law says the director must be able to rule on appeals fairly, and a survey of the director's work is taken every two years. A person who loses before the director may still go to court. The Utah Senate passed it 18-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510782,
+   "measure_id": "HB 294",
+   "vote_date": "2025-02-27",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 294, which takes away the power of health departments to give an order that binds a whole group during an outbreak. Such an order is called an order of constraint. It covers quarantine, a stay-at-home order, the closing of schools or theaters, and a ban on gatherings. Neither the state health department nor a local one may give one, ever again. An order to be tested, treated, or kept apart may now name only one person. The act also says a business open to the public may not require a face mask of a person who suffers real distress from wearing one because of a diagnosed condition or a disability. A hospital or a doctor's office may still require masks where patients are treated. The Utah Senate passed it 18-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 294, which takes away the power of health departments to give an order that binds a whole group during an outbreak. Such an order is called an order of constraint. It covers quarantine, a stay-at-home order, the closing of schools or theaters, and a ban on gatherings. Neither the state health department nor a local one may give one, ever again. An order to be tested, treated, or kept apart may now name only one person. The act also says a business open to the public may not require a face mask of a person who suffers real distress from wearing one because of a diagnosed condition or a disability. A hospital or a doctor's office may still require masks where patients are treated. The Utah Senate passed it 18-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1512975,
+   "measure_id": "HB 195",
+   "vote_date": "2025-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 195, which limits when the state may keep a person's gun. A plea deal that holds off a conviction may no longer make the defendant give up a gun, unless the crime is one that would bar that person from owning guns. Say a person is charged with a crime that would not bar them from owning guns, and the gun is no longer needed as proof. Then the prosecutor must tell the police to give it back. The police must first check with the state that the person may lawfully own it. The Utah Senate passed it 21-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 195, which limits when the state may keep a person's gun. A plea deal that holds off a conviction may no longer make the defendant give up a gun, unless the crime is one that would bar that person from owning guns. Say a person is charged with a crime that would not bar them from owning guns, and the gun is no longer needed as proof. Then the prosecutor must tell the police to give it back. The police must first check with the state that the person may lawfully own it. The Utah Senate passed it 21-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1512974
+   ]
+  }
+ ]
+}
