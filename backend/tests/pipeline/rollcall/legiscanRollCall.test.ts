@@ -1102,6 +1102,34 @@ describe("Utah's measured desc vocabulary", () => {
   it("surfaces a caption Utah has not printed before instead of guessing", () => {
     expect(ut("House/ passed 3rd reading as amended")).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
   });
+
+  it("holds the 2026 rolls whose member list contradicts Utah's own vote sheet", () => {
+    const config2026 = LEGISCAN_STATE_CONFIGS["UT-2214"]!;
+    // HB 502's Senate vote: LegiScan 21-8, the sheet 20-9 (Kwan on the wrong side).
+    expect(
+      classifyLegiscanRollCall({
+        desc: "Senate/ passed 2nd & 3rd readings/ suspension",
+        total: 29,
+        chamber: "senate",
+        billType: "B",
+        config: config2026,
+        rollCallId: 1653739,
+      })
+    ).toMatchObject({ isFloorVote: null, questionClass: null });
+    // The same caption on any other roll is a real passage vote.
+    expect(
+      classifyLegiscanRollCall({
+        desc: "Senate/ passed 2nd & 3rd readings/ suspension",
+        total: 29,
+        chamber: "senate",
+        billType: "B",
+        config: config2026,
+        rollCallId: 1,
+      })
+    ).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // The 2025 entry holds nothing: its audit found no wrong roll.
+    expect(LEGISCAN_STATE_CONFIGS.UT!.heldRollCallIds).toBeUndefined();
+  });
 });
 
 describe("Alabama's 2023 desc vocabulary", () => {

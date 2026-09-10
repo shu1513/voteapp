@@ -4258,12 +4258,30 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: UTAH_KEPT_QUESTIONS,
     excludedQuestions: UTAH_EXCLUDED_QUESTIONS,
   },
+  // TALLY AUDIT, run 2026-09-09 over every floor roll on a kept bill type in
+  // both sessions (1,916 in 2025 and 1,840 in 2026, not only the divided
+  // ones), against the tally Utah prints on each action in its own per-bill
+  // JSON and then against the state's per-roll vote sheet, which names every
+  // member. 2025: 1,914 exact and 0 wrong. 2026: 1,831 exact and FOUR rolls
+  // whose member list contradicts the sheet, held below. The two 28-0 twins
+  // (HB 205, HB 236) are a reconsider-and-revote pair with identical lists
+  // and are not defects.
   "UT-2214": {
     jurisdiction: "UT",
     sessionId: 2214,
     chamberSizes: { house: 75, senate: 29 },
     keptQuestions: UTAH_KEPT_QUESTIONS,
     excludedQuestions: UTAH_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1653739:
+        "HB 502 Senate 2026-03-04, suspension passage: LegiScan reports 21-8 and lists Karen Kwan as a yes; Utah's own record and vote sheet (voteid 1778) report 20-9 with Kwan a no. One member on the wrong side; it would put a false vote in her record",
+      1656396:
+        "SB 62 Senate 2026-03-06, concurrence: LegiScan reports 21-7 with seven no votes; Utah's own record and vote sheet (voteid 2089) report 28-0 with no member voting no. The member list belongs to a different vote",
+      1654810:
+        "HB 270 Senate 2026-03-05, suspension passage: LegiScan reports 19-1 and lists Todd Weiler as a yes; Utah's own record and vote sheet (voteid 1863) report 18-2 with Weiler a no. Not divided either way, held because the member list is wrong",
+      1652433:
+        "SB 152 House 2026-03-04, third reading: LegiScan reports 65-7; Utah's own record and vote sheet (voteid 1181) report 70-1 with Leah Hansen the only no. LegiScan's member list does not even match the sheet's attendance, so it is a different vote's list. Not divided either way",
+    },
   },
 };
 
