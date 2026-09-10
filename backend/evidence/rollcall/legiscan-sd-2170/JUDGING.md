@@ -145,3 +145,41 @@ that has cost measures in seven other states in this campaign. Senate Bill 63,
 the state office of apprenticeship, was placed under `reduce_wealth_gap` because
 that area names economic mobility, which an apprenticeship route into skilled
 work plainly is. A labor area would have been the better home.
+
+## Review round
+
+Seven review findings on pull request #1272, all checked against the enrolled
+act and all real. Corrected in the judgments, re-judged, and re-imported on the
+same record ids: 272 records rewritten, counts unchanged at 45 roll calls and
+1,494 records. Each batch keeps its ledger in
+`import-review-fixes-report.json`; `import-report.json` is untouched.
+
+House Bill 1220 had vapes on the wrong side of the line. The new chapter's
+"nicotine product" is an alternative nicotine product or a vapor product; only
+cigarettes and tobacco products are outside it. The description also now says
+that distributors and wholesalers already licensed under chapter 10-50 do not
+need the new license.
+
+Senate Bill 44 was described as a general criminal-subpoena power. Section 2
+limits it to Division of Criminal Investigation cases involving internet crimes
+against children or human trafficking, and section 5 limits what can be demanded
+to subscriber and account details. Both limits are now in the text.
+
+House Bill 1219 said an agency "may now obtain" an interpreter. Section 2 says
+the agency shall procure, appoint and pay for one. The description now reads as
+the duty it is.
+
+Senate Bill 159 omitted two conditions on the under-eighteen exception: the
+applicants may be no more than four years apart in age, and the license may not
+issue until thirty days after the court approves.
+
+House Bill 1092 caps a grant at $5,000 per school district or accredited school,
+not per school.
+
+Senate Bill 164 defines a deepfake as an image, audio or video made or altered
+with artificial intelligence or other digital technology; the description had
+narrowed it to AI audio and video.
+
+House Bill 1238 does not reach representatives accredited or regulated by the
+United States Department of Veterans Affairs (section 6); both chambers'
+descriptions now carry that exception.
