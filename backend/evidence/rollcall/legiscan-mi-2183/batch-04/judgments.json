@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1580897,
+   "measure_id": "HB 4066",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4066. It would make a school district or charter school that takes part in school sports label each team as being for females, for males, or mixed. Sex would mean what is listed on a student's original birth certificate. The House passed it 58-46. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4066. It would make a school district or charter school that takes part in school sports label each team as being for females, for males, or mixed. Sex would mean what is listed on a student's original birth certificate. The House passed it 58-46. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1553226,
+   "measure_id": "HB 4159",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4159. It would make the State Board of Education base its model reading and writing standards for kindergarten through grade 6 on the science of reading. Those standards would have to use a code emphasis approach covering decoding, phonics, vocabulary, fluency, spoken language, comprehension and word recognition, and use methods grounded in structured literacy. The House passed it 65-40. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4159. It would make the State Board of Education base its model reading and writing standards for kindergarten through grade 6 on the science of reading. Those standards would have to use a code emphasis approach covering decoding, phonics, vocabulary, fluency, spoken language, comprehension and word recognition, and use methods grounded in structured literacy. The House passed it 65-40. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1574022,
+   "measure_id": "HB 4222",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4222. It would make every school have a crisis team, and would make private schools have an emergency plan too unless their board opts out. It would also stretch the gap between reviews of that plan from two years to three, and make private schools carry out those reviews. The House passed it 80-26. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4222. It would make every school have a crisis team, and would make private schools have an emergency plan too unless their board opts out. It would also stretch the gap between reviews of that plan from two years to three, and make private schools carry out those reviews. The House passed it 80-26. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1574131,
+   "measure_id": "HB 4315",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4315. It would make the State Police, working with the Attorney General and the Department of Education, build school safety and security training materials and best practices, and hand out training each year. The training would go to school resource officers, safety staff and all school staff, in both public and private schools. The House passed it 82-24. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4315. It would make the State Police, working with the Attorney General and the Department of Education, build school safety and security training materials and best practices, and hand out training each year. The training would go to school resource officers, safety staff and all school staff, in both public and private schools. The House passed it 82-24. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1597553,
+   "measure_id": "HB 4369",
+   "vote_date": "2025-07-01",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4369. From July 2028 it would bar schools from giving out or selling food containing brominated vegetable oil, potassium bromate, propylparaben, or the dyes Red 40, Green 3, Blue 1, Blue 2 and Yellow 6. It would cover both public and private schools. The House passed it 58-47. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4369. From July 2028 it would bar schools from giving out or selling food containing brominated vegetable oil, potassium bromate, propylparaben, or the dyes Red 40, Green 3, Blue 1, Blue 2 and Yellow 6. It would cover both public and private schools. The House passed it 58-47. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1710948,
+   "measure_id": "HB 5081",
+   "vote_date": "2026-06-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5081. By January 2027 it would make every school district and charter school employ at least one teacher whose job is helping students with dyslexia. That teacher would need at least 30 hours of training in the Orton-Gillingham approach, a step-by-step way of teaching reading that uses more than one sense. The House passed it 66-40. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 5081. By January 2027 it would make every school district and charter school employ at least one teacher whose job is helping students with dyslexia. That teacher would need at least 30 hours of training in the Orton-Gillingham approach, a step-by-step way of teaching reading that uses more than one sense. The House passed it 66-40. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1709258,
+   "measure_id": "HB 5819",
+   "vote_date": "2026-06-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5819. Michigan law already requires schools to teach reading with materials that meet set standards, starting in the 2027-2028 school year. The bill would bring that date forward to July 2026, the start of the 2026-2027 school year. The House passed it 56-50. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 5819. Michigan law already requires schools to teach reading with materials that meet set standards, starting in the 2027-2028 school year. The bill would bring that date forward to July 2026, the start of the 2026-2027 school year. The House passed it 56-50. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1709231,
+   "measure_id": "HB 5820",
+   "vote_date": "2026-06-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5820. Teacher training courses must add instruction in certain literacy practices by September 2027 under current law. The bill would bring that date forward to July 2026, after which the Department of Education could not approve a new teacher preparation course that did not meet the requirement. The House passed it 56-50. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 5820. Teacher training courses must add instruction in certain literacy practices by September 2027 under current law. The bill would bring that date forward to July 2026, after which the Department of Education could not approve a new teacher preparation course that did not meet the requirement. The House passed it 56-50. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
