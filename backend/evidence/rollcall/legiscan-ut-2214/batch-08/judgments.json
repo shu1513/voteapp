@@ -1,0 +1,58 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1624637,
+   "measure_id": "HB 192",
+   "vote_date": "2026-02-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 192, which removes the state's limits on what a vehicle safety inspection station may charge. Before, a station could charge no more than $14 for a motorcycle, $30 for most cars, and $40 for a four-wheel-drive or other vehicle that takes more work to inspect. Now a station may charge any reasonable fee for its labor, as long as it posts the price before the inspection. The Utah House passed it 40-31 and it was signed into law.",
+   "nay_description": "Voted against House Bill 192, which removes the state's limits on what a vehicle safety inspection station may charge. Before, a station could charge no more than $14 for a motorcycle, $30 for most cars, and $40 for a four-wheel-drive or other vehicle that takes more work to inspect. Now a station may charge any reasonable fee for its labor, as long as it posts the price before the inspection. The Utah House passed it 40-31 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1656651,
+   "measure_id": "SB 314",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 314, which tells the state health department to teach the public about sleep health and sleep problems, such as narcolepsy and sleep apnea. The goal is to help people spot the signs, get tested and treated, and see the risks of sleep problems left untreated, including on the road and at work. The department may work with schools, insurers, doctors' groups, and others to spread the word. The Utah House passed it 56-14 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 314, which tells the state health department to teach the public about sleep health and sleep problems, such as narcolepsy and sleep apnea. The goal is to help people spot the signs, get tested and treated, and see the risks of sleep problems left untreated, including on the road and at work. The department may work with schools, insurers, doctors' groups, and others to spread the word. The Utah House passed it 56-14 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1651983,
+   "measure_id": "SB 314",
+   "vote_date": "2026-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 314, which tells the state health department to teach the public about sleep health and sleep problems, such as narcolepsy and sleep apnea. The goal is to help people spot the signs, get tested and treated, and see the risks of sleep problems left untreated, including on the road and at work. The department may work with schools, insurers, doctors' groups, and others to spread the word. The Utah Senate passed it 16-12 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 314, which tells the state health department to teach the public about sleep health and sleep problems, such as narcolepsy and sleep apnea. The goal is to help people spot the signs, get tested and treated, and see the risks of sleep problems left untreated, including on the road and at work. The department may work with schools, insurers, doctors' groups, and others to spread the word. The Utah Senate passed it 16-12 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
