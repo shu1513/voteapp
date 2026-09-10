@@ -91,6 +91,19 @@ makes the act narrower than it first sounds: the approval requirement reaches
 only orders covering everyone with no known chain of infection, so an order
 aimed at people linked to a known outbreak is untouched.
 
+Review of the pull request caught that the first draft generalized one
+arrangement to every department. The act has two. Section 3 (71-1632) is the
+general rule: written approval by a majority of the county board, or for a
+city-county department a majority of the city council. Section 2 (71-1630(4))
+is the one large city-county department, a county over 200,000 people, where
+approval comes from the elected county board and city council members who sit
+on its board of health. The draft described only the second. Section 4, which
+the draft left out, makes every such order expire after seven days unless
+approved again. The builder was corrected, `rollcall:judge` re-applied, and a
+second import rewrote the 12 records on this roll in place
+(`import-dry-run-rerun-report.json` holds the plan, `import-rerun-report.json`
+the run); the other 95 were unchanged and nobody was notified.
+
 The no side takes no tag. A senator could have voted no on the health authority
 question or on making elected members sign off, and the second is an argument
 about who decides rather than about public health.

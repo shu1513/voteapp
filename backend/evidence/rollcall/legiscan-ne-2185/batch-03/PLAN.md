@@ -6,7 +6,7 @@ them became law**, and every description says so.
 | measure | roll | date | tally | area | direction |
 | --- | --- | --- | --- | --- | --- |
 | LB 319, food assistance after a drug conviction | 1571420 | 2025-05-14 | 32-17 | social_programs_and_welfare | yes = for |
-| LB 929, Medicaid copays | 1680339 | 2026-04-10 | 31-18 | healthcare_affordability | yes = for |
+| LB 929, managed care paying Medicaid copays | 1680339 | 2026-04-10 | 31-18 | healthcare_affordability | yes = for |
 | LB 1029, reporting foreign money at public colleges | 1680322 | 2026-04-10 | 29-20 | anti_corruption | yes = against |
 
 ## Why this scope exists
