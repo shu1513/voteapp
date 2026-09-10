@@ -1,0 +1,112 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1510234,
+   "measure_id": "HB 119",
+   "vote_date": "2025-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 119, which limits how far a homeowners association may go in blocking rooftop solar. Before this act, the recorded rules of a neighborhood could ban solar panels outright on a detached house. The act takes that power away. An association may still add a new ban, but only if at least 67 percent of owners vote for it, and it now takes only 51 percent of owners to change a ban that is already in place. An association may still set rules on the size and placement of a system, so long as the rules cut its output or raise its cost by no more than 5 percent. The Utah House passed it 42-31 and it was signed into law.",
+   "nay_description": "Voted against House Bill 119, which limits how far a homeowners association may go in blocking rooftop solar. Before this act, the recorded rules of a neighborhood could ban solar panels outright on a detached house. The act takes that power away. An association may still add a new ban, but only if at least 67 percent of owners vote for it, and it now takes only 51 percent of owners to change a ban that is already in place. An association may still set rules on the size and placement of a system, so long as the rules cut its output or raise its cost by no more than 5 percent. The Utah House passed it 42-31 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510237,
+   "measure_id": "HB 119",
+   "vote_date": "2025-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 119, which limits how far a homeowners association may go in blocking rooftop solar. Before this act, the recorded rules of a neighborhood could ban solar panels outright on a detached house. The act takes that power away. An association may still add a new ban, but only if at least 67 percent of owners vote for it, and it now takes only 51 percent of owners to change a ban that is already in place. An association may still set rules on the size and placement of a system, so long as the rules cut its output or raise its cost by no more than 5 percent. The Utah Senate passed it 19-10 and it was signed into law.",
+   "nay_description": "Voted against House Bill 119, which limits how far a homeowners association may go in blocking rooftop solar. Before this act, the recorded rules of a neighborhood could ban solar panels outright on a detached house. The act takes that power away. An association may still add a new ban, but only if at least 67 percent of owners vote for it, and it now takes only 51 percent of owners to change a ban that is already in place. An association may still set rules on the size and placement of a system, so long as the rules cut its output or raise its cost by no more than 5 percent. The Utah Senate passed it 19-10 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1513272,
+   "measure_id": "HB 360",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 360, which widens state help for lower-cost housing. Utah's Homes Investment Program places state money with a lender, which then lends it out at a low rate to build homes that ordinary buyers can afford. The act lets Utah's largest cities use that money to buy and fix up single-family houses and sell them, with a deed requiring the buyer to live there for at least five years. It runs the program one more year, to 2028, and drops the 2026 end date for the Utah Housing Corporation. School districts may sell or lease surplus land for moderate income housing. The act also lets a city or county close a meeting to discuss a proposed development on its own land, if an open discussion would cost it the best terms. The Utah House passed it 48-21 and it was signed into law.",
+   "nay_description": "Voted against House Bill 360, which widens state help for lower-cost housing. Utah's Homes Investment Program places state money with a lender, which then lends it out at a low rate to build homes that ordinary buyers can afford. The act lets Utah's largest cities use that money to buy and fix up single-family houses and sell them, with a deed requiring the buyer to live there for at least five years. It runs the program one more year, to 2028, and drops the 2026 end date for the Utah Housing Corporation. School districts may sell or lease surplus land for moderate income housing. The act also lets a city or county close a meeting to discuss a proposed development on its own land, if an open discussion would cost it the best terms. The Utah House passed it 48-21 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1512927,
+   "measure_id": "SB 165",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 165, which adds steps a city must clear before it may start an internet service of its own. The city must hold a public hearing and hire an outside consultant to study ten years of costs and revenue. It must then hold two more hearings, at least three weeks apart. Voters must approve before the city may sell bonds for the network. A city may not use money from its other utilities to pay for the service, and the staff who run the network must be kept apart from the staff who regulate private companies. A city that had already approved the service before March 1, 2025 skips the new steps, but the operating limits still reach it. The Utah House passed it 56-17 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 165, which adds steps a city must clear before it may start an internet service of its own. The city must hold a public hearing and hire an outside consultant to study ten years of costs and revenue. It must then hold two more hearings, at least three weeks apart. Voters must approve before the city may sell bonds for the network. A city may not use money from its other utilities to pay for the service, and the staff who run the network must be kept apart from the staff who regulate private companies. A city that had already approved the service before March 1, 2025 skips the new steps, but the operating limits still reach it. The Utah House passed it 56-17 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1512583,
+   "measure_id": "SB 262",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 262, which creates a shared appreciation loan program to help people buy a first home. A nonprofit may lend a buyer up to $150,000 with no interest and no monthly payment. The buyer pays back the amount borrowed plus a share of any rise in the home's value, and that share may be no larger than the share of the home the loan paid for. Every state dollar must be matched by at least three private dollars. The Department of Workforce Services hands the money to nonprofit lenders and could take their applications only until September 1, 2025. The act also lets cities and counties spend home ownership promotion zone money on water fees, street lighting, and cleaning up polluted land. The Utah House passed it 45-22 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 262, which creates a shared appreciation loan program to help people buy a first home. A nonprofit may lend a buyer up to $150,000 with no interest and no monthly payment. The buyer pays back the amount borrowed plus a share of any rise in the home's value, and that share may be no larger than the share of the home the loan paid for. Every state dollar must be matched by at least three private dollars. The Department of Workforce Services hands the money to nonprofit lenders and could take their applications only until September 1, 2025. The act also lets cities and counties spend home ownership promotion zone money on water fees, street lighting, and cleaning up polluted land. The Utah House passed it 45-22 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1514220,
+   "measure_id": "SB 297",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 297, which tightens state oversight of the residential programs that house children away from home, known as congregate care. Each program must file its admissions rules with the state and turn away a child who does not meet them. A program must report a critical incident to the state and to the child's parent within one business day. That covers self-harm, the use of restraint or seclusion, a denied or delayed request for medical care, a child running away, and any claim of abuse. The act creates a state ombudsman, an official who takes and looks into complaints. Each program must post the ombudsman's contact details and give children a private phone to call at any time. The Utah House passed it 53-19 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 297, which tightens state oversight of the residential programs that house children away from home, known as congregate care. Each program must file its admissions rules with the state and turn away a child who does not meet them. A program must report a critical incident to the state and to the child's parent within one business day. That covers self-harm, the use of restraint or seclusion, a denied or delayed request for medical care, a child running away, and any claim of abuse. The act creates a state ombudsman, an official who takes and looks into complaints. Each program must post the ombudsman's contact details and give children a private phone to call at any time. The Utah House passed it 53-19 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
