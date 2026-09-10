@@ -15,3 +15,8 @@ convergence dry run, in that order. The real run for the 2025 session is
 stamped `2026-09-09T23:17:47.265Z` and wrote 82 records; the 2026 session is
 stamped `2026-09-09T23:17:48.708Z` and wrote 199. Both dry-run stamps match
 zero rows in the database, which is the proof the dry runs were inert.
+
+`import-rerun-report.json` in each session directory is the second real run,
+after review corrected the SF 152 and SF 20 descriptions. It rewrote the 32
+SF 152 records and the 33 SF 20 records in place and left the other 216
+unchanged.
