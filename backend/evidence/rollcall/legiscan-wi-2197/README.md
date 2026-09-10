@@ -68,11 +68,13 @@ divided government showing up in the data. The operator chose to work both scope
 | --- | --- | --- | --- | --- |
 | batch-01 | the whole enacted pool | 15 kept of 24 | 16 | 706 |
 | batch-02 | vetoed pool, education strand | 9 kept of 13 | 15 | 839 |
+| batch-03 | vetoed pool, crime and courts | 10 kept of 10 | 18 | 878 |
 
-The vetoed pool holds 74 measures on 122 closely divided rolls. Batch-02 read 13
-of them. The remaining strands, for later batches: crime and courts; immigration
-and foreign adversaries; health, gender and civil rights; labor, unemployment
-insurance and taxes; and elections, environment and state government operations.
+The vetoed pool holds 74 measures on 122 closely divided rolls. Batches 02 and 03
+read 23 of them, leaving 51 measures on 83 rolls. The remaining strands, for
+later batches: immigration and foreign adversaries; health, gender and civil
+rights; labor, unemployment insurance and taxes; and elections, environment and
+state government operations.
 
 Nine of the passage rolls are the first chamber accepting the other chamber's
 amendment (`Senate: Assembly Substitute Amendment 7 concurred in`). When the
