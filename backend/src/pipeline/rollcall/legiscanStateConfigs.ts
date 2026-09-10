@@ -4267,6 +4267,157 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
     },
   },
+  // Wisconsin Legislature, 2025-2026 Regular Session. Wisconsin files both
+  // years of the two-year session in ONE dataset, so this is the whole
+  // session and there is no second key to add. Surveyed 2026-09-09 from the
+  // dataset cut 2026-06-28: 2,749 bills, 572 roll calls, 141 people, for 99
+  // Assembly and 33 Senate seats.
+  //
+  // ⚠⚠ THE FIRST THING TO KNOW ABOUT WISCONSIN IS HOW LITTLE IT RECORDS.
+  // 572 recorded votes across 2,749 bills in two years. Most Wisconsin bills
+  // pass on a voice vote with no tally and no member list, so they can never
+  // become a candidate record. This is a larger constraint on the state's
+  // pool than its divided government is, and no config change can lift it.
+  //
+  // Feed health is the cleanest tier: 0 file errors, 0 vote parse errors, 0
+  // roll calls without a member list, and NO COMMITTEE VOTES AT ALL — every
+  // roll's total is the whole chamber (Assembly 95-99, Senate 33). Wisconsin
+  // does publish committee votes, but in the bill history as prose (`Report
+  // passage recommended by Committee on Ways and Means, Ayes 7, Noes 3`),
+  // never as a roll call, so the shared floor-versus-committee size test has
+  // nothing to do here. West Virginia is the other state like this.
+  //
+  // ⭐ WISCONSIN PRINTS THE TALLY IN ITS OWN BILL HISTORY, so every roll can
+  // be audited with no network calls: `Read a third time and passed, Ayes 53,
+  // Noes 45`. All 572 were audited, not just the closely divided ones, per
+  // the Oregon SB 1565 lesson that a wrong tally can itself decide whether a
+  // roll looks divided. 566 exact, 4 wrong (all held below), 2 with no
+  // matching history line (one is a caption variant on the budget bill, one
+  // is held below).
+  //
+  // ⚠ WISCONSIN PAIRS VOTES, and the history line says so: `..., Ayes 53,
+  // Noes 42, Paired 2`. A pair is two members on opposite sides who agree to
+  // both withhold their votes. They are neither absent nor undecided, and
+  // LegiScan files them under `nv`. An audit whose tally pattern is anchored
+  // at the end of the line misses every paired roll and reports 25 false
+  // failures — that happened on the first run here.
+  //
+  // ⚠ TWO BILLS BECAME LAW WITH A PARTIAL VETO, and Wisconsin's wording for
+  // it is `Report approved by the Governor with partial veto on 4-8-2026.
+  // 2025 Wisconsin Act 203` — not "approved in part" and not "vetoed in
+  // part", so a check written from another state's vocabulary misses it.
+  // AB 1034 and AB 650 are the two, and AB 1034 sits inside the closely
+  // divided enacted pool. In both cases the legislature tried to override the
+  // partial veto and failed, so what became law is NOT the bill the chambers
+  // voted on. Read the published Act, and say what the partial veto removed.
+  //
+  // ⚠ CONSTITUTIONAL AMENDMENTS RIDE JOINT RESOLUTIONS, which is already a
+  // kept bill type, so the Georgia resolution gap does not recur and no
+  // `additionalBillTypes` entry is needed. But an adopted joint resolution is
+  // NOT law: it goes to the voters, or in Wisconsin's case to a second
+  // consecutive legislature and then the voters. LegiScan still marks it
+  // status 4. Of the 315 status-4 measures here, 246 were approved by the
+  // governor and 69 are resolutions that were merely adopted. Selection has
+  // to separate them; status alone cannot.
+  //
+  // Pool measured before any batch was promised: 379 passage-question rolls,
+  // 217 of them closely divided. On real bills that is 199 divided rolls over
+  // 145 measures, split 24 rolls / 23 measures that became law, 126 rolls /
+  // 75 measures the governor vetoed, and 49 rolls / 47 measures that died.
+  // The vetoed group being five times the enacted one is Wisconsin's divided
+  // government showing up in the data.
+  //
+  // There is no veto override roll anywhere in the biennium. Wisconsin needs
+  // two thirds and the legislature never reached it against this governor.
+  WI: {
+    jurisdiction: "WI",
+    sessionId: 2197,
+    chamberSizes: { house: 99, senate: 33 },
+    keptQuestions: [
+      // Wisconsin's passage vote, in the chamber where the bill started.
+      // `Assembly: Read a third time and passed` is the single largest family
+      // in the feed at 149 rolls; the Senate spelling is 67.
+      { pattern: /^(assembly|senate): read a third time and passed$/, questionClass: "passage" },
+      // The same question on a joint resolution, which is adopted rather than
+      // passed. Two rolls, both Senate.
+      { pattern: /^(assembly|senate): read a third time and adopted$/, questionClass: "passage" },
+      // The second chamber agreeing to the first chamber's measure. Wisconsin
+      // calls this concurring, and it is the second chamber's only vote on
+      // the bill — there is no separate passage vote there. `as amended`
+      // means the second chamber changed the measure and the first chamber
+      // will have to take it up again.
+      {
+        pattern: /^(assembly|senate): read a third time and concurred in( as amended)?$/,
+        questionClass: "concurrence",
+      },
+      // Adoption of a resolution taken up directly, without the reading
+      // language. 15 rolls across both chambers, all on resolutions.
+      { pattern: /^(assembly|senate): adopted$/, questionClass: "passage" },
+      // The concurrence spelling used when a resolution is taken up the same
+      // way. Two rolls, both Assembly.
+      { pattern: /^(assembly|senate): concurred in( as amended)?$/, questionClass: "concurrence" },
+      // ⚠ THE FIRST CHAMBER'S FINAL DECISION when the second chamber changed
+      // its measure (`concurred in as amended` above). The bill comes back and
+      // the first chamber votes on accepting the other chamber's amendment —
+      // usually a substitute that replaced the whole text. That vote, not the
+      // earlier passage roll, is the chamber's last word on the bill, and the
+      // judge's superseded-stage gate can only see it if it is kept. SB 622:
+      // Senate passed 22-11, the Assembly substituted, the Senate accepted the
+      // substitute 20-13. Nine rolls, all Senate, three closely divided.
+      // Refusing (`nonconcurred in`, one roll) stays excluded below.
+      {
+        pattern: /^(assembly|senate): (?:assembly|senate) (?:substitute )?amendment \d+ concurred in$/,
+        questionClass: "concurrence",
+      },
+    ],
+    excludedQuestions: [
+      // ⚠ THE BIGGEST EXCLUDED CLASS IN WISCONSIN, and it has no counterpart
+      // in most states: 62 rolls appealing a ruling from the chair. The
+      // minority offers a substitute amendment, the chair rules it not
+      // germane under Assembly Rule 54 (3)(f), the minority appeals, and the
+      // chamber votes on whether the chair was right. The vote is about
+      // whether an amendment may be considered at all, never about the
+      // measure. These divide on party lines and would otherwise look like
+      // rich material.
+      /^(assembly|senate): decision of the chair (upheld|stands as the judgment of the senate)$/,
+      // Every question about an amendment — adopting one, rejecting one,
+      // laying one on the table, refusing to concur in the other chamber's —
+      // EXCEPT the first chamber accepting the other chamber's amendment,
+      // which is its final decision on the bill and is kept above. The
+      // lookahead is what lets that one caption through; exclusions are
+      // checked first, so without it the kept rule would never be reached.
+      // Note that `read a third time and concurred in AS AMENDED` names no
+      // amendment number and is untouched. Verified against all 91 measured
+      // description families.
+      /\bamendment \d+\b(?! concurred in$)/,
+      // Cutting off debate.
+      /^(assembly|senate): move to call the question$/,
+      // Sending a measure to a committee, declining to, and refusing to
+      // suspend the rules to pull one back out.
+      /^(assembly|senate): referred to /,
+      /^(assembly|senate): refused to refer to committee on /,
+      /^(assembly|senate): refused to suspend rules to withdraw from committee on /,
+    ],
+    // Every entry here was found by auditing all 572 rolls against the tally
+    // Wisconsin prints in its own bill history. The first four are the same
+    // shape: LegiScan drops exactly one member, filing a recorded vote as not
+    // voting, so the stored tally is short by one. None of the four changes
+    // whether its roll is closely divided, but each would put a wrong tally
+    // in a candidate's record, and a description is required to cite its own
+    // roll's tally.
+    heldRollCallIds: {
+      1609619:
+        "AB 582 Assembly 2025-11-19: LegiScan reports 55-42; Wisconsin's own history reports 55-43, so one no vote is missing. The bill was vetoed, so this roll belongs to the not-enacted scope",
+      1664169:
+        "AB 619 Senate 2026-03-17: LegiScan reports 31-1; Wisconsin's own history reports 31-2, so one no vote is missing. Not closely divided either way",
+      1597302:
+        "SB 45 Senate 2025-07-02: LegiScan reports 18-14; Wisconsin's own history reports 18-15, so one no vote is missing. This is an amendment question on the budget bill and is excluded by pattern as well",
+      1615082:
+        "AJR 10 Senate 2026-01-21: LegiScan reports 17-15; Wisconsin's own history reports 18-15, so one yes vote is missing. This is a joint resolution, which is not law",
+      1664398:
+        "AB 460 Senate 2026-03-17: captioned as the concurrence vote at 18-15, but Wisconsin's history records NO tally on the concurrence line and prints 18-15 on the decision-of-the-chair vote immediately above it. The caption names a question Wisconsin took no recorded vote on. Verify against vote sheet sv0233 before ever using it",
+    },
+  },
   // Nebraska, the only state with one house. Surveyed 2026-09-09 against the
   // 109th Legislature dataset (LegiScan session 2185, dated 2026-07-12):
   // 1,847 bill files, 1,774 roll calls, 64 people. Both years of the

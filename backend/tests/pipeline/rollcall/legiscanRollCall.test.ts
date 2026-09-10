@@ -1133,6 +1133,112 @@ describe("Washington's measured desc vocabulary", () => {
   });
 });
 
+describe("Wisconsin's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.WI!;
+  const wi = (desc: string, chamber: "house" | "senate" = "house", rollCallId?: number) =>
+    classifyLegiscanRollCall({ desc, total: chamber === "house" ? 99 : 33, chamber, billType: "B", config, rollCallId });
+
+  it("keeps passage in the first chamber and concurrence in the second", () => {
+    // The Assembly is the lower chamber, and LegiScan's `A` chamber code maps
+    // to house, so both spellings have to work in both chambers.
+    expect(wi("Assembly: Read a third time and passed")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(wi("Senate: Read a third time and passed", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Wisconsin's second chamber concurs rather than passing. There is no
+    // separate passage vote there.
+    expect(wi("Senate: Read a third time and concurred in", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    expect(wi("Assembly: Read a third time and concurred in as amended")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    // A resolution is adopted rather than passed, in two spellings.
+    expect(wi("Senate: Read a third time and adopted", "senate")).toMatchObject({ questionClass: "passage" });
+    expect(wi("Assembly: Adopted")).toMatchObject({ questionClass: "passage" });
+    expect(wi("Assembly: Concurred in as amended")).toMatchObject({ questionClass: "concurrence" });
+  });
+
+  it("excludes the appeal of a ruling from the chair, Wisconsin's largest procedural class", () => {
+    // 62 rolls. The chamber votes on whether the chair was right to rule an
+    // amendment out of order, never on the measure. These divide on party
+    // lines and would otherwise look like the richest material in the feed.
+    expect(wi("Assembly: Decision of the Chair upheld")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+    expect(wi("Senate: Decision of the Chair stands as the judgment of the Senate", "senate")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+  });
+
+  it("excludes every numbered-amendment question without touching `as amended`", () => {
+    for (const desc of [
+      "Senate: Senate Amendment 1 rejected",
+      "Senate: Senate Substitute Amendment 1 rejected",
+      "Senate: Senate Amendment 26 to Senate Substitute Amendment 2 adopted",
+      "Assembly: Assembly Substitute Amendment 1 laid on table",
+      "Assembly: Assembly Amendment 3 to Assembly Substitute Amendment 2 laid on table",
+      "Senate: Assembly Substitute Amendment 1 nonconcurred in",
+    ]) {
+      expect(wi(desc, "senate")).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+    // The passage question says `as amended` and names no amendment number, so
+    // the amendment rule must not claim it.
+    expect(wi("Senate: Read a third time and concurred in as amended", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+  });
+
+  it("keeps the first chamber accepting the other chamber's amendment, its final decision on the bill", () => {
+    // SB 622: the Senate passed 22-11, the Assembly replaced the text with
+    // Substitute Amendment 7, and the Senate accepted that 20-13. The later
+    // roll is the Senate's last word, and the superseded-stage gate can only
+    // see it if it is kept.
+    expect(wi("Senate: Assembly Substitute Amendment 7 concurred in", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    expect(wi("Senate: Assembly Amendment 1 concurred in", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+  });
+
+  it("excludes the referral and debate-cutoff motions", () => {
+    for (const desc of [
+      "Senate: Move to call the question",
+      "Assembly: Referred to Campaigns and Elections",
+      "Assembly: Refused to refer to committee on Energy and Utilities",
+      "Senate: Refused to suspend rules to withdraw from committee on Judiciary and Public Safety",
+    ]) {
+      expect(wi(desc, "senate")).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+  });
+
+  it("holds the rolls whose tally Wisconsin's own bill history contradicts", () => {
+    // LegiScan files one member's recorded vote as not voting, so the stored
+    // tally is short by one. Wisconsin's history says 55-43.
+    expect(wi("Assembly: Read a third time and passed", "house", 1609619)).toMatchObject({ isFloorVote: null });
+    // The same caption on any other roll is a normal passage vote.
+    expect(wi("Assembly: Read a third time and passed", "house", 1)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Captioned as the concurrence vote, but Wisconsin recorded no tally on
+    // that line and prints this tally on the chair ruling above it.
+    expect(wi("Senate: Read a third time and concurred in", "senate", 1664398)).toMatchObject({ isFloorVote: null });
+  });
+});
+
 describe("Alabama's 2023 desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS["AL-2014"]!;
   const al23 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
@@ -1606,6 +1712,7 @@ describe("getLegiscanStateConfig", () => {
       "ID-2246",
       "WV",
       "WV-2254",
+      "WI",
       "NE",
       "SD",
       "SD-2231",
@@ -1647,10 +1754,12 @@ describe("getLegiscanStateConfig", () => {
       "ND",
       "ID",
       "WV",
+      "WI",
       "NE",
       "SD",
       "WA",
     ]);
+    expect(getLegiscanStateConfig("WI").sessionId).toBe(2197);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
