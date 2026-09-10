@@ -1,0 +1,310 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1659862,
+      "measure_id": "HB 1170",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1170. This law will make large artificial intelligence companies label what their systems produce. It covers a provider whose system has more than one million users a month. The system must be open to the public in Washington for personal use. Where it is reasonable to do so, the provider must mark any video, image or audio the system creates or greatly changes. The mark must show where the content came from, so a user can tell. The provider must also make that mark hard to remove. Video game and interactive products are not covered. Nor are state, local and tribal governments. It became law as chapter 167 of the 2026 session laws and takes effect on February 1, 2027. The Washington House approved it 55-38.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1170. This law will make large artificial intelligence companies label what their systems produce. It covers a provider whose system has more than one million users a month. The system must be open to the public in Washington for personal use. Where it is reasonable to do so, the provider must mark any video, image or audio the system creates or greatly changes. The mark must show where the content came from, so a user can tell. The provider must also make that mark hard to remove. Video game and interactive products are not covered. Nor are state, local and tribal governments. It became law as chapter 167 of the 2026 session laws and takes effect on February 1, 2027. The Washington House approved it 55-38.",
+      "labels": [
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1553959,
+      "measure_id": "HB 1462",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1462. Hydrofluorocarbons are gases used in cooling equipment. They warm the planet far more than carbon dioxide does. This law caps how strong that warming effect may be for newly made bulk supplies. The cap is 1,500 times carbon dioxide from 2030, and 750 times from 2033. Reclaimed refrigerants, use in aircraft, and some uses allowed under federal rules are not covered. The Department of Ecology may excuse a firm that cannot meet the cap, but only if it follows a plan to get there. Ecology may also grant a 30-day emergency exemption. Breaking the rules carries the state Clean Air Act's civil and criminal penalties. It became law as chapter 313 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 58-39.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1462. Hydrofluorocarbons are gases used in cooling equipment. They warm the planet far more than carbon dioxide does. This law caps how strong that warming effect may be for newly made bulk supplies. The cap is 1,500 times carbon dioxide from 2030, and 750 times from 2033. Reclaimed refrigerants, use in aircraft, and some uses allowed under federal rules are not covered. The Department of Ecology may excuse a firm that cannot meet the cap, but only if it follows a plan to get there. Ecology may also grant a 30-day emergency exemption. Breaking the rules carries the state Clean Air Act's civil and criminal penalties. It became law as chapter 313 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 58-39.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1549260,
+      "measure_id": "HB 1462",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1462. Hydrofluorocarbons are gases used in cooling equipment. They warm the planet far more than carbon dioxide does. This law caps how strong that warming effect may be for newly made bulk supplies. The cap is 1,500 times carbon dioxide from 2030, and 750 times from 2033. Reclaimed refrigerants, use in aircraft, and some uses allowed under federal rules are not covered. The Department of Ecology may excuse a firm that cannot meet the cap, but only if it follows a plan to get there. Ecology may also grant a 30-day emergency exemption. Breaking the rules carries the state Clean Air Act's civil and criminal penalties. It became law as chapter 313 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-23.",
+      "nay_description": "Voted against passing House Bill 1462. Hydrofluorocarbons are gases used in cooling equipment. They warm the planet far more than carbon dioxide does. This law caps how strong that warming effect may be for newly made bulk supplies. The cap is 1,500 times carbon dioxide from 2030, and 750 times from 2033. Reclaimed refrigerants, use in aircraft, and some uses allowed under federal rules are not covered. The Department of Ecology may excuse a firm that cannot meet the cap, but only if it follows a plan to get there. Ecology may also grant a 30-day emergency exemption. Breaking the rules carries the state Clean Air Act's civil and criminal penalties. It became law as chapter 313 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-23.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1554380,
+      "measure_id": "HB 1491",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1491. This law makes cities allow denser housing near transit. A rail station area is the land within half a mile walk of a light rail entrance, or of a commuter rail entrance in a city with more than 15,000 people. In smaller cities the commuter rail area is a quarter mile. A bus station area is the land within a quarter mile of a bus rapid transit stop that has permanent features, such as raised platforms or dedicated lanes. Cities that plan fully must allow new homes and mixed-use buildings at an average floor area ratio of at least 3.5 in rail areas and 2.5 in bus areas. Floor area ratio compares building floor space to lot size, so a higher number means more building per lot. A further 1.5 is allowed for a building that is entirely affordable, workforce or permanent supportive housing for at least 50 years. Cities may leave out shorelines, critical areas, landmarks, historic districts and a few other kinds of lot. It became law as chapter 267 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 57-39.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1491. This law makes cities allow denser housing near transit. A rail station area is the land within half a mile walk of a light rail entrance, or of a commuter rail entrance in a city with more than 15,000 people. In smaller cities the commuter rail area is a quarter mile. A bus station area is the land within a quarter mile of a bus rapid transit stop that has permanent features, such as raised platforms or dedicated lanes. Cities that plan fully must allow new homes and mixed-use buildings at an average floor area ratio of at least 3.5 in rail areas and 2.5 in bus areas. Floor area ratio compares building floor space to lot size, so a higher number means more building per lot. A further 1.5 is allowed for a building that is entirely affordable, workforce or permanent supportive housing for at least 50 years. Cities may leave out shorelines, critical areas, landmarks, historic districts and a few other kinds of lot. It became law as chapter 267 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 57-39.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1548615,
+      "measure_id": "HB 1491",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1491. This law makes cities allow denser housing near transit. A rail station area is the land within half a mile walk of a light rail entrance, or of a commuter rail entrance in a city with more than 15,000 people. In smaller cities the commuter rail area is a quarter mile. A bus station area is the land within a quarter mile of a bus rapid transit stop that has permanent features, such as raised platforms or dedicated lanes. Cities that plan fully must allow new homes and mixed-use buildings at an average floor area ratio of at least 3.5 in rail areas and 2.5 in bus areas. Floor area ratio compares building floor space to lot size, so a higher number means more building per lot. A further 1.5 is allowed for a building that is entirely affordable, workforce or permanent supportive housing for at least 50 years. Cities may leave out shorelines, critical areas, landmarks, historic districts and a few other kinds of lot. It became law as chapter 267 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "nay_description": "Voted against passing House Bill 1491. This law makes cities allow denser housing near transit. A rail station area is the land within half a mile walk of a light rail entrance, or of a commuter rail entrance in a city with more than 15,000 people. In smaller cities the commuter rail area is a quarter mile. A bus station area is the land within a quarter mile of a bus rapid transit stop that has permanent features, such as raised platforms or dedicated lanes. Cities that plan fully must allow new homes and mixed-use buildings at an average floor area ratio of at least 3.5 in rail areas and 2.5 in bus areas. Floor area ratio compares building floor space to lot size, so a higher number means more building per lot. A further 1.5 is allowed for a building that is entirely affordable, workforce or permanent supportive housing for at least 50 years. Cities may leave out shorelines, critical areas, landmarks, historic districts and a few other kinds of lot. It became law as chapter 267 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1515591,
+      "measure_id": "HB 1747",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1747. This law limits how an employer may use a person's criminal record. An employer may not rule out everyone who has a record. It must make a conditional job offer before it looks into an applicant's record. It may never reject, fire, suspend, discipline, demote or refuse to promote someone over an arrest record or a juvenile conviction. The only exception to that rule is an adult who is out on bail, or released on a promise to appear, while awaiting trial. For an adult conviction, the employer may act only if it has a legitimate business reason. The law does not cover jobs with unsupervised access to children or vulnerable adults, police and criminal justice agencies, jobs where federal or state law requires a record check, or work under a federal contract that bars people with records. It became law as chapter 71 of the 2025 session laws. It applies to employers with 15 or more employees from July 1, 2026, and to smaller employers from January 1, 2027. The Washington House approved it 56-40.",
+      "nay_description": "Voted against passing House Bill 1747. This law limits how an employer may use a person's criminal record. An employer may not rule out everyone who has a record. It must make a conditional job offer before it looks into an applicant's record. It may never reject, fire, suspend, discipline, demote or refuse to promote someone over an arrest record or a juvenile conviction. The only exception to that rule is an adult who is out on bail, or released on a promise to appear, while awaiting trial. For an adult conviction, the employer may act only if it has a legitimate business reason. The law does not cover jobs with unsupervised access to children or vulnerable adults, police and criminal justice agencies, jobs where federal or state law requires a record check, or work under a federal contract that bars people with records. It became law as chapter 71 of the 2025 session laws. It applies to employers with 15 or more employees from July 1, 2026, and to smaller employers from January 1, 2027. The Washington House approved it 56-40.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1544864,
+      "measure_id": "HB 1747",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1747. This law limits how an employer may use a person's criminal record. An employer may not rule out everyone who has a record. It must make a conditional job offer before it looks into an applicant's record. It may never reject, fire, suspend, discipline, demote or refuse to promote someone over an arrest record or a juvenile conviction. The only exception to that rule is an adult who is out on bail, or released on a promise to appear, while awaiting trial. For an adult conviction, the employer may act only if it has a legitimate business reason. The law does not cover jobs with unsupervised access to children or vulnerable adults, police and criminal justice agencies, jobs where federal or state law requires a record check, or work under a federal contract that bars people with records. It became law as chapter 71 of the 2025 session laws. It applies to employers with 15 or more employees from July 1, 2026, and to smaller employers from January 1, 2027. The Washington Senate approved it 27-22.",
+      "nay_description": "Voted against passing House Bill 1747. This law limits how an employer may use a person's criminal record. An employer may not rule out everyone who has a record. It must make a conditional job offer before it looks into an applicant's record. It may never reject, fire, suspend, discipline, demote or refuse to promote someone over an arrest record or a juvenile conviction. The only exception to that rule is an adult who is out on bail, or released on a promise to appear, while awaiting trial. For an adult conviction, the employer may act only if it has a legitimate business reason. The law does not cover jobs with unsupervised access to children or vulnerable adults, police and criminal justice agencies, jobs where federal or state law requires a record check, or work under a federal contract that bars people with records. It became law as chapter 71 of the 2025 session laws. It applies to employers with 15 or more employees from July 1, 2026, and to smaller employers from January 1, 2027. The Washington Senate approved it 27-22.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1661089,
+      "measure_id": "HB 2105",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 2105. This law makes employers tell workers when federal agents ask to see employment records. From October 1, 2026, an employer has five days to post and hand out a notice. The notice must name the agency, the date and the records sought. It must also say how to reach a statewide immigrant and refugee rights group. It must be in English and the five most used other languages in the state. The Attorney General must publish a model notice by September 1, 2026. An employer that uses that model has met the rule. It became law as chapter 240 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 58-38.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 2105. This law makes employers tell workers when federal agents ask to see employment records. From October 1, 2026, an employer has five days to post and hand out a notice. The notice must name the agency, the date and the records sought. It must also say how to reach a statewide immigrant and refugee rights group. It must be in English and the five most used other languages in the state. The Attorney General must publish a model notice by September 1, 2026. An employer that uses that model has met the rule. It became law as chapter 240 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 58-38.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1655460,
+      "measure_id": "HB 2105",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2105. This law makes employers tell workers when federal agents ask to see employment records. From October 1, 2026, an employer has five days to post and hand out a notice. The notice must name the agency, the date and the records sought. It must also say how to reach a statewide immigrant and refugee rights group. It must be in English and the five most used other languages in the state. The Attorney General must publish a model notice by September 1, 2026. An employer that uses that model has met the rule. It became law as chapter 240 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 27-21.",
+      "nay_description": "Voted against passing House Bill 2105. This law makes employers tell workers when federal agents ask to see employment records. From October 1, 2026, an employer has five days to post and hand out a notice. The notice must name the agency, the date and the records sought. It must also say how to reach a statewide immigrant and refugee rights group. It must be in English and the five most used other languages in the state. The Attorney General must publish a model notice by September 1, 2026. An employer that uses that model has met the rule. It became law as chapter 240 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 27-21.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1546391,
+      "measure_id": "SB 5184",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5184. This law stops cities and counties requiring as much off-street parking. They may not require more than half a parking space per apartment, more than one space per single-family home, or more than two spaces per 1,000 square feet of commercial space. They may not require any parking at all for affordable housing, senior housing, child care sites, homes under 1,200 square feet, commercial spaces under 3,000 square feet, ground-floor business space in mixed-use buildings, or a building changing from business to residential use. Accessible parking under the Americans with Disabilities Act is unaffected. Cities with 30,000 people or fewer are exempt. Cities and counties with 50,000 people or more had 18 months to comply, and those with between 30,000 and 50,000 had three years. It became law as chapter 204 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 64-31.",
+      "nay_description": "Voted against passing Senate Bill 5184. This law stops cities and counties requiring as much off-street parking. They may not require more than half a parking space per apartment, more than one space per single-family home, or more than two spaces per 1,000 square feet of commercial space. They may not require any parking at all for affordable housing, senior housing, child care sites, homes under 1,200 square feet, commercial spaces under 3,000 square feet, ground-floor business space in mixed-use buildings, or a building changing from business to residential use. Accessible parking under the Americans with Disabilities Act is unaffected. Cities with 30,000 people or fewer are exempt. Cities and counties with 50,000 people or more had 18 months to comply, and those with between 30,000 and 50,000 had three years. It became law as chapter 204 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 64-31.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1551575,
+      "measure_id": "SB 5184",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5184. This law stops cities and counties requiring as much off-street parking. They may not require more than half a parking space per apartment, more than one space per single-family home, or more than two spaces per 1,000 square feet of commercial space. They may not require any parking at all for affordable housing, senior housing, child care sites, homes under 1,200 square feet, commercial spaces under 3,000 square feet, ground-floor business space in mixed-use buildings, or a building changing from business to residential use. Accessible parking under the Americans with Disabilities Act is unaffected. Cities with 30,000 people or fewer are exempt. Cities and counties with 50,000 people or more had 18 months to comply, and those with between 30,000 and 50,000 had three years. It became law as chapter 204 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 36-13.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5184. This law stops cities and counties requiring as much off-street parking. They may not require more than half a parking space per apartment, more than one space per single-family home, or more than two spaces per 1,000 square feet of commercial space. They may not require any parking at all for affordable housing, senior housing, child care sites, homes under 1,200 square feet, commercial spaces under 3,000 square feet, ground-floor business space in mixed-use buildings, or a building changing from business to residential use. Accessible parking under the Americans with Disabilities Act is unaffected. Cities with 30,000 people or fewer are exempt. Cities and counties with 50,000 people or more had 18 months to comply, and those with between 30,000 and 50,000 had three years. It became law as chapter 204 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 36-13.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1543189,
+      "measure_id": "SB 5480",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5480. This law keeps medical debt off credit reports. A hospital, doctors' group, other medical provider or collection agency may not report medical debt to a credit bureau, and a credit bureau may not report it either. If anyone does report it, the debt becomes unenforceable, so it can no longer be collected. Medical debt here means money owed to a business whose main work is providing medical services, products or devices, and it counts even if the bill is not overdue or has been paid. Cosmetic surgery does not count, unless it repairs damage from an injury or disease. It became law as chapter 145 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "nay_description": "Voted against passing Senate Bill 5480. This law keeps medical debt off credit reports. A hospital, doctors' group, other medical provider or collection agency may not report medical debt to a credit bureau, and a credit bureau may not report it either. If anyone does report it, the debt becomes unenforceable, so it can no longer be collected. Medical debt here means money owed to a business whose main work is providing medical services, products or devices, and it counts even if the bill is not overdue or has been paid. Cosmetic surgery does not count, unless it repairs damage from an injury or disease. It became law as chapter 145 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1500199,
+      "measure_id": "SB 5480",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5480. This law keeps medical debt off credit reports. A hospital, doctors' group, other medical provider or collection agency may not report medical debt to a credit bureau, and a credit bureau may not report it either. If anyone does report it, the debt becomes unenforceable, so it can no longer be collected. Medical debt here means money owed to a business whose main work is providing medical services, products or devices, and it counts even if the bill is not overdue or has been paid. Cosmetic surgery does not count, unless it repairs damage from an injury or disease. It became law as chapter 145 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 35-12.",
+      "nay_description": "Voted against passing Senate Bill 5480. This law keeps medical debt off credit reports. A hospital, doctors' group, other medical provider or collection agency may not report medical debt to a credit bureau, and a credit bureau may not report it either. If anyone does report it, the debt becomes unenforceable, so it can no longer be collected. Medical debt here means money owed to a business whose main work is providing medical services, products or devices, and it counts even if the bill is not overdue or has been paid. Cosmetic surgery does not count, unless it repairs damage from an injury or disease. It became law as chapter 145 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 35-12.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1545855,
+      "measure_id": "SB 5494",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5494. Paint made before 1978 often contains lead, which is dangerous to children. This law has the Department of Commerce run a state program for renovation work on older homes and buildings used by children. Work on those buildings must be done by certified firms using certified workers, or people the certified workers have trained, and firms must meet standards Commerce sets. Commerce also runs the training and certification, and may set fees to cover the cost. The state rules must be at least as protective as the federal ones. Commerce may not fine someone for a violation the federal Environmental Protection Agency has already acted on. It became law as chapter 180 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 63-33.",
+      "nay_description": "Voted against passing Senate Bill 5494. Paint made before 1978 often contains lead, which is dangerous to children. This law has the Department of Commerce run a state program for renovation work on older homes and buildings used by children. Work on those buildings must be done by certified firms using certified workers, or people the certified workers have trained, and firms must meet standards Commerce sets. Commerce also runs the training and certification, and may set fees to cover the cost. The state rules must be at least as protective as the federal ones. Commerce may not fine someone for a violation the federal Environmental Protection Agency has already acted on. It became law as chapter 180 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 63-33.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1508793,
+      "measure_id": "SB 5494",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5494. Paint made before 1978 often contains lead, which is dangerous to children. This law has the Department of Commerce run a state program for renovation work on older homes and buildings used by children. Work on those buildings must be done by certified firms using certified workers, or people the certified workers have trained, and firms must meet standards Commerce sets. Commerce also runs the training and certification, and may set fees to cover the cost. The state rules must be at least as protective as the federal ones. Commerce may not fine someone for a violation the federal Environmental Protection Agency has already acted on. It became law as chapter 180 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 31-18.",
+      "nay_description": "Voted against passing Senate Bill 5494. Paint made before 1978 often contains lead, which is dangerous to children. This law has the Department of Commerce run a state program for renovation work on older homes and buildings used by children. Work on those buildings must be done by certified firms using certified workers, or people the certified workers have trained, and firms must meet standards Commerce sets. Commerce also runs the training and certification, and may set fees to cover the cost. The state rules must be at least as protective as the federal ones. Commerce may not fine someone for a violation the federal Environmental Protection Agency has already acted on. It became law as chapter 180 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 31-18.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1648425,
+      "measure_id": "SB 5917",
+      "vote_date": "2026-02-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5917. This law widens who the Department of Corrections may supply with abortion medications. It may sell or deliver them to health care providers and health care groups. Those groups must use them for reproductive health care, which covers abortion and the care of early pregnancy loss. The department must work with the Department of Health to find suitable recipients. It must put bulk supply first, including to Indian health care providers. The old rule capped the price at list price plus a five dollar fee, and that cap is gone. The department need not charge at all. It became law as chapter 52 of the 2026 session laws and took effect on March 14, 2026. The Washington House approved it 57-36.",
+      "nay_description": "Voted against passing Senate Bill 5917. This law widens who the Department of Corrections may supply with abortion medications. It may sell or deliver them to health care providers and health care groups. Those groups must use them for reproductive health care, which covers abortion and the care of early pregnancy loss. The department must work with the Department of Health to find suitable recipients. It must put bulk supply first, including to Indian health care providers. The old rule capped the price at list price plus a five dollar fee, and that cap is gone. The department need not charge at all. It became law as chapter 52 of the 2026 session laws and took effect on March 14, 2026. The Washington House approved it 57-36.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1628501,
+      "measure_id": "SB 5917",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5917. This law widens who the Department of Corrections may supply with abortion medications. It may sell or deliver them to health care providers and health care groups. Those groups must use them for reproductive health care, which covers abortion and the care of early pregnancy loss. The department must work with the Department of Health to find suitable recipients. It must put bulk supply first, including to Indian health care providers. The old rule capped the price at list price plus a five dollar fee, and that cap is gone. The department need not charge at all. It became law as chapter 52 of the 2026 session laws and took effect on March 14, 2026. The Washington Senate approved it 32-17.",
+      "nay_description": "Voted against passing Senate Bill 5917. This law widens who the Department of Corrections may supply with abortion medications. It may sell or deliver them to health care providers and health care groups. Those groups must use them for reproductive health care, which covers abortion and the care of early pregnancy loss. The department must work with the Department of Health to find suitable recipients. It must put bulk supply first, including to Indian health care providers. The old rule capped the price at list price plus a five dollar fee, and that cap is gone. The department need not charge at all. It became law as chapter 52 of the 2026 session laws and took effect on March 14, 2026. The Washington Senate approved it 32-17.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    }
+  ]
+}
