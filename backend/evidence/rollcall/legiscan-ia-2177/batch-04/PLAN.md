@@ -39,3 +39,6 @@ HF 571, HF 516, HF 398, HF 2724, SF 2218. The reasoning for each is in `JUDGING.
 - Reconciled three ways: report total, rows matching the run stamp, and the table delta all agree.
 - Duplicate sweep: hand-written records sharing a candidate and a date were checked and every
   one is about a different measure. Nothing retired.
+
+## Review fixes (2026-09-09)
+- HF 571: the act preserves hospitals' federal emergency-treatment duty and conditions immunity on good faith (sections 3 and 4); both qualifications are now in the description. Re-judged and re-imported: 92 rewrites, 282 unchanged, ledger in `import-rerun-report.json`.
