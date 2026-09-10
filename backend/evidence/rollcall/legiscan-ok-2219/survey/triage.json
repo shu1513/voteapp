@@ -265,9 +265,9 @@
   "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
  },
  "HB2764": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-05",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-05."
  },
  "HB2765": {
   "class": "sunset or agency housekeeping",
@@ -945,9 +945,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB1618": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-05",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-05."
  },
  "SB1651": {
   "class": "sunset or agency housekeeping",
@@ -1040,9 +1040,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB212": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-05",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-05."
  },
  "SB2134": {
   "class": "sunset or agency housekeeping",
@@ -1105,9 +1105,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB460": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-05",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-05."
  },
  "SB490": {
   "class": "sunset or agency housekeeping",
@@ -1220,14 +1220,14 @@
   "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
  },
  "SB743": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-05",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-05."
  },
  "SB758": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-05",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-05."
  },
  "SB805": {
   "class": "sunset or agency housekeeping",
