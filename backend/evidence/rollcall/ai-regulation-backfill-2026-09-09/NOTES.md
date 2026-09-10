@@ -35,7 +35,7 @@ rolls (the earlier nay review found a no vote evidences no stance there).
 - NC H 936 (robocall law; AI voice calls incidental)
 - CA AB 2465, CA AB 1792, US H.R. 5764 (immigration, curriculum, AI adoption help)
 - SD SB 164 — deferred until #1272 merged; done the same day from `sd-2170/`
-  (house 1509251, `for`, +25 tags)
+  (house 1509251, `for`, +29 tags)
 
 ## Import mechanics
 
@@ -51,3 +51,24 @@ rolls (the earlier nay review found a no vote evidences no stance there).
   Sundareshan); both entries now name the surviving candidate id.
 - Result: 454 `ai_regulation` tags added across the 15 state rolls, no other
   tag changed. `us-119-1/` holds the dry run only (see the PR).
+
+## Round 2 (same day) — wider keyword sweep
+
+The first pass searched "artificial intelligence / AI / deepfake / automated
+decision". A second sweep on chatbot, algorithm, facial recognition,
+synthetic media, generative, autonomous and automated-system wording found
+four more roll calls, all judged `for` and imported from `co-2243-hb1263/`
+and `me-2181/` (+100 tags):
+
+| Roll | Measure | Why |
+|---|---|---|
+| CO senate 1696247 / house 1697180 | HB 1263 | rules for public-facing chatbots (child detection, disclosures, annual reports) |
+| ME house 1658072 / senate 1661402 | LD 517 | warning label on synthetic media in campaign ads |
+
+Left alone: the 15 data-center roll calls (power, water and zoning rules for
+large power users — not rules for AI systems), CA SB 771 and other
+recommendation-algorithm or algorithmic-pricing bills (algorithms, not AI
+systems), CO HB 1098 (an automated notification system the state adopts).
+
+The matching hand-researched records went through `manual:records:tag`
+(`records-repair/ai-regulation-tags-2026-09-09/tags-round2.json`, 10 of 22).

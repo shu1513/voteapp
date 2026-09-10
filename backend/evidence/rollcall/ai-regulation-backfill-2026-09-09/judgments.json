@@ -384,6 +384,101 @@
       ]
     },
     {
+      "chamber": "senate",
+      "jurisdiction": "CO",
+      "session": "2243",
+      "roll": 1696247,
+      "measure_id": "HB 1263",
+      "vote_date": "2026-05-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1263. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+      "nay_description": "Voted against passing House Bill 1263. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "CO",
+      "session": "2243",
+      "roll": 1697180,
+      "measure_id": "HB 1263",
+      "vote_date": "2026-05-12",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1263 and pass it. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1263. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1697179
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "ME",
+      "session": "2181",
+      "roll": 1658072,
+      "measure_id": "LD 517",
+      "vote_date": "2026-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. Breaking this rule can cost up to five times what was spent on the ad, and the usual chance to fix the problem within 10 days and avoid a penalty does not apply. A broadcaster or newspaper is only liable if it ran the ad knowing it contained synthetic media. The Maine House passed it 73-65 and it became law.",
+      "nay_description": "Voted no on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. Breaking this rule can cost up to five times what was spent on the ad, and the usual chance to fix the problem within 10 days and avoid a penalty does not apply. A broadcaster or newspaper is only liable if it ran the ad knowing it contained synthetic media. The Maine House passed it 73-65 and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "ME",
+      "session": "2181",
+      "roll": 1661402,
+      "measure_id": "LD 517",
+      "vote_date": "2026-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Satire and parody do not need the warning. Neither do edits that only sharpen the picture or sound, add captions, or highlight part of a clip, so long as they do not change the impression a viewer gets. The Maine Senate passed it 20-14 and it became law.",
+      "nay_description": "Voted no on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Satire and parody do not need the warning. Neither do edits that only sharpen the picture or sound, add captions, or highlight part of a clip, so long as they do not change the impression a viewer gets. The Maine Senate passed it 20-14 and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
       "chamber": "house",
       "jurisdiction": "SD",
       "session": "2170",
