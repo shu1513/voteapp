@@ -1,8 +1,13 @@
 # Wisconsin batch-01 — the enacted scope
 
-Prepared 2026-09-09. Local database only. Nothing is imported yet: this document
-records the selection and the checks that must happen before any description is
-written.
+Prepared 2026-09-09, completed 2026-09-10. Local database only; production holds
+no Wisconsin roll-call records.
+
+**This batch is imported: 15 measures, 16 roll calls, 706 candidate records, 99
+candidates, 468 area tags.** How each measure was judged, and why nine were
+dropped, is in JUDGING.md next to this file. The selection and the checks that
+had to happen first are recorded below, as they were written before any
+description existed.
 
 ## Scope
 
@@ -109,61 +114,33 @@ published Act and must say what the partial veto removed.
 The other partially vetoed measure of the session, AB 650, has no closely divided
 roll and is not in this batch.
 
-## Filters 3 and 5, provisional
+## Filters 3 and 5, as decided
 
-These are screens from the title and the bill's own summary line. **A title is
-never a basis for a judgment**, and every one of these has to be confirmed
-against the enrolled Act before a description is written. This list exists so the
-reading order is sensible, not to pre-decide anything.
+The provisional screen written before the acts were read is superseded by
+JUDGING.md, which records the decision on every measure against its enrolled
+text. In summary:
 
-Likely to carry an honest direction, subject to the read:
+- **15 measures kept**, carrying 16 roll calls.
+- **9 measures dropped**: AB 320, AB 453 and AB 75 on the version rule; AB 1034
+  and SB 45 as appropriations, AB 1034 also for the partial veto; AB 601 because
+  no research area describes gambling; AB 737 because it reads both ways inside
+  housing affordability; SB 11 because it imposes no duty; SB 283 because the
+  nearest area misdescribes the vote.
 
-| measure | act | subject as titled |
-| --- | --- | --- |
-| AB 180 (both chambers) | 116 | seek a waiver to bar buying candy and soft drinks with FoodShare benefits |
-| AB 2 | 42 | school boards must adopt a policy barring phones during instruction |
-| AB 223 | 126 | residency requirement for people circulating nomination papers |
-| AB 35 | 43 | withdrawal of candidacy, with a penalty |
-| AB 453 | 173 | required approvals of rezoning for residential development |
-| AB 592 | 95 | professional development for science teachers |
-| AB 75 | 45 | Justice Department collection and reporting of criminal case data |
-| AB 89 | 106 | theft crimes and a penalty |
-| SB 106 | 9 | psychiatric residential treatment facilities |
-| SB 108 | 10 | sharing minors' safety plans |
-| SB 182 | 35 | reimbursement for emergency medical responder training |
-| SB 279 | 58 | grants for law enforcement data-sharing platforms |
-| SB 283 | 14 | hearing protection for public protective services |
-| SB 485 | 184 | video monitoring in residential care centers for children |
-| SB 56 | 8 | federal grant funds for lead service line replacement |
-| SB 785 | 185 | license-holder investigations shown in the online licensing portal |
-| SB 825 | 110 | environmental review before certain major highway projects |
+Every one of the 24 measures in the enacted pool now carries a disposition.
 
-Expected to be hard, and quite possibly filter-5 drops:
+## What happened to the checks listed above
 
-- **AB 446** (Act 143), consideration of a particular definition of antisemitism.
-  The objection to it is a free-speech objection, which is the same axis as the
-  protection it offers. Both readings sit inside `civil_rights`.
-- **AB 601** (Act 247), excluding certain event or sports wagers from the
-  definition of a bet. No research area describes gambling.
-- **AB 737** (Act 120), financing infrastructure through a special charge approved
-  by a neighborhood improvement district. A financing mechanism, not a policy
-  direction.
-- **AB 320** (Act 179), increasing court fees and indexing them to inflation.
-  Also carries the version problem above.
-- **SB 11** (Act 79), letting federally chartered youth organizations present to
-  pupils. Salient but with no honest direction.
-- **AB 1034** (Act 203), the name, image and likeness bill, on top of the partial
-  veto problem.
-
-## What must happen before anything is imported
-
-1. Read the enrolled Act for every measure kept. The title is not the text.
-2. For AB 1034, read the published Act and establish what the partial veto struck.
-3. For the five slots listed above, read the later amendment and decide whether
-   it is material.
-4. Determine whether Wisconsin marks deleted and added text in a way `pdftotext`
-   throws away. This has not been checked yet, and nearly every state does.
-5. Write the descriptions, join sentences with a period, and run
-   `candidateRecordPlainLanguageLint` over the judgments file before importing.
-6. Judge as a dry run, then for real; import as a dry run, then for real;
-   reconcile the row counts three ways.
+1. Every kept measure was read from its enrolled act. Three drops came out of
+   that reading rather than the screen.
+2. AB 1034's partial veto was established by comparing the enrolled print with
+   the published act. The governor struck the athletics appropriations.
+3. All five version questions were settled by fetching and reading the
+   amendments. Three were material and cost their measures.
+4. **Wisconsin does mark deleted and added text in a way `pdftotext` throws
+   away**, and the marks are filled rectangles that pdfminer cannot see.
+   `tools/wi_text.py` resolves them; it was calibrated against a passage whose
+   answer was known independently.
+5. The plain-language lint reported 0 warnings over all 32 descriptions.
+6. Judge and import were each run as a dry run and then for real, and the row
+   counts reconcile.
