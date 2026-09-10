@@ -51,6 +51,12 @@ describe("parseTagsFile", () => {
   it("rejects a non-array file", () => {
     expect(() => parseTagsFile(JSON.stringify({}))).toThrow(/JSON array/);
   });
+
+  it("rejects a repeated record/area pair before anything is written, case and whitespace aside", () => {
+    expect(() =>
+      parseTagsFile(JSON.stringify([INPUT, { ...INPUT, recordId: " rec-1 ", researchAreaSlug: "AI_REGULATION" }]))
+    ).toThrow(/tags\[1\] repeats rec-1:ai_regulation/);
+  });
 });
 
 describe("tagOneRecordArea", () => {

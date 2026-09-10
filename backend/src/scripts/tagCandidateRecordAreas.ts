@@ -100,6 +100,9 @@ export function parseTagsFile(raw: string): TagInput[] {
   if (!Array.isArray(parsed)) {
     throw new Error("tags file must contain a JSON array");
   }
+  // One entry per record/area: a repeated pair would insert once and then
+  // report the second as "already tagged", failing the run after writing.
+  const seen = new Set<string>();
   return parsed.map((entry, index) => {
     if (typeof entry !== "object" || entry === null) {
       throw new Error(`tags[${index}] must be an object`);
@@ -126,9 +129,15 @@ export function parseTagsFile(raw: string): TagInput[] {
     // Lowercased here, once: the lookup, the validator, and the write must
     // all see the same slug, or a mixed-case manifest could miss an existing
     // tag in the lookup and then overwrite it in the write.
+    const normalizedSlug = researchAreaSlug.trim().toLowerCase();
+    const key = `${recordId.trim()}:${normalizedSlug}`;
+    if (seen.has(key)) {
+      throw new Error(`tags[${index}] repeats ${key}; each record/area pair may appear once`);
+    }
+    seen.add(key);
     return {
       recordId: recordId.trim(),
-      researchAreaSlug: researchAreaSlug.trim().toLowerCase(),
+      researchAreaSlug: normalizedSlug,
       stance,
       expectedDescription,
       reason: trimmedReason,
