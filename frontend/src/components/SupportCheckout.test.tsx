@@ -294,12 +294,16 @@ describe("SupportCheckout", () => {
     expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
-  it("thanks the user returning from Checkout, links the membership page, and strips the query param", async () => {
+  it("welcomes a new member returning from Checkout, links Settings, and strips the query param", async () => {
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     const { router } = renderCheckout("monthly", "?membership=success");
 
-    expect(await screen.findByText(/Thank you for your support!/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "membership page" })).toHaveAttribute("href", "/me/membership");
+    expect(await screen.findByText(/You're now an honorary member/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
+    // Nothing competes with the welcome: no form, no "already a member" line.
+    expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/already an honorary member/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Choose your monthly amount/)).not.toBeInTheDocument();
     await waitFor(() => expect(router.state.location.search).toBe(""));
     // The banner survives the param removal (read once into state).
     expect(screen.getByText(/Thank you for your support!/)).toBeInTheDocument();
@@ -317,14 +321,14 @@ describe("SupportCheckout", () => {
     expect(screen.queryByRole("link", { name: "membership page" })).not.toBeInTheDocument();
   });
 
-  it("keeps the form locked after a successful Checkout until the webhook has landed", async () => {
+  it("keeps the one-time form locked after a successful Checkout until the webhook has landed", async () => {
     // The status endpoint can still say "not a member" for a moment after
     // the redirect back; a second click here would be a second charge.
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
-    renderCheckout("monthly", "?membership=success");
+    renderCheckout("one_time", "?membership=success");
 
     expect(await screen.findByText(/Thank you for your support!/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Support once" })).toBeDisabled();
   });
 
   it("notes a canceled Checkout without alarm", async () => {

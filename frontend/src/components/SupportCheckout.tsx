@@ -236,9 +236,10 @@ function OutcomeBanners({ outcome, kind }: { outcome: string | null; kind: Membe
         <p role="status" className="mt-2 rounded-lg border border-green-700/40 bg-green-50 px-3 py-2 text-sm text-green-900">
           {kind === "monthly" ? (
             <>
-              Thank you for your support! Your payment may take a moment to appear on your{" "}
-              <Link to="/me/membership" className={linkClass}>
-                membership page
+              Thank you for your support! You&apos;re now an honorary member. You&apos;ll get our occasional
+              reports on key issues that could affect you, and you can manage your membership from{" "}
+              <Link to="/me/settings" className={linkClass}>
+                Settings
               </Link>
               .
             </>
@@ -358,10 +359,17 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
         <>
           <Disclaimer />
 
-          {kind === "monthly" && status.data.membership ? (
+          {kind === "monthly" && outcome === "success" ? null : kind === "monthly" && status.data.membership ? (
+            // Right after subscribing the banner says it all; the "already a
+            // member" line is for a member who comes back later.
             <ExistingMembership membership={status.data.membership} />
           ) : (
             <div className="mt-3 space-y-4">
+              <p className="text-sm text-ink">
+                {kind === "monthly"
+                  ? "Choose your monthly amount below; you will finish your payment securely on Stripe."
+                  : "Choose your amount below; you will finish your payment securely on Stripe."}
+              </p>
               <AmountForm
                 inputId={`membership-${kind}-dollars`}
                 label={
