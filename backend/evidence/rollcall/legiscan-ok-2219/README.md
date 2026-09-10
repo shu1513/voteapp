@@ -83,7 +83,11 @@ Bill history action lines print the count: `Third Reading, Measure passed: Ayes:
 Every roll can therefore be checked with no network calls.
 
 **Audited all 3,242 kept floor rolls, not only the closely divided ones: 3,209 exact, 20
-mismatched, 13 with no history line for that day.** Bounding a tally audit by the divided
+mismatched, 13 with no history line for that day.** ⚠ That first audit matched on the SAME
+DAY, which is one day too narrow: Oklahoma can date a journal line a day after the vote, and
+HB 1576's House override (roll-dated 2025-05-29, journal line 2025-05-30) was a false
+positive. Re-running over a one-day window cleared it and left the other nineteen standing,
+so **nineteen** rolls are held. Use a one-day window. Bounding a tally audit by the divided
 gate hides the roll the feed got wrong about being divided in the first place, which is the
 lesson Oregon's SB 1565 paid for.
 
@@ -134,3 +138,5 @@ work — that adds members without any new judging.
     survey/     the measured description histogram this config was written from,
                 the divided-and-enacted worklist, and the triage decisions
     batch-01/   seven measures, eleven rolls, 303 records
+    batch-02/   six measures, seven rolls, 216 records
+    batch-03/   four measures, five rolls, 164 records

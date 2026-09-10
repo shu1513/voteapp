@@ -2049,8 +2049,12 @@ describe("Oklahoma, session 2219", () => {
 
   it("holds the rolls whose tally Oklahoma's own history contradicts", () => {
     const held = LEGISCAN_STATE_CONFIGS.OK!.heldRollCallIds ?? {};
-    expect(Object.keys(held)).toHaveLength(20);
+    expect(Object.keys(held)).toHaveLength(19);
     expect(held[1670674]).toContain("failed");
+    // HB 1576's House override was held on a same-day audit and cleared on a
+    // one-day window: Oklahoma dates that journal line 2025-05-30 and the
+    // roll 2025-05-29, and the tallies agree exactly.
+    expect(held[1605044]).toBeUndefined();
   });
 });
 
