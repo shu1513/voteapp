@@ -1,0 +1,1267 @@
+{
+ "HB1003": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1017": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1034": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1062": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1087": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1168": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1178": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1187": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1287": {
+  "class": "narrow pilot or study",
+  "disposition": "dropped",
+  "reason": "A pilot programme or study at a single institution. Too narrow to be a subject a voter would recognise."
+ },
+ "HB1356": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1392": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB1393": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1409": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1427": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1543": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1575": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1576": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1601": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1646": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1663": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB1675": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1727": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB1819": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1833": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1850": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1955": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB1979": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2011": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB2013": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2036": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB2049": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB2072": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2105": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB2110": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB2131": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2147": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB2153": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2167": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2260": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB2261": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2263": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB2268": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2286": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2298": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2374": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB2398": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2516": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2584": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2673": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2744": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2746": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB2749": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2762": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2764": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB2765": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2766": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2768": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB2769": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2770": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2771": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2773": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2774": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2776": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2778": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2781": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB2782": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2783": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2784": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2786": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2787": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2790": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2791": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2792": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2793": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2794": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB2797": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2804": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2837": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB2894": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB3000": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB3005": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB3016": {
+  "class": "narrow pilot or study",
+  "disposition": "dropped",
+  "reason": "A pilot programme or study at a single institution. Too narrow to be a subject a voter would recognise."
+ },
+ "HB3127": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB3151": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB3320": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB3372": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "HB3462": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB3467": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB3501": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB3521": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB3590": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "HB3622": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB3644": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB3649": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB3661": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB3704": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "HB3705": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "HB3718": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "HB3800": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB3831": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB3834": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB3880": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB3940": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB3979": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB3980": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB3981": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB3985": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB4028": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB4036": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4038": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4042": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4047": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4048": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4052": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4053": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4054": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4071": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB4072": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4074": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4076": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4078": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HB4143": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB4191": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB4322": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB4324": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "HB4408": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "HB4426": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "HB4432": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "HJR1088": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "HJR1090": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "HJR1091": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "HJR1092": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "HJR1093": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "HJR1095": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "HJR1099": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "HJR1100": {
+  "class": "agency rule approval",
+  "disposition": "dropped",
+  "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
+ },
+ "SB1027": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1028": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1031": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1032": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1039": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB105": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "SB1067": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB109": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB111": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1122": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB1126": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1129": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1130": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1133": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1134": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1136": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1137": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1140": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1141": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1142": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1148": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1150": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1151": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1152": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1153": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1155": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1161": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1162": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1163": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1177": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1178": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1180": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1181": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1217": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1255": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1327": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB1344": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1365": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB137": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB139": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB140": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1400": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1405": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1443": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1451": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1455": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1463": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1509": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1525": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB1530": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB1531": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1567": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1589": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1618": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1651": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1653": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1732": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB176": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1826": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB1827": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1833": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1847": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB1916": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1946": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB1991": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB1992": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB20": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB2018": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB2060": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB2084": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB209": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB2095": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB212": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB2134": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB235": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB248": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB249": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB250": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB259": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB269": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB287": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB324": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB364": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB44": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB453": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB460": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB490": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB504": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB54": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB540": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB574": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB575": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB578": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB582": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB586": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB59": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB631": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB641": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB658": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB662": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB663": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB667": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB674": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "SB680": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB684": {
+  "class": "school-choice financing",
+  "disposition": "dropped",
+  "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
+ },
+ "SB688": {
+  "class": "appropriation",
+  "disposition": "dropped",
+  "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
+ },
+ "SB701": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB713": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB743": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB758": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB805": {
+  "class": "sunset or agency housekeeping",
+  "disposition": "dropped",
+  "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
+ },
+ "SB889": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB906": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB942": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB987": {
+  "class": "economic-development incentive",
+  "disposition": "dropped",
+  "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
+ },
+ "SB991": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ },
+ "SB998": {
+  "class": "read the act",
+  "disposition": "screened-in",
+  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+ }
+}

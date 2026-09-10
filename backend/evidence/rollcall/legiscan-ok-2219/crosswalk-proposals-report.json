@@ -1,0 +1,1583 @@
+{
+ "importerVersion": "rollcall-legiscan-resolve-v1",
+ "startedAt": "2026-09-10T02:24:47.063Z",
+ "finishedAt": "2026-09-10T02:24:50.587Z",
+ "jurisdiction": "OK",
+ "sessionId": 2219,
+ "evidenceDir": "~/legiscan-data/ok-2219-evidence",
+ "scopeFrom": "2026-11-01",
+ "peopleSource": "~/legiscan-data/ok-2219",
+ "peopleMembers": 153,
+ "candidatePool": 140,
+ "crosswalkFile": "~/legiscan-data/ok-work/crosswalk.json",
+ "crosswalkEntries": 154,
+ "crosswalkPeopleNotInSnapshot": [
+  19629
+ ],
+ "proposals": [
+  {
+   "peopleId": 18990,
+   "rosterName": "Rick West",
+   "rosterSeat": "house HD-003",
+   "candidateId": "e6b39e1f-04c0-48c5-abd0-28745210cc66",
+   "candidateName": "Rick West",
+   "candidacy": "state_lower: State House District 3 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18991,
+   "rosterName": "Tammy West",
+   "rosterSeat": "house HD-084",
+   "candidateId": "6551fe48-b7b8-4d58-9188-22769ba04bb5",
+   "candidateName": "Tammy West",
+   "candidacy": "state_lower: State House District 84 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19041,
+   "rosterName": "Meloyde Blancett",
+   "rosterSeat": "house HD-078",
+   "candidateId": "f2447216-bf85-4b47-b126-6188d36253a9",
+   "candidateName": "Meloyde Blancett",
+   "candidacy": "state_lower: State House District 78 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19042,
+   "rosterName": "Carl Newton",
+   "rosterSeat": "house HD-058",
+   "candidateId": "bea82db0-f8bd-43a0-8825-81b8b4e955b5",
+   "candidateName": "Carl Newton",
+   "candidacy": "state_lower: State House District 58 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19243,
+   "rosterName": "Mark Lawson",
+   "rosterSeat": "house HD-030",
+   "candidateId": "53b3aea2-fbfc-4f04-b9dd-d2808173560d",
+   "candidateName": "Mark Lawson",
+   "candidacy": "state_lower: State House District 30 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19493,
+   "rosterName": "Ross Ford",
+   "rosterSeat": "house HD-076",
+   "candidateId": "61720d46-0ee3-4c53-882f-2188a5ef5475",
+   "candidateName": "Ross Ford",
+   "candidacy": "state_lower: State House District 76 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19705,
+   "rosterName": "David Bullard",
+   "rosterSeat": "senate SD-006",
+   "candidateId": "ca22e0a4-c359-4871-9fb0-8f29c1fb1ca6",
+   "candidateName": "David Bullard",
+   "candidacy": "state_upper: State Senate District 6 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20007,
+   "rosterName": "Bill Coleman",
+   "rosterSeat": "senate SD-010",
+   "candidateId": "65f53954-0d2f-4613-a58e-875251d23363",
+   "candidateName": "Bill Coleman",
+   "candidacy": "state_upper: State Senate District 10 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20170,
+   "rosterName": "Nicole Miller",
+   "rosterSeat": "house HD-082",
+   "candidateId": "933ce780-ba77-4eaa-8876-c3c710239a43",
+   "candidateName": "Nicole Miller",
+   "candidacy": "state_lower: State House District 82 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20612,
+   "rosterName": "Danny Sterling",
+   "rosterSeat": "house HD-027",
+   "candidateId": "861c9be2-fe6c-49ef-9668-524364482844",
+   "candidateName": "Danny Sterling",
+   "candidacy": "state_lower: State House District 27 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20692,
+   "rosterName": "Daniel Pae",
+   "rosterSeat": "house HD-062",
+   "candidateId": "31c1a519-3494-42a2-b308-8a0aab0b42cc",
+   "candidateName": "Daniel Pae",
+   "candidacy": "state_lower: State House District 62 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20812,
+   "rosterName": "John Haste",
+   "rosterSeat": "senate SD-036",
+   "candidateId": "4ef03a3d-a819-433f-9b47-8b87432a8f76",
+   "candidateName": "John Haste",
+   "candidacy": "state_upper: State Senate District 36 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20829,
+   "rosterName": "Denise Hader",
+   "rosterSeat": "house HD-041",
+   "candidateId": "da93d685-bb87-40f4-9acc-c8d0b5b3c381",
+   "candidateName": "Denise Crosswhite Hader",
+   "candidacy": "state_lower: State House District 41 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20832,
+   "rosterName": "David Hardin",
+   "rosterSeat": "house HD-086",
+   "candidateId": "5fb89fa7-a901-456e-88e9-c366fadff8e2",
+   "candidateName": "David Hardin",
+   "candidacy": "state_lower: State House District 86 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20833,
+   "rosterName": "Marilyn Stark",
+   "rosterSeat": "house HD-100",
+   "candidateId": "08d8877e-6e60-40b2-b550-dd28d09fea31",
+   "candidateName": "Marilyn Stark",
+   "candidacy": "state_lower: State House District 100 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20877,
+   "rosterName": "Melissa Provenzano",
+   "rosterSeat": "house HD-079",
+   "candidateId": "fc3c171d-72de-40e7-887b-09a8999caf26",
+   "candidateName": "Melissa Provenzano",
+   "candidacy": "state_lower: State House District 79 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20878,
+   "rosterName": "Trish Ranson",
+   "rosterSeat": "house HD-034",
+   "candidateId": "ddf89488-3ea9-4a8f-a9ea-bac8596977db",
+   "candidateName": "Trish Ranson",
+   "candidacy": "state_lower: State House District 34 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20880,
+   "rosterName": "Judd Strom",
+   "rosterSeat": "house HD-010",
+   "candidateId": "3d3aa4e1-db86-4e94-a758-34915736db8a",
+   "candidateName": "Judd Strom",
+   "candidacy": "state_lower: State House District 10 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20890,
+   "rosterName": "Stan May",
+   "rosterSeat": "house HD-080",
+   "candidateId": "5fd1f36a-fbe3-4544-84bc-9f1ffbbe9767",
+   "candidateName": "Stan May",
+   "candidacy": "state_lower: State House District 80 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20893,
+   "rosterName": "Chris Sneed",
+   "rosterSeat": "house HD-014",
+   "candidateId": "08f9432c-1ba1-484a-9c19-7e011fe1b803",
+   "candidateName": "Chris Sneed",
+   "candidacy": "state_lower: State House District 14 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20894,
+   "rosterName": "Brenda Stanley",
+   "rosterSeat": "senate SD-042",
+   "candidateId": "1c33df3f-ab8b-4f22-99b4-19a6fe784dd8",
+   "candidateName": "Brenda Stanley",
+   "candidacy": "state_upper: State Senate District 42 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22549,
+   "rosterName": "Eric Roberts",
+   "rosterSeat": "house HD-083",
+   "candidateId": "448b117f-a328-4d67-a12f-bca5d2fe2573",
+   "candidateName": "Eric Roberts",
+   "candidacy": "state_lower: State House District 83 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22558,
+   "rosterName": "Danny Williams",
+   "rosterSeat": "house HD-028",
+   "candidateId": "a87a8bb0-27ef-4ade-947c-72fff6ea701c",
+   "candidateName": "Danny Williams",
+   "candidacy": "state_lower: State House District 28 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22576,
+   "rosterName": "Dick Lowe",
+   "rosterSeat": "house HD-056",
+   "candidateId": "6100c46c-06f3-44f2-8400-f99372f9075c",
+   "candidateName": "Dick Lowe",
+   "candidacy": "state_lower: State House District 56 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22577,
+   "rosterName": "Preston Stinson",
+   "rosterSeat": "house HD-096",
+   "candidateId": "41d618c3-c065-4566-ba63-0959b541c5ea",
+   "candidateName": "Preston Stinson",
+   "candidacy": "state_lower: State House District 96 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22578,
+   "rosterName": "Max Wolfley",
+   "rosterSeat": "house HD-095",
+   "candidateId": "d1b76f19-57a0-433c-a0c4-54d8bf6b09b0",
+   "candidateName": "Max Wolfley",
+   "candidacy": "state_lower: State House District 95 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22765,
+   "rosterName": "Bob Culver",
+   "rosterSeat": "house HD-004",
+   "candidateId": "acc00098-72c3-4b22-bcf0-8b4dae696ac2",
+   "candidateName": "Bob Ed Culver",
+   "candidacy": "state_lower: State House District 4 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23557,
+   "rosterName": "Kristen Thompson",
+   "rosterSeat": "senate SD-022",
+   "candidateId": "5e2d3c84-d4ab-4127-9af7-777e26dd6bd8",
+   "candidateName": "Kristen Thompson",
+   "candidacy": "state_upper: State Senate District 22 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23559,
+   "rosterName": "Todd Gollihare",
+   "rosterSeat": "senate SD-012",
+   "candidateId": "f06bb525-8454-4dc5-9633-cd1850bd8308",
+   "candidateName": "Todd Gollihare",
+   "candidacy": "state_upper: State Senate District 12 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23724,
+   "rosterName": "Chris Banning",
+   "rosterSeat": "house HD-024",
+   "candidateId": "542b2bbf-0520-4c17-999e-6be6592618f0",
+   "candidateName": "Chris Banning",
+   "candidacy": "state_lower: State House District 24 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23725,
+   "rosterName": "Josh Cantrell",
+   "rosterSeat": "house HD-049",
+   "candidateId": "efd913f6-f02e-4c0d-b151-bc2e36326192",
+   "candidateName": "Josh Cantrell",
+   "candidacy": "state_lower: State House District 49 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23727,
+   "rosterName": "John George",
+   "rosterSeat": "house HD-036",
+   "candidateId": "6067fe1f-6f81-4c95-b755-f10c48c24931",
+   "candidateName": "John George",
+   "candidacy": "state_lower: State House District 36 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23733,
+   "rosterName": "Ellyn Hefner",
+   "rosterSeat": "house HD-087",
+   "candidateId": "a8627eec-9c7e-4afb-b8e8-03438435592c",
+   "candidateName": "Ellyn Hefner",
+   "candidacy": "state_lower: State House District 87 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23734,
+   "rosterName": "Annie Menz",
+   "rosterSeat": "house HD-045",
+   "candidateId": "9a2449a8-cec5-48b0-889e-fbabaa4995bb",
+   "candidateName": "Annie Menz",
+   "candidacy": "state_lower: State House District 45 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23736,
+   "rosterName": "Clay Staires",
+   "rosterSeat": "house HD-066",
+   "candidateId": "8f541f38-83c6-4d5d-b547-95da7a7cf525",
+   "candidateName": "Clay Staires",
+   "candidacy": "state_lower: State House District 66 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23878,
+   "rosterName": "Ally Seifried",
+   "rosterSeat": "senate SD-002",
+   "candidateId": "11c7ac5b-e357-4c12-bb84-9ad04b8f63ff",
+   "candidateName": "Ally Seifried",
+   "candidacy": "state_upper: State Senate District 2 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24706,
+   "rosterName": "Grant Green",
+   "rosterSeat": "senate SD-028",
+   "candidateId": "19f980e0-7c18-43df-8336-723108c3e792",
+   "candidateName": "Grant Green",
+   "candidacy": "state_upper: State Senate District 28 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24708,
+   "rosterName": "Tom Woods",
+   "rosterSeat": "senate SD-004",
+   "candidateId": "86d412a4-f706-4bc3-8778-3221eb02c13c",
+   "candidateName": "Tom Woods",
+   "candidacy": "state_upper: State Senate District 4 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25454,
+   "rosterName": "Jason Blair",
+   "rosterSeat": "house HD-053",
+   "candidateId": "8e60362c-8375-4fe1-90ee-b0529d38a20a",
+   "candidateName": "Jason Blair",
+   "candidacy": "state_lower: State House District 53 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25455,
+   "rosterName": "Mark Chapman",
+   "rosterSeat": "house HD-012",
+   "candidateId": "647763e5-9bc1-468f-adbf-586e8193f2da",
+   "candidateName": "Mark Chapman",
+   "candidacy": "state_lower: State House District 12 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25457,
+   "rosterName": "Emily Gise",
+   "rosterSeat": "house HD-090",
+   "candidateId": "0ed040ce-504d-43a1-8a3c-faed1f9670c4",
+   "candidateName": "Emily Gise",
+   "candidacy": "state_lower: State House District 90 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25459,
+   "rosterName": "Derrick Hildebrant",
+   "rosterSeat": "house HD-023",
+   "candidateId": "a6482b94-6787-4403-a3b1-76a9e04b4a59",
+   "candidateName": "Derrick R. Hildebrant",
+   "candidacy": "state_lower: State House District 23 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25460,
+   "rosterName": "Molly Jenkins",
+   "rosterSeat": "house HD-033",
+   "candidateId": "123cbf32-257e-4f4a-8f3e-c21e5bba97ee",
+   "candidateName": "Molly Jenkins",
+   "candidacy": "state_lower: State House District 33 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25461,
+   "rosterName": "Mike Kelley",
+   "rosterSeat": "house HD-060",
+   "candidateId": "1324401b-1936-407f-8eb6-bfa4991b6fc1",
+   "candidateName": "Mike Kelley",
+   "candidacy": "state_lower: State House District 60 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25462,
+   "rosterName": "Mike Lay",
+   "rosterSeat": "house HD-068",
+   "candidateId": "66a7297b-49a3-49af-80b1-59b23a3ed52f",
+   "candidateName": "Mike Lay",
+   "candidacy": "state_lower: State House District 68 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25463,
+   "rosterName": "Michelle McCane",
+   "rosterSeat": "house HD-072",
+   "candidateId": "71d4713d-bec7-46fa-9071-14b76c31e0f3",
+   "candidateName": "Michelle Mccane",
+   "candidacy": "state_lower: State House District 72 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25465,
+   "rosterName": "Jim Shaw",
+   "rosterSeat": "house HD-032",
+   "candidateId": "91f565ae-772f-47d2-9508-271c8756ed1e",
+   "candidateName": "Jim Shaw",
+   "candidacy": "state_lower: State House District 32 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25468,
+   "rosterName": "Jonathan Wilk",
+   "rosterSeat": "house HD-020",
+   "candidateId": "a80739d8-a2dc-4610-b6f4-240f9ef5888e",
+   "candidateName": "Jonathan Wilk",
+   "candidacy": "state_lower: State House District 20 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25469,
+   "rosterName": "Gabe Woolley",
+   "rosterSeat": "house HD-098",
+   "candidateId": "8d704d1c-ef5e-4d6f-8071-03b4fd6f6356",
+   "candidateName": "Gabe Woolley",
+   "candidacy": "state_lower: State House District 98 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26469,
+   "rosterName": "Bryan Logan",
+   "rosterSeat": "senate SD-008",
+   "candidateId": "a4c6937e-8e89-421c-b1fb-5169f82b0ccc",
+   "candidateName": "Bryan Logan",
+   "candidacy": "state_upper: State Senate District 8 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26483,
+   "rosterName": "Kevin Norwood",
+   "rosterSeat": "house HD-074",
+   "candidateId": "7d89af67-499d-400b-88c0-833495ae044a",
+   "candidateName": "Kevin W. Norwood",
+   "candidacy": "state_lower: State House District 74 (2024); Oklahoma",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  }
+ ],
+ "unmatchedPeople": [
+  {
+   "peopleId": 17176,
+   "name": "Chris Kannady",
+   "seat": "house HD-091"
+  },
+  {
+   "peopleId": 17276,
+   "name": "Chad Caldwell",
+   "seat": "house HD-040"
+  },
+  {
+   "peopleId": 17281,
+   "name": "Casey Murdock",
+   "seat": "house SD-027"
+  },
+  {
+   "peopleId": 17282,
+   "name": "John Pfeiffer",
+   "seat": "house HD-038"
+  },
+  {
+   "peopleId": 17318,
+   "name": "Darcy Jech",
+   "seat": "senate SD-026"
+  },
+  {
+   "peopleId": 17462,
+   "name": "Mark Lepak",
+   "seat": "house HD-009"
+  },
+  {
+   "peopleId": 17823,
+   "name": "Regina Goodwin",
+   "seat": "house SD-011"
+  },
+  {
+   "peopleId": 17840,
+   "name": "Cyndi Munson",
+   "seat": "house HD-085"
+  },
+  {
+   "peopleId": 18901,
+   "name": "Micheal Bergstrom",
+   "seat": "senate SD-001"
+  },
+  {
+   "peopleId": 18902,
+   "name": "Julie Daniels",
+   "seat": "senate SD-029"
+  },
+  {
+   "peopleId": 18903,
+   "name": "Avery Frix",
+   "seat": "house SD-009"
+  },
+  {
+   "peopleId": 18908,
+   "name": "Adam Pugh",
+   "seat": "senate SD-041"
+  },
+  {
+   "peopleId": 18909,
+   "name": "Dave Rader",
+   "seat": "senate SD-039"
+  },
+  {
+   "peopleId": 18911,
+   "name": "Rande Worthen",
+   "seat": "house HD-064"
+  },
+  {
+   "peopleId": 18948,
+   "name": "Roland Pederson",
+   "seat": "senate SD-019"
+  },
+  {
+   "peopleId": 18986,
+   "name": "Forrest Bennett",
+   "seat": "house HD-092"
+  },
+  {
+   "peopleId": 18987,
+   "name": "Tom Gann",
+   "seat": "house HD-008"
+  },
+  {
+   "peopleId": 18988,
+   "name": "Josh West",
+   "seat": "house HD-005"
+  },
+  {
+   "peopleId": 18989,
+   "name": "Kevin West",
+   "seat": "house HD-054"
+  },
+  {
+   "peopleId": 19006,
+   "name": "Dell Kerbs",
+   "seat": "house HD-026"
+  },
+  {
+   "peopleId": 19007,
+   "name": "Mike Osburn",
+   "seat": "house HD-081"
+  },
+  {
+   "peopleId": 19011,
+   "name": "Mickey Dollens",
+   "seat": "house HD-093"
+  },
+  {
+   "peopleId": 19013,
+   "name": "Justin Humphrey",
+   "seat": "house HD-019"
+  },
+  {
+   "peopleId": 19014,
+   "name": "Lonnie Paxton",
+   "seat": "senate SD-023"
+  },
+  {
+   "peopleId": 19028,
+   "name": "Kyle Hilbert",
+   "seat": "house HD-029"
+  },
+  {
+   "peopleId": 19043,
+   "name": "Scott Fetgatter",
+   "seat": "house HD-016"
+  },
+  {
+   "peopleId": 19045,
+   "name": "Jason Lowe",
+   "seat": "house HD-097"
+  },
+  {
+   "peopleId": 19437,
+   "name": "Paul Rosino",
+   "seat": "senate SD-045"
+  },
+  {
+   "peopleId": 19492,
+   "name": "Jacob Rosecrants",
+   "seat": "house HD-046"
+  },
+  {
+   "peopleId": 19617,
+   "name": "Brad Boles",
+   "seat": "house HD-051"
+  },
+  {
+   "peopleId": 19636,
+   "name": "Michael Brooks",
+   "seat": "senate SD-044"
+  },
+  {
+   "peopleId": 19924,
+   "name": "Jim Olsen",
+   "seat": "house HD-002"
+  },
+  {
+   "peopleId": 19961,
+   "name": "Brent Howard",
+   "seat": "senate SD-038"
+  },
+  {
+   "peopleId": 19964,
+   "name": "Darrell Weaver",
+   "seat": "senate SD-024"
+  },
+  {
+   "peopleId": 19965,
+   "name": "Julia Kirt",
+   "seat": "senate SD-030"
+  },
+  {
+   "peopleId": 20038,
+   "name": "Mary Boren",
+   "seat": "senate SD-016"
+  },
+  {
+   "peopleId": 20564,
+   "name": "Ty Burns",
+   "seat": "house HD-035"
+  },
+  {
+   "peopleId": 20691,
+   "name": "Ronny Johns",
+   "seat": "house HD-025"
+  },
+  {
+   "peopleId": 20740,
+   "name": "Brian Hill",
+   "seat": "house HD-047"
+  },
+  {
+   "peopleId": 20741,
+   "name": "Robert Manger",
+   "seat": "house HD-101"
+  },
+  {
+   "peopleId": 20757,
+   "name": "Jim Grego",
+   "seat": "house HD-017"
+  },
+  {
+   "peopleId": 20758,
+   "name": "Tammy Townley",
+   "seat": "house HD-048"
+  },
+  {
+   "peopleId": 20811,
+   "name": "Toni Hasenbeck",
+   "seat": "house HD-065"
+  },
+  {
+   "peopleId": 20813,
+   "name": "Carri Hicks",
+   "seat": "senate SD-040"
+  },
+  {
+   "peopleId": 20814,
+   "name": "David Smith",
+   "seat": "house HD-018"
+  },
+  {
+   "peopleId": 20831,
+   "name": "Andy Fugate",
+   "seat": "house HD-094"
+  },
+  {
+   "peopleId": 20835,
+   "name": "John Waldron",
+   "seat": "house HD-077"
+  },
+  {
+   "peopleId": 20879,
+   "name": "Cynthia Roe",
+   "seat": "house HD-042"
+  },
+  {
+   "peopleId": 20881,
+   "name": "Mark Vancuren",
+   "seat": "house HD-074"
+  },
+  {
+   "peopleId": 20886,
+   "name": "Trey Caldwell",
+   "seat": "house HD-063"
+  },
+  {
+   "peopleId": 20887,
+   "name": "Rusty Cornwell",
+   "seat": "house HD-006"
+  },
+  {
+   "peopleId": 20889,
+   "name": "Thomas Marti",
+   "seat": "house HD-075"
+  },
+  {
+   "peopleId": 20891,
+   "name": "Kenton Patzkowsky",
+   "seat": "house HD-061"
+  },
+  {
+   "peopleId": 20895,
+   "name": "Jay Steagall",
+   "seat": "house HD-043"
+  },
+  {
+   "peopleId": 21238,
+   "name": "Chuck Hall",
+   "seat": "senate SD-020"
+  },
+  {
+   "peopleId": 21326,
+   "name": "Ajay Pittman",
+   "seat": "house HD-099"
+  },
+  {
+   "peopleId": 21885,
+   "name": "Warren Hamilton",
+   "seat": "senate SD-007"
+  },
+  {
+   "peopleId": 21886,
+   "name": "Jo Dossett",
+   "seat": "senate SD-035"
+  },
+  {
+   "peopleId": 22506,
+   "name": "Gerrid Kendrix",
+   "seat": "house HD-052"
+  },
+  {
+   "peopleId": 22515,
+   "name": "Eddy Dempsey",
+   "seat": "house HD-001"
+  },
+  {
+   "peopleId": 22548,
+   "name": "Mike Dobrinski",
+   "seat": "house HD-059"
+  },
+  {
+   "peopleId": 22633,
+   "name": "Steve Bashore",
+   "seat": "house HD-007"
+  },
+  {
+   "peopleId": 22854,
+   "name": "George Burns",
+   "seat": "senate SD-005"
+  },
+  {
+   "peopleId": 22855,
+   "name": "Anthony Moore",
+   "seat": "house HD-057"
+  },
+  {
+   "peopleId": 23531,
+   "name": "Dana Prieto",
+   "seat": "senate SD-034"
+  },
+  {
+   "peopleId": 23722,
+   "name": "Arturo Alonso-Sandoval",
+   "seat": "house HD-089"
+  },
+  {
+   "peopleId": 23723,
+   "name": "Nick Archer",
+   "seat": "house HD-055"
+  },
+  {
+   "peopleId": 23726,
+   "name": "Collin Duel",
+   "seat": "house HD-031"
+  },
+  {
+   "peopleId": 23728,
+   "name": "John Kane",
+   "seat": "house HD-011"
+  },
+  {
+   "peopleId": 23729,
+   "name": "Cody Maynard",
+   "seat": "house HD-021"
+  },
+  {
+   "peopleId": 23730,
+   "name": "Mark Tedford",
+   "seat": "house HD-069"
+  },
+  {
+   "peopleId": 23731,
+   "name": "Jared Deck",
+   "seat": "house HD-044"
+  },
+  {
+   "peopleId": 23732,
+   "name": "Neil Hays",
+   "seat": "house HD-013"
+  },
+  {
+   "peopleId": 23735,
+   "name": "Suzanne Schreiber",
+   "seat": "house HD-070"
+  },
+  {
+   "peopleId": 23737,
+   "name": "Amanda Swope",
+   "seat": "house HD-071"
+  },
+  {
+   "peopleId": 24164,
+   "name": "Jerry Alvord",
+   "seat": "senate SD-014"
+  },
+  {
+   "peopleId": 24707,
+   "name": "Jack Stewart",
+   "seat": "senate SD-018"
+  },
+  {
+   "peopleId": 25063,
+   "name": "Dusty Deevers",
+   "seat": "senate SD-032"
+  },
+  {
+   "peopleId": 25169,
+   "name": "Erick Harris",
+   "seat": "house HD-039"
+  },
+  {
+   "peopleId": 25453,
+   "name": "Stacy Jo Adams",
+   "seat": "house HD-050"
+  },
+  {
+   "peopleId": 25456,
+   "name": "Ryan Eaves",
+   "seat": "house HD-022"
+  },
+  {
+   "peopleId": 25458,
+   "name": "Rob Hall",
+   "seat": "house HD-067"
+  },
+  {
+   "peopleId": 25464,
+   "name": "Ellen Pogemiller",
+   "seat": "house HD-088"
+  },
+  {
+   "peopleId": 25466,
+   "name": "Ronald Stewart",
+   "seat": "house HD-073"
+  },
+  {
+   "peopleId": 25467,
+   "name": "Tim Turner",
+   "seat": "house HD-015"
+  },
+  {
+   "peopleId": 25470,
+   "name": "Christi Gillespie",
+   "seat": "senate SD-033"
+  },
+  {
+   "peopleId": 25471,
+   "name": "Randy Grellner",
+   "seat": "senate SD-021"
+  },
+  {
+   "peopleId": 25472,
+   "name": "Brian Guthrie",
+   "seat": "senate SD-025"
+  },
+  {
+   "peopleId": 25473,
+   "name": "Kelly Hines",
+   "seat": "senate SD-047"
+  },
+  {
+   "peopleId": 25474,
+   "name": "Spencer Kern",
+   "seat": "senate SD-031"
+  },
+  {
+   "peopleId": 25475,
+   "name": "Mark Mann",
+   "seat": "senate SD-046"
+  },
+  {
+   "peopleId": 25476,
+   "name": "Julie McIntosh",
+   "seat": "senate SD-003"
+  },
+  {
+   "peopleId": 25477,
+   "name": "Nikki Nice",
+   "seat": "senate SD-048"
+  },
+  {
+   "peopleId": 25478,
+   "name": "Aaron Reinhardt",
+   "seat": "senate SD-037"
+  },
+  {
+   "peopleId": 25479,
+   "name": "Kendal Sacchieri",
+   "seat": "senate SD-043"
+  },
+  {
+   "peopleId": 25480,
+   "name": "Lisa Standridge",
+   "seat": "senate SD-015"
+  },
+  {
+   "peopleId": 25481,
+   "name": "Jonathan Wingard",
+   "seat": "senate SD-013"
+  },
+  {
+   "peopleId": 26482,
+   "name": "Amanda Clinton",
+   "seat": "house HD-071"
+  },
+  {
+   "peopleId": 26484,
+   "name": "Aletia Timmons",
+   "seat": "house HD-097"
+  },
+  {
+   "peopleId": 26631,
+   "name": "Dillon Travis",
+   "seat": "house HD-035"
+  },
+  {
+   "peopleId": 3681,
+   "name": "Shane Jett",
+   "seat": "house SD-017"
+  },
+  {
+   "peopleId": 3693,
+   "name": "Ken Luttrell",
+   "seat": "house HD-037"
+  }
+ ],
+ "unmatchedCandidates": [
+  {
+   "candidateId": "84027096-a268-4b65-a249-71e55a9f425c",
+   "name": "Aaron Brent",
+   "scope": "state_lower",
+   "districtName": "State House District 74 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "6369e5cc-a57e-42d3-ae1a-e126832e83db",
+   "name": "Aaron Forst",
+   "scope": "state_upper",
+   "districtName": "State Senate District 34 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "ad850888-1e85-45ec-8c40-c48159caf3bc",
+   "name": "Aaron Means",
+   "scope": "state_lower",
+   "districtName": "State House District 34 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "a37dde56-852c-4b46-b7e4-661584ea0673",
+   "name": "Adam Martin",
+   "scope": "state_lower",
+   "districtName": "State House District 72 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "7d694a1d-da68-48bc-b557-3e19645fb9d5",
+   "name": "Albert Borrie",
+   "scope": "state_lower",
+   "districtName": "State House District 58 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "0d973980-a4f7-43c1-a00d-5d291251b7bf",
+   "name": "Amy Hossain",
+   "scope": "state_upper",
+   "districtName": "State Senate District 34 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "35cc2f24-24c6-4db9-bfd1-9ae2ef06783a",
+   "name": "Andrea Biscardi",
+   "scope": "state_lower",
+   "districtName": "State House District 9 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "0eb488be-03ad-4a01-bfd4-9edb2e61814c",
+   "name": "Andy Brown",
+   "scope": "state_lower",
+   "districtName": "State House District 32 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "5a309c8a-6779-4f11-b8a0-fe1d5efc146a",
+   "name": "Ashtyn Smith",
+   "scope": "state_lower",
+   "districtName": "State House District 96 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "c94cc372-d1f8-4f2a-9000-f84265d12f94",
+   "name": "Blake Cummings",
+   "scope": "state_lower",
+   "districtName": "State House District 28 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "6d00e931-08f1-4415-917e-55826d73f0ae",
+   "name": "Blake Munoz",
+   "scope": "state_lower",
+   "districtName": "State House District 62 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "16da4a67-272f-4235-bb78-d27f8c6fd3d8",
+   "name": "Booker T. Newton",
+   "scope": "state_upper",
+   "districtName": "State Senate District 32 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "9b9df63e-9142-4a22-bfb0-b8c1b7d0c857",
+   "name": "Carolyn Womack-Bielich",
+   "scope": "state_lower",
+   "districtName": "State House District 45 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "3c0b4dec-41a0-451b-ad47-8ef31e37d88e",
+   "name": "Catherine Peters",
+   "scope": "state_lower",
+   "districtName": "State House District 23 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "8ffa70e6-8ea4-4812-a6ef-4581c89b8a07",
+   "name": "Cathy Smythe",
+   "scope": "state_lower",
+   "districtName": "State House District 98 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "92b6a283-e64b-412a-8524-a5c2ab153363",
+   "name": "Chayelynn Moore",
+   "scope": "state_upper",
+   "districtName": "State Senate District 10 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "150017c6-231c-4469-ba93-df9a9fc8f1eb",
+   "name": "Chelsey Branham",
+   "scope": "state_lower",
+   "districtName": "State House District 85 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "e67a6862-1e36-4462-96cb-e21c3e172964",
+   "name": "Chris Fowler",
+   "scope": "state_lower",
+   "districtName": "State House District 91 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "68ef8562-1f57-43d5-b298-abbf6924e5cd",
+   "name": "Chris Jones",
+   "scope": "state_upper",
+   "districtName": "State Senate District 42 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "7e90e278-0709-431a-aa43-455f2232a2f4",
+   "name": "Chris May",
+   "scope": "state_lower",
+   "districtName": "State House District 20 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "89c08419-37bf-42f6-b305-95450906f48d",
+   "name": "Chris Odneal",
+   "scope": "state_lower",
+   "districtName": "State House District 26 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f1b8d456-ab07-4598-9d1e-dc3eb384aaf0",
+   "name": "Christopher Wier",
+   "scope": "state_lower",
+   "districtName": "State House District 4 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "0b6bc126-2b70-4650-8c11-6ffb1ede2dd0",
+   "name": "Codey Bartle",
+   "scope": "state_lower",
+   "districtName": "State House District 87 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "035b2853-9104-4b11-93c7-79f593b7a0fe",
+   "name": "Crystal Abram-Garcia",
+   "scope": "state_lower",
+   "districtName": "State House District 54 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "9312d512-1161-4fcb-9279-714bbf3de326",
+   "name": "Curtis W. Erwin",
+   "scope": "state_upper",
+   "districtName": "State Senate District 32 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "ade3f0fa-efc5-4bee-aab6-ebb77d6382b0",
+   "name": "Dalton Gau",
+   "scope": "state_lower",
+   "districtName": "State House District 83 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "71b4f155-c8e6-45c2-b5b8-7cfb2f6ff55e",
+   "name": "David Nelson",
+   "scope": "state_lower",
+   "districtName": "State House District 16 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f03c1180-fd35-4a95-997c-917bf93c5888",
+   "name": "Doyle Lewis",
+   "scope": "state_lower",
+   "districtName": "State House District 38 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "0508fdfd-a982-4878-b6f6-2518618514f4",
+   "name": "Dusty Jo Jones",
+   "scope": "state_lower",
+   "districtName": "State House District 49 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "89f3b063-7f32-4b40-93d9-76e1d33b27db",
+   "name": "Ed Bolt",
+   "scope": "state_upper",
+   "districtName": "State Senate District 17 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "b84805d3-09a6-4986-93b2-5084c4abecba",
+   "name": "Ellen Cuff",
+   "scope": "state_upper",
+   "districtName": "State Senate District 4 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "9814ba06-b834-4362-b041-08412572151c",
+   "name": "Erica Watkins",
+   "scope": "state_upper",
+   "districtName": "State Senate District 12 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "2aad2f56-b9f6-4eeb-b153-d6988d82607f",
+   "name": "Hannah Cole",
+   "scope": "state_lower",
+   "districtName": "State House District 86 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "8bc6f3e0-2fa7-4100-9ac5-7ad68511cba0",
+   "name": "Heath Kufahl",
+   "scope": "state_lower",
+   "districtName": "State House District 54 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "da4aeda0-ea6b-4db3-982a-a4d6008046f8",
+   "name": "Herschel L. Brown",
+   "scope": "state_lower",
+   "districtName": "State House District 99 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "6327443f-8a3b-46c5-baa2-eab31ddbc730",
+   "name": "Indigo Oliver",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "2c133d74-8036-4d18-b9ea-3482bccb61b8",
+   "name": "Isaac D Mattox",
+   "scope": "state_lower",
+   "districtName": "State House District 10 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "d51de5e6-2bc8-49ba-b988-31f659825fb6",
+   "name": "Jeffrey Perez",
+   "scope": "state_lower",
+   "districtName": "State House District 84 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "3c642f56-bcd7-4059-989c-638e548a6233",
+   "name": "Jeremiah Gantz",
+   "scope": "state_lower",
+   "districtName": "State House District 14 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "44d7509a-b086-4097-be7f-af0585f2b947",
+   "name": "Jeremy Founds",
+   "scope": "state_lower",
+   "districtName": "State House District 80 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f2e70474-391e-4b57-bf96-2609bd030677",
+   "name": "Joe Fallin",
+   "scope": "state_lower",
+   "districtName": "State House District 85 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "92f7cfcb-5852-4f24-ae03-8c58da262ef0",
+   "name": "Joe Watkins",
+   "scope": "state_lower",
+   "districtName": "State House District 75 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "25ea9738-c129-4e24-a8f6-eaf46bbe6dde",
+   "name": "Jon Painter",
+   "scope": "state_upper",
+   "districtName": "State Senate District 24 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "b8223898-01e7-4141-bc39-a242cd7cd5b1",
+   "name": "Jonathan Morales",
+   "scope": "state_upper",
+   "districtName": "State Senate District 24 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f5d0d251-2b6b-4063-9e66-16e931dca695",
+   "name": "Joshua Conant",
+   "scope": "state_lower",
+   "districtName": "State House District 24 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "e9fcdfaf-1474-43f1-b6b3-d5bef7170eaf",
+   "name": "Justin Freeland Wood",
+   "scope": "state_upper",
+   "districtName": "State Senate District 17 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "267a555d-f0f8-4f69-aedc-6e556fcc06a8",
+   "name": "Kathy Suttles",
+   "scope": "state_lower",
+   "districtName": "State House District 64 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "dfb44310-8532-44d5-9700-f35ab2a3100d",
+   "name": "Kenny Blevins",
+   "scope": "state_lower",
+   "districtName": "State House District 66 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "785c6609-98b0-4585-b74f-e8769e24eef1",
+   "name": "Kenny Kemper",
+   "scope": "state_upper",
+   "districtName": "State Senate District 22 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "39e1abf4-b153-483d-aae6-aadef61c9155",
+   "name": "Kevin M. Connor",
+   "scope": "state_upper",
+   "districtName": "State Senate District 28 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "7f568cc2-2aed-4582-ba53-8d01e931e804",
+   "name": "Kymberly Ward",
+   "scope": "state_lower",
+   "districtName": "State House District 90 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "ab23bff6-2cf6-4c73-b427-ad0f86ba21be",
+   "name": "Leah Longest",
+   "scope": "state_lower",
+   "districtName": "State House District 26 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "199f679d-ca6a-4dec-ab04-ed18fcc6d33a",
+   "name": "Leslie Hellebuyck",
+   "scope": "state_lower",
+   "districtName": "State House District 36 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "70ef427c-03bb-40cb-8790-c5034f5870f9",
+   "name": "Linda Pedro",
+   "scope": "state_lower",
+   "districtName": "State House District 56 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f229e54b-8801-4981-96c8-8e84cf4a72a9",
+   "name": "Louis Jackson",
+   "scope": "state_lower",
+   "districtName": "State House District 64 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f395289f-ce63-4e0f-8b37-b52e988f9f52",
+   "name": "Madison Bolay",
+   "scope": "state_lower",
+   "districtName": "State House District 38 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "7b888190-89ce-4d67-b3c7-3a04c3da3b25",
+   "name": "Max E. Burchett Jr",
+   "scope": "state_lower",
+   "districtName": "State House District 33 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "078942b2-eeb7-4c0d-9efb-283c4314d81f",
+   "name": "Megan Hornbeek Allen",
+   "scope": "state_lower",
+   "districtName": "State House District 81 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "081f9cdd-bb58-4c9c-8144-d411ee6ac0f5",
+   "name": "Melissa Elder",
+   "scope": "state_upper",
+   "districtName": "State Senate District 24 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "9c6065e4-6dd1-4780-a632-c03a2fdb5058",
+   "name": "Melvin Latham",
+   "scope": "state_lower",
+   "districtName": "State House District 99 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "afd8d7a6-6e5d-4ab5-a626-b3ce4f008514",
+   "name": "Memory Taylor",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "66122d04-8b85-4c05-be80-dc7d0cb2612a",
+   "name": "Meredith Mcginnis",
+   "scope": "state_upper",
+   "districtName": "State Senate District 18 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "972190b1-030d-4710-a3b3-7800021ac423",
+   "name": "Michael Tinsley",
+   "scope": "state_lower",
+   "districtName": "State House District 76 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "16486a7e-6d6c-45a5-9d60-a4f61f350258",
+   "name": "Michelle Lafleur",
+   "scope": "state_lower",
+   "districtName": "State House District 68 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "73000a46-376a-4471-999a-be7d8eb4525f",
+   "name": "Mike Bockus",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "7478f381-dcf8-4998-b8bb-fbaf0a20b821",
+   "name": "Nathan Brewer",
+   "scope": "state_upper",
+   "districtName": "State Senate District 8 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "a3858955-4b7d-41c1-87fd-4a1839ac146c",
+   "name": "Patrick Southerland",
+   "scope": "state_upper",
+   "districtName": "State Senate District 6 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "bdf0d7e7-ed53-48d9-85ac-74af2ded09e5",
+   "name": "Paul Hassink",
+   "scope": "state_lower",
+   "districtName": "State House District 79 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "64f72248-dc7e-4d96-9ae6-b0b08a270e22",
+   "name": "Randy Cowling",
+   "scope": "state_upper",
+   "districtName": "State Senate District 2 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "9939337a-447b-4fd5-b592-9125a743a1a7",
+   "name": "Rick Larsen",
+   "scope": "state_upper",
+   "districtName": "State Senate District 36 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "c2dfa19c-5fe1-40f0-ab88-5902a89047bb",
+   "name": "Roberto Seda",
+   "scope": "state_lower",
+   "districtName": "State House District 91 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "45691100-3818-49af-b1ec-fe2c3bf78768",
+   "name": "Rose Rosie Lynch",
+   "scope": "state_lower",
+   "districtName": "State House District 16 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "e363a58e-c325-421c-9464-96424cc51f4c",
+   "name": "Ryan Gardner",
+   "scope": "state_lower",
+   "districtName": "State House District 95 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f64c45ed-7044-41de-8f1f-31cde20e2b62",
+   "name": "Scotty Stokes",
+   "scope": "state_lower",
+   "districtName": "State House District 9 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "c9effcb0-34e4-4dd4-a0f4-c4f57d342dea",
+   "name": "Sharon K Taylor",
+   "scope": "state_lower",
+   "districtName": "State House District 60 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "4028641e-9bb3-4636-943f-2389623fbdd4",
+   "name": "Sheila Dills",
+   "scope": "state_lower",
+   "districtName": "State House District 69 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "f64150d9-1d5a-4565-8c99-d8d28e4d6131",
+   "name": "Shykira Smith",
+   "scope": "state_lower",
+   "districtName": "State House District 63 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "1a583c9d-7fe8-4961-bd9b-6e9e93b0fb8f",
+   "name": "Sonya Amling",
+   "scope": "state_lower",
+   "districtName": "State House District 30 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "a104dd50-ec1e-4ee1-95d6-e85c53920f36",
+   "name": "Steve Glinski",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "c4bb758d-ab94-48a5-9999-174655408f08",
+   "name": "T. J. Marti",
+   "scope": "state_lower",
+   "districtName": "State House District 75 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "b8621263-5783-4212-a22d-1d7a2f89ace7",
+   "name": "Tegan Malone",
+   "scope": "state_lower",
+   "districtName": "State House District 95 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "4f16abd7-fbc3-4a39-8616-1ee8d067ea57",
+   "name": "Tiffany Prater",
+   "scope": "state_lower",
+   "districtName": "State House District 12 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "7145ca65-ae28-433b-b3d0-13bd67a439be",
+   "name": "Toby Thompson",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "5f29bb1d-f835-4a3f-918f-572815c2ca5e",
+   "name": "Tony Oliva",
+   "scope": "state_lower",
+   "districtName": "State House District 78 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "56cc6651-4d55-4ab8-92c9-e87d0a9952d4",
+   "name": "Travis Headd",
+   "scope": "state_lower",
+   "districtName": "State House District 82 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "292008e6-d454-4d95-a223-d4ca69b4a21c",
+   "name": "Trey Caldwell",
+   "scope": "state_lower",
+   "districtName": "State House District 63 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "684159ec-5056-4b5e-8014-dce0b96840ae",
+   "name": "Troy Talley",
+   "scope": "state_lower",
+   "districtName": "State House District 81 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "d8f1f09c-27ab-4420-a775-fd99aac6f773",
+   "name": "Tyler Herring",
+   "scope": "state_upper",
+   "districtName": "State Senate District 18 (2024); Oklahoma"
+  },
+  {
+   "candidateId": "861a334f-38eb-4feb-b23b-c4d8c90a2a83",
+   "name": "Tyler Price",
+   "scope": "state_lower",
+   "districtName": "State House District 69 (2024); Oklahoma"
+  }
+ ],
+ "files": 8567,
+ "fileErrors": 0,
+ "counts": {
+  "unmatched_reviewed": 187228,
+  "matched": 108853
+ }
+}
