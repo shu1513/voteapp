@@ -54,7 +54,7 @@
   --color-ink-mid: #484848;
   --color-ink-soft: #717171;
   --color-line: #dddddd;
-  --color-surface: #f7f7f7;
+  --color-surface: #faf7f2;
   /* Reserved for the app's primary action: choosing a candidate (the
      "Add to cart" of this app). Appears NOWHERE else — the exclusivity is
      what makes the affordance readable. Dark ink text on it: 12.9:1. */
@@ -89,6 +89,19 @@
   --color-nudge: #e8f5e9;
   --color-nudge-line: #a5d6a7;
   --color-nudge-deep: #166534;
+  /* Page ground (user decision 2026-09-09): a faint cream behind white
+     content cards, like paper on a desk. Cards, dialogs, and menus stay
+     white so the coral, yellow, and party colors keep their true hue. */
+  --color-page: #fdfbf7;
+  /* Honorary-member card (/me/membership): navy with ivory text and a gold
+     mark — the one dark card on the site, so the paid tier reads as a
+     different tier at a glance. Gold on navy is 7.4:1, ivory 12:1. */
+  --color-member-gold: #d9b56b;
+  --color-member-paper: #f4efe6;
+}
+
+body {
+  background-color: var(--color-page);
 }
 
 /* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)

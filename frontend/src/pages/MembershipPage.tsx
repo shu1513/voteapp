@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest, APP_NAME, useMe } from "@voteapp/api-client";
-import type { MembershipMembership, MembershipPayment, MembershipStatus } from "@voteapp/api-client";
+import { apiRequest, useMe } from "@voteapp/api-client";
+import type { MembershipMembership, MembershipStatus } from "@voteapp/api-client";
+import { EmailPreferenceToggles } from "../components/EmailPreferenceToggles";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
-import { AmountForm, Disclaimer, formatCents, formatDate, secondaryButtonClass } from "../components/SupportCheckout";
+import { AmountForm, Disclaimer, formatCents, formatDate, secondaryButtonClass, SupportHistory } from "../components/SupportCheckout";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { navigateExternal } from "../lib/externalNavigation";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -148,36 +149,6 @@ function CancelControls({ membership, disabled, onCancel }: { membership: Member
   );
 }
 
-function PaymentHistory({ payments, totalNetCents }: { payments: MembershipPayment[]; totalNetCents: number }) {
-  if (payments.length === 0) {
-    return null;
-  }
-  return (
-    // Closed by default (user decision): the list is context, not the task.
-    <details className="rounded-xl border border-line bg-white p-4">
-      <summary className="cursor-pointer text-heading font-semibold">Recent payments</summary>
-      <p className="mt-2 text-sm text-ink">
-        Total support to date: <strong>{formatCents(totalNetCents)}</strong>
-      </p>
-      <ul className="mt-2 divide-y divide-line text-sm">
-        {payments.map((payment, index) => (
-          <li key={`${payment.paid_at}-${index}`} className="flex flex-wrap justify-between gap-x-3 py-1.5">
-            <span className="text-ink-soft">
-              {formatDate(payment.paid_at)} · {payment.kind === "monthly" ? "Monthly" : "One-time"}
-            </span>
-            <span>
-              {formatCents(payment.amount_cents)}
-              {payment.refunded_amount_cents > 0 ? (
-                <span className="text-ink-soft"> ({formatCents(payment.refunded_amount_cents)} refunded)</span>
-              ) : null}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </details>
-  );
-}
-
 function SupportLinks() {
   return (
     <p className="flex flex-wrap gap-3 text-sm">
@@ -196,11 +167,20 @@ function SupportLinks() {
 
 function MemberPanel({ membership }: { membership: MembershipMembership }) {
   const [notice, setNotice] = useState<string | null>(null);
+  // The amount form is folded behind a button (user decision: the open form
+  // dwarfed the page). It closes itself once a change is saved; a refusal
+  // leaves it open with the error inside.
+  const [changing, setChanging] = useState(false);
   const changeAmount = useMembershipAction({
     request: (amountCents: number) =>
       apiRequest<MembershipStatus>("/api/me/membership/amount", { method: "POST", body: { amount_cents: amountCents } }),
     message: savedMessage,
-    setNotice,
+    setNotice: (next) => {
+      setNotice(next);
+      if (next !== null) {
+        setChanging(false);
+      }
+    },
   });
   const cancel = useMembershipAction<void>({
     request: () => apiRequest<MembershipStatus>("/api/me/membership/cancel", { method: "POST", body: {} }),
@@ -237,26 +217,37 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
 
   return (
     <>
-      <section className="rounded-xl border border-line bg-white p-4">
+      <section className="rounded-xl bg-navy px-6 py-5 text-member-paper">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-member-gold">Honorary member</p>
         {status === "active" ? (
-          <p className="text-sm text-ink">
-            Thank you. Because of supporters like you, {APP_NAME} stays independent and free for every voter.
-          </p>
+          // What the money funds (things the site does today) — never member
+          // perks, which the Terms limit to the newsletter.
+          <>
+            <p className="mt-2 text-lg font-medium">Thank you.</p>
+            <p className="mt-1 text-sm">Your membership is bringing:</p>
+            <ul className="mt-2 divide-y divide-white/20 text-sm">
+              <li className="py-1.5">Deeper investigation of candidates&apos; actions</li>
+              <li className="py-1.5">In-depth analysis of the effects of ballot measures</li>
+              <li className="py-1.5">Ongoing research on the issues that could affect you</li>
+            </ul>
+          </>
         ) : null}
-        <p className="mt-2 font-medium text-ink">{planLine(membership)}</p>
+        <p className="mt-4 inline-block rounded-full border border-white/30 bg-white/10 px-3 py-1 text-sm font-medium">
+          {planLine(membership)}
+        </p>
         {status === "incomplete" ? (
           // Cards-only Checkout confirms the payment before the session
           // completes, so `incomplete` is the seconds-wide gap between the
           // subscription.created poke and the activation poke. Refreshing is
           // the whole remedy.
-          <p className="mt-2 text-sm text-ink-soft">
+          <p className="mt-2 text-sm text-member-paper/80">
             Your first payment is still being confirmed. This usually takes a moment; refresh this page to
             check again.
           </p>
         ) : null}
         {/* Always-mounted live region: confirmations appear inside an
             existing region, the reliably-announced case. */}
-        <p role="status" className="mt-2 min-h-5 text-sm font-medium text-green-900">
+        <p role="status" className="mt-2 min-h-5 text-sm font-medium text-member-gold">
           {notice ?? ""}
         </p>
         {canceling ? (
@@ -273,45 +264,57 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
         ) : null}
       </section>
 
-      {canChangeAmount ? (
-        <section className="rounded-xl border border-line bg-white p-4">
-          <h2 className="text-heading font-semibold">Change amount</h2>
-          <div className="mt-2">
-            <AmountForm
-              // Remount when the amount in force changes (a renewal billed the
-              // new price), so the field never shows a stale prefill.
-              key={membership.monthly_amount_cents}
-              inputId="membership-amount-dollars"
-              label="New monthly amount"
-              buttonLabel={changeAmount.isPending ? "Saving…" : "Save new amount"}
-              initialCents={membership.monthly_amount_cents}
-              disabled={busy}
-              // Re-saving the current amount is a no-op — unless a change is
-              // pending, when it withdraws that change.
-              unchangedCents={membership.pending_amount_change ? null : membership.monthly_amount_cents}
-              onSubmit={(amountCents) => changeAmount.run(amountCents)}
-            >
-              <p className="text-xs text-ink-soft">
-                {projectedStart
-                  ? `Your new amount starts on ${formatDate(projectedStart.toISOString())}. `
-                  : "Your new amount starts at a later renewal. "}
-                Nothing is charged today.
-              </p>
-            </AmountForm>
-          </div>
-          {changeAmount.isError ? (
-            <div className="mt-2">
-              <ErrorNotice error={changeAmount.error} />
-            </div>
-          ) : null}
-        </section>
-      ) : null}
-
-      <section className="space-y-3 rounded-xl border border-line bg-white p-4">
+      <section className="space-y-3 rounded-xl border border-line bg-surface p-4">
         {paymentFailed ? (
           <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">
             Your last payment didn&apos;t go through.
           </p>
+        ) : null}
+        {canChangeAmount ? (
+          changing ? (
+            <div className="rounded-lg border border-line bg-surface p-3">
+              <AmountForm
+                // Remount when the amount in force changes (a renewal billed the
+                // new price), so the field never shows a stale prefill.
+                key={membership.monthly_amount_cents}
+                inputId="membership-amount-dollars"
+                label="New monthly amount"
+                buttonLabel={changeAmount.isPending ? "Saving…" : "Save new amount"}
+                initialCents={membership.monthly_amount_cents}
+                disabled={busy}
+                // Re-saving the current amount is a no-op — unless a change is
+                // pending, when it withdraws that change.
+                unchangedCents={membership.pending_amount_change ? null : membership.monthly_amount_cents}
+                onSubmit={(amountCents) => changeAmount.run(amountCents)}
+              >
+                <p className="text-xs text-ink-soft">
+                  {projectedStart
+                    ? `Your new amount starts on ${formatDate(projectedStart.toISOString())}. `
+                    : "Your new amount starts at a later renewal. "}
+                  Nothing is charged today.
+                </p>
+              </AmountForm>
+              {changeAmount.isError ? (
+                <div className="mt-2">
+                  <ErrorNotice error={changeAmount.error} />
+                </div>
+              ) : null}
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setChanging(false)}
+                className={`${secondaryButtonClass} mt-3`}
+              >
+                Never mind
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button type="button" disabled={busy} onClick={() => setChanging(true)} className={secondaryButtonClass}>
+                Change amount
+              </button>
+            </div>
+          )
         ) : null}
         <div>
           <button type="button" disabled={busy} onClick={openPortal} className={secondaryButtonClass}>
@@ -334,48 +337,71 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
           </div>
         ) : null}
       </section>
+      {/* Opting out of the emails never touches the subscription (the flag
+          lives on users, not billing) — the same switch as in Settings. */}
+      <section className="rounded-xl border border-line bg-surface p-4">
+        <EmailPreferenceToggles only={["email_member_newsletter"]} />
+      </section>
     </>
   );
 }
 
 function MembershipManager() {
   const status = useMembershipStatus();
+  // "My" only once there is a membership to call theirs; the same page
+  // serves non-members and lapsed members.
+  const isMember = status.isSuccess && status.data.enabled && status.data.membership !== null;
+  const heading = <h1 className="text-title font-bold">{isMember ? "My honorary membership" : "Honorary membership"}</h1>;
 
   if (status.isPending) {
-    return <LoadingNotice text="Loading…" />;
+    return (
+      <>
+        {heading}
+        <LoadingNotice text="Loading…" />
+      </>
+    );
   }
   if (status.isError) {
-    return <ErrorNotice error={status.error} />;
+    return (
+      <>
+        {heading}
+        <ErrorNotice error={status.error} />
+      </>
+    );
   }
   if (!status.data.enabled) {
     return (
-      <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
-        Payments are temporarily unavailable. Please check back later.
-      </p>
+      <>
+        {heading}
+        <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
+          Payments are temporarily unavailable. Please check back later.
+        </p>
+      </>
     );
   }
-  const { membership, payments, total_net_cents } = status.data;
+  const { membership, payments } = status.data;
 
   return (
     <>
+      {heading}
       {membership ? (
         <MemberPanel membership={membership} />
       ) : (
-        <section className="rounded-xl border border-line bg-white p-4">
+        <section className="rounded-xl border border-line bg-surface p-4">
           <p className="text-sm text-ink">You don&apos;t have a monthly membership right now.</p>
           <div className="mt-3">
             <SupportLinks />
           </div>
         </section>
       )}
-      <PaymentHistory payments={payments} totalNetCents={total_net_cents} />
+      <SupportHistory payments={payments} />
       <Disclaimer />
     </>
   );
 }
 
 export function MembershipPage() {
-  useDocumentTitle("Your membership");
+  useDocumentTitle("Honorary membership");
   const { me, isLoading } = useMe();
 
   if (isLoading || me === undefined) {
@@ -404,7 +430,6 @@ export function MembershipPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-4 px-4 py-8">
-      <h1 className="text-title font-bold">Your membership</h1>
       <MembershipManager />
       <p className="text-sm">
         <Link to="/me/settings" className={linkClass}>

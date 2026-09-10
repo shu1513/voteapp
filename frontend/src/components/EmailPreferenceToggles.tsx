@@ -35,9 +35,8 @@ const ALL_LABELS: Array<{ key: keyof EmailPreferences; label: string; descriptio
   },
   {
     key: "email_member_newsletter",
-    label: "Member newsletter",
-    description:
-      "Our member-only analysis reports and newsletters, for supporting members. Turning this off does not affect your membership.",
+    label: "Send me the members-only reports",
+    description: "Turning this off does not affect your membership.",
   },
 ];
 

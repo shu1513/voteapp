@@ -210,7 +210,11 @@ export function surveyLegiscanDataset(dataset: LegiscanDataset): {
   };
 }
 
-/** `--bills hb1,SB0544,HJRB` → the measure_id spellings to keep (`HB 1`, `SB 544`, `HJR B`). */
+/**
+ * `--bills hb1,SB0544,lb48a` → the measure_id spellings to keep (`HB 1`,
+ * `SB 544`, `LB 48A`). Spelled by formatLegiscanMeasureId so the filter can
+ * never reject a number the bill files themselves accept.
+ */
 export function parseLegiscanBillList(raw: string): Set<string> {
   const measures = new Set<string>();
   for (const part of raw.split(",")) {
@@ -218,15 +222,11 @@ export function parseLegiscanBillList(raw: string): Set<string> {
     if (token.length === 0) {
       continue;
     }
-    // Same reader as the bill feed, so a spelling the fetch accepts from
-    // LegiScan (Michigan's lettered `HJRB`) is also accepted on the flag.
-    let measure: string;
     try {
-      measure = formatLegiscanMeasureId(token);
+      measures.add(formatLegiscanMeasureId(token));
     } catch {
       throw new Error(`--bills entry is not a bill number: ${token}`);
     }
-    measures.add(measure);
   }
   if (measures.size === 0) {
     throw new Error("--bills names no bills");

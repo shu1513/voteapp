@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest, APP_NAME } from "@voteapp/api-client";
-import type { MembershipKind, MembershipMembership } from "@voteapp/api-client";
+import { apiRequest } from "@voteapp/api-client";
+import type { MembershipKind, MembershipMembership, MembershipPayment } from "@voteapp/api-client";
 import { ErrorNotice } from "./Status";
 import { navigateExternal } from "../lib/externalNavigation";
 import { trackSettled } from "../lib/usage";
@@ -40,7 +40,7 @@ const presetClass =
 const presetSelectedClass = "rounded-full border border-ink bg-ink px-3 py-1 text-sm font-medium text-white";
 // The suggested amounts on the support pages (whole dollars; the field
 // takes anything else). $10 is the prefilled default.
-const CHECKOUT_PRESETS_CENTS = [500, 1000, 2500, 5000];
+const CHECKOUT_PRESETS_CENTS = [1000, 2500, 5000, 10_000];
 const linkClass = "font-medium underline hover:text-ink";
 
 const currency = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
@@ -226,16 +226,26 @@ function useCheckoutMutation() {
   });
 }
 
-function OutcomeBanners({ outcome }: { outcome: string | null }) {
+/** A monthly sign-up gets pointed at the page that now manages it; a
+ * one-time gift gets a plain thank-you (user decision: no nudge toward the
+ * amounts right after giving). */
+function OutcomeBanners({ outcome, kind }: { outcome: string | null; kind: MembershipKind }) {
   return (
     <>
       {outcome === "success" ? (
         <p role="status" className="mt-2 rounded-lg border border-green-700/40 bg-green-50 px-3 py-2 text-sm text-green-900">
-          Thank you for your support! Your payment may take a moment to appear on your{" "}
-          <Link to="/me/membership" className={linkClass}>
-            membership page
-          </Link>
-          .
+          {kind === "monthly" ? (
+            <>
+              Thank you for your support! You&apos;re now an honorary member. You&apos;ll get our occasional
+              members-only reports, and you can manage your membership from{" "}
+              <Link to="/me/settings" className={linkClass}>
+                Settings
+              </Link>
+              .
+            </>
+          ) : (
+            "Thank you for your support! Because of you, we can keep bringing you quality content and keep improving it."
+          )}
         </p>
       ) : null}
       {outcome === "canceled" ? (
@@ -250,10 +260,38 @@ function OutcomeBanners({ outcome }: { outcome: string | null }) {
 export function Disclaimer() {
   return (
     <p className="mt-1 text-sm text-ink-soft">
-      {APP_NAME} is independently operated. Optional payments support operating the service, not any
-      candidate, campaign, committee, party, or charity. Payments provide no influence over our
-      content and are not eligible for a charitable-contribution receipt.
+      Your support keeps the site running. It isn&apos;t a political contribution, isn&apos;t tax-deductible,
+      and buys no influence over our content.
     </p>
+  );
+}
+
+/** Past support, folded away by default: clicking the heading opens and
+ * closes it. Date and amount per line, no running total (user decision — a
+ * total reads as a bill). Settings and the membership page both use it. */
+export function SupportHistory({ payments }: { payments: MembershipPayment[] }) {
+  if (payments.length === 0) {
+    return null;
+  }
+  return (
+    <details className="rounded-xl border border-line bg-surface p-4">
+      <summary className="cursor-pointer text-heading font-semibold">Support history</summary>
+      <ul className="mt-2 divide-y divide-line text-sm">
+        {payments.map((payment, index) => (
+          <li key={`${payment.paid_at}-${index}`} className="flex flex-wrap justify-between gap-x-3 py-1.5">
+            <span className="text-ink-soft">
+              {formatDate(payment.paid_at)} · {payment.kind === "monthly" ? "Monthly" : "One-time"}
+            </span>
+            <span>
+              {formatCents(payment.amount_cents)}
+              {payment.refunded_amount_cents > 0 ? (
+                <span className="text-ink-soft"> ({formatCents(payment.refunded_amount_cents)} refunded)</span>
+              ) : null}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }
 
@@ -310,8 +348,8 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
   const busy = outcome === "success" || checkout.isPending || checkout.isSuccess;
 
   return (
-    <section className="rounded-xl border border-line bg-white p-4">
-      <OutcomeBanners outcome={outcome} />
+    <section className="rounded-xl border border-line bg-surface p-4">
+      <OutcomeBanners outcome={outcome} kind={kind} />
       {status.isError ? (
         <div className="mt-2">
           <ErrorNotice error={status.error} />
@@ -321,10 +359,17 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
         <>
           <Disclaimer />
 
-          {kind === "monthly" && status.data.membership ? (
+          {kind === "monthly" && outcome === "success" ? null : kind === "monthly" && status.data.membership ? (
+            // Right after subscribing the banner says it all; the "already a
+            // member" line is for a member who comes back later.
             <ExistingMembership membership={status.data.membership} />
           ) : (
             <div className="mt-3 space-y-4">
+              <p className="text-sm text-ink">
+                {kind === "monthly"
+                  ? "Choose your monthly amount below; you will finish your payment securely on Stripe."
+                  : "Choose your amount below; you will finish your payment securely on Stripe."}
+              </p>
               <AmountForm
                 inputId={`membership-${kind}-dollars`}
                 label={
@@ -404,7 +449,7 @@ export function MembershipThanks() {
   }
 
   return (
-    <div className="rounded-xl border border-line bg-white p-4 text-sm">
+    <div className="rounded-xl border border-line bg-surface p-4 text-sm">
       <p className="font-medium text-ink">You are a supporting member. Thank you!</p>
       <Link to="/me/membership" className={`${secondaryButtonClass} mt-2 inline-block`}>
         Manage membership

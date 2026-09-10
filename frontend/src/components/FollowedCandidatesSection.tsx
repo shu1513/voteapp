@@ -98,7 +98,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
   }
 
   return (
-    <li className="rounded-xl border border-line bg-white p-4">
+    <li className="rounded-xl border border-line bg-surface p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <Link
@@ -214,7 +214,7 @@ export function FollowedCandidatesSection() {
               className="w-full rounded-lg border border-line bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
             />
             {matches.length > 0 ? (
-              <ComboboxOptions className="absolute right-0 z-10 mt-1 w-full min-w-64 overflow-hidden rounded-xl border border-line bg-white shadow-md">
+              <ComboboxOptions className="absolute right-0 z-10 mt-1 w-full min-w-64 overflow-hidden rounded-xl border border-line bg-surface shadow-md">
                 {matches.map((match) => (
                   <ComboboxOption
                     key={match.candidate_id}

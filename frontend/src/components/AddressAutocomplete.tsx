@@ -158,7 +158,7 @@ export function AddressAutocomplete({
         {enabled && suggestions.length > 0 ? (
           <ComboboxOptions
             static
-            className="absolute z-10 mt-1 w-full overflow-hidden rounded-xl border border-line bg-white shadow-md"
+            className="absolute z-10 mt-1 w-full overflow-hidden rounded-xl border border-line bg-surface shadow-md"
           >
             {suggestions.map((suggestion) => (
               <ComboboxOption
