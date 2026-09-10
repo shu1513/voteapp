@@ -4160,13 +4160,24 @@ export const LEGISCAN_RECORD_JURISDICTIONS: readonly string[] = [
 // LegiScan exactly on chamber + date + measure + yea + nay, including all 24
 // judged rolls. Remove a state from this set only when its own pipeline is
 // being retired and its existing records are migrated or retired first.
-const JURISDICTIONS_WITH_DEDICATED_PIPELINES: ReadonlySet<string> = new Set(["OH"]);
+//
+// Hawaii (rollcall:hi:*) is here for the opposite reason: LegiScan's Hawaii
+// vote feed holds NO floor votes at all (every roll call in the 2025 and
+// 2026 datasets is a committee vote; the largest tally is a 17-member
+// conference committee against a 51-seat House), so a LegiScan config
+// could never queue a Hawaii record. Its floor votes are read out of the
+// bill histories by hawaiiRollCall.ts.
+const JURISDICTIONS_WITH_DEDICATED_PIPELINES: ReadonlyMap<string, string> = new Map([
+  ["OH", "rollcall:oh:*"],
+  ["HI", "rollcall:hi:*"],
+]);
 
 export function getLegiscanStateConfig(state: string): LegiscanStateConfig {
   const jurisdiction = state.trim().toUpperCase();
-  if (JURISDICTIONS_WITH_DEDICATED_PIPELINES.has(jurisdiction)) {
+  const dedicated = JURISDICTIONS_WITH_DEDICATED_PIPELINES.get(jurisdiction);
+  if (dedicated !== undefined) {
     throw new Error(
-      `${jurisdiction} is served by its own roll-call pipeline (rollcall:oh:*), not LegiScan; ` +
+      `${jurisdiction} is served by its own roll-call pipeline (${dedicated}), not LegiScan; ` +
         "importing it here would write a duplicate record for every vote already imported from that source"
     );
   }
