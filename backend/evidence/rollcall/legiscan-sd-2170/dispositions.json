@@ -1,0 +1,1944 @@
+[
+ {
+  "session": 2170,
+  "bill": "HB1015",
+  "type": "B",
+  "title": "Increase licensure fees related to the practice of funeral service and cremation.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1479007,
+    "date": "2025-02-03",
+    "tally": "54-14",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1504919,
+    "date": "2025-03-04",
+    "tally": "24-11",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1016",
+  "type": "B",
+  "title": "Revise provisions related to pharmacy and to increase fees.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1505452,
+    "date": "2025-03-04",
+    "tally": "27-8",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1021",
+  "type": "B",
+  "title": "Modify the annual fee for concentrated animal feeding operations and to establish an application fee.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1486494,
+    "date": "2025-02-11",
+    "tally": "47-21",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1504873,
+    "date": "2025-03-04",
+    "tally": "23-12",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1036",
+  "type": "B",
+  "title": "Establish a minimum combined balance of the budget reserve fund and general revenue replacement fund.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1498471,
+    "date": "2025-02-24",
+    "tally": "53-17",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1037",
+  "type": "B",
+  "title": "Suspend the tax collection allowance credit for filing returns and remitting taxes electronically.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1505262,
+    "date": "2025-03-04",
+    "tally": "26-9",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1040",
+  "type": "B",
+  "title": "Reduce the state's contribution to a subsidized high school dual credit program.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1499325,
+    "date": "2025-02-25",
+    "tally": "56-14",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1507688,
+    "date": "2025-03-06",
+    "tally": "23-11",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1051",
+  "type": "B",
+  "title": "Update provisions on the interim legislative oversight of administrative rulemaking.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1502073,
+    "date": "2025-02-27",
+    "tally": "24-10",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1052",
+  "type": "B",
+  "title": "Prohibit the exercise of eminent domain for a pipeline that carries carbon oxide.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1474969,
+    "date": "2025-01-27",
+    "tally": "49-19",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1505008,
+    "date": "2025-03-04",
+    "tally": "23-12",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1062",
+  "type": "B",
+  "title": "Amend provisions pertaining to the maintenance and publication of the statewide voter registration file.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1514546,
+    "date": "2025-03-11",
+    "tally": "52-17",
+    "desc": "Concurred in amendments"
+   },
+   {
+    "chamber": "S",
+    "roll": 1509649,
+    "date": "2025-03-10",
+    "tally": "20-12",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1066",
+  "type": "B",
+  "title": "Revise residency requirements for the purposes of voter registration.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1514692,
+    "date": "2025-03-11",
+    "tally": "51-18",
+    "desc": "Concurred in amendments"
+   },
+   {
+    "chamber": "S",
+    "roll": 1509705,
+    "date": "2025-03-10",
+    "tally": "23-11",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1067",
+  "type": "B",
+  "title": "Define the term \"must.\"",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1501373,
+    "date": "2025-02-27",
+    "tally": "22-11",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1079",
+  "type": "B",
+  "title": "Increase the number of off-sale licenses from two to three in municipalities and counties of one thousand or less.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1479294,
+    "date": "2025-02-03",
+    "tally": "53-15",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1092",
+  "type": "B",
+  "title": "Make an appropriation for a student teacher stipend grant program.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1501532,
+    "date": "2025-02-27",
+    "tally": "25-10",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1093",
+  "type": "B",
+  "title": "Modify the permissible dates for a school district bond election.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1502117,
+    "date": "2025-02-27",
+    "tally": "52-18",
+    "desc": "Concurred in amendments"
+   },
+   {
+    "chamber": "S",
+    "roll": 1499695,
+    "date": "2025-02-25",
+    "tally": "19-16",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1094",
+  "type": "B",
+  "title": "Modify laws regarding school bus safety and to provide a penalty therefor.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1480036,
+    "date": "2025-02-04",
+    "tally": "48-19",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1503788,
+    "date": "2025-03-03",
+    "tally": "27-8",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1127",
+  "type": "B",
+  "title": "Require that notice of a county's canvass, post-election audit, and testing of automatic tabulating equipment be posted to the secretary of state's website.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1482447,
+    "date": "2025-02-05",
+    "tally": "43-24",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1130",
+  "type": "B",
+  "title": "Provide permissible dates for municipal and school district elections.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1485161,
+    "date": "2025-02-10",
+    "tally": "52-16",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1511838,
+    "date": "2025-03-10",
+    "tally": "23-11",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1164",
+  "type": "B",
+  "title": "Revise the process for nominating candidates for lieutenant governor.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1493980,
+    "date": "2025-02-19",
+    "tally": "45-25",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1505138,
+    "date": "2025-03-04",
+    "tally": "22-12",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1184",
+  "type": "B",
+  "title": "Amend the deadline for filing a petition to initiate a measure or constitutional amendment.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1511938,
+    "date": "2025-03-10",
+    "tally": "19-15",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "dropped",
+  "reason": "Changes the filing deadline for an initiative or constitutional amendment petition. Same rule as HB 1256: a measure about how hard it is to make law by petition has no honest direction."
+ },
+ {
+  "session": 2170,
+  "bill": "HB1189",
+  "type": "B",
+  "title": "Extend by two years the date on which moneys appropriated to the Governor's Office of Economic Development in 2021 for marketing, route restoration, business development, and air service marketing will revert to the general fund.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1489866,
+    "date": "2025-02-13",
+    "tally": "45-24",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1499561,
+    "date": "2025-02-25",
+    "tally": "24-11",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1192",
+  "type": "B",
+  "title": "Remove the maximum fee permitted to be charged by a notary.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1503686,
+    "date": "2025-03-03",
+    "tally": "21-13",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1208",
+  "type": "B",
+  "title": "Designate an individual using the address of a mail forwarding service or post office box when applying to register as a voter or vote by absentee ballot as a federal voter.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1509527,
+    "date": "2025-03-10",
+    "tally": "25-9",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1216",
+  "type": "B",
+  "title": "Modify and repeal provisions related to the Legislative Research Council.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1489827,
+    "date": "2025-02-13",
+    "tally": "48-21",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "HB1218",
+  "type": "B",
+  "title": "Address the imposition of firearm restrictions on certain employees, officers, volunteers, and other individuals.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1516742,
+    "date": "2025-03-12",
+    "tally": "56-14",
+    "desc": "Conference Committee Report adopted"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1238",
+  "type": "B",
+  "title": "Establish protections for a veteran seeking assistance in a veterans' benefit matter.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1489781,
+    "date": "2025-02-13",
+    "tally": "44-24",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1506931,
+    "date": "2025-03-05",
+    "tally": "25-8",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HB1239",
+  "type": "B",
+  "title": "Revise certain provisions related to the restriction of access to obscene materials in a public library or public school library.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1514929,
+    "date": "2025-03-11",
+    "tally": "36-34",
+    "desc": "Concurred in amendments"
+   }
+  ],
+  "disposition": "dropped",
+  "reason": "Hoghouse amendment. The Senate replaced the whole bill: it started as a repeal of the legal defense that protects school and library staff from obscenity charges, and what passed only requires schools and libraries to let a person appeal to the board over whether material is obscene, with court review. On that enacted text neither direction is honest, so it fails the fifth filter."
+ },
+ {
+  "session": 2170,
+  "bill": "HB1256",
+  "type": "B",
+  "title": "Require the inclusion of certain information on a candidate's nominating petition or on a ballot question petition.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1511376,
+    "date": "2025-03-10",
+    "tally": "21-12",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "dropped",
+  "reason": "Adds information a petition signer must give. Under the campaign's rule on measures that change how hard it is to make law by petition, neither direction is honest, so it fails the fifth filter."
+ },
+ {
+  "session": 2170,
+  "bill": "HB1264",
+  "type": "B",
+  "title": "Require the disclosure of an outstanding loan balance on a campaign finance disclosure report.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1494430,
+    "date": "2025-02-19",
+    "tally": "38-32",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "HJR5002",
+  "type": "JR",
+  "title": "Applying to the United States Congress under Article V of the United States Constitution to call for a convention for proposing an amendment to the constitution establishing congressional term limits.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1477353,
+    "date": "2025-01-30",
+    "tally": "42-24",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1504880,
+    "date": "2025-03-04",
+    "tally": "25-10",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "dropped",
+  "reason": "A South Dakota joint resolution does not go to the Governor, and this one's history carries no enactment action, so it did not become law."
+ },
+ {
+  "session": 2170,
+  "bill": "SB100",
+  "type": "B",
+  "title": "Limit the imposition of restrictions on the carrying of a concealed pistol and other items of self-defense while on the campus of a public institution of higher education.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1507910,
+    "date": "2025-03-06",
+    "tally": "55-14",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB116",
+  "type": "B",
+  "title": "Revise and repeal provisions related to street racing prohibitions and to provide a penalty therefor.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1501839,
+    "date": "2025-02-27",
+    "tally": "48-22",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB12",
+  "type": "B",
+  "title": "Limit the amount of money that may be loaned to a candidate or political committee.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1482461,
+    "date": "2025-02-05",
+    "tally": "38-29",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1474141,
+    "date": "2025-01-23",
+    "tally": "21-13",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB144",
+  "type": "B",
+  "title": "Require legislative approval for significant capital expenditures by the Department of Game, Fish and Parks.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1512457,
+    "date": "2025-03-10",
+    "tally": "53-16",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB164",
+  "type": "B",
+  "title": "Prohibit the use of a deepfake to influence an election and to provide a penalty therefor.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1509251,
+    "date": "2025-03-10",
+    "tally": "45-24",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB2",
+  "type": "B",
+  "title": "Increase civil penalties for commercial driver violations.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1479170,
+    "date": "2025-02-03",
+    "tally": "54-14",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB216",
+  "type": "B",
+  "title": "Reduce the growth in the assessed value of owner-occupied property, limit increases in certain property tax revenues, revise provisions regarding school district excess tax levies, and revise eligibility requirements for a property tax assessment freeze.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1509675,
+    "date": "2025-03-10",
+    "tally": "53-16",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB219",
+  "type": "B",
+  "title": "Require the acceptance of a cash payment for admission to a school-affiliated event.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1502094,
+    "date": "2025-02-27",
+    "tally": "36-34",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1492538,
+    "date": "2025-02-18",
+    "tally": "19-16",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB24",
+  "type": "B",
+  "title": "Revise provisions relating to the promulgation of rules to set licensing and inspection fees for plumbers and related professions.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1504776,
+    "date": "2025-03-04",
+    "tally": "54-16",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1488495,
+    "date": "2025-02-12",
+    "tally": "25-10",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB3",
+  "type": "B",
+  "title": "Increase driver license fees.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1507813,
+    "date": "2025-03-06",
+    "tally": "51-18",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1497959,
+    "date": "2025-02-24",
+    "tally": "24-11",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB30",
+  "type": "B",
+  "title": "Remove outdated provisions within the insurance code.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1477352,
+    "date": "2025-01-30",
+    "tally": "52-14",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB31",
+  "type": "B",
+  "title": "Revise amounts for inspection fees for electrical installations.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1504632,
+    "date": "2025-03-04",
+    "tally": "55-15",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1487955,
+    "date": "2025-02-12",
+    "tally": "27-8",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB40",
+  "type": "B",
+  "title": "Revise Department of Transportation regulatory authority regarding aeronautics.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1479329,
+    "date": "2025-02-03",
+    "tally": "42-26",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB45",
+  "type": "B",
+  "title": "Impose a motor vehicle technology fee.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1503838,
+    "date": "2025-03-03",
+    "tally": "22-13",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB54",
+  "type": "B",
+  "title": "Revise the distribution of revenue from the cigarette tax.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1495406,
+    "date": "2025-02-20",
+    "tally": "21-14",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB59",
+  "type": "B",
+  "title": "Revise provisions relating to the delivery, possession with intent to deliver, and possession of unauthorized articles in a state correctional facility, and to provide a penalty therefor.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1505036,
+    "date": "2025-03-04",
+    "tally": "47-23",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB6",
+  "type": "B",
+  "title": "Authorize a loan from the South Dakota housing infrastructure fund to a school district adjoining a federal military installation for the construction or expansion of a school building.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1508185,
+    "date": "2025-03-06",
+    "tally": "41-28",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB62",
+  "type": "B",
+  "title": "Establish mandatory reporting requirements related to improper governmental conduct and crime, and to provide a penalty therefor.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1506886,
+    "date": "2025-03-05",
+    "tally": "20-14",
+    "desc": "Concurred in amendments"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB65",
+  "type": "B",
+  "title": "Provide for the sale of certain real estate located in Pennington County and to provide for the deposit of the proceeds.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1498470,
+    "date": "2025-02-24",
+    "tally": "51-19",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB70",
+  "type": "B",
+  "title": "Modify the maximum sparsity benefit a sparse school district is eligible to receive.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1498508,
+    "date": "2025-02-24",
+    "tally": "27-8",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB8",
+  "type": "B",
+  "title": "Establish certain criminal offenses for boat operators and to provide penalties therefor.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1502080,
+    "date": "2025-02-27",
+    "tally": "52-18",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SB83",
+  "type": "B",
+  "title": "Revise the penalty and provide treatment for the ingestion of certain controlled substances.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1501580,
+    "date": "2025-02-27",
+    "tally": "37-33",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1483550,
+    "date": "2025-02-06",
+    "tally": "18-17",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-02",
+  "reason": "imported"
+ },
+ {
+  "session": 2170,
+  "bill": "SB97",
+  "type": "B",
+  "title": "Allow the governing body of a municipality to change the use of municipally owned parkland by ordinance.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1496628,
+    "date": "2025-02-21",
+    "tally": "47-21",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2170,
+  "bill": "SJR501",
+  "type": "JR",
+  "title": "Providing legislative approval for a future use water permit application by the Western Dakota Regional Water System.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1506721,
+    "date": "2025-03-05",
+    "tally": "43-27",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "dropped",
+  "reason": "A South Dakota joint resolution does not go to the Governor, and this one's history carries no enactment action, so it did not become law."
+ },
+ {
+  "session": 2231,
+  "bill": "HB1020",
+  "type": "B",
+  "title": "Increase the maximum amount allowable for the livestock ownership inspection fee and to declare an emergency.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1617073,
+    "date": "2026-01-26",
+    "tally": "49-18",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1635818,
+    "date": "2026-02-17",
+    "tally": "26-7",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1034",
+  "type": "B",
+  "title": "Increase fees for decals and license plates mailed to vehicle owners.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1625678,
+    "date": "2026-02-06",
+    "tally": "27-7",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1048",
+  "type": "B",
+  "title": "Make an appropriation for the expansion of broadband infrastructure and to declare an emergency.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1653503,
+    "date": "2026-03-04",
+    "tally": "24-10",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1062",
+  "type": "B",
+  "title": "Revise a provision related to aggravated assault.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1643306,
+    "date": "2026-02-24",
+    "tally": "44-22",
+    "desc": "Concurred in amendments"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1064",
+  "type": "B",
+  "title": "Provide for the sale of producer-raised meat and meat food products directly to consumers pending legalization under federal law.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1619488,
+    "date": "2026-01-29",
+    "tally": "48-18",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1066",
+  "type": "B",
+  "title": "Revise a provision related to theft by a contractor, subcontractor, or supplier.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1626389,
+    "date": "2026-02-09",
+    "tally": "46-19",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1082",
+  "type": "B",
+  "title": "Establish parameters for the reimbursement of school districts that provide free or reduced-price meals to students.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1643465,
+    "date": "2026-02-24",
+    "tally": "46-20",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1657997,
+    "date": "2026-03-09",
+    "tally": "20-14",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-03",
+  "reason": "imported"
+ },
+ {
+  "session": 2231,
+  "bill": "HB1084",
+  "type": "B",
+  "title": "Amend provisions pertaining to the public availability of information contained in certain records.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1618842,
+    "date": "2026-01-28",
+    "tally": "53-14",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1089",
+  "type": "B",
+  "title": "Modify the distributions of revenues collected from severance taxation on new permits.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1652961,
+    "date": "2026-03-04",
+    "tally": "21-13",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1095",
+  "type": "B",
+  "title": "Modify provisions pertaining to the submission of a nominating petition.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1651939,
+    "date": "2026-03-03",
+    "tally": "26-8",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1099",
+  "type": "B",
+  "title": "Reschedule the pharmaceutical composition of crystalline polymorph psilocybin in a drug product approved by the Food and Drug Administration as a Schedule IV controlled substance.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1649819,
+    "date": "2026-03-02",
+    "tally": "21-12",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-03",
+  "reason": "imported"
+ },
+ {
+  "session": 2231,
+  "bill": "HB1107",
+  "type": "B",
+  "title": "Modify restrictions on lands for certain public purposes.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1621069,
+    "date": "2026-02-02",
+    "tally": "46-19",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1649318,
+    "date": "2026-03-02",
+    "tally": "20-13",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1130",
+  "type": "B",
+  "title": "Amend permissible uses of a school district's capital outlay fund.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1619429,
+    "date": "2026-01-29",
+    "tally": "41-25",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1645388,
+    "date": "2026-02-25",
+    "tally": "24-9",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1201",
+  "type": "B",
+  "title": "Authorize the use of bingo games, lotteries, and pull-tab devices by booster clubs.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1628473,
+    "date": "2026-02-10",
+    "tally": "39-27",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1637548,
+    "date": "2026-02-18",
+    "tally": "19-15",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1219",
+  "type": "B",
+  "title": "Require the provision of interpreter or translator services for parties to an administrative contested case.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1636171,
+    "date": "2026-02-17",
+    "tally": "48-18",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1220",
+  "type": "B",
+  "title": "Regulate the sale of nicotine products, and to provide a penalty therefor.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1655358,
+    "date": "2026-03-05",
+    "tally": "27-7",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1227",
+  "type": "B",
+  "title": "Increase the annual fee required of an owner of an electric motor vehicle.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1630576,
+    "date": "2026-02-11",
+    "tally": "49-16",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1639017,
+    "date": "2026-02-19",
+    "tally": "24-10",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-03",
+  "reason": "imported"
+ },
+ {
+  "session": 2231,
+  "bill": "HB1244",
+  "type": "B",
+  "title": "Repeal the special donations fund and make an appropriation to the Department of Education for the provision of a grant to support the Jobs for America's Graduates-South Dakota program.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1645490,
+    "date": "2026-02-25",
+    "tally": "51-14",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1245",
+  "type": "B",
+  "title": "Authorize municipalities to establish a local funding mechanism for capital improvement projects.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1628398,
+    "date": "2026-02-10",
+    "tally": "36-30",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1655424,
+    "date": "2026-03-05",
+    "tally": "19-15",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "HB1326",
+  "type": "B",
+  "title": "Appropriate money for the ordinary expenses of the legislative, judicial, and executive departments of the state, the current expenses of state institutions, interest on the public debt, and common schools.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1661657,
+    "date": "2026-03-12",
+    "tally": "50-17",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1661658,
+    "date": "2026-03-12",
+    "tally": "25-9",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB10",
+  "type": "B",
+  "title": "Revise a provision related to the adoption of federal motor carrier regulations.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1625621,
+    "date": "2026-02-06",
+    "tally": "44-20",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB106",
+  "type": "B",
+  "title": "Modify the amount required to be set aside for extraordinary expenses incurred in providing special education programs.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1657857,
+    "date": "2026-03-09",
+    "tally": "54-15",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1658658,
+    "date": "2026-03-10",
+    "tally": "20-11",
+    "desc": "Concurred in amendments"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB11",
+  "type": "B",
+  "title": "Increase reinstatement fees and abstract driver record fees.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1623654,
+    "date": "2026-02-04",
+    "tally": "46-21",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1614552,
+    "date": "2026-01-20",
+    "tally": "24-8",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB113",
+  "type": "B",
+  "title": "Increase the penalty for preventing practice of religion.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1646948,
+    "date": "2026-02-26",
+    "tally": "48-18",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB119",
+  "type": "B",
+  "title": "Create the capitol restoration fund and to transfer moneys thereto.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1657713,
+    "date": "2026-03-09",
+    "tally": "52-17",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1659355,
+    "date": "2026-03-10",
+    "tally": "20-12",
+    "desc": "Concurred in amendments"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB159",
+  "type": "B",
+  "title": "Revise requirements pertaining to the minimum age for marriage.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1655516,
+    "date": "2026-03-05",
+    "tally": "40-27",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-03",
+  "reason": "imported"
+ },
+ {
+  "session": 2231,
+  "bill": "SB165",
+  "type": "B",
+  "title": "Revise certain provisions pertaining to municipal government.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1640198,
+    "date": "2026-02-20",
+    "tally": "50-17",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB179",
+  "type": "B",
+  "title": "Permit a court to commit a juvenile adjudicated delinquent for certain weapons offenses to the Department of Corrections.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1655832,
+    "date": "2026-03-05",
+    "tally": "42-25",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB204",
+  "type": "B",
+  "title": "Revise certain criteria for loans from the South Dakota housing infrastructure fund.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1655712,
+    "date": "2026-03-05",
+    "tally": "42-25",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1641836,
+    "date": "2026-02-23",
+    "tally": "20-13",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB21",
+  "type": "B",
+  "title": "Modify tax refunds for elderly persons and persons with a disability.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1621254,
+    "date": "2026-02-02",
+    "tally": "18-16",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB214",
+  "type": "B",
+  "title": "Amend provisions pertaining to the publication of the statewide voter registration file.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1651957,
+    "date": "2026-03-03",
+    "tally": "36-30",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "batch-03",
+  "reason": "imported"
+ },
+ {
+  "session": 2231,
+  "bill": "SB237",
+  "type": "B",
+  "title": "Require that counties provide written notice to township supervisors of conditional use applications and appeals.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1640096,
+    "date": "2026-02-20",
+    "tally": "26-8",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB245",
+  "type": "B",
+  "title": "Create the homeowner property tax reduction fund, and to transfer moneys to the homeowner property tax reduction fund.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1657863,
+    "date": "2026-03-09",
+    "tally": "42-27",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1659984,
+    "date": "2026-03-11",
+    "tally": "20-13",
+    "desc": "Concurred in amendments"
+   }
+  ],
+  "disposition": "batch-03",
+  "reason": "imported"
+ },
+ {
+  "session": 2231,
+  "bill": "SB26",
+  "type": "B",
+  "title": "Revise procurement for highway construction contracts.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1641649,
+    "date": "2026-02-23",
+    "tally": "53-14",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB38",
+  "type": "B",
+  "title": "Modify the annual fee imposed on certain concentrated animal feeding operations.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1621035,
+    "date": "2026-02-02",
+    "tally": "50-15",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB42",
+  "type": "B",
+  "title": "Enhance the penalties for ingestion, possession with intent to deliver, and delivery of a controlled substance in a state correctional facility.",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll": 1619280,
+    "date": "2026-01-29",
+    "tally": "26-7",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB44",
+  "type": "B",
+  "title": "Establish investigative subpoena authority to gather business records in certain investigations.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1653091,
+    "date": "2026-03-04",
+    "tally": "52-15",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB63",
+  "type": "B",
+  "title": "Establish the state office of apprenticeship within the Department of Labor and Regulation.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1635764,
+    "date": "2026-02-17",
+    "tally": "42-23",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-03",
+  "reason": "imported"
+ },
+ {
+  "session": 2231,
+  "bill": "SB64",
+  "type": "B",
+  "title": "Revise and repeal provisions related to the athletic commission.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1619374,
+    "date": "2026-01-29",
+    "tally": "51-15",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB69",
+  "type": "B",
+  "title": "Make an appropriation for the purchase of a new Division of Highway Patrol airplane and mission equipment and to declare an emergency.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1652926,
+    "date": "2026-03-04",
+    "tally": "49-18",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB76",
+  "type": "B",
+  "title": "Authorize loans from the South Dakota housing infrastructure fund for airport infrastructure.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1655229,
+    "date": "2026-03-05",
+    "tally": "43-24",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1641689,
+    "date": "2026-02-23",
+    "tally": "22-11",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB78",
+  "type": "B",
+  "title": "Revise the General Appropriations Act for fiscal year 2026.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1661484,
+    "date": "2026-03-12",
+    "tally": "52-15",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1661483,
+    "date": "2026-03-12",
+    "tally": "26-8",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB79",
+  "type": "B",
+  "title": "Make an appropriation to the South Dakota Board of Technical Education to construct an advanced manufacturing laboratory space and classrooms on the campus of Southeast Technical College and to declare an emergency.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1653271,
+    "date": "2026-03-04",
+    "tally": "53-14",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB9",
+  "type": "B",
+  "title": "Revise provisions regarding notices to the one-call notification center.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1622035,
+    "date": "2026-02-03",
+    "tally": "48-19",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1616211,
+    "date": "2026-01-22",
+    "tally": "18-16",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2231,
+  "bill": "SB96",
+  "type": "B",
+  "title": "Authorize the imposition of a county option gross receipts tax to reduce owner-occupied property taxes.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1655444,
+    "date": "2026-03-05",
+    "tally": "48-19",
+    "desc": "Do Pass Amended"
+   },
+   {
+    "chamber": "S",
+    "roll": 1641639,
+    "date": "2026-02-23",
+    "tally": "20-14",
+    "desc": "Do Pass Amended"
+   }
+  ],
+  "disposition": "",
+  "reason": ""
+ },
+ {
+  "session": 2222,
+  "bill": "SB2",
+  "type": "B",
+  "title": "Authorize the Department of Corrections to purchase and exchange certain real property, to contract for the design of a prison facility, to construct a prison facility in Minnehaha County for offenders committed to the Department of Corrections, to make an appropriation therefor, to transfer moneys to the incarceration construction fund, and to declare an emergency.",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll": 1603107,
+    "date": "2025-09-23",
+    "tally": "51-18",
+    "desc": "Do Pass"
+   },
+   {
+    "chamber": "S",
+    "roll": 1603108,
+    "date": "2025-09-23",
+    "tally": "24-11",
+    "desc": "Do Pass"
+   }
+  ],
+  "disposition": "batch-01",
+  "reason": "imported"
+ }
+]

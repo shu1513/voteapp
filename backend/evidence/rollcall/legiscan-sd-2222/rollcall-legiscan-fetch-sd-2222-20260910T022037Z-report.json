@@ -1,0 +1,63 @@
+{
+  "runId": "rollcall-legiscan-fetch-sd-2222-20260910T022037Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "jurisdiction": "SD",
+  "sessionId": 2222,
+  "dryRun": false,
+  "startedAt": "2026-09-10T02:20:37.469Z",
+  "finishedAt": "2026-09-10T02:20:37.531Z",
+  "datasetDir": "~/legiscan-data/sd-2222/SD/2025-2025_1st_Special_Session",
+  "evidenceDir": "evidence/rollcall/legiscan-sd-2222",
+  "bills": 2,
+  "datasetVotes": 4,
+  "billFilter": null,
+  "billFilterMisses": 0,
+  "excludedMeasureVotes": 0,
+  "committeeVotes": 2,
+  "unrecordedVotes": 0,
+  "duplicateVotes": 0,
+  "floorVotes": 2,
+  "surfaced": 0,
+  "fileErrors": [],
+  "counts": {
+    "inserted": 2
+  },
+  "rows": [
+    {
+      "bill": "SB2",
+      "chamber": "house",
+      "roll": 1603107,
+      "desc": "Do Pass",
+      "outcome": "inserted",
+      "evidenceFile": "ls-sd-house-2222-roll1603107.json",
+      "voteDate": "2025-09-23",
+      "measureId": "SB 2",
+      "result": "Passed",
+      "yeas": 51,
+      "nays": 18,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    },
+    {
+      "bill": "SB2",
+      "chamber": "senate",
+      "roll": 1603108,
+      "desc": "Do Pass",
+      "outcome": "inserted",
+      "evidenceFile": "ls-sd-senate-2222-roll1603108.json",
+      "voteDate": "2025-09-23",
+      "measureId": "SB 2",
+      "result": "Passed",
+      "yeas": 24,
+      "nays": 11,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    }
+  ]
+}

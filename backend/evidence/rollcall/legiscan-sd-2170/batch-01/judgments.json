@@ -1,0 +1,295 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1499325,
+      "measure_id": "HB 1040",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1040, which raised what high school students pay for college courses. South Dakota lets eleventh and twelfth graders take college courses at a reduced rate. The state used to pay two-thirds of that rate and the student one-third. The act makes it half and half, so the student's share rises and the state's share falls. A school district may still cover part of the student's share. The South Dakota House vote was 56-14. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1040, which raised what high school students pay for college courses. South Dakota lets eleventh and twelfth graders take college courses at a reduced rate. The state used to pay two-thirds of that rate and the student one-third. The act makes it half and half, so the student's share rises and the state's share falls. A school district may still cover part of the student's share. The South Dakota House vote was 56-14. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1507688,
+      "measure_id": "HB 1040",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1040, which raised what high school students pay for college courses. South Dakota lets eleventh and twelfth graders take college courses at a reduced rate. The state used to pay two-thirds of that rate and the student one-third. The act makes it half and half, so the student's share rises and the state's share falls. A school district may still cover part of the student's share. The South Dakota Senate vote was 23-11. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1040, which raised what high school students pay for college courses. South Dakota lets eleventh and twelfth graders take college courses at a reduced rate. The state used to pay two-thirds of that rate and the student one-third. The act makes it half and half, so the student's share rises and the state's share falls. A school district may still cover part of the student's share. The South Dakota Senate vote was 23-11. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1474969,
+      "measure_id": "HB 1052",
+      "vote_date": "2025-01-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1052, which banned the use of eminent domain for carbon dioxide pipelines. Eminent domain is the power to force a landowner to sell. The act says no one may use it to get right-of-way for, build, or run a pipeline whose main purpose is carrying carbon oxide. It applies despite any other law. The bill was not amended. The South Dakota House vote was 49-19. The Governor signed it on March 06, 2025.",
+      "nay_description": "Voted against House Bill 1052, which banned the use of eminent domain for carbon dioxide pipelines. Eminent domain is the power to force a landowner to sell. The act says no one may use it to get right-of-way for, build, or run a pipeline whose main purpose is carrying carbon oxide. It applies despite any other law. The bill was not amended. The South Dakota House vote was 49-19. The Governor signed it on March 06, 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1505008,
+      "measure_id": "HB 1052",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1052, which banned the use of eminent domain for carbon dioxide pipelines. Eminent domain is the power to force a landowner to sell. The act says no one may use it to get right-of-way for, build, or run a pipeline whose main purpose is carrying carbon oxide. It applies despite any other law. The bill was not amended. The South Dakota Senate vote was 23-12. The Governor signed it on March 06, 2025.",
+      "nay_description": "Voted against House Bill 1052, which banned the use of eminent domain for carbon dioxide pipelines. Eminent domain is the power to force a landowner to sell. The act says no one may use it to get right-of-way for, build, or run a pipeline whose main purpose is carrying carbon oxide. It applies despite any other law. The bill was not amended. The South Dakota Senate vote was 23-12. The Governor signed it on March 06, 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1514546,
+      "measure_id": "HB 1062",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1062, which opened up and expanded the county voter registration file. Each county auditor must now keep a digital master file that also records every absentee ballot application, the address on it, and when the ballot was asked for and returned. The file must be open to the public free of charge, without Social Security numbers, license numbers or dates of birth. Auditors must save a snapshot the day before each primary and general election and keep five years of history. The South Dakota House vote was 52-17. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1062, which opened up and expanded the county voter registration file. Each county auditor must now keep a digital master file that also records every absentee ballot application, the address on it, and when the ballot was asked for and returned. The file must be open to the public free of charge, without Social Security numbers, license numbers or dates of birth. Auditors must save a snapshot the day before each primary and general election and keep five years of history. The South Dakota House vote was 52-17. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1509649,
+      "measure_id": "HB 1062",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1062, which opened up and expanded the county voter registration file. Each county auditor must now keep a digital master file that also records every absentee ballot application, the address on it, and when the ballot was asked for and returned. The file must be open to the public free of charge, without Social Security numbers, license numbers or dates of birth. Auditors must save a snapshot the day before each primary and general election and keep five years of history. The South Dakota Senate vote was 20-12. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1062, which opened up and expanded the county voter registration file. Each county auditor must now keep a digital master file that also records every absentee ballot application, the address on it, and when the ballot was asked for and returned. The file must be open to the public free of charge, without Social Security numbers, license numbers or dates of birth. Auditors must save a snapshot the day before each primary and general election and keep five years of history. The South Dakota Senate vote was 20-12. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1514692,
+      "measure_id": "HB 1066",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1066, which tightened what counts as living in South Dakota for voter registration. Before the act, a resident was a person whose home was in South Dakota, judged mainly by intent. The act instead requires a fixed permanent dwelling where the person lives and usually sleeps for at least thirty consecutive days. A person may be a resident of only one place. The South Dakota House vote was 51-18. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1066, which tightened what counts as living in South Dakota for voter registration. Before the act, a resident was a person whose home was in South Dakota, judged mainly by intent. The act instead requires a fixed permanent dwelling where the person lives and usually sleeps for at least thirty consecutive days. A person may be a resident of only one place. The South Dakota House vote was 51-18. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1509705,
+      "measure_id": "HB 1066",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1066, which tightened what counts as living in South Dakota for voter registration. Before the act, a resident was a person whose home was in South Dakota, judged mainly by intent. The act instead requires a fixed permanent dwelling where the person lives and usually sleeps for at least thirty consecutive days. A person may be a resident of only one place. The South Dakota Senate vote was 23-11. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1066, which tightened what counts as living in South Dakota for voter registration. Before the act, a resident was a person whose home was in South Dakota, judged mainly by intent. The act instead requires a fixed permanent dwelling where the person lives and usually sleeps for at least thirty consecutive days. A person may be a resident of only one place. The South Dakota Senate vote was 23-11. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1501532,
+      "measure_id": "HB 1092",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1092, which paid for stipends for student teachers. The act puts $500,000 from the general fund into grants for school districts and accredited schools that host student teachers. A grant may not be more than $5,000 per school, and the money must go to the student teachers placed there. The Department of Education may keep up to five percent to run the program. The South Dakota Senate vote was 25-10. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against House Bill 1092, which paid for stipends for student teachers. The act puts $500,000 from the general fund into grants for school districts and accredited schools that host student teachers. A grant may not be more than $5,000 per school, and the money must go to the student teachers placed there. The Department of Education may keep up to five percent to run the program. The South Dakota Senate vote was 25-10. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1516742,
+      "measure_id": "HB 1218",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1218, which stopped counties, townships and cities from barring their own staff from carrying a concealed gun at work. A county board, township board or city council may no longer prohibit an employee, officer or volunteer from lawfully carrying a concealed firearm in its buildings, vehicles or on its land. A policy, a guidance letter or a spoken instruction all count as prohibiting. Inmates are excluded, as are people other than police officers inside the secure part of a jail, a mental health crisis center or a residential addiction treatment center. The local government carries no liability for any resulting harm. The South Dakota House vote was 56-14. This was the vote to adopt the conference committee report, which is the text that became law. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1218, which stopped counties, townships and cities from barring their own staff from carrying a concealed gun at work. A county board, township board or city council may no longer prohibit an employee, officer or volunteer from lawfully carrying a concealed firearm in its buildings, vehicles or on its land. A policy, a guidance letter or a spoken instruction all count as prohibiting. Inmates are excluded, as are people other than police officers inside the secure part of a jail, a mental health crisis center or a residential addiction treatment center. The local government carries no liability for any resulting harm. The South Dakota House vote was 56-14. This was the vote to adopt the conference committee report, which is the text that became law. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1494430,
+      "measure_id": "HB 1264",
+      "vote_date": "2025-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1264, which required campaign reports to show money still owed on loans. A campaign finance disclosure report must now list the balance left on any outstanding loan. Before the act a report showed the loan when it came in but not what was still owed. The bill was not amended. The South Dakota House vote was 38-32. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1264, which required campaign reports to show money still owed on loans. A campaign finance disclosure report must now list the balance left on any outstanding loan. Before the act a report showed the loan when it came in but not what was still owed. The bill was not amended. The South Dakota House vote was 38-32. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1507910,
+      "measure_id": "SB 100",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 100, which allowed guns and pepper spray on public college and technical school campuses. Neither the Board of Regents nor the Board of Technical Education, nor any school either one runs, may limit carrying a concealed pistol by a person holding an enhanced permit, or carrying a stun gun, mace or pepper spray. Limits are still allowed in a few marked places, such as rooms holding large amounts of flammable liquid or hazardous gas, and rooms with magnetic resonance imaging equipment. The South Dakota House vote was 55-14. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against Senate Bill 100, which allowed guns and pepper spray on public college and technical school campuses. Neither the Board of Regents nor the Board of Technical Education, nor any school either one runs, may limit carrying a concealed pistol by a person holding an enhanced permit, or carrying a stun gun, mace or pepper spray. Limits are still allowed in a few marked places, such as rooms holding large amounts of flammable liquid or hazardous gas, and rooms with magnetic resonance imaging equipment. The South Dakota House vote was 55-14. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1482461,
+      "measure_id": "SB 12",
+      "vote_date": "2025-02-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 12, which capped loans to a candidate at the same limit as donations. A candidate or political committee may not take a loan from someone if the loan, or the loan plus that person's donations, goes over the donation limit already in law. A loan counts toward what that person may give. The House added a separate cap on transfers from a candidate's federal committee and then took it back out, so both chambers voted on the same loan rule. The South Dakota House vote was 38-29. The Governor signed it on February 19, 2025.",
+      "nay_description": "Voted against Senate Bill 12, which capped loans to a candidate at the same limit as donations. A candidate or political committee may not take a loan from someone if the loan, or the loan plus that person's donations, goes over the donation limit already in law. A loan counts toward what that person may give. The House added a separate cap on transfers from a candidate's federal committee and then took it back out, so both chambers voted on the same loan rule. The South Dakota House vote was 38-29. The Governor signed it on February 19, 2025.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1474141,
+      "measure_id": "SB 12",
+      "vote_date": "2025-01-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 12, which capped loans to a candidate at the same limit as donations. A candidate or political committee may not take a loan from someone if the loan, or the loan plus that person's donations, goes over the donation limit already in law. A loan counts toward what that person may give. The House added a separate cap on transfers from a candidate's federal committee and then took it back out, so both chambers voted on the same loan rule. The South Dakota Senate vote was 21-13. The Governor signed it on February 19, 2025.",
+      "nay_description": "Voted against Senate Bill 12, which capped loans to a candidate at the same limit as donations. A candidate or political committee may not take a loan from someone if the loan, or the loan plus that person's donations, goes over the donation limit already in law. A loan counts toward what that person may give. The House added a separate cap on transfers from a candidate's federal committee and then took it back out, so both chambers voted on the same loan rule. The South Dakota Senate vote was 21-13. The Governor signed it on February 19, 2025.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1509251,
+      "measure_id": "SB 164",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 164, which made it a crime to spread an undisclosed deepfake about a candidate. A deepfake is audio or video made by artificial intelligence that looks or sounds real. Within ninety days of an election, no one may spread a deepfake meant to injure a candidate without the required disclosure, if they know or should know what it is. Breaking the rule is a Class 1 misdemeanor. Satire and parody are exempt, as are news broadcasts that flag the doubt, paid publication by news outlets, and internet services that only carry the content. The South Dakota House vote was 45-24. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against Senate Bill 164, which made it a crime to spread an undisclosed deepfake about a candidate. A deepfake is audio or video made by artificial intelligence that looks or sounds real. Within ninety days of an election, no one may spread a deepfake meant to injure a candidate without the required disclosure, if they know or should know what it is. Breaking the rule is a Class 1 misdemeanor. Satire and parody are exempt, as are news broadcasts that flag the doubt, paid publication by news outlets, and internet services that only carry the content. The South Dakota House vote was 45-24. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1509675,
+      "measure_id": "SB 216",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 216, which capped how fast the taxable value of owner-occupied homes can rise. For taxes payable in 2027 through 2031, a county's total assessed value of owner-occupied single-family homes may not rise more than three percent a year, on top of the value of new building work. Over the same years a taxing district's property tax revenue growth from improvements and boundary changes is also held to three percent. Schools are treated separately. The South Dakota House vote was 53-16. The House first rejected the bill 35-34 that same day, then voted to reconsider and passed it. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 216, which capped how fast the taxable value of owner-occupied homes can rise. For taxes payable in 2027 through 2031, a county's total assessed value of owner-occupied single-family homes may not rise more than three percent a year, on top of the value of new building work. Over the same years a taxing district's property tax revenue growth from improvements and boundary changes is also held to three percent. Schools are treated separately. The South Dakota House vote was 53-16. The House first rejected the bill 35-34 that same day, then voted to reconsider and passed it. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1509673
+      ]
+    }
+  ]
+}

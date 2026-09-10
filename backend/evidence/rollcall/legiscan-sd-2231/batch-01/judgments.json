@@ -1,0 +1,184 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1643465,
+      "measure_id": "HB 1082",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1082, which made school meals free for students who qualified for reduced-price meals. A school board may no longer charge a student who qualifies for reduced-price meals under the federal school lunch or breakfast program. The state reimburses districts for those meals. Each year the Department of Education works out what each district is owed, based on what the district reports, after subtracting the federal money it already receives. Boards may still charge other students, staff and visitors. The South Dakota House vote was 46-20. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against House Bill 1082, which made school meals free for students who qualified for reduced-price meals. A school board may no longer charge a student who qualifies for reduced-price meals under the federal school lunch or breakfast program. The state reimburses districts for those meals. Each year the Department of Education works out what each district is owed, based on what the district reports, after subtracting the federal money it already receives. Boards may still charge other students, staff and visitors. The South Dakota House vote was 46-20. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1657997,
+      "measure_id": "HB 1082",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1082, which made school meals free for students who qualified for reduced-price meals. A school board may no longer charge a student who qualifies for reduced-price meals under the federal school lunch or breakfast program. The state reimburses districts for those meals. Each year the Department of Education works out what each district is owed, based on what the district reports, after subtracting the federal money it already receives. Boards may still charge other students, staff and visitors. The South Dakota Senate vote was 20-14. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against House Bill 1082, which made school meals free for students who qualified for reduced-price meals. A school board may no longer charge a student who qualifies for reduced-price meals under the federal school lunch or breakfast program. The state reimburses districts for those meals. Each year the Department of Education works out what each district is owed, based on what the district reports, after subtracting the federal money it already receives. Boards may still charge other students, staff and visitors. The South Dakota Senate vote was 20-14. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1649819,
+      "measure_id": "HB 1099",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1099, which took an approved psilocybin medicine out of the state's most restricted drug list. Psilocybin is the active compound in some mushrooms and sits in Schedule I, the list for drugs with no accepted medical use. The act carves out the crystalline form used in a drug product approved by the federal Food and Drug Administration, so an approved medicine can be prescribed. Psilocybin in every other form stays in Schedule I. The bill was not amended. The South Dakota Senate vote was 21-12. The Governor signed it on March 10, 2026.",
+      "nay_description": "Voted against House Bill 1099, which took an approved psilocybin medicine out of the state's most restricted drug list. Psilocybin is the active compound in some mushrooms and sits in Schedule I, the list for drugs with no accepted medical use. The act carves out the crystalline form used in a drug product approved by the federal Food and Drug Administration, so an approved medicine can be prescribed. Psilocybin in every other form stays in Schedule I. The bill was not amended. The South Dakota Senate vote was 21-12. The Governor signed it on March 10, 2026.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1630576,
+      "measure_id": "HB 1227",
+      "vote_date": "2026-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1227, which doubled the yearly fee on electric cars. The owner of an electric car pays an extra fee each year at registration, on top of the ordinary license fee. The act raises that fee from $50 to $100. It applies to a noncommercial vehicle whose only power source is a battery that charges from an outside supply. Electric motorcycles are not covered. The South Dakota House vote was 49-16. The Governor signed it on February 26, 2026.",
+      "nay_description": "Voted against House Bill 1227, which doubled the yearly fee on electric cars. The owner of an electric car pays an extra fee each year at registration, on top of the ordinary license fee. The act raises that fee from $50 to $100. It applies to a noncommercial vehicle whose only power source is a battery that charges from an outside supply. Electric motorcycles are not covered. The South Dakota House vote was 49-16. The Governor signed it on February 26, 2026.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1639017,
+      "measure_id": "HB 1227",
+      "vote_date": "2026-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1227, which doubled the yearly fee on electric cars. The owner of an electric car pays an extra fee each year at registration, on top of the ordinary license fee. The act raises that fee from $50 to $100. It applies to a noncommercial vehicle whose only power source is a battery that charges from an outside supply. Electric motorcycles are not covered. The South Dakota Senate vote was 24-10. The Governor signed it on February 26, 2026.",
+      "nay_description": "Voted against House Bill 1227, which doubled the yearly fee on electric cars. The owner of an electric car pays an extra fee each year at registration, on top of the ordinary license fee. The act raises that fee from $50 to $100. It applies to a noncommercial vehicle whose only power source is a battery that charges from an outside supply. Electric motorcycles are not covered. The South Dakota Senate vote was 24-10. The Governor signed it on February 26, 2026.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1655516,
+      "measure_id": "SB 159",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 159, which raised the marriage age to eighteen with a narrow court-approved exception. Before the act a sixteen or seventeen year old could marry with a notarized statement of consent from one parent or guardian. The act sets eighteen as the rule. A sixteen or seventeen year old may still marry, but only after a circuit court finds the marriage is voluntary and in the minor's best interest, and only with notarized consent from two parents or from the legal guardian. The South Dakota House vote was 40-27. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against Senate Bill 159, which raised the marriage age to eighteen with a narrow court-approved exception. Before the act a sixteen or seventeen year old could marry with a notarized statement of consent from one parent or guardian. The act sets eighteen as the rule. A sixteen or seventeen year old may still marry, but only after a circuit court finds the marriage is voluntary and in the minor's best interest, and only with notarized consent from two parents or from the legal guardian. The South Dakota House vote was 40-27. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1651957,
+      "measure_id": "SB 214",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 214, which put the statewide voter registration file online every week. The Secretary of State must post the complete statewide voter registration file to the state website by midnight each Monday, including the week's updates. County auditors must send changes to the master file and the absentee voter log to the Secretary every day, and send updated registration and voting history by July 15 after a primary and December 15 after a general election. The fields state law keeps private, such as Social Security and driver license numbers, are not part of what is posted. The South Dakota House vote was 36-30. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against Senate Bill 214, which put the statewide voter registration file online every week. The Secretary of State must post the complete statewide voter registration file to the state website by midnight each Monday, including the week's updates. County auditors must send changes to the master file and the absentee voter log to the Secretary every day, and send updated registration and voting history by July 15 after a primary and December 15 after a general election. The fields state law keeps private, such as Social Security and driver license numbers, are not part of what is posted. The South Dakota House vote was 36-30. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1657863,
+      "measure_id": "SB 245",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 245, which set up a state fund to cut property taxes on owner-occupied homes. The act creates the homeowner property tax reduction fund in the state treasury, run by the Department of Revenue. Its money may only be used to reduce the local share of general education property tax levies on owner-occupied single-family homes. Starting August 1, 2027 a set share of sales and use tax collections goes into the fund. Interest stays in the fund, spending runs through the yearly appropriation bill, and the money cannot be moved to the general fund. The South Dakota House vote was 42-27. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against Senate Bill 245, which set up a state fund to cut property taxes on owner-occupied homes. The act creates the homeowner property tax reduction fund in the state treasury, run by the Department of Revenue. Its money may only be used to reduce the local share of general education property tax levies on owner-occupied single-family homes. Starting August 1, 2027 a set share of sales and use tax collections goes into the fund. Interest stays in the fund, spending runs through the yearly appropriation bill, and the money cannot be moved to the general fund. The South Dakota House vote was 42-27. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1659984,
+      "measure_id": "SB 245",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 245, which set up a state fund to cut property taxes on owner-occupied homes. The act creates the homeowner property tax reduction fund in the state treasury, run by the Department of Revenue. Its money may only be used to reduce the local share of general education property tax levies on owner-occupied single-family homes. Starting August 1, 2027 a set share of sales and use tax collections goes into the fund. Interest stays in the fund, spending runs through the yearly appropriation bill, and the money cannot be moved to the general fund. The South Dakota Senate vote was 20-13. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against Senate Bill 245, which set up a state fund to cut property taxes on owner-occupied homes. The act creates the homeowner property tax reduction fund in the state treasury, run by the Department of Revenue. Its money may only be used to reduce the local share of general education property tax levies on owner-occupied single-family homes. Starting August 1, 2027 a set share of sales and use tax collections goes into the fund. Interest stays in the fund, spending runs through the yearly appropriation bill, and the money cannot be moved to the general fund. The South Dakota Senate vote was 20-13. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1635764,
+      "measure_id": "SB 63",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 63, which created a state office of apprenticeship. The act sets up an office of apprenticeship inside the Department of Labor and Regulation, with a new chapter of law behind it. It defines an apprentice as a worker at least sixteen years old learning a trade under a registered program the department approves, and defines which occupations qualify, following the federal standards. Programs may be measured by time served, by skills shown, or by both. The bill was not amended. The South Dakota House vote was 42-23. The Governor signed it on February 25, 2026.",
+      "nay_description": "Voted against Senate Bill 63, which created a state office of apprenticeship. The act sets up an office of apprenticeship inside the Department of Labor and Regulation, with a new chapter of law behind it. It defines an apprentice as a worker at least sixteen years old learning a trade under a registered program the department approves, and defines which occupations qualify, following the federal standards. Programs may be measured by time served, by skills shown, or by both. The bill was not amended. The South Dakota House vote was 42-23. The Governor signed it on February 25, 2026.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

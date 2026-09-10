@@ -1,0 +1,220 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1498471,
+      "measure_id": "HB 1036",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1036, which set a floor under the state's savings funds. If the budget reserve fund and the general revenue replacement fund together hold less than ten percent of the next year's general fund spending, the Legislature must pass a law moving money back in. The shortfall is made up in thirds over three years, until the two funds together reach ten percent again. The bill was not amended. The South Dakota House vote was 53-17. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1036, which set a floor under the state's savings funds. If the budget reserve fund and the general revenue replacement fund together hold less than ten percent of the next year's general fund spending, the Legislature must pass a law moving money back in. The shortfall is made up in thirds over three years, until the two funds together reach ten percent again. The bill was not amended. The South Dakota House vote was 53-17. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1480036,
+      "measure_id": "HB 1094",
+      "vote_date": "2025-02-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1094, which raised the penalty for illegally passing a school bus. Passing a school bus that has its red lights flashing moves from a Class 2 misdemeanor to a Class 1 misdemeanor, the more serious of the two. The act also says that if a school bus carries an outside video camera, the recording can be requested in a lawsuit and used as evidence in a civil or criminal case. No school district or bus company has to install a camera. The South Dakota House vote was 48-19. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against House Bill 1094, which raised the penalty for illegally passing a school bus. Passing a school bus that has its red lights flashing moves from a Class 2 misdemeanor to a Class 1 misdemeanor, the more serious of the two. The act also says that if a school bus carries an outside video camera, the recording can be requested in a lawsuit and used as evidence in a civil or criminal case. No school district or bus company has to install a camera. The South Dakota House vote was 48-19. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1503788,
+      "measure_id": "HB 1094",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1094, which raised the penalty for illegally passing a school bus. Passing a school bus that has its red lights flashing moves from a Class 2 misdemeanor to a Class 1 misdemeanor, the more serious of the two. The act also says that if a school bus carries an outside video camera, the recording can be requested in a lawsuit and used as evidence in a civil or criminal case. No school district or bus company has to install a camera. The South Dakota Senate vote was 27-8. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against House Bill 1094, which raised the penalty for illegally passing a school bus. Passing a school bus that has its red lights flashing moves from a Class 2 misdemeanor to a Class 1 misdemeanor, the more serious of the two. The act also says that if a school bus carries an outside video camera, the recording can be requested in a lawsuit and used as evidence in a civil or criminal case. No school district or bus company has to install a camera. The South Dakota Senate vote was 27-8. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1482447,
+      "measure_id": "HB 1127",
+      "vote_date": "2025-02-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1127, which put election testing and audit notices on the Secretary of State's website. Counties already had to test vote counting machines within ten days of an election, in public, and to tell the parties and candidates a week ahead. The act adds that the notice of the time and place must also be posted to the Secretary of State's website. The same website posting is required for the county canvass and the post-election audit. The bill was not amended. The South Dakota House vote was 43-24. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1127, which put election testing and audit notices on the Secretary of State's website. Counties already had to test vote counting machines within ten days of an election, in public, and to tell the parties and candidates a week ahead. The act adds that the notice of the time and place must also be posted to the Secretary of State's website. The same website posting is required for the county canvass and the post-election audit. The bill was not amended. The South Dakota House vote was 43-24. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1509527,
+      "measure_id": "HB 1208",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1208, which limited people who register to vote from a mailbox address to federal races only. Some people register from a mailbox address. If a person registers to vote, or asks for an absentee ballot, giving only a mail forwarding service, a commercial mail receiving agency or a post office box, and does not say where they actually live, they are not a resident for voting. The county auditor marks them a federal voter and gives them a ballot listing only President, United States Senator and United States Representative. Those ballots are counted with the rest of the precinct. The change starts on January 1, 2026. The South Dakota Senate vote was 25-9. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1208, which limited people who register to vote from a mailbox address to federal races only. Some people register from a mailbox address. If a person registers to vote, or asks for an absentee ballot, giving only a mail forwarding service, a commercial mail receiving agency or a post office box, and does not say where they actually live, they are not a resident for voting. The county auditor marks them a federal voter and gives them a ballot listing only President, United States Senator and United States Representative. Those ballots are counted with the rest of the precinct. The change starts on January 1, 2026. The South Dakota Senate vote was 25-9. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1489781,
+      "measure_id": "HB 1238",
+      "vote_date": "2025-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1238, which set rules for people who charge veterans to help with benefit claims. Anyone paid to advise or help with a veterans' benefits claim must first sign a written agreement setting out the service and the fee, and must state plainly that they are not connected to the United States or South Dakota Department of Veterans Affairs. They may not charge an initial or nonrefundable fee, promise a result, or take payment for a claim filed in the first year after active duty unless the veteran waives free help in writing. Payment must depend on the benefit going up and may not exceed five times the monthly increase. Using overseas call centers for a veteran's personal information, or logging in as the veteran, is barred. The South Dakota House vote was 44-24. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1238, which set rules for people who charge veterans to help with benefit claims. Anyone paid to advise or help with a veterans' benefits claim must first sign a written agreement setting out the service and the fee, and must state plainly that they are not connected to the United States or South Dakota Department of Veterans Affairs. They may not charge an initial or nonrefundable fee, promise a result, or take payment for a claim filed in the first year after active duty unless the veteran waives free help in writing. Payment must depend on the benefit going up and may not exceed five times the monthly increase. Using overseas call centers for a veteran's personal information, or logging in as the veteran, is barred. The South Dakota House vote was 44-24. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1506931,
+      "measure_id": "HB 1238",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1238, which set rules for people who charge veterans to help with benefit claims. Anyone paid to advise or help with a veterans' benefits claim must first sign a written agreement setting out the service and the fee, and must state plainly that they are not connected to the United States or South Dakota Department of Veterans Affairs. They may not charge an initial or nonrefundable fee, promise a result, or take payment for a claim filed in the first year after active duty unless the veteran waives free help in writing. Payment must depend on the benefit going up and may not exceed five times the monthly increase. Using overseas call centers for a veteran's personal information, or logging in as the veteran, is barred. The South Dakota Senate vote was 25-8. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1238, which set rules for people who charge veterans to help with benefit claims. Anyone paid to advise or help with a veterans' benefits claim must first sign a written agreement setting out the service and the fee, and must state plainly that they are not connected to the United States or South Dakota Department of Veterans Affairs. They may not charge an initial or nonrefundable fee, promise a result, or take payment for a claim filed in the first year after active duty unless the veteran waives free help in writing. Payment must depend on the benefit going up and may not exceed five times the monthly increase. Using overseas call centers for a veteran's personal information, or logging in as the veteran, is barred. The South Dakota Senate vote was 25-8. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1512457,
+      "measure_id": "SB 144",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 144, which required legislative approval before Game, Fish and Parks makes big purchases. The Department of Game, Fish and Parks may not buy, build or significantly improve a building, facility or piece of infrastructure, and may not enter a lease or lease-purchase, if the total capital cost would top $2.5 million, without the Legislature's express approval first. The South Dakota House vote was 53-16. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 144, which required legislative approval before Game, Fish and Parks makes big purchases. The Department of Game, Fish and Parks may not buy, build or significantly improve a building, facility or piece of infrastructure, and may not enter a lease or lease-purchase, if the total capital cost would top $2.5 million, without the Legislature's express approval first. The South Dakota House vote was 53-16. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1506886,
+      "measure_id": "SB 62",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 62, which made state employees report suspected fraud, theft and conflicts of interest. A state employee who has reasonable cause to suspect improper government conduct or a job-related felony must report it. Improper conduct means a conflict of interest banned by state law, fraud, or felony theft of public money or property. A report made in good faith is protected, and an employer may not retaliate by firing, suspending, demoting, transferring, cutting pay or imposing an unfavorable schedule. The South Dakota Senate vote was 20-14. This was the Senate vote agreeing to the House version, which is the text that became law. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 62, which made state employees report suspected fraud, theft and conflicts of interest. A state employee who has reasonable cause to suspect improper government conduct or a job-related felony must report it. Improper conduct means a conflict of interest banned by state law, fraud, or felony theft of public money or property. A report made in good faith is protected, and an employer may not retaliate by firing, suspending, demoting, transferring, cutting pay or imposing an unfavorable schedule. The South Dakota Senate vote was 20-14. This was the Senate vote agreeing to the House version, which is the text that became law. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1498508,
+      "measure_id": "SB 70",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 70, which raised the cap on extra state aid for thinly populated school districts. South Dakota pays a sparsity benefit to school districts covering a lot of ground with few students. The most one district could receive was $110,000 a year. The act raises that ceiling to $137,000. The bill as introduced would have set $175,000 and raised it each year with inflation, and the Senate cut it back to a flat $137,000 before the vote. The South Dakota Senate vote was 27-8. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against Senate Bill 70, which raised the cap on extra state aid for thinly populated school districts. South Dakota pays a sparsity benefit to school districts covering a lot of ground with few students. The most one district could receive was $110,000 a year. The act raises that ceiling to $137,000. The bill as introduced would have set $175,000 and raised it each year with inflation, and the Senate cut it back to a flat $137,000 before the vote. The South Dakota Senate vote was 27-8. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1501580,
+      "measure_id": "SB 83",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 83, which made a first drug ingestion offense a misdemeanor instead of a felony. South Dakota punishes having a controlled drug in the body, not just holding it. Under the old law that was a Class 5 felony for a Schedule I or II drug and a Class 6 felony for Schedule III or IV. The act makes a first and a second offense a Class 1 misdemeanor. The court must order a drug and alcohol evaluation and supervised probation using evidence-based practices, and may add up to a year in jail on a second offense. A third offense within ten years of the first conviction is a Class 6 felony. The South Dakota House vote was 37-33. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 83, which made a first drug ingestion offense a misdemeanor instead of a felony. South Dakota punishes having a controlled drug in the body, not just holding it. Under the old law that was a Class 5 felony for a Schedule I or II drug and a Class 6 felony for Schedule III or IV. The act makes a first and a second offense a Class 1 misdemeanor. The court must order a drug and alcohol evaluation and supervised probation using evidence-based practices, and may add up to a year in jail on a second offense. A third offense within ten years of the first conviction is a Class 6 felony. The South Dakota House vote was 37-33. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1483550,
+      "measure_id": "SB 83",
+      "vote_date": "2025-02-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 83, which made a first drug ingestion offense a misdemeanor instead of a felony. South Dakota punishes having a controlled drug in the body, not just holding it. Under the old law that was a Class 5 felony for a Schedule I or II drug and a Class 6 felony for Schedule III or IV. The act makes a first and a second offense a Class 1 misdemeanor. The court must order a drug and alcohol evaluation and supervised probation using evidence-based practices, and may add up to a year in jail on a second offense. A third offense within ten years of the first conviction is a Class 6 felony. The South Dakota Senate vote was 18-17. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 83, which made a first drug ingestion offense a misdemeanor instead of a felony. South Dakota punishes having a controlled drug in the body, not just holding it. Under the old law that was a Class 5 felony for a Schedule I or II drug and a Class 6 felony for Schedule III or IV. The act makes a first and a second offense a Class 1 misdemeanor. The court must order a drug and alcohol evaluation and supervised probation using evidence-based practices, and may add up to a year in jail on a second offense. A third offense within ten years of the first conviction is a Class 6 felony. The South Dakota Senate vote was 18-17. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
