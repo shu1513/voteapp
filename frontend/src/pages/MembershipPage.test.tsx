@@ -61,6 +61,12 @@ const EMAIL_PREFERENCES = {
   email_member_newsletter: true,
 };
 
+/** The amount form is folded behind "Change amount"; open it and return the input. */
+async function openAmountForm(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(await screen.findByRole("button", { name: "Change amount" }));
+  return screen.getByLabelText("New monthly amount");
+}
+
 function renderMember(status: unknown, routes: Parameters<typeof stubApiRoutes>[0] = {}) {
   return stubApiRoutes({
     "/api/me": { body: ME_VERIFIED },
@@ -122,7 +128,9 @@ describe("MembershipPage", () => {
     expect(screen.getByText("Deeper investigation of candidates' actions")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "My honorary membership" })).toBeInTheDocument();
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
-    expect(screen.getByLabelText("New monthly amount")).toHaveValue("10.00");
+    // The amount form is folded behind a button until asked for.
+    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(await openAmountForm(userEvent.setup())).toHaveValue("10.00");
     expect(screen.getByRole("button", { name: "Cancel membership…" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Keep membership" })).not.toBeInTheDocument();
@@ -142,6 +150,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText("$10.00 per month")).toBeInTheDocument();
+    await openAmountForm(userEvent.setup());
     expect(screen.getByText(/Your new amount starts at a later renewal\. Nothing is charged today\./)).toBeInTheDocument();
   });
 
@@ -150,6 +159,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(`$10.00 per month · $20.00 from ${END_TEXT}`)).toBeInTheDocument();
+    await openAmountForm(userEvent.setup());
     // Re-saving the current amount now withdraws the change, so it is allowed.
     expect(screen.getByRole("button", { name: "Save new amount" })).toBeEnabled();
   });
@@ -159,7 +169,7 @@ describe("MembershipPage", () => {
     const fetchMock = renderMember(ACTIVE);
     renderPage();
 
-    const input = await screen.findByLabelText("New monthly amount");
+    const input = await openAmountForm(user);
     expect(screen.getByRole("button", { name: "Save new amount" })).toBeDisabled();
     expect(screen.getByText(`Your new amount starts on ${END_TEXT}. Nothing is charged today.`)).toBeInTheDocument();
 
@@ -183,13 +193,16 @@ describe("MembershipPage", () => {
     });
     renderPage();
 
-    const input = await screen.findByLabelText("New monthly amount");
+    const input = await openAmountForm(user);
     await user.clear(input);
     await user.type(input, "20");
     await user.click(screen.getByRole("button", { name: "Save new amount" }));
 
     expect(await screen.findByText(`Saved. $20.00 per month starts ${END_TEXT}.`)).toBeInTheDocument();
     expect(body).toEqual({ amount_cents: 2000 });
+    // Saved: the form folds away again.
+    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Change amount" })).toBeEnabled();
     expect(screen.getByText(`$10.00 per month · $20.00 from ${END_TEXT}`)).toBeInTheDocument();
     expect(navigateExternal).not.toHaveBeenCalled();
   });
@@ -201,12 +214,14 @@ describe("MembershipPage", () => {
     });
     renderPage();
 
-    const input = await screen.findByLabelText("New monthly amount");
+    const input = await openAmountForm(user);
     await user.clear(input);
     await user.type(input, "20");
     await user.click(screen.getByRole("button", { name: "Save new amount" }));
 
     expect(await screen.findByText(/already set for your next renewal/)).toBeInTheDocument();
+    // Refused: the form stays open with the error inside it.
+    expect(screen.getByLabelText("New monthly amount")).toBeInTheDocument();
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
   });
 
@@ -237,7 +252,7 @@ describe("MembershipPage", () => {
     expect(screen.getByRole("status", { name: "" })).toHaveTextContent(`Your membership will not renew after ${END_TEXT}.`);
     expect(screen.getByRole("button", { name: "Keep membership" })).toBeEnabled();
     // Nothing to change or cancel while it is ending.
-    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Change amount" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Cancel membership…" })).not.toBeInTheDocument();
   });
 
@@ -257,7 +272,7 @@ describe("MembershipPage", () => {
     expect(await screen.findByText("Welcome back — your membership continues.")).toBeInTheDocument();
     expect(resumeCalls).toBe(1);
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();
-    expect(screen.getByLabelText("New monthly amount")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Change amount" })).toBeEnabled();
   });
 
   it("opens the portal's card screen and stays locked until the browser leaves", async () => {
@@ -285,7 +300,7 @@ describe("MembershipPage", () => {
 
     const notice = await screen.findByText(/Your last payment didn't go through/);
     expect(within(notice.parentElement as HTMLElement).getByRole("button", { name: "Update payment method" })).toBeEnabled();
-    expect(screen.getByLabelText("New monthly amount")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Change amount" })).toBeEnabled();
     expect(screen.queryByText(/Your membership is bringing/)).not.toBeInTheDocument();
   });
 
@@ -294,7 +309,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(/Your first payment is still being confirmed/)).toBeInTheDocument();
-    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Change amount" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Cancel membership…" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.queryByText("Support history")).not.toBeInTheDocument();
@@ -305,7 +320,7 @@ describe("MembershipPage", () => {
     renderPage();
 
     expect(await screen.findByText(/Your last payment didn't go through/)).toBeInTheDocument();
-    expect(screen.queryByLabelText("New monthly amount")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Change amount" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Cancel membership…" })).toBeEnabled();
   });
 

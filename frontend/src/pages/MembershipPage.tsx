@@ -167,11 +167,20 @@ function SupportLinks() {
 
 function MemberPanel({ membership }: { membership: MembershipMembership }) {
   const [notice, setNotice] = useState<string | null>(null);
+  // The amount form is folded behind a button (user decision: the open form
+  // dwarfed the page). It closes itself once a change is saved; a refusal
+  // leaves it open with the error inside.
+  const [changing, setChanging] = useState(false);
   const changeAmount = useMembershipAction({
     request: (amountCents: number) =>
       apiRequest<MembershipStatus>("/api/me/membership/amount", { method: "POST", body: { amount_cents: amountCents } }),
     message: savedMessage,
-    setNotice,
+    setNotice: (next) => {
+      setNotice(next);
+      if (next !== null) {
+        setChanging(false);
+      }
+    },
   });
   const cancel = useMembershipAction<void>({
     request: () => apiRequest<MembershipStatus>("/api/me/membership/cancel", { method: "POST", body: {} }),
@@ -251,45 +260,57 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
         ) : null}
       </section>
 
-      {canChangeAmount ? (
-        <section className="rounded-xl border border-line bg-white p-4">
-          <h2 className="text-heading font-semibold">Change amount</h2>
-          <div className="mt-2">
-            <AmountForm
-              // Remount when the amount in force changes (a renewal billed the
-              // new price), so the field never shows a stale prefill.
-              key={membership.monthly_amount_cents}
-              inputId="membership-amount-dollars"
-              label="New monthly amount"
-              buttonLabel={changeAmount.isPending ? "Saving…" : "Save new amount"}
-              initialCents={membership.monthly_amount_cents}
-              disabled={busy}
-              // Re-saving the current amount is a no-op — unless a change is
-              // pending, when it withdraws that change.
-              unchangedCents={membership.pending_amount_change ? null : membership.monthly_amount_cents}
-              onSubmit={(amountCents) => changeAmount.run(amountCents)}
-            >
-              <p className="text-xs text-ink-soft">
-                {projectedStart
-                  ? `Your new amount starts on ${formatDate(projectedStart.toISOString())}. `
-                  : "Your new amount starts at a later renewal. "}
-                Nothing is charged today.
-              </p>
-            </AmountForm>
-          </div>
-          {changeAmount.isError ? (
-            <div className="mt-2">
-              <ErrorNotice error={changeAmount.error} />
-            </div>
-          ) : null}
-        </section>
-      ) : null}
-
       <section className="space-y-3 rounded-xl border border-line bg-white p-4">
         {paymentFailed ? (
           <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">
             Your last payment didn&apos;t go through.
           </p>
+        ) : null}
+        {canChangeAmount ? (
+          changing ? (
+            <div className="rounded-lg border border-line bg-surface p-3">
+              <AmountForm
+                // Remount when the amount in force changes (a renewal billed the
+                // new price), so the field never shows a stale prefill.
+                key={membership.monthly_amount_cents}
+                inputId="membership-amount-dollars"
+                label="New monthly amount"
+                buttonLabel={changeAmount.isPending ? "Saving…" : "Save new amount"}
+                initialCents={membership.monthly_amount_cents}
+                disabled={busy}
+                // Re-saving the current amount is a no-op — unless a change is
+                // pending, when it withdraws that change.
+                unchangedCents={membership.pending_amount_change ? null : membership.monthly_amount_cents}
+                onSubmit={(amountCents) => changeAmount.run(amountCents)}
+              >
+                <p className="text-xs text-ink-soft">
+                  {projectedStart
+                    ? `Your new amount starts on ${formatDate(projectedStart.toISOString())}. `
+                    : "Your new amount starts at a later renewal. "}
+                  Nothing is charged today.
+                </p>
+              </AmountForm>
+              {changeAmount.isError ? (
+                <div className="mt-2">
+                  <ErrorNotice error={changeAmount.error} />
+                </div>
+              ) : null}
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setChanging(false)}
+                className={`${secondaryButtonClass} mt-3`}
+              >
+                Never mind
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button type="button" disabled={busy} onClick={() => setChanging(true)} className={secondaryButtonClass}>
+                Change amount
+              </button>
+            </div>
+          )
         ) : null}
         <div>
           <button type="button" disabled={busy} onClick={openPortal} className={secondaryButtonClass}>
