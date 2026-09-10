@@ -1,0 +1,166 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1656219,
+   "measure_id": "HB 337",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 337, which raises Utah's taxes on tobacco and nicotine, starting July 1, 2026. The cigarette tax rises to 11 cents a cigarette, or $2.20 for a pack of 20, up from $1.70. The tax on e-cigarettes and other nicotine devices rises from 56 to 71 percent of the maker's sale price. Nicotine pouches are now taxed $1 a package plus 5 cents for each pouch over 20. Other nicotine products are taxed at 73 percent of the maker's price instead of by weight. The Utah House passed it 51-19 and it was signed into law.",
+   "nay_description": "Voted against House Bill 337, which raises Utah's taxes on tobacco and nicotine, starting July 1, 2026. The cigarette tax rises to 11 cents a cigarette, or $2.20 for a pack of 20, up from $1.70. The tax on e-cigarettes and other nicotine devices rises from 56 to 71 percent of the maker's sale price. Nicotine pouches are now taxed $1 a package plus 5 cents for each pouch over 20. Other nicotine products are taxed at 73 percent of the maker's price instead of by weight. The Utah House passed it 51-19 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1644017,
+   "measure_id": "SB 69",
+   "vote_date": "2026-02-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 69, which widens Utah's school phone ban to the whole school day. Before, students could not use a cellphone, smart watch, or similar device during class time. Now the ban runs from the first bell to the last, including lunch, recess, and the time between classes. Schools may still set their own exceptions. They must also let a parent ask for a child to use a phone briefly, in a set spot, outside class time. The Utah House passed it 46-21 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 69, which widens Utah's school phone ban to the whole school day. Before, students could not use a cellphone, smart watch, or similar device during class time. Now the ban runs from the first bell to the last, including lunch, recess, and the time between classes. Schools may still set their own exceptions. They must also let a parent ask for a child to use a phone briefly, in a set spot, outside class time. The Utah House passed it 46-21 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1656631,
+   "measure_id": "SB 252",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 252, which requires state agencies to save water on the grounds of state buildings. When an agency puts in or replaces a lawn, it must plant a grass that needs little water, unless the state finds the land makes that impractical. Sprinkler systems put in from May 6, 2026 must spread water evenly, scoring at least 75 percent on a standard test. The state's facilities office must check state sites and list the repairs needed to meet that mark. The Utah House passed it 41-28 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 252, which requires state agencies to save water on the grounds of state buildings. When an agency puts in or replaces a lawn, it must plant a grass that needs little water, unless the state finds the land makes that impractical. Sprinkler systems put in from May 6, 2026 must spread water evenly, scoring at least 75 percent on a standard test. The state's facilities office must check state sites and list the repairs needed to meet that mark. The Utah House passed it 41-28 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1625738,
+   "measure_id": "HB 296",
+   "vote_date": "2026-02-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 296, which lets a water supplier count water it sets aside for the Great Salt Lake as part of its water conservation plan. The act adds a commitment of available water to uses on the lake to the list of steps a conservation plan may include. The Utah House passed it 48-19 and it was signed into law.",
+   "nay_description": "Voted against House Bill 296, which lets a water supplier count water it sets aside for the Great Salt Lake as part of its water conservation plan. The act adds a commitment of available water to uses on the lake to the list of steps a conservation plan may include. The Utah House passed it 48-19 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1646113,
+   "measure_id": "HB 330",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 330, which gives a person or a company a new defense when sued over harm. The defense applies if what they did was allowed or required at the time by a law, a rule, a permit, a license, or a government order. It does not apply if the agency that gave the permission found that they broke its terms, went past it, or got it by fraud. It does not cover suits over faulty products. The act also says it does not erase the duty to take reasonable care. The Utah House passed it 50-15 and it was signed into law.",
+   "nay_description": "Voted against House Bill 330, which gives a person or a company a new defense when sued over harm. The defense applies if what they did was allowed or required at the time by a law, a rule, a permit, a license, or a government order. It does not apply if the agency that gave the permission found that they broke its terms, went past it, or got it by fraud. It does not cover suits over faulty products. The act also says it does not erase the duty to take reasonable care. The Utah House passed it 50-15 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1644197,
+   "measure_id": "HB 330",
+   "vote_date": "2026-02-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 330, which gives a person or a company a new defense when sued over harm. The defense applies if what they did was allowed or required at the time by a law, a rule, a permit, a license, or a government order. It does not apply if the agency that gave the permission found that they broke its terms, went past it, or got it by fraud. It does not cover suits over faulty products. The act also says it does not erase the duty to take reasonable care. The Utah Senate passed it 17-7 and it was signed into law.",
+   "nay_description": "Voted against House Bill 330, which gives a person or a company a new defense when sued over harm. The defense applies if what they did was allowed or required at the time by a law, a rule, a permit, a license, or a government order. It does not apply if the agency that gave the permission found that they broke its terms, went past it, or got it by fraud. It does not cover suits over faulty products. The act also says it does not erase the duty to take reasonable care. The Utah Senate passed it 17-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1647193,
+   "measure_id": "SB 68",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 68, which lets a Utah person or business that is sued over a website disabled people cannot use sue back if the first lawsuit was abusive. A suit counts as abusive if its main aim was to get paid rather than to fix the website. The law presumes abuse if the business tried in good faith to fix the problem within 30 days of a detailed notice, or fixed it within 90 days. A court may award legal fees, plus punitive damages and sanctions of up to three times those fees. The attorney general may bring the claim. The law ends in 2031. The Utah House passed it 58-15 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 68, which lets a Utah person or business that is sued over a website disabled people cannot use sue back if the first lawsuit was abusive. A suit counts as abusive if its main aim was to get paid rather than to fix the website. The law presumes abuse if the business tried in good faith to fix the problem within 30 days of a detailed notice, or fixed it within 90 days. A court may award legal fees, plus punitive damages and sanctions of up to three times those fees. The attorney general may bring the claim. The law ends in 2031. The Utah House passed it 58-15 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1635148,
+   "measure_id": "SB 68",
+   "vote_date": "2026-02-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 68, which lets a Utah person or business that is sued over a website disabled people cannot use sue back if the first lawsuit was abusive. A suit counts as abusive if its main aim was to get paid rather than to fix the website. The law presumes abuse if the business tried in good faith to fix the problem within 30 days of a detailed notice, or fixed it within 90 days. A court may award legal fees, plus punitive damages and sanctions of up to three times those fees. The attorney general may bring the claim. The law ends in 2031. The Utah Senate passed it 20-6 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 68, which lets a Utah person or business that is sued over a website disabled people cannot use sue back if the first lawsuit was abusive. A suit counts as abusive if its main aim was to get paid rather than to fix the website. The law presumes abuse if the business tried in good faith to fix the problem within 30 days of a detailed notice, or fixed it within 90 days. A court may award legal fees, plus punitive damages and sanctions of up to three times those fees. The attorney general may bring the claim. The law ends in 2031. The Utah Senate passed it 20-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1656375,
+   "measure_id": "SB 292",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 292, which limits what people hurt by self-driving cars can recover. In a suit over a self-driving car, damages for pain and suffering are capped at $1 million, except in a death, and a fully driverless system cannot be made to pay punitive damages. A person hurt by a driverless car may instead sue its owner without proving fault, but can then recover no more than $100,000 in all. The companies that build driverless systems cannot be sued for ordinary carelessness. A design flaw counts only if a safer design existed and the system hurts more people than human drivers do. The limits end in 2030. The Utah House passed it 55-15 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 292, which limits what people hurt by self-driving cars can recover. In a suit over a self-driving car, damages for pain and suffering are capped at $1 million, except in a death, and a fully driverless system cannot be made to pay punitive damages. A person hurt by a driverless car may instead sue its owner without proving fault, but can then recover no more than $100,000 in all. The companies that build driverless systems cannot be sued for ordinary carelessness. A design flaw counts only if a safer design existed and the system hurts more people than human drivers do. The limits end in 2030. The Utah House passed it 55-15 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

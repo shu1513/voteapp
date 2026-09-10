@@ -474,7 +474,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0293	S		1647921	2026-02-27	17	10	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Public Education Student Athlete Protections
 2214	HB0294	H		1643354	2026-02-24	55	14	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Employer Verification Amendments
 2214	HB0295	H		1647435	2026-02-26	59	2	1	6	none	screened	not-divided	House/ passed 3rd reading	Overdose Amendments
-2214	HB0296	H		1625738	2026-02-06	48	19	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Water Commitment Amendments
+2214	HB0296	H		1625738	2026-02-06	48	19	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ passed 3rd reading	Water Commitment Amendments
 2214	HB0296	S		1639880	2026-02-20	25	2	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Water Commitment Amendments
 2214	HB0299	H		1626630	2026-02-09	66	2	1	4	signed	screened	not-divided	House/ passed 3rd reading	School Response to Sexual Offense
 2214	HB0299	S		1639952	2026-02-20	24	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	School Response to Sexual Offense
@@ -531,8 +531,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0329	H		1635232	2026-02-17	53	18	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	State Employee Maternity and Leave Amendments
 2214	HB0329	S		1655694	2026-03-05	25	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	State Employee Maternity and Leave Amendments
 2214	HB0330	H		1629015	2026-02-10	65	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Liability Limitations Amendments
-2214	HB0330	H		1646113	2026-02-26	50	15	1	4	signed	candidate	divided-enacted-final	House/ concurs with Senate amendment	Liability Limitations Amendments
-2214	HB0330	S		1644197	2026-02-25	17	7	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Liability Limitations Amendments
+2214	HB0330	H		1646113	2026-02-26	50	15	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ concurs with Senate amendment	Liability Limitations Amendments
+2214	HB0330	S		1644197	2026-02-25	17	7	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	Senate/ passed 3rd reading	Liability Limitations Amendments
 2214	HB0331	H		1644999	2026-02-25	62	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Criminal Offenses Modifications
 2214	HB0331	S		1654529	2026-03-05	21	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Offenses Modifications
 2214	HB0333	H		1639788	2026-02-20	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Adoption Records Access Amendments
@@ -543,7 +543,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0336	H		1656656	2026-03-06	62	3	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Recovery Operations Amendments
 2214	HB0336	S		1656655	2026-03-06	28	1	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Recovery Operations Amendments
 2214	HB0337	H		1641414	2026-02-23	47	20	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Nicotine Product Tax Amendments
-2214	HB0337	H		1656219	2026-03-06	51	19	1	4	signed	candidate	divided-enacted-final	House/ concurs with Senate amendment	Nicotine Product Tax Amendments
+2214	HB0337	H		1656219	2026-03-06	51	19	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ concurs with Senate amendment	Nicotine Product Tax Amendments
 2214	HB0337	S		1655292	2026-03-05	26	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Nicotine Product Tax Amendments
 2214	HB0337	S		1655799	2026-03-05	27	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Nicotine Product Tax Amendments
 2214	HB0338	H		1647427	2026-02-26	67	0	1	6	none	screened	not-divided	House/ passed 3rd reading	First Responder Health Amendments
@@ -1032,9 +1032,9 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0066	H		1638984	2026-02-19	70	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Medical Cannabis Pharmacy License Amendments
 2214	SB0066	S		1628436	2026-02-10	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Medical Cannabis Pharmacy License Amendments
 2214	SB0067	S		1648126	2026-02-27	25	0	1	6	none	screened	not-divided	Senate/ passed 3rd reading	Law Enforcement Quota Amendments
-2214	SB0068	H		1647193	2026-02-26	58	15	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Disability Litigation Amendments
-2214	SB0068	S		1635148	2026-02-17	20	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Disability Litigation Amendments
-2214	SB0069	H		1644017	2026-02-25	46	21	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	School Device Revisions
+2214	SB0068	H		1647193	2026-02-26	58	15	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ passed 3rd reading	Disability Litigation Amendments
+2214	SB0068	S		1635148	2026-02-17	20	6	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	Senate/ passed 3rd reading	Disability Litigation Amendments
+2214	SB0069	H		1644017	2026-02-25	46	21	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ passed 3rd reading	School Device Revisions
 2214	SB0069	S		1622055	2026-02-03	27	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	School Device Revisions
 2214	SB0069	S		1646508	2026-02-26	19	0	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	School Device Revisions
 2214	SB0071	H		1647245	2026-02-26	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Evidence Retention Amendments
@@ -1354,7 +1354,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0248	S		1644290	2026-02-25	17	9	1	6	none	screened	not-enacted-status-6	Senate/ passed 3rd reading	Child Care Expansion Act
 2214	SB0251	H		1656623	2026-03-06	40	30	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Local Health Department and Department of Environmental Quality Coordination
 2214	SB0251	S		1644204	2026-02-25	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Local Health Department and Department of Environmental Quality Coordination
-2214	SB0252	H		1656631	2026-03-06	41	28	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Water Usage at State-owned Facilities Amendments
+2214	SB0252	H		1656631	2026-03-06	41	28	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ passed 3rd reading	Water Usage at State-owned Facilities Amendments
 2214	SB0252	S		1650835	2026-03-03	25	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Water Usage at State-owned Facilities Amendments
 2214	SB0254	H		1655336	2026-03-05	60	12	1	4	signed	screened	not-divided	House/ passed 3rd reading	Extracted Natural Resources Amendments
 2214	SB0254	H		1656003	2026-03-06	70	2	1	4	signed	screened	not-divided	House Conference Committee - Final Passage	Extracted Natural Resources Amendments
@@ -1404,15 +1404,15 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0284	S		1656842	2026-03-06	24	3	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Local Land and Water Modifications
 2214	SB0286	H		1656662	2026-03-06	39	28	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Interior Designer Amendments
 2214	SB0286	S		1648038	2026-02-27	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Interior Designer Amendments
-2214	SB0287	H		1656436	2026-03-06	47	20	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Targeted Advertising Tax
+2214	SB0287	H		1656436	2026-03-06	47	20	1	4	signed	dropped:no-area	annual tax on large targeted-advertising companies; a revenue measure, not a rule about conduct or data	House/ passed 3rd reading	Targeted Advertising Tax
 2214	SB0287	S		1648188	2026-02-27	18	7	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	Targeted Advertising Tax
-2214	SB0287	S		1656636	2026-03-06	23	6	1	4	signed	candidate	divided-enacted-final	Senate/ concurs with House amendment	Targeted Advertising Tax
+2214	SB0287	S		1656636	2026-03-06	23	6	1	4	signed	dropped:no-area	annual tax on large targeted-advertising companies; a revenue measure, not a rule about conduct or data	Senate/ concurs with House amendment	Targeted Advertising Tax
 2214	SB0288	H		1655060	2026-03-05	69	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Medicaid Provider Amendments
 2214	SB0288	S		1651874	2026-03-03	27	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Medicaid Provider Amendments
 2214	SB0288	S		1656052	2026-03-06	25	0	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Medicaid Provider Amendments
 2214	SB0290	H		1656579	2026-03-06	61	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Victim and Witness Privacy Amendments
 2214	SB0290	S		1650856	2026-03-03	26	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Victim and Witness Privacy Amendments
-2214	SB0292	H		1656375	2026-03-06	55	15	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Autonomous Systems Amendments
+2214	SB0292	H		1656375	2026-03-06	55	15	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ passed 3rd reading	Autonomous Systems Amendments
 2214	SB0292	S		1649998	2026-03-02	21	5	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Autonomous Systems Amendments
 2214	SB0292	S		1656376	2026-03-06	24	2	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Autonomous Systems Amendments
 2214	SB0295	H		1656568	2026-03-06	48	23	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Intellectual Diversity in Education and Government
