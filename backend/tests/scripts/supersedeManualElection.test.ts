@@ -261,6 +261,51 @@ describe("runSupersedeElection", () => {
     ).rejects.toThrow(/different stage/);
   });
 
+  it("treats a NULL election_stage on the retired shell as not stated", async () => {
+    const { query, calls } = buildClient(happyResponses({
+      "WHERE id = $1::uuid\n        FOR UPDATE": [[retiredRow({ election_stage: null })]],
+    }));
+
+    const result = await runSupersedeElection(
+      { query },
+      { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false }
+    );
+
+    expect(result.deletedElectionId).toBe(RETIRED);
+    expect(calls.at(-1)?.text).toBe("COMMIT");
+  });
+
+  it("lets the shell's own research deferrals cascade, reported, while everything else still blocks", async () => {
+    const references = [
+      { table_name: "public.candidate_elections", column_name: "election_id" },
+      { table_name: "public.manual_research_deferrals", column_name: "election_id" },
+    ];
+    const { query, calls } = buildClient(happyResponses({
+      pg_constraint: [references],
+      "count(*)::text AS n FROM public.manual_research_deferrals": [[{ n: "2" }]],
+    }));
+
+    const result = await runSupersedeElection(
+      { query },
+      { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false }
+    );
+
+    expect(result.cascadeDeletes).toEqual([{ table: "manual_research_deferrals", rows: 2 }]);
+    expect(calls.find((call) => call.text.includes("DELETE FROM public.elections"))?.values).toEqual([RETIRED]);
+
+    const stillBlocked = buildClient(happyResponses({
+      pg_constraint: [references],
+      "count(*)::text AS n FROM public.manual_research_deferrals": [[{ n: "2" }]],
+      "count(*)::text AS n FROM public.candidate_elections": [[{ n: "1" }]],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: stillBlocked.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false }
+      )
+    ).rejects.toThrow(/candidate_elections\.election_id \(1\)/);
+  });
+
   it("refuses missing retired or superseding elections", async () => {
     const missingRetired = buildClient(happyResponses({
       "WHERE id = $1::uuid\n        FOR UPDATE": [[]],

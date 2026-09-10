@@ -618,7 +618,7 @@ export function ElectionPage() {
             <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
               How do we calculate my vote power?
             </summary>
-            <div className="mt-2 rounded-xl border border-line bg-white p-4">
+            <div className="mt-2 rounded-xl border border-line bg-surface p-4">
               {/* The how copy arrives with blank lines between its points;
                   preserve them so each axis reads as its own paragraph. */}
               <p className="whitespace-pre-line text-ink">{data.vote_power.explanation.how}</p>
@@ -663,7 +663,7 @@ export function ElectionPage() {
 
         {showOfficeInfo ? (
           // Duties first, then which issues the election touches.
-          <section className="mt-6 rounded-xl border border-line bg-white p-4">
+          <section className="mt-6 rounded-xl border border-line bg-surface p-4">
             <h2 ref={officeRef} className="text-heading font-semibold">About this office</h2>
             {officeBullets.length > 0 ? (
               <ul className="mt-2 list-disc space-y-1 pl-5 text-body text-ink">
@@ -701,7 +701,7 @@ export function ElectionPage() {
         ) : null}
 
         {measure ? (
-          <section className="mt-6 rounded-xl border border-line bg-white p-4">
+          <section className="mt-6 rounded-xl border border-line bg-surface p-4">
             <h2 ref={measureSummaryRef} className="text-heading font-semibold text-dem-blue">Ballot Measure</h2>
             {measure.research_area_tags.length > 0 ? (
               // Comma-separated colored text, not boxed chips (boxes read as
@@ -1142,14 +1142,14 @@ export function ElectionPage() {
           // awaiting certification, profiles being prepared, or unavailable).
           <section className="mt-6">
             <h2 className="text-heading font-semibold">Candidates</h2>
-            <p className="mt-3 rounded-xl border border-line bg-white p-4 text-sm text-ink-soft">
+            <p className="mt-3 rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
               {formatRosterStatus(data.candidate_roster_status).long}
             </p>
           </section>
         ) : null}
 
         {data.results.length > 0 ? (
-          <section className="mt-6 rounded-xl border border-line bg-white p-4">
+          <section className="mt-6 rounded-xl border border-line bg-surface p-4">
             <h2 ref={resultsRef} className="text-heading font-semibold">Results</h2>
             {hasCertifiedRow(data.results) ? null : (
               <p className="mt-1 text-xs text-ink-soft">
@@ -1226,7 +1226,7 @@ export function ElectionPage() {
           // question a voter can answer without knowing the stakes.
           <div
             data-sticky-pick-cta=""
-            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
+            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-surface p-3 shadow-lg"
           >
             {retention ? (
               <p className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</p>
