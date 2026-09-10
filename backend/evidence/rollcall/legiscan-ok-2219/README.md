@@ -143,3 +143,5 @@ work — that adds members without any new judging.
     batch-04/   six measures, nine rolls, 262 records
     batch-05/   six measures, ten rolls, 264 records
     batch-06/   six measures, eleven rolls, 287 records
+    batch-07/   six measures, six rolls, 58 records
+    batch-08/   four measures, four rolls, 39 records

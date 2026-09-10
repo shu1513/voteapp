@@ -20,14 +20,14 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB1087": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-07",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-07."
  },
  "HB1168": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-07",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-07."
  },
  "HB1178": {
   "class": "sunset or agency housekeeping",
@@ -35,9 +35,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB1187": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act changes one word so a state employee may opt out of the state health plan when covered by any separate health plan, not only a group plan. Too narrow, and no direction."
  },
  "HB1287": {
   "class": "narrow pilot or study",
@@ -150,9 +150,9 @@
   "reason": "Eminent domain. The act widens when a property owner can recover attorney, appraisal and engineering fees from the body condemning the land, and extends the rule to pipeline takings. It is a clean single-subject measure and its direction is clear enough, but no research area covers property rights against a condemning authority, and filing it under the nearest slug would misdescribe why members voted. Dropped on the read, not on the description."
  },
  "HB2049": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-07",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-07."
  },
  "HB2072": {
   "class": "sunset or agency housekeeping",
@@ -160,9 +160,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB2105": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. A long technical follow-up to the 2024 felony reclassification, mostly renumbering and cross-references. The few real moves raise dog fighting and eluding police by a class, beside a rule that juries must be told the minimum time a sentence requires. No single subject or direction a voter would recognise."
  },
  "HB2110": {
   "class": "economic-development incentive",
@@ -435,9 +435,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB3467": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-07",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-07."
  },
  "HB3501": {
   "class": "sunset or agency housekeeping",
@@ -530,9 +530,9 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "HB3985": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-07",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-07."
  },
  "HB4028": {
   "class": "economic-development incentive",
@@ -710,9 +710,9 @@
   "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
  },
  "SB1067": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act changes what insurers must pay out-of-network ambulance services, fixing local rates at their May 2025 level and ending the rule in 2027 unless renewed. Patients are shielded from extra bills either way, so the dispute is between insurers and ambulance services with no direction a voter could read."
  },
  "SB109": {
   "class": "batch-01",
@@ -900,9 +900,9 @@
   "reason": "Read in full from the enrolled act and imported in batch-03."
  },
  "SB1451": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-07",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-07."
  },
  "SB1455": {
   "class": "sunset or agency housekeeping",
@@ -985,9 +985,9 @@
   "reason": "Read in full from the enrolled act and imported in batch-03."
  },
  "SB1847": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-08",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-08."
  },
  "SB1916": {
   "class": "sunset or agency housekeeping",
@@ -1010,9 +1010,9 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "SB20": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-08",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-08."
  },
  "SB2018": {
   "class": "economic-development incentive",
@@ -1070,14 +1070,14 @@
   "reason": "Read in full from the enrolled act and imported in batch-04."
  },
  "SB259": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-08",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-08."
  },
  "SB269": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act gives the Corporation Commission sole charge of wells that store carbon dioxide underground, and sets up storage units that can take in all the pore space in a reservoir once the operator holds at least 63 percent of it, bringing in the remaining owners. Storing carbon and pooling landowners' underground space pull opposite ways, so no single direction is honest."
  },
  "SB287": {
   "class": "economic-development incentive",
@@ -1120,9 +1120,9 @@
   "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB54": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-08",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-08."
  },
  "SB540": {
   "class": "sunset or agency housekeeping",
@@ -1130,9 +1130,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB574": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act widens what opioid settlement money may be spent on, lets the Attorney General use up to a tenth of one fund for statewide projects, and lets college boards apply as local governments. It divides money between public bodies with no direction a voter could read."
  },
  "SB575": {
   "class": "economic-development incentive",
@@ -1240,9 +1240,9 @@
   "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB906": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act writes a limit of four pharmacy technicians per pharmacist into law for retail pharmacies. Whether that tightens or loosens practice depends on the Board of Pharmacy's existing rule, which neither the act nor the official bill page states."
  },
  "SB942": {
   "class": "batch-04",
