@@ -35,8 +35,15 @@ tmp_*.sql
 *.dump
 *.pgdump
 
-# Saved third-party web pages from the records-verification sessions
-# (governor + major-city mayor, 2026-09-05). They embed other sites' API
-# keys and tracking tokens and trip every secrets scanner. Keep the notes,
-# never the raw HTML.
-scratch/records-verify-*/
+# Raw page captures from the records-verification sessions (governor +
+# major-city mayor, 2026-09-05). They embed other sites' API keys and
+# tracking tokens and trip every secrets scanner. The notes next to them
+# (evidence.json, labels.json, records.json, *.md, stored.txt) stay tracked;
+# the captures (src/ folders, HTML, PDF, XML, jina, bin) never do.
+scratch/records-verify-*/**/src/
+scratch/records-verify-*/**/*.html
+scratch/records-verify-*/**/*.htm
+scratch/records-verify-*/**/*.pdf
+scratch/records-verify-*/**/*.xml
+scratch/records-verify-*/**/*.jina
+scratch/records-verify-*/**/*.bin
