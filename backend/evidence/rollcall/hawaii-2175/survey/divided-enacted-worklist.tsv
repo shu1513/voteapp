@@ -1,0 +1,8 @@
+session	measure	chamber	roll	vote_date	reading	draft	yeas	nays	excused	act_line	disposition
+2175	HB 1194	house	387230245	2025-04-14	final_reading	SD 3	34	16	0	Became law without the Governor's signature, Act 028, 05/02/	dropped:filter-5
+2175	HB 137	senate	383625417	2025-03-31	third_reading		15	10	0	Act 016, on 04/10/2025 (Gov. Msg. No. 1116).	batch-01
+2175	SB 1433	house	386722839	2025-04-30	final_reading	CD 1	36	13	1	Act 106, on 05/29/2025 (Gov. Msg. No. 1206).	batch-01
+2175	SB 897	house	385812063	2025-04-30	final_reading	CD 1	39	10	1	Act 258, on 07/01/2025 (Gov. Msg. No. 1361).	batch-01
+2175	SB 897	senate	385812062	2025-04-30	final_reading	CD 1	20	5	0	Act 258, on 07/01/2025 (Gov. Msg. No. 1361).	batch-01
+2175	SB 935	house	385850648	2025-04-30	final_reading	CD 1	39	10	1	Act 290, on 07/03/2025 (Gov. Msg. No. 1393).	dropped:filter-5
+2175	SB 97	senate	382016649	2025-05-02	final_reading	CD 2	18	7	0	Act 170, on 06/03/2025 (Gov. Msg. No. 1270).	batch-01

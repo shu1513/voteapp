@@ -1,0 +1,103 @@
+{
+  "jurisdiction": "HI",
+  "sessionId": 2245,
+  "chamber": "house",
+  "rollNumber": 418540230,
+  "billId": 2092701,
+  "bill": "HB1961",
+  "measureId": "HB 1961",
+  "historyIndex": 30,
+  "machineUrl": "https://www.capitol.hawaii.gov/session/measure_indiv.aspx?billtype=HB&billnumber=1961&year=2026",
+  "fetchedAt": "2026-09-09T23:46:22.899Z",
+  "reading": "final_reading",
+  "draft": "SD 1",
+  "history": {
+    "date": "2026-04-23",
+    "action": "Passed Final Reading as amended in SD 1 with Representative(s) Hussey voting aye with reservations; Representative(s) Alcos, Cochran, Garcia, Gedeon, Iwamoto, Kong, Matsumoto, Muraoka, Pierick, Shimizu voting no (10) and Representative(s) Evslin excused (1).",
+    "chamber": "H",
+    "chamber_id": 31,
+    "importance": 0
+  },
+  "named": {
+    "reservations": [
+      "Hussey"
+    ],
+    "noes": [
+      "Alcos",
+      "Cochran",
+      "Garcia",
+      "Gedeon",
+      "Iwamoto",
+      "Kong",
+      "Matsumoto",
+      "Muraoka",
+      "Pierick",
+      "Shimizu"
+    ],
+    "excused": [
+      "Evslin"
+    ]
+  },
+  "members": {
+    "yeas": [
+      8365,
+      8389,
+      11513,
+      11514,
+      11516,
+      15002,
+      15005,
+      15164,
+      19024,
+      19050,
+      19089,
+      20848,
+      20849,
+      20851,
+      20852,
+      22564,
+      22565,
+      22566,
+      22568,
+      22569,
+      24410,
+      24414,
+      24416,
+      24417,
+      24511,
+      24512,
+      24518,
+      24619,
+      24907,
+      25051,
+      25668,
+      25669,
+      25671,
+      25672,
+      25673,
+      25675,
+      25676,
+      25678,
+      26609,
+      26667
+    ],
+    "nays": [
+      16119,
+      17297,
+      24411,
+      24412,
+      24618,
+      24788,
+      25670,
+      25674,
+      25677,
+      26474
+    ],
+    "excused": [
+      24910
+    ],
+    "reservations": [
+      25669
+    ]
+  }
+}

@@ -355,7 +355,7 @@ export function PickDateCard({
   const progressPercent = elections.length === 0 ? 0 : Math.round((pickedCount / elections.length) * 100);
   const summary = autoResults ? autoFillSummary(autoResults) : null;
   return (
-    <section className="rounded-xl border border-line bg-white p-4">
+    <section className="rounded-xl border border-line bg-surface p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         {/* Date only: the page h1 already says "My Election Draft". */}
         <h3 className="text-heading font-semibold text-ink">{formatElectionDate(date)}</h3>

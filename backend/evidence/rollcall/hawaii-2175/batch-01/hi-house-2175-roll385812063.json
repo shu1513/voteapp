@@ -1,0 +1,102 @@
+{
+  "jurisdiction": "HI",
+  "sessionId": 2175,
+  "chamber": "house",
+  "rollNumber": 385812063,
+  "billId": 1929060,
+  "bill": "SB897",
+  "measureId": "SB 897",
+  "historyIndex": 63,
+  "machineUrl": "https://www.capitol.hawaii.gov/session/measure_indiv.aspx?billtype=SB&billnumber=897&year=2025",
+  "fetchedAt": "2026-09-09T23:46:18.679Z",
+  "reading": "final_reading",
+  "draft": "CD 1",
+  "history": {
+    "date": "2025-04-30",
+    "action": "Passed Final Reading as amended in CD 1 with Representative(s) Iwamoto voting aye with reservations; Representative(s) Amato, Garcia, Garrett, Ilagan, La Chica, Matayoshi, Pierick, Poepoe, Tam, Templo voting no (10) and Representative(s) Cochran excused (1).",
+    "chamber": "H",
+    "chamber_id": 31,
+    "importance": 0
+  },
+  "named": {
+    "reservations": [
+      "Iwamoto"
+    ],
+    "noes": [
+      "Amato",
+      "Garcia",
+      "Garrett",
+      "Ilagan",
+      "La Chica",
+      "Matayoshi",
+      "Pierick",
+      "Poepoe",
+      "Tam",
+      "Templo"
+    ],
+    "excused": [
+      "Cochran"
+    ]
+  },
+  "members": {
+    "yeas": [
+      8365,
+      8389,
+      11513,
+      11514,
+      11516,
+      15002,
+      15005,
+      15164,
+      16119,
+      17297,
+      19023,
+      19024,
+      19050,
+      19089,
+      20848,
+      20851,
+      20852,
+      22565,
+      22566,
+      22568,
+      24410,
+      24414,
+      24415,
+      24417,
+      24512,
+      24618,
+      24619,
+      24910,
+      25051,
+      25668,
+      25669,
+      25670,
+      25671,
+      25672,
+      25673,
+      25674,
+      25675,
+      25676,
+      25677
+    ],
+    "nays": [
+      20849,
+      22564,
+      22569,
+      24412,
+      24416,
+      24511,
+      24518,
+      24788,
+      24907,
+      25678
+    ],
+    "excused": [
+      24411
+    ],
+    "reservations": [
+      25670
+    ]
+  }
+}

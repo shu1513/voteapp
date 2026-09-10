@@ -132,7 +132,7 @@ export function ShareButton({ path, shareText, affirmative = false, ariaLabel }:
           button rendered on the left side of the page. */}
       <MenuItems
         anchor="bottom end"
-        className="z-20 w-64 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none [--anchor-gap:8px]"
+        className="z-20 w-64 rounded-xl border border-line bg-surface py-1 shadow-lg focus:outline-none [--anchor-gap:8px]"
       >
         {/* The link itself, first: "Share" that never shows the URL reads as
             broken. Static text (not a MenuItem — selecting it should not
