@@ -1,0 +1,5220 @@
+{
+  "jurisdiction": "HI",
+  "sessionId": 2245,
+  "people": [
+    {
+      "people_id": 11380,
+      "person_hash": "p1id4uxi",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Donovan Cruz",
+      "first_name": "Donovan",
+      "middle_name": "Dela",
+      "last_name": "Cruz",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-017",
+      "ftm_eid": 6512542,
+      "votesmart_id": 72213,
+      "opensecrets_id": "",
+      "knowwho_pid": 288940,
+      "ballotpedia": "Donovan_Dela_Cruz",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6090",
+          "district_phone": "",
+          "email": "sendelacruz@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=162&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/delacruz.jpg",
+          "ballotpedia": "https://ballotpedia.org/Donovan_Dela_Cruz",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/72213"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 208",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senatordonovandelacruz",
+            "instagram": "https://www.instagram.com/senatordonovandelacruz",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=162&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/donovandelacruz",
+            "instagram": "https://www.instagram.com/donovandelacruz/",
+            "linkedin": "https://www.linkedin.com/in/donovandelacruz/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/DonovanDelaCruz",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 11381,
+      "person_hash": "2ogt24cx",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Ronald Kouchi",
+      "first_name": "Ronald",
+      "middle_name": "D.",
+      "last_name": "Kouchi",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-008",
+      "ftm_eid": 13010145,
+      "votesmart_id": 85011,
+      "opensecrets_id": "",
+      "knowwho_pid": 308673,
+      "ballotpedia": "Ronald_Kouchi",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6030",
+          "district_phone": "",
+          "email": "senkouchi@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=192&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/kouchi.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ronald_Kouchi",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/85011"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 409",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100058251331704",
+            "instagram": "https://www.instagram.com/senatorronkouchi/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=192&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ron.kouchi",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 11513,
+      "person_hash": "3guue9i8",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Mark Hashem",
+      "first_name": "Mark",
+      "middle_name": "Jun",
+      "last_name": "Hashem",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-019",
+      "ftm_eid": 12999411,
+      "votesmart_id": 127594,
+      "opensecrets_id": "",
+      "knowwho_pid": 299202,
+      "ballotpedia": "Mark_Hashem",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6510",
+          "district_phone": "",
+          "email": "rephashem@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=55&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Hashem.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mark_Hashem",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/127594"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 424",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=55&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/markjhashem",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 11514,
+      "person_hash": "6quedsbt",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Linda Ichiyama",
+      "first_name": "Linda",
+      "middle_name": "E.",
+      "last_name": "Ichiyama",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-031",
+      "ftm_eid": 6511905,
+      "votesmart_id": 127612,
+      "opensecrets_id": "",
+      "knowwho_pid": 299204,
+      "ballotpedia": "Linda_Ichiyama",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6220",
+          "district_phone": "",
+          "email": "repichiyama@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=60&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Ichiyama.jpg",
+          "ballotpedia": "https://ballotpedia.org/Linda_Ichiyama",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/127612"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 432",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=60&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/linda.ichiyama",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 11516,
+      "person_hash": "la5lsz89",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Daynette Morikawa",
+      "first_name": "Daynette",
+      "middle_name": "",
+      "last_name": "Morikawa",
+      "suffix": "",
+      "nickname": "Dee",
+      "district": "HD-017",
+      "ftm_eid": 6511860,
+      "votesmart_id": 127591,
+      "opensecrets_id": "",
+      "knowwho_pid": 299509,
+      "ballotpedia": "Dee_Morikawa",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6280",
+          "district_phone": "",
+          "email": "repmorikawa@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=96&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Morikawa.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dee_Morikawa",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/127591"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 434",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=96&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dee.morikawa",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/dee-morikawa-a3a42b34/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 15002,
+      "person_hash": "06ckvbyl",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Nicole Lowen",
+      "first_name": "Nicole",
+      "middle_name": "E.",
+      "last_name": "Lowen",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-007",
+      "ftm_eid": 13689934,
+      "votesmart_id": 140578,
+      "opensecrets_id": "",
+      "knowwho_pid": 410523,
+      "ballotpedia": "Nicole_Lowen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8400",
+          "district_phone": "",
+          "email": "replowen@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=83&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Lowen.jpg",
+          "ballotpedia": "https://ballotpedia.org/Nicole_Lowen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/140578"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 436",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/representativelowen",
+            "instagram": "https://www.instagram.com/officeofreplowen/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=83&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/nlowen",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/nicole-lowen/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 15005,
+      "person_hash": "wc8zxrqy",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Gregg Takayama",
+      "first_name": "Gregg",
+      "middle_name": "",
+      "last_name": "Takayama",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-034",
+      "ftm_eid": 13689946,
+      "votesmart_id": 140608,
+      "opensecrets_id": "",
+      "knowwho_pid": 410574,
+      "ballotpedia": "Gregg_Takayama",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6340",
+          "district_phone": "",
+          "email": "reptakayama@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=130&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Takayama.jpg",
+          "ballotpedia": "https://ballotpedia.org/Gregg_Takayama",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/140608"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 404",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/reptakayama/",
+            "instagram": "https://www.instagram.com/repgreggtakayama/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=130&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/gregg.takayama",
+            "instagram": "https://www.instagram.com/greggtakayama/",
+            "linkedin": "https://www.linkedin.com/in/gregg-takayama-79a8a37/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 15164,
+      "person_hash": "dom0yh8d",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Justin Woodson",
+      "first_name": "Justin",
+      "middle_name": "H.",
+      "last_name": "Woodson",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-009",
+      "ftm_eid": 16632975,
+      "votesmart_id": 144297,
+      "opensecrets_id": "",
+      "knowwho_pid": 449999,
+      "ballotpedia": "Justin_Woodson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6210",
+          "district_phone": "",
+          "email": "repwoodson@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=146&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Woodson.jpg",
+          "ballotpedia": "https://ballotpedia.org/Justin_Woodson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/144297"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 405",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repjustinwoodson/",
+            "instagram": "https://www.instagram.com/repwoodson/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=146&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/justin.woodson.94",
+            "instagram": "https://www.instagram.com/justin_woodson/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/JustinWoodson76",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16119,
+      "person_hash": "sdovmi2h",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lauren Matsumoto",
+      "first_name": "Lauren",
+      "middle_name": "Cheape",
+      "last_name": "Matsumoto",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-038",
+      "ftm_eid": 13690276,
+      "votesmart_id": 140641,
+      "opensecrets_id": "",
+      "knowwho_pid": 410637,
+      "ballotpedia": "Lauren_Cheape_Matsumoto",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9490",
+          "district_phone": "",
+          "email": "repmatsumoto@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=90&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Matsumoto.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lauren_Cheape_Matsumoto",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/140641"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 302",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepMatsumoto",
+            "instagram": "https://www.instagram.com/repmatsumoto/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=90&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lauren.cheape",
+            "instagram": "https://www.instagram.com/laurenforhawaii",
+            "linkedin": "https://www.linkedin.com/in/lauren-cheape-matsumoto-50835960/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://repmatsumoto.com/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17291,
+      "person_hash": "ny9zwj20",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Lorraine Inouye",
+      "first_name": "Lorraine",
+      "middle_name": "Rodero",
+      "last_name": "Inouye",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-001",
+      "ftm_eid": 6401156,
+      "votesmart_id": 17855,
+      "opensecrets_id": "",
+      "knowwho_pid": 193889,
+      "ballotpedia": "Lorraine_Inouye",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-7335",
+          "district_phone": "",
+          "email": "seninouye@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=181&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/inouye.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lorraine_Inouye",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/17855"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 210",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senlorraineinouye",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=181&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senatorinouye",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lorraine-inouye-57431916/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17296,
+      "person_hash": "5j2cg82d",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jarrett Keohokalole",
+      "first_name": "Jarrett",
+      "middle_name": "K.",
+      "last_name": "Keohokalole",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-024",
+      "ftm_eid": 24820529,
+      "votesmart_id": 153435,
+      "opensecrets_id": "",
+      "knowwho_pid": 495098,
+      "ballotpedia": "Jarrett_Keohokalole",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-587-7215",
+          "district_phone": "",
+          "email": "senkeohokalole@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=187&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/keohokalole.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jarrett_Keohokalole",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/153435"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 205",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorJarrett",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/SenatorJarrett",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=187&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jarrett.keohokalole",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jarrett-keohokalole-4332041a/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/jarrettkeoho",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17297,
+      "person_hash": "2wtw7nft",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sam Kong",
+      "first_name": "Sam",
+      "middle_name": "",
+      "last_name": "Kong",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-033",
+      "ftm_eid": 12999440,
+      "votesmart_id": 127621,
+      "opensecrets_id": "",
+      "knowwho_pid": 299500,
+      "ballotpedia": "Sam_Kong",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8455",
+          "district_phone": "",
+          "email": "repkong@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=78&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Kong.jpg",
+          "ballotpedia": "https://ballotpedia.org/Sam_Kong",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/127621"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 425",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repsamkong",
+            "instagram": "https://www.instagram.com/repsamkong",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=78&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sam.kong.625",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sam-kong-317212120/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17299,
+      "person_hash": "lfgpzdl6",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Joy San Buenaventura",
+      "first_name": "Joy",
+      "middle_name": "A.",
+      "last_name": "San Buenaventura",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-002",
+      "ftm_eid": 10084577,
+      "votesmart_id": 149758,
+      "opensecrets_id": "",
+      "knowwho_pid": 487052,
+      "ballotpedia": "Joy_A._San_Buenaventura",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6890",
+          "district_phone": "",
+          "email": "sensanbuenaventura@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=206&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/sanbuenaventura.jpg",
+          "ballotpedia": "https://ballotpedia.org/Joy_A._San_Buenaventura",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/149758"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 213",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senjoydistrict2/",
+            "instagram": "https://www.instagram.com/senjoysanbuenaventura",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/senjoydistrict2",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=206&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/hilojoy",
+            "instagram": "https://www.instagram.com/joysanb/",
+            "linkedin": "https://www.linkedin.com/in/joy-san-buenaventura-hutson-72089a6/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17614,
+      "person_hash": "py064tif",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Lynn Decoite",
+      "first_name": "Lynn",
+      "middle_name": "",
+      "last_name": "Decoite",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-007",
+      "ftm_eid": 10088452,
+      "votesmart_id": 156191,
+      "opensecrets_id": "",
+      "knowwho_pid": 527794,
+      "ballotpedia": "Lynn_DeCoite",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-587-7225",
+          "district_phone": "",
+          "email": "sendecoite@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=161&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/decoite.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lynn_DeCoite",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/156191"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 230",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenDeCoite",
+            "instagram": "https://www.instagram.com/sendecoite/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=161&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lynn.decoite",
+            "instagram": "https://www.instagram.com/lynndecoite/",
+            "linkedin": "https://www.linkedin.com/in/lynn-decoite-475ab12a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19023,
+      "person_hash": "762l3rrb",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Daniel Holt",
+      "first_name": "Daniel",
+      "middle_name": "",
+      "last_name": "Holt",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-028",
+      "ftm_eid": 13689942,
+      "votesmart_id": 140605,
+      "opensecrets_id": "",
+      "knowwho_pid": 410562,
+      "ballotpedia": "Daniel_Holt",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6180",
+          "district_phone": "",
+          "email": "repholt@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=59&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Holt.jpg",
+          "ballotpedia": "https://ballotpedia.org/Daniel_Holt",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/140605"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 438",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=59&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/daniel.holt.7311",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/daniel-holt-849816224/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19024,
+      "person_hash": "v8bomq38",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sean Quinlan",
+      "first_name": "Sean",
+      "middle_name": "",
+      "last_name": "Quinlan",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-047",
+      "ftm_eid": 40622434,
+      "votesmart_id": 172307,
+      "opensecrets_id": "",
+      "knowwho_pid": 580946,
+      "ballotpedia": "Sean_Quinlan_(Hawaii)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6380",
+          "district_phone": "",
+          "email": "repquinlan@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=112&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Quinlan.jpg",
+          "ballotpedia": "https://ballotpedia.org/Sean_Quinlan_%28Hawaii%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/172307"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 439",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/repquinlan",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=112&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepSeanQuinlan",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19025,
+      "person_hash": "codn6pdp",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Stanley Chang",
+      "first_name": "Stanley",
+      "middle_name": "",
+      "last_name": "Chang",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-009",
+      "ftm_eid": 24812545,
+      "votesmart_id": 129305,
+      "opensecrets_id": "",
+      "knowwho_pid": 462155,
+      "ballotpedia": "Stanley_Chang",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8420",
+          "district_phone": "",
+          "email": "senchang@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=157&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/schang.jpg",
+          "ballotpedia": "https://ballotpedia.org/Stanley_Chang",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/129305"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 226",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senatorstanleychang/",
+            "instagram": "https://www.instagram.com/stanleypchang/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/stanleypchang",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=157&year=2026",
+            "youtube": "https://www.youtube.com/user/spchang"
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/stanleypchang",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/stanleypchang/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.senatorchang.com/meet-senator-chang",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19050,
+      "person_hash": "913z816s",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Chris Todd",
+      "first_name": "Chris",
+      "middle_name": "",
+      "last_name": "Todd",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-003",
+      "ftm_eid": 43477895,
+      "votesmart_id": 176063,
+      "opensecrets_id": "",
+      "knowwho_pid": 609011,
+      "ballotpedia": "Chris_Todd_(Hawaii)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6200",
+          "district_phone": "",
+          "email": "reptodd@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=137&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Todd.jpg",
+          "ballotpedia": "https://ballotpedia.org/Chris_Todd_%28Hawaii%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/176063"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 306",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=137&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/chris.todd.16",
+            "instagram": "https://www.instagram.com/christoshirotodd",
+            "linkedin": "https://www.linkedin.com/in/chris-toshiro-todd-68059162/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19089,
+      "person_hash": "139knmhi",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Nadine Nakamura",
+      "first_name": "Nadine",
+      "middle_name": "K.",
+      "last_name": "Nakamura",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-015",
+      "ftm_eid": 10132852,
+      "votesmart_id": 129309,
+      "opensecrets_id": "",
+      "knowwho_pid": 577431,
+      "ballotpedia": "Nadine_Nakamura",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6100",
+          "district_phone": "",
+          "email": "repnakamura@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=100&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Nakamura.jpg",
+          "ballotpedia": "https://ballotpedia.org/Nadine_Nakamura",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/129309"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 431",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepresentativeNadineNakamura",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=100&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/nadine.nakamura1",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.repnakamura.com/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20761,
+      "person_hash": "dwhufg92",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Kurt Fevella",
+      "first_name": "Kurt",
+      "middle_name": "",
+      "last_name": "Fevella",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-020",
+      "ftm_eid": 12999459,
+      "votesmart_id": 109624,
+      "opensecrets_id": "",
+      "knowwho_pid": 299196,
+      "ballotpedia": "Kurt_Fevella",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6360",
+          "district_phone": "",
+          "email": "senfevella@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=166&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/fevella.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kurt_Fevella",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/109624"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 231",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenFevella/",
+            "instagram": "https://www.instagram.com/senfevella/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=166&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/KurtFevellaEwaBeach96706",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20828,
+      "person_hash": "h7hm7kwg",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Troy Hashimoto",
+      "first_name": "Troy",
+      "middle_name": "",
+      "last_name": "Hashimoto",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-005",
+      "ftm_eid": 22025734,
+      "votesmart_id": 180032,
+      "opensecrets_id": "",
+      "knowwho_pid": 662035,
+      "ballotpedia": "Troy_Hashimoto",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-7344",
+          "district_phone": "",
+          "email": "senhashimoto@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=293&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/hashimoto.jpg",
+          "ballotpedia": "https://ballotpedia.org/Troy_Hashimoto",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180032"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 222",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senatorhashimoto",
+            "instagram": "https://www.instagram.com/sentroyhashimoto/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=293&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/troy.hashimoto.7",
+            "instagram": "https://www.instagram.com/troyhashimoto/",
+            "linkedin": "https://www.linkedin.com/in/troy-hashimoto-b398523/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20847,
+      "person_hash": "touz5z2h",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dru Kanuha",
+      "first_name": "Dru",
+      "middle_name": "",
+      "last_name": "Kanuha",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-003",
+      "ftm_eid": 45387926,
+      "votesmart_id": 157781,
+      "opensecrets_id": "",
+      "knowwho_pid": 654604,
+      "ballotpedia": "Dru_Kanuha",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9385",
+          "district_phone": "",
+          "email": "senkanuha@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=184&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/kanuha.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dru_Kanuha",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/157781"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 206",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorKanuha/",
+            "instagram": "https://www.instagram.com/senatorkanuha/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=184&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dru.kanuha",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20848,
+      "person_hash": "wmxi0f9u",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lisa Kitagawa",
+      "first_name": "Lisa",
+      "middle_name": "C.",
+      "last_name": "Kitagawa",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-048",
+      "ftm_eid": 45387934,
+      "votesmart_id": 183678,
+      "opensecrets_id": "",
+      "knowwho_pid": 655397,
+      "ballotpedia": "Lisa_Kitagawa",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8540",
+          "district_phone": "",
+          "email": "repkitagawa@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=76&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Kitagawa.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lisa_Kitagawa",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/183678"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 435",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repkitagawa",
+            "instagram": "https://www.instagram.com/repkitagawa/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=76&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lisa.kitagawaakagi",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lisa-kitagawa-9220b1191/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.repkitagawa.com/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20849,
+      "person_hash": "2dwyiu95",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Scot Matayoshi",
+      "first_name": "Scot",
+      "middle_name": "Z.",
+      "last_name": "Matayoshi",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-049",
+      "ftm_eid": 45387950,
+      "votesmart_id": 183682,
+      "opensecrets_id": "",
+      "knowwho_pid": 655398,
+      "ballotpedia": "Scot_Matayoshi",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8470",
+          "district_phone": "",
+          "email": "repmatayoshi@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=89&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Matayoshi.jpg",
+          "ballotpedia": "https://ballotpedia.org/Scot_Matayoshi",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/183682"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 433",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repscotmatayoshi",
+            "instagram": "https://www.instagram.com/repscotmatayoshi/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=89&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/scot.matayoshi",
+            "instagram": "https://www.instagram.com/smatayoshi/",
+            "linkedin": "https://www.linkedin.com/in/scot-matayoshi-4038ab24/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/ScotMatayoshi",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20850,
+      "person_hash": "osynnf4a",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Sharon Moriwaki",
+      "first_name": "Sharon",
+      "middle_name": "Y.",
+      "last_name": "Moriwaki",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-012",
+      "ftm_eid": 10083991,
+      "votesmart_id": 183622,
+      "opensecrets_id": "",
+      "knowwho_pid": 495022,
+      "ballotpedia": "Sharon_Moriwaki",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6740",
+          "district_phone": "",
+          "email": "senmoriwaki@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=198&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/moriwaki.jpg",
+          "ballotpedia": "https://ballotpedia.org/Sharon_Moriwaki",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/183622"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 215",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorMoriwaki/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=198&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sharon.moriwaki",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sharon-moriwaki-0b3606173/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatormoriwaki.com/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20851,
+      "person_hash": "43fmskus",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Amy Perruso",
+      "first_name": "Amy",
+      "middle_name": "A.",
+      "last_name": "Perruso",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-046",
+      "ftm_eid": 45387965,
+      "votesmart_id": 172203,
+      "opensecrets_id": "",
+      "knowwho_pid": 570270,
+      "ballotpedia": "Amy_Perruso",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6700",
+          "district_phone": "",
+          "email": "repperruso@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=109&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Perruso.jpg",
+          "ballotpedia": "https://ballotpedia.org/Amy_Perruso",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/172203"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 444",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/representativeperruso/",
+            "instagram": "https://www.instagram.com/repperruso",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/amyperruso",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=109&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/amyaperruso",
+            "instagram": "https://www.instagram.com/amy.perruso/",
+            "linkedin": "https://www.linkedin.com/in/amy-perruso-1a03a280/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20852,
+      "person_hash": "0ubtswdq",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "David Tarnas",
+      "first_name": "David",
+      "middle_name": "",
+      "last_name": "Tarnas",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-008",
+      "ftm_eid": 6418161,
+      "votesmart_id": 2605,
+      "opensecrets_id": "",
+      "knowwho_pid": 569181,
+      "ballotpedia": "David_Tarnas",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8510",
+          "district_phone": "",
+          "email": "reptarnas@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=135&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Tarnas.jpg",
+          "ballotpedia": "https://ballotpedia.org/David_Tarnas",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/2605"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 442",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/reptarnas/",
+            "instagram": "https://www.instagram.com/reptarnas/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/reptarnas",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=135&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100010251244356",
+            "instagram": "https://www.instagram.com/davidtarnas/",
+            "linkedin": "https://www.linkedin.com/in/david-tarnas-7021907/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22564,
+      "person_hash": "67pro37i",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Greggor Ilagan",
+      "first_name": "Greggor",
+      "middle_name": "",
+      "last_name": "Ilagan",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-004",
+      "ftm_eid": 21264862,
+      "votesmart_id": 157776,
+      "opensecrets_id": "",
+      "knowwho_pid": 569176,
+      "ballotpedia": "Greggor_Ilagan",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6530",
+          "district_phone": "",
+          "email": "repilagan@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=61&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Ilagan.jpg",
+          "ballotpedia": "https://ballotpedia.org/Greggor_Ilagan",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/157776"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 419",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repilagan",
+            "instagram": "https://www.instagram.com/repilagan",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=61&year=2026",
+            "youtube": "https://www.youtube.com/channel/UC32S3xnd6LVrC6B_v43K6Fg"
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/greggorilagan",
+            "instagram": "https://www.instagram.com/greggorilagan/",
+            "linkedin": "https://www.linkedin.com/in/greggorilagan/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22565,
+      "person_hash": "fanu27np",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jeanne Kapela",
+      "first_name": "Jeanne",
+      "middle_name": "",
+      "last_name": "Kapela",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-005",
+      "ftm_eid": 45387927,
+      "votesmart_id": 183631,
+      "opensecrets_id": "",
+      "knowwho_pid": 655389,
+      "ballotpedia": "Jeanne_Kapela",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9605",
+          "district_phone": "",
+          "email": "repkapela@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=71&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Kapela.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jeanne_Kapela",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/183631"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 418",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/repkapela/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=71&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jeanne.kapela",
+            "instagram": "https://www.instagram.com/jeannekapela",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22566,
+      "person_hash": "11s3qusw",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lisa Marten",
+      "first_name": "Lisa",
+      "middle_name": "",
+      "last_name": "Marten",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-051",
+      "ftm_eid": 50056436,
+      "votesmart_id": 193726,
+      "opensecrets_id": "",
+      "knowwho_pid": 739215,
+      "ballotpedia": "Lisa_Marten",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9450",
+          "district_phone": "",
+          "email": "repmarten@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=87&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Marten.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lisa_Marten",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/193726"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 426",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/replisamarten/",
+            "instagram": "https://www.instagram.com/repmarten/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=87&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lisa.marten.71",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lisa-marten-92b753146/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22568,
+      "person_hash": "z4imekcq",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jackson Sayama",
+      "first_name": "Jackson",
+      "middle_name": "",
+      "last_name": "Sayama",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-021",
+      "ftm_eid": 50056390,
+      "votesmart_id": 193654,
+      "opensecrets_id": "",
+      "knowwho_pid": 743878,
+      "ballotpedia": "Jackson_Sayama",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6900",
+          "district_phone": "",
+          "email": "repsayama@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=120&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Sayama.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jackson_Sayama",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/193654"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 443",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repsayama",
+            "instagram": "https://www.instagram.com/repsayama",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=120&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jackson.sayama",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jackson-sayama-0b7456128/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.repjacksonsayama.com/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22569,
+      "person_hash": "5qrmpzju",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Adrian Tam",
+      "first_name": "Adrian",
+      "middle_name": "",
+      "last_name": "Tam",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-024",
+      "ftm_eid": 49019836,
+      "votesmart_id": 193650,
+      "opensecrets_id": "",
+      "knowwho_pid": 626618,
+      "ballotpedia": "Adrian_Tam",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8520",
+          "district_phone": "",
+          "email": "reptam@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=132&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Tam.jpg",
+          "ballotpedia": "https://ballotpedia.org/Adrian_Tam",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/193650"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 402",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepAdrianTam",
+            "instagram": "https://www.instagram.com/repadriantam/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=132&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/adrian-tam-7552205a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24396,
+      "person_hash": "v21uogj5",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Brenton Awa",
+      "first_name": "Brenton",
+      "middle_name": "",
+      "last_name": "Awa",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-023",
+      "ftm_eid": 55691632,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Brenton_Awa",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-7330",
+          "district_phone": "",
+          "email": "senawa@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=225&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/awa.jpg",
+          "ballotpedia": "https://ballotpedia.org/Brenton_Awa",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 203",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=225&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/BrentonpAwa",
+            "instagram": "https://www.instagram.com/brentonawa",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24410,
+      "person_hash": "7tqp5i5i",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Cory Chun",
+      "first_name": "Cory",
+      "middle_name": "M.",
+      "last_name": "Chun",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-035",
+      "ftm_eid": 55691532,
+      "votesmart_id": 127631,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Cory_Chun",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6170",
+          "district_phone": "",
+          "email": "repchun@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=252&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Chun.jpg",
+          "ballotpedia": "https://ballotpedia.org/Cory_Chun",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/127631"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 406",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100088695156399",
+            "instagram": "https://www.instagram.com/repcorychun/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=252&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/cory.chun",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/cory-chun-2320515a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24411,
+      "person_hash": "s1zjzfnn",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Elle Cochran",
+      "first_name": "Elle",
+      "middle_name": "",
+      "last_name": "Cochran",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-014",
+      "ftm_eid": 55691488,
+      "votesmart_id": 129311,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Elle_Cochran",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6160",
+          "district_phone": "",
+          "email": "repcochran@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=253&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Cochran.jpg",
+          "ballotpedia": "https://ballotpedia.org/Elle_Cochran",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/129311"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 315",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100088050063567",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=253&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ellekcochran",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/elle-cochran-23061546/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24412,
+      "person_hash": "45r40ayk",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Diamond Garcia",
+      "first_name": "Diamond",
+      "middle_name": "",
+      "last_name": "Garcia",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-042",
+      "ftm_eid": 55691557,
+      "votesmart_id": 183625,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Diamond_Garcia",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8500",
+          "district_phone": "",
+          "email": "repgarcia@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=255&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Garcia.jpg",
+          "ballotpedia": "https://ballotpedia.org/Diamond_Garcia",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/183625"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 303",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100087502882123",
+            "instagram": "https://www.instagram.com/repdiamondgarcia/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=255&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/diamond.garcia1",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/diamond-garcia-95b40682/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/diamondgarcia_",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24414,
+      "person_hash": "9qbk5zv7",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kirstin Kahaloa",
+      "first_name": "Kirstin",
+      "middle_name": "Ak",
+      "last_name": "Kahaloa",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-006",
+      "ftm_eid": 55691592,
+      "votesmart_id": 208416,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kirstin_Kahaloa",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8530",
+          "district_phone": "",
+          "email": "repkahaloa@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=264&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Kahaloa.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kirstin_Kahaloa",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208416"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 403",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepKahaloa",
+            "instagram": "https://www.instagram.com/repkahaloa/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/RepKahaloa",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=264&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kkahaloa",
+            "instagram": "https://www.instagram.com/kirstin_808/",
+            "linkedin": "https://www.linkedin.com/in/kkahaloa/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24415,
+      "person_hash": "2x2awbk8",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Rachele Fernandez Lamosao",
+      "first_name": "Rachele",
+      "middle_name": "",
+      "last_name": "Fernandez Lamosao",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-019",
+      "ftm_eid": 55691536,
+      "votesmart_id": 208480,
+      "opensecrets_id": "",
+      "knowwho_pid": 774124,
+      "ballotpedia": "Rachele_Fernandez_Lamosao",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6970",
+          "district_phone": "",
+          "email": "senlamosao@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=270&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Lamosao.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rachele_Fernandez_Lamosao",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208480"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 204",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/rachelelamosao",
+            "instagram": "https://www.instagram.com/replamosao/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=270&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/r.lamosao/",
+            "linkedin": "https://www.linkedin.com/in/rachele-lamosao-9555a9110/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24416,
+      "person_hash": "fbf071i2",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Mahina Poepoe",
+      "first_name": "Mahina",
+      "middle_name": "M.",
+      "last_name": "Poepoe",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-013",
+      "ftm_eid": 55691485,
+      "votesmart_id": 208450,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Mahina_Poepoe",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6790",
+          "district_phone": "",
+          "email": "reppoepoe@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=284&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Poepoe.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mahina_Poepoe",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208450"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 331",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24417,
+      "person_hash": "b2c9l6o6",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jenna Takenouchi",
+      "first_name": "Jenna",
+      "middle_name": "",
+      "last_name": "Takenouchi",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-027",
+      "ftm_eid": 55691517,
+      "votesmart_id": 208470,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Jenna_Takenouchi",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9415",
+          "district_phone": "",
+          "email": "reptakenouchi@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=290&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Takenouchi.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jenna_Takenouchi",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208470"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 333",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepTakenouchi",
+            "instagram": "https://www.instagram.com/reptakenouchi",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=290&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jtakenouchi",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jtakenouchi/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24418,
+      "person_hash": "bo6ijfuq",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Brandon Elefante",
+      "first_name": "Brandon",
+      "middle_name": "Jc",
+      "last_name": "Elefante",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-016",
+      "ftm_eid": 55691619,
+      "votesmart_id": 157761,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Brandon_Elefante",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6230",
+          "district_phone": "",
+          "email": "senelefante@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=229&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/elefante.jpg",
+          "ballotpedia": "https://ballotpedia.org/Brandon_Elefante",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/157761"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 217",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/senelefante/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=229&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/brandon.elefante.5",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/brandonelefante/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24511,
+      "person_hash": "dahnx4wr",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Andrew Garrett",
+      "first_name": "Andrew",
+      "middle_name": "Takuya",
+      "last_name": "Garrett",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-022",
+      "ftm_eid": 55691502,
+      "votesmart_id": 183654,
+      "opensecrets_id": "",
+      "knowwho_pid": 655392,
+      "ballotpedia": "Matthew_Slater",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8475",
+          "district_phone": "",
+          "email": "repgarrett@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=256&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Garrett.jpg",
+          "ballotpedia": "https://ballotpedia.org/Matthew_Slater",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/183654"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 323",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=256&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/matt.slater.31",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/matthew-slater-928a1619/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24512,
+      "person_hash": "wqyaxfca",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Darius Kila",
+      "first_name": "Darius",
+      "middle_name": "K.",
+      "last_name": "Kila",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-044",
+      "ftm_eid": 55691568,
+      "votesmart_id": 208501,
+      "opensecrets_id": "",
+      "knowwho_pid": 814241,
+      "ballotpedia": "Darius_Kila",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9480",
+          "district_phone": "",
+          "email": "repkila@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=266&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Kila.jpg",
+          "ballotpedia": "https://ballotpedia.org/Darius_Kila",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208501"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 322",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/darius.kila/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=266&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/darius.kila",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24518,
+      "person_hash": "o1233u71",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Terez Amato",
+      "first_name": "Terez",
+      "middle_name": "",
+      "last_name": "Amato",
+      "suffix": "",
+      "nickname": "Tamato",
+      "district": "HD-011",
+      "ftm_eid": 55691478,
+      "votesmart_id": 153329,
+      "opensecrets_id": "",
+      "knowwho_pid": 501154,
+      "ballotpedia": "Terez_Amato",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8525",
+          "district_phone": "",
+          "email": "repamato@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=250&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Amato.jpg",
+          "ballotpedia": "https://ballotpedia.org/Terez_Amato",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/153329"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 328",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepAmato",
+            "instagram": "https://www.instagram.com/RepresentativeAmato",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=250&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/TamatoL",
+            "instagram": "https://www.instagram.com/terezamatopersonalpage/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24519,
+      "person_hash": "6ce5aahd",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Tim Richards",
+      "first_name": "Herbert",
+      "middle_name": "",
+      "last_name": "Richards",
+      "suffix": "III",
+      "nickname": "Tim",
+      "district": "SD-004",
+      "ftm_eid": 55691640,
+      "votesmart_id": 187901,
+      "opensecrets_id": "",
+      "knowwho_pid": 812881,
+      "ballotpedia": "Tim_Richards",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6760",
+          "district_phone": "",
+          "email": "senrichards@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=244&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/richards.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tim_Richards",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/187901"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 202",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorRichards/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=244&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24618,
+      "person_hash": "u86j1697",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "David Alcos",
+      "first_name": "David",
+      "middle_name": "A.",
+      "last_name": "Alcos",
+      "suffix": "III",
+      "nickname": "",
+      "district": "HD-041",
+      "ftm_eid": 55691554,
+      "votesmart_id": 193674,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "David_Alcos",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6080",
+          "district_phone": "",
+          "email": "repalcos@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=249&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Alcos.jpg",
+          "ballotpedia": "https://ballotpedia.org/David_Alcos",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/193674"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 324",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/repalcos/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=249&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/alcosdavid/",
+            "linkedin": "https://www.linkedin.com/in/david-alcos-48908643/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/RepAlcos",
+            "website": "https://www.repalcos.com",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24619,
+      "person_hash": "2omil2lj",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kanani Souza",
+      "first_name": "Kanani",
+      "middle_name": "",
+      "last_name": "Souza",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-043",
+      "ftm_eid": 55691564,
+      "votesmart_id": 193736,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kanani_Souza",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8465",
+          "district_phone": "",
+          "email": "repsouza@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=288&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Souza.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kanani_Souza",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/193736"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 330",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/repkananisouza",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=288&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kananz",
+            "instagram": "https://www.instagram.com/kananza",
+            "linkedin": "https://www.linkedin.com/in/kanani-souza-30a66567/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24788,
+      "person_hash": "531r5j3v",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Elijah Pierick",
+      "first_name": "Elijah",
+      "middle_name": "",
+      "last_name": "Pierick",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-039",
+      "ftm_eid": 55691543,
+      "votesmart_id": 208486,
+      "opensecrets_id": "",
+      "knowwho_pid": 814086,
+      "ballotpedia": "Elijah_Pierick",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8490",
+          "district_phone": "",
+          "email": "reppierick@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=283&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Pierick.jpg",
+          "ballotpedia": "https://ballotpedia.org/Elijah_Pierick",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208486"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 318",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/rep.elijah.pierick",
+            "instagram": "https://www.instagram.com/repelijahpierick/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=283&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ElijahIsaiahPierick",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "https://www.tiktok.com/@elijah.pierick",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@Dr.Elijah.Pierick"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24907,
+      "person_hash": "6mjdzdf7",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Trish La Chica",
+      "first_name": "Trish",
+      "middle_name": "",
+      "last_name": "La Chica",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-037",
+      "ftm_eid": 48838035,
+      "votesmart_id": 183668,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Trish_La_Chica",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6150",
+          "district_phone": "",
+          "email": "replachica@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=292&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/LaChica.jpg",
+          "ballotpedia": "https://ballotpedia.org/Trish_La_Chica",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/183668"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 441",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/reptrishlachica",
+            "instagram": "https://www.instagram.com/reptrishlachica/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=292&year=2026",
+            "youtube": "https://www.youtube.com/@RepTrishLaChica"
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/trishqlachica",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/trishlachica/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24910,
+      "person_hash": "e7illwet",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Luke Evslin",
+      "first_name": "Luke",
+      "middle_name": "A.",
+      "last_name": "Evslin",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-016",
+      "ftm_eid": 0,
+      "votesmart_id": 187911,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Luke_Evslin",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6270",
+          "district_phone": "",
+          "email": "repevslin@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=291&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Evslin.jpg",
+          "ballotpedia": "https://ballotpedia.org/Luke_Evslin",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/187911"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 427",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/EvslinForKauai",
+            "instagram": "https://www.instagram.com/repevslin/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=291&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/evslin",
+            "instagram": "https://www.instagram.com/levslin/",
+            "linkedin": "https://www.linkedin.com/in/luke-evslin-812b0681/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/LukeEvslin",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25051,
+      "person_hash": "knqt28kk",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Tyson Miyake",
+      "first_name": "Tyson",
+      "middle_name": "",
+      "last_name": "Miyake",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-010",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Tyson_Miyake",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9444",
+          "district_phone": "",
+          "email": "repmiyake@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=294&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Miyake.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tyson_Miyake",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 421",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61555528750299",
+            "instagram": "https://www.instagram.com/repmiyake/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=294&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tyson.miyake",
+            "instagram": "https://www.instagram.com/tkm82/",
+            "linkedin": "https://www.linkedin.com/in/tyson-miyake-tkm82/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25668,
+      "person_hash": "71evzm1b",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Tina Grandinetti",
+      "first_name": "Tina",
+      "middle_name": "Nakada",
+      "last_name": "Grandinetti",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-020",
+      "ftm_eid": 59988381,
+      "votesmart_id": 218389,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Tina_Nakada_Grandinetti",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6310",
+          "district_phone": "",
+          "email": "repgrandinetti@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=299&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/grandinetti.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tina_Nakada_Grandinetti",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/218389"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 304",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=299&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tina.grandinetti/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25669,
+      "person_hash": "wizgrfms",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Ikaika Hussey",
+      "first_name": "Ikaika",
+      "middle_name": "Ml",
+      "last_name": "Hussey",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-029",
+      "ftm_eid": 59988399,
+      "votesmart_id": 54080,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Ikaika_Hussey",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6050",
+          "district_phone": "",
+          "email": "rephussey@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=302&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/hussey.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ikaika_Hussey",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/54080"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 320",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/rephussey/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=302&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ikaikahussey",
+            "instagram": "https://www.instagram.com/ikaikahussey",
+            "linkedin": "https://www.linkedin.com/in/ikaikahussey/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/ikaikahussey",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25670,
+      "person_hash": "zyvpvr40",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kim Iwamoto",
+      "first_name": "Kim",
+      "middle_name": "Coco",
+      "last_name": "Iwamoto",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-025",
+      "ftm_eid": 10104787,
+      "votesmart_id": 172078,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kim_Coco_Iwamoto",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8485",
+          "district_phone": "",
+          "email": "repiwamoto@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=301&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/iwamoto.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kim_Coco_Iwamoto",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/172078"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 327",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=301&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kimcocoiwamoto/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25671,
+      "person_hash": "pzhzjhhh",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sue Keohokapu-Lee Loy",
+      "first_name": "Susan",
+      "middle_name": "L.",
+      "last_name": "Keohokapu-Lee Loy",
+      "suffix": "",
+      "nickname": "Sue",
+      "district": "HD-002",
+      "ftm_eid": 59988343,
+      "votesmart_id": 187897,
+      "opensecrets_id": "",
+      "knowwho_pid": 881094,
+      "ballotpedia": "Susan_Lee_Loy",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6120",
+          "district_phone": "",
+          "email": "repkeohokapuleeloy@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=298&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/leeloy.jpg",
+          "ballotpedia": "https://ballotpedia.org/Susan_Lee_Loy",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/187897"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 332",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=298&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25672,
+      "person_hash": "m3v72dfu",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Matthias Kusch",
+      "first_name": "Matthias",
+      "middle_name": "M.",
+      "last_name": "Kusch",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-001",
+      "ftm_eid": 6496312,
+      "votesmart_id": 219962,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Matthias_Kusch",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6680",
+          "district_phone": "",
+          "email": "repkusch@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=297&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/kusch.jpg",
+          "ballotpedia": "https://ballotpedia.org/Matthias_Kusch",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/219962"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 311",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/matthias.kusch",
+            "instagram": "https://www.instagram.com/_matthias_kusch/",
+            "linkedin": "https://www.linkedin.com/in/matthias-kusch-0b9a256/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/mkuschsolutions",
+            "website": "",
+            "youtube": "https://www.youtube.com/@matthiaskusch"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25673,
+      "person_hash": "lqtmcqig",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Mike Lee",
+      "first_name": "Michael",
+      "middle_name": "",
+      "last_name": "Lee",
+      "suffix": "",
+      "nickname": "Mike",
+      "district": "HD-050",
+      "ftm_eid": 55691586,
+      "votesmart_id": 208512,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Michael_Lee_(Hawaii)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6480",
+          "district_phone": "",
+          "email": "replee@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=305&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/mlee.jpg",
+          "ballotpedia": "https://ballotpedia.org/Michael_Lee_%28Hawaii%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208512"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 314",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=305&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25674,
+      "person_hash": "liby0ucb",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Chris Muraoka",
+      "first_name": "Christopher",
+      "middle_name": "L.",
+      "last_name": "Muraoka",
+      "suffix": "",
+      "nickname": "Chris",
+      "district": "HD-045",
+      "ftm_eid": 59988442,
+      "votesmart_id": 218421,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Chris_Muraoka",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8460",
+          "district_phone": "",
+          "email": "repmuraoka@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=307&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/muraoka.jpg",
+          "ballotpedia": "https://ballotpedia.org/Chris_Muraoka",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/218421"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 313",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=307&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25675,
+      "person_hash": "4t29cclz",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Ikaika Olds",
+      "first_name": "Ikaika",
+      "middle_name": "M.",
+      "last_name": "Olds",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-023",
+      "ftm_eid": 55691508,
+      "votesmart_id": 208461,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Ikaika_Olds",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8515",
+          "district_phone": "",
+          "email": "repolds@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=300&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/olds.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ikaika_Olds",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208461"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 316",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=300&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dietpepsimaxika",
+            "instagram": "https://www.instagram.com/ikaikaolds",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/IkaikaOlds",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25676,
+      "person_hash": "0mh24vld",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Julie Reyes Oda",
+      "first_name": "Julie",
+      "middle_name": "K.",
+      "last_name": "Reyes Oda",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-040",
+      "ftm_eid": 55691551,
+      "votesmart_id": 208491,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Julie_Reyes_Oda",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9730",
+          "district_phone": "",
+          "email": "repreyesoda@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=304&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/reyesoda.jpg",
+          "ballotpedia": "https://ballotpedia.org/Julie_Reyes_Oda",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208491"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 310",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=304&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/JulieReyesOda",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25677,
+      "person_hash": "1d2a96cl",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Garner Shimizu",
+      "first_name": "Garner",
+      "middle_name": "Musashi",
+      "last_name": "Shimizu",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-032",
+      "ftm_eid": 55691528,
+      "votesmart_id": 127615,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Garner_Musashi_Shimizu",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9470",
+          "district_phone": "",
+          "email": "repshimizu@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=306&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/repshimizu.jpg",
+          "ballotpedia": "https://ballotpedia.org/Garner_Musashi_Shimizu",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/127615"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 305",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=306&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/garner.shimizu",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25678,
+      "person_hash": "pzalrylr",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Shirley Ann Templo",
+      "first_name": "Shirley Ann",
+      "middle_name": "L.",
+      "last_name": "Templo",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-030",
+      "ftm_eid": 55691525,
+      "votesmart_id": 208473,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Shirley_Ann_Templo",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6010",
+          "district_phone": "",
+          "email": "reptemplo@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=303&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/templo.jpg",
+          "ballotpedia": "https://ballotpedia.org/Shirley_Ann_Templo",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208473"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 317",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=303&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/shirleyann.templo",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/shirley-templo-650ab158/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@shirleyanntemplo"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25679,
+      "person_hash": "r1h386fo",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Samantha DeCorte",
+      "first_name": "Samantha",
+      "middle_name": "",
+      "last_name": "DeCorte",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-022",
+      "ftm_eid": 55691630,
+      "votesmart_id": 208438,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Samantha_DeCorte",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-7793",
+          "district_phone": "",
+          "email": "sendecorte@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=308&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/DeCorte.jpg",
+          "ballotpedia": "https://ballotpedia.org/Samantha_DeCorte",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208438"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 223",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=308&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@bbehawaii"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26474,
+      "person_hash": "ymxokl7e",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Joe Gedeon",
+      "first_name": "Joe",
+      "middle_name": "",
+      "last_name": "Gedeon",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-018",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Joe_Gedeon",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6420",
+          "district_phone": "",
+          "email": "repgedeon@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=309&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Gedeon.jpg",
+          "ballotpedia": "https://ballotpedia.org/Joe_Gedeon",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 319",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61577192775806",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=309&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/JoeGedeon808",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26609,
+      "person_hash": "23t8n27x",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Daisy Hartsfield",
+      "first_name": "Daisy",
+      "middle_name": "",
+      "last_name": "Hartsfield",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-036",
+      "ftm_eid": 0,
+      "votesmart_id": 232559,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6520",
+          "district_phone": "",
+          "email": "rephartsfield@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=310&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/hartsfield.jpg",
+          "ballotpedia": "https://ballotpedia.org/",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/232559"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 326",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26667,
+      "person_hash": "qyyo9kmz",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Michael Ratcliffe",
+      "first_name": "Michael",
+      "middle_name": "",
+      "last_name": "Ratcliffe",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-028",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Michael_Ratcliffe",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Michael_Ratcliffe",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8342,
+      "person_hash": "fsxewa16",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Henry Aquino",
+      "first_name": "Henry",
+      "middle_name": "J.C.",
+      "last_name": "Aquino",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-019",
+      "ftm_eid": 6461700,
+      "votesmart_id": 32239,
+      "opensecrets_id": "",
+      "knowwho_pid": 271962,
+      "ballotpedia": "Henry_Aquino",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6970",
+          "district_phone": "",
+          "email": "senaquino@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=224&year=2025",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/aquino.jpg",
+          "ballotpedia": "https://ballotpedia.org/Henry_Aquino",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/32239"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 204",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=224&year=2025",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/henry.aquino.142",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/henry-aquino-1836408/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8346,
+      "person_hash": "1fvf9475",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Karl Rhoads",
+      "first_name": "Karl",
+      "middle_name": "",
+      "last_name": "Rhoads",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-013",
+      "ftm_eid": 12999428,
+      "votesmart_id": 68516,
+      "opensecrets_id": "",
+      "knowwho_pid": 249223,
+      "ballotpedia": "Karl_Rhoads",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6130",
+          "district_phone": "",
+          "email": "senrhoads@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=201&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/rhoads.jpg",
+          "ballotpedia": "https://ballotpedia.org/Karl_Rhoads",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/68516"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 228",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=201&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/karl.rhoads.1",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/karl-rhoads-28674b21/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8350,
+      "person_hash": "ihxuerc8",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Angus McKelvey",
+      "first_name": "Angus",
+      "middle_name": "L.K.",
+      "last_name": "McKelvey",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-006",
+      "ftm_eid": 12999399,
+      "votesmart_id": 67875,
+      "opensecrets_id": "",
+      "knowwho_pid": 249209,
+      "ballotpedia": "Angus_McKelvey",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6070",
+          "district_phone": "",
+          "email": "senmckelvey@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=241&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/mckelvey.jpg",
+          "ballotpedia": "https://ballotpedia.org/Angus_McKelvey",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/67875"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 221",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenMcKelvey",
+            "instagram": "https://www.instagram.com/senator_mckelvey/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=241&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/anguslkmckelvey",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/angus-mckelvey-5573b318/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8365,
+      "person_hash": "foky10w3",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kyle Yamashita",
+      "first_name": "Kyle",
+      "middle_name": "T.",
+      "last_name": "Yamashita",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-012",
+      "ftm_eid": 12999403,
+      "votesmart_id": 32333,
+      "opensecrets_id": "",
+      "knowwho_pid": 227429,
+      "ballotpedia": "Kyle_Yamashita",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6330",
+          "district_phone": "",
+          "email": "repyamashita@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=149&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Yamashita.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kyle_Yamashita",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/32333"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 422",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/repkyleyamashita/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=149&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kyle.yamashita.77",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8370,
+      "person_hash": "r209mr99",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Glenn Wakai",
+      "first_name": "Glenn",
+      "middle_name": "",
+      "last_name": "Wakai",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-015",
+      "ftm_eid": 6401291,
+      "votesmart_id": 32272,
+      "opensecrets_id": "",
+      "knowwho_pid": 211949,
+      "ballotpedia": "Glenn_Wakai",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-8585",
+          "district_phone": "",
+          "email": "senwakai@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=217&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/wakai.jpg",
+          "ballotpedia": "https://ballotpedia.org/Glenn_Wakai",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/32272"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 407",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=217&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/glenn.wakai",
+            "instagram": "https://www.instagram.com/glenn_wakai/",
+            "linkedin": "https://www.linkedin.com/in/glenn-wakai-7395a11b2/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/GlennWakai",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8383,
+      "person_hash": "b8ejs28c",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Chris Lee",
+      "first_name": "Chris",
+      "middle_name": "Kalani",
+      "last_name": "Lee",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-025",
+      "ftm_eid": 6496287,
+      "votesmart_id": 109631,
+      "opensecrets_id": "",
+      "knowwho_pid": 271963,
+      "ballotpedia": "Chris_Lee_(Hawaii)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-587-8388",
+          "district_phone": "",
+          "email": "senlee@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=193&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/clee.jpg",
+          "ballotpedia": "https://ballotpedia.org/Chris_Lee_%28Hawaii%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/109631"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 219",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=193&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100007115803769",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8388,
+      "person_hash": "y90u8ssw",
+      "party_id": "2",
+      "state_id": 11,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Gene Ward",
+      "first_name": "Gene",
+      "middle_name": "",
+      "last_name": "Ward",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-018",
+      "ftm_eid": 6671898,
+      "votesmart_id": 2607,
+      "opensecrets_id": "",
+      "knowwho_pid": 249217,
+      "ballotpedia": "Gene_Ward",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6420",
+          "district_phone": "",
+          "email": "repwoodson@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=142&year=2025",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Ward.jpg",
+          "ballotpedia": "https://ballotpedia.org/Gene_Ward",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/2607"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 319",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repward",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/gene-ward-b0362950/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.gene-ward.com",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8389,
+      "person_hash": "iz5it9e2",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Della au Belatti",
+      "first_name": "Della",
+      "middle_name": "",
+      "last_name": "au Belatti",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-026",
+      "ftm_eid": 6481341,
+      "votesmart_id": 67629,
+      "opensecrets_id": "",
+      "knowwho_pid": 249221,
+      "ballotpedia": "Della_Au_Belatti",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-9425",
+          "district_phone": "",
+          "email": "repbelatti@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=7&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/Belatti.jpg",
+          "ballotpedia": "https://ballotpedia.org/Della_Au_Belatti",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/67629"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 420",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepBelatti",
+            "instagram": "https://www.instagram.com/RepBelatti/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=7&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/della.belatti",
+            "instagram": "https://www.instagram.com/daubelatti/",
+            "linkedin": "https://www.linkedin.com/in/della-au-belatti-2150b24/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/RepBelatti",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8429,
+      "person_hash": "yp93w5zt",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Carol Fukunaga",
+      "first_name": "Carol",
+      "middle_name": "",
+      "last_name": "Fukunaga",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-011",
+      "ftm_eid": 6397007,
+      "votesmart_id": 3396,
+      "opensecrets_id": "",
+      "knowwho_pid": 193903,
+      "ballotpedia": "Carol_Fukunaga",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6460",
+          "district_phone": "",
+          "email": "senfukunaga@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=168&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/fukunaga.jpg",
+          "ballotpedia": "https://ballotpedia.org/Carol_Fukunaga",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/3396"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 216",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=168&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/CarolFukunagaHawaii",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/carol-fukunaga-0890a818/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8435,
+      "person_hash": "0k90b1b1",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Les Ihara",
+      "first_name": "Les",
+      "middle_name": "S.",
+      "last_name": "Ihara",
+      "suffix": "Jr.",
+      "nickname": "",
+      "district": "SD-010",
+      "ftm_eid": 13011588,
+      "votesmart_id": 3392,
+      "opensecrets_id": "",
+      "knowwho_pid": 193901,
+      "ballotpedia": "Les_Ihara_Jr.",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6250",
+          "district_phone": "",
+          "email": "senihara@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=180&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/ihara.jpg",
+          "ballotpedia": "https://ballotpedia.org/Les_Ihara_Jr.",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/3392"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 220",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=180&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/les-ihara-62822216/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8440,
+      "person_hash": "q86hnetn",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Michelle Kidani",
+      "first_name": "Michelle",
+      "middle_name": "N.",
+      "last_name": "Kidani",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-018",
+      "ftm_eid": 6496273,
+      "votesmart_id": 109575,
+      "opensecrets_id": "",
+      "knowwho_pid": 271958,
+      "ballotpedia": "Michelle_Kidani",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-7100",
+          "district_phone": "",
+          "email": "senkidani@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=188&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/kidani.jpg",
+          "ballotpedia": "https://ballotpedia.org/Michelle_Kidani",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/109575"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 214",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/MichelleKidani",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=188&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/mitsynaomi",
+            "instagram": "https://www.instagram.com/mnkidani/",
+            "linkedin": "https://www.linkedin.com/in/michelle-kidani-b9745b13/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8445,
+      "person_hash": "dfknm6dp",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Mike Gabbard",
+      "first_name": "Mike",
+      "middle_name": "",
+      "last_name": "Gabbard",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-021",
+      "ftm_eid": 6512016,
+      "votesmart_id": 67633,
+      "opensecrets_id": "",
+      "knowwho_pid": 410516,
+      "ballotpedia": "Mike_Gabbard",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-586-6830",
+          "district_phone": "",
+          "email": "sengabbard@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=169&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/gabbard.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mike_Gabbard",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/67633"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 201",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=169&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/GabbardAloha",
+            "instagram": "https://www.instagram.com/gabbardaloha/",
+            "linkedin": "https://www.linkedin.com/in/mikegabbard/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/GabbardAloha",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8447,
+      "person_hash": "79tzg79t",
+      "party_id": "1",
+      "state_id": 11,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Donna Kim",
+      "first_name": "Donna",
+      "middle_name": "Mercado",
+      "last_name": "Kim",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-014",
+      "ftm_eid": 13010143,
+      "votesmart_id": 54119,
+      "opensecrets_id": "",
+      "knowwho_pid": 208751,
+      "ballotpedia": "Donna_Kim",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "808-587-7200",
+          "district_phone": "",
+          "email": "senkim@capitol.hawaii.gov",
+          "webmail": "",
+          "biography": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=189&year=2026",
+          "image": "https://www.capitol.hawaii.gov/MemberFiles/RepSenPhotos/kim.jpg",
+          "ballotpedia": "https://ballotpedia.org/Donna_Kim",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/54119"
+        },
+        "capitol_address": {
+          "address1": "Hawaii State Capitol, Room 218",
+          "address2": "415 South Beretania St.",
+          "city": "Honolulu",
+          "state": "HI",
+          "zip": "96813"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorDonnaMercadoKim/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.capitol.hawaii.gov/legislature/memberpage.aspx?member=189&year=2026",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/DonnaMercadoKim",
+            "instagram": "https://www.instagram.com/donnamercadokim14/",
+            "linkedin": "https://www.linkedin.com/in/donna-kim-a2996799/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    }
+  ]
+}

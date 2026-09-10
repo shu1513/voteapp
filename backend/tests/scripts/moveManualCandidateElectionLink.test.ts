@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { runMoveCandidateElectionLink } from "../../src/scripts/moveManualCandidateElectionLink.js";
+import {
+  electionStagesConflict,
+  runMoveCandidateElectionLink,
+} from "../../src/scripts/moveManualCandidateElectionLink.js";
 
 const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
 const FROM_ELECTION = "22222222-2222-2222-2222-222222222222";
@@ -54,7 +57,7 @@ function electionRows(
     toDate?: string;
     toDistrict?: string;
     toRaceType?: string;
-    toStage?: string;
+    toStage?: string | null;
   } = {}
 ) {
   return [
@@ -72,7 +75,7 @@ function electionRows(
       election_date: overrides.toDate ?? "2026-11-03",
       official_ballot_title: "Governing Board Member, Seat 3",
       race_type: overrides.toRaceType ?? "office",
-      election_stage: overrides.toStage ?? "general",
+      election_stage: overrides.toStage === undefined ? "general" : overrides.toStage,
     },
   ];
 }
@@ -111,6 +114,16 @@ function happyResponses(overrides: Partial<Record<string, unknown[][]>> = {}) {
     ...overrides,
   };
 }
+
+describe("electionStagesConflict", () => {
+  it("conflicts only when both stages are stated and differ", () => {
+    expect(electionStagesConflict("general", "primary")).toBe(true);
+    expect(electionStagesConflict("general", "general")).toBe(false);
+    expect(electionStagesConflict(null, "general")).toBe(false);
+    expect(electionStagesConflict("general", null)).toBe(false);
+    expect(electionStagesConflict(null, null)).toBe(false);
+  });
+});
 
 describe("runMoveCandidateElectionLink", () => {
   it("moves the link to the sibling shell and preserves the row id", async () => {
@@ -348,6 +361,21 @@ describe("runMoveCandidateElectionLink", () => {
         { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
       )
     ).rejects.toThrow(/different stages/);
+  });
+
+  it("treats a NULL election_stage as not stated, not as a different contest", async () => {
+    // The writer stores NULL when a payload omits the stage; the live KY
+    // school-board duplicates paired a NULL row with a 'general' row.
+    const { query } = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toStage: null })],
+    }));
+
+    const result = await runMoveCandidateElectionLink(
+      { query },
+      { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+    );
+
+    expect(result.action).toBe("moved");
   });
 
   it("refuses the move when the target roster lists the same person under another id", async () => {

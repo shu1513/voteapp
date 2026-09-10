@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SettingsPage } from "./SettingsPage";
 import { renderRoutes } from "../test/render";
@@ -79,7 +79,7 @@ describe("SettingsPage", () => {
     expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
     expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
     // No payments, so no history to link.
-    expect(screen.queryByRole("link", { name: "Payment history" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Support history")).not.toBeInTheDocument();
   });
 
   it("links a lapsed supporter to their payment history next to the invitation", async () => {
@@ -101,7 +101,13 @@ describe("SettingsPage", () => {
     });
     renderSettings();
 
-    expect(await screen.findByRole("link", { name: "Payment history" })).toHaveAttribute("href", "/me/membership");
+    // History folds open in place — no trip to the membership page, no total.
+    const details = (await screen.findByText("Support history")).closest("details");
+    expect(details).not.toHaveAttribute("open");
+    expect(within(details as HTMLElement).getByText(/July 1, 2026 · One-time/)).toBeInTheDocument();
+    expect(within(details as HTMLElement).getByText("$5.00")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Support history" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Total support to date/)).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
   });
 
