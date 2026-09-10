@@ -1,0 +1,3851 @@
+{
+  "runId": "rollcall-legiscan-fetch-ia-20260909T224147Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "IA",
+  "startedAt": "2026-09-09T22:41:47.821Z",
+  "finishedAt": "2026-09-09T22:41:52.380Z",
+  "datasetDir": "~/legiscan-data/ia-2177",
+  "bills": 4224,
+  "votes": 3156,
+  "people": 193,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Shall the bill pass?",
+      "count": 650,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF117",
+        "HF118",
+        "HF144"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall the bill pass?",
+      "count": 534,
+      "withoutMemberList": 0,
+      "minTotal": 44,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF146",
+        "SF162",
+        "SF167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Appropriations Report",
+      "count": 131,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 25,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB138",
+        "HSB89",
+        "HF525"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Education Report",
+      "count": 130,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB3",
+        "HSB4",
+        "HSB43"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Judiciary Report",
+      "count": 129,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB16",
+        "HSB14",
+        "HSB11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Agriculture Report",
+      "count": 117,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 25,
+      "billTypes": [
+        "B",
+        "JR",
+        "SB"
+      ],
+      "sampleBills": [
+        "HF32",
+        "HSB131",
+        "HSB132"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary Report",
+      "count": 112,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 20,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SF149",
+        "SF154",
+        "SF150"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Report",
+      "count": 101,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 16,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SF171",
+        "SF168",
+        "SF167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Commerce Report",
+      "count": 90,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB95",
+        "HSB67",
+        "HF5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate State Government Report",
+      "count": 79,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SF162",
+        "SF166",
+        "SF214"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Local Government Report",
+      "count": 70,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF75",
+        "SF173",
+        "SF310"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health And Human Services Report",
+      "count": 67,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF57",
+        "SF233",
+        "SF232"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Ways And Means Report",
+      "count": 67,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SF607",
+        "SF605",
+        "SF604"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Commerce Report",
+      "count": 61,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF398",
+        "SF399",
+        "SF121"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Economic Growth And Technology Report",
+      "count": 57,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HF112",
+        "HSB294",
+        "HSB192"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Report",
+      "count": 56,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603",
+        "SF615",
+        "SF616"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On State Government Report",
+      "count": 55,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "JR",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB75",
+        "HSB69",
+        "HSB73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Health And Human Services Report",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB85",
+        "HF123",
+        "HSB87"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Transportation Report",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 18,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SF153",
+        "SF27",
+        "SF193"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Ways And Means Report",
+      "count": 48,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 25,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB80",
+        "HSB91",
+        "HSB92"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Transportation Report",
+      "count": 45,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HF130",
+        "HSB64",
+        "HSB135"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Public Safety Report",
+      "count": 38,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 23,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HF45",
+        "HF41",
+        "HSB24"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Natural Resources And Environment Report",
+      "count": 35,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SF148",
+        "SF260",
+        "SJR4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Natural Resources Report",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "JR",
+        "SB"
+      ],
+      "sampleBills": [
+        "HJR1",
+        "HF22",
+        "HF21"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Workforce Report",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF110",
+        "SF222",
+        "SF308"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Local Government Report",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HF37",
+        "HSB98",
+        "HF19"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Higher Education Report",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB55",
+        "HSB57",
+        "HSB53"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Veterans Affairs Report",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 17,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB6",
+        "HSB28",
+        "HSB27"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Veterans Affairs Report",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF152",
+        "SF151",
+        "SF252"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Technology Report",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF146",
+        "SF443",
+        "SF449"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Agriculture Report",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF525",
+        "SF522",
+        "SF597"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Rules And Administration Report",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 10,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR5",
+        "SR3",
+        "SR6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Labor And Workforce Report",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 17,
+      "billTypes": [
+        "B",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB26",
+        "HSB18",
+        "HSB68"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall the resolution be adopted?",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJR9",
+        "SJR11",
+        "SCR101"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Administration And Rules Report",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "CR",
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB102",
+        "HSB101",
+        "SCR101"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall the motion to concur be adopted?",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603",
+        "SF579",
+        "HF2591"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee On Ethics Report",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "SB"
+      ],
+      "sampleBills": [
+        "HSB94",
+        "HSB93"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1030 be adopted?",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF583"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1344 be adopted?",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF647"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the joint resolution be adopted and agreed to?",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR9",
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Ethics Report",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SCR1",
+        "SR1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1001 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF118"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1008 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1011 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1012 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1027 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF583"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1028 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF583"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1029 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF583"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1034 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF316"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1068 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF644"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1069 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF776"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1079 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF784"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1080 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF785"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1084 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF440"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1094 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF856"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1103 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF782"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1106 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1109, to amendment H–1075, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1111, as amended, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF269"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1116, to amendment H–1106, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1162 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF954"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1177, to amendment H–1129, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF884"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1196 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF937"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1205, to amendment H–1195, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF948"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1228, as amended, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1241 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1242 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF462"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1246 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF311"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1252, to amendment H–1237, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1253 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1256, to amendment H–1230, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF989"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1265, as amended, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1280 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1007"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1283 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1032"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1293 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1040"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1303 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1304 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1305 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1316 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1317 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF974"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1321 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF980"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1322 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF980"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1323 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF980"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1337 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF646"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1338 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF646"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1345 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF647"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–1351 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF657"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8010, to the committee amendment H–8004, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8014 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2547"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8017 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8026 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2513"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8027 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2513"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8037 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2296"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8051 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2493"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8069 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2676"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8070 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2676"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8083 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2676"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8088 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2494"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8096B be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2510"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8101 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2705"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8120 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8135 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2645"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8138 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2711"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8139 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2711"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8145, to amendment H–8135, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2645"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8168, as amended, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2133"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8176, to amendment H–8168, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2133"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8204 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2361"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8206 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2487"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8218 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2601"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8233 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8239, to amendment H–8233, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8240 to amendment H–8233 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8241, to amendment H–8234, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8250 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2230"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8273, to amendment H–8265, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2426"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8293, as amended, be 87th Day                       WEDNESDAY, APRIL 8, 2026               857    adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2748"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8333, as amended, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2750"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8342, to amendment H–8292, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2748"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8372, to amendment H–8371, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8373, to amendment H–8371, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8383 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2772"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8408 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF654"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8416, to amendment H–8414, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2770"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8417, to amendment H–8414, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2770"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8419 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8420 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8429 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2787"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8439, as amended, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2783"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8442, to amendment H–8439, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2783"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8443, to amendment H–8439, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2783"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8444, to amendment H–8439, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2783"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8446, to amendment H–8439, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2783"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8449 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2769"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8451, to amendment H–8414, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2770"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8455, to amendment H–8404, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2771"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8456 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF639"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8464, to amendment H–8404, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2771"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8465, to amendment H–8461, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2782"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8467 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2480"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8468 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2480"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8477 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2490"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8483 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8487 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8490 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall amendment H–8494, to amendment H–8491, be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2800"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall House File 2542 be deferred?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall House Resolution 3 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the House concur in the Senate amendment 111th Day                      SATURDAY, MAY 2, 2026                       1091    H–8459?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1003"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the House concur in the Senate amendment H–1342?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF615"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the House concur in the Senate amendment H–8470?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the resolution be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR101"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider 53rd Day                       THURSDAY, MARCH 5, 2026                 599    amendment H–8157?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF579"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1003?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF117"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1037, as amended?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF189"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1098, to amendment H–1075?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1099?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF440"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1107?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF75"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1108?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF75"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1115, to amendment H–1106?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1117, to amendment H–1106?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1118?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF851"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1119?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF851"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1181?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF970"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1182?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF948"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1212?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF767"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1239?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1242?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF462"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1251?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF288"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1272?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1002"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1313?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF303"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1318?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF980"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1319?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF980"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1320?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF980"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1324?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF383"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1334?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1049"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–1336?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1044"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8049?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8082?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2676"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8086?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2610"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8089?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2676"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8121?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8124?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8146, to amendment H–8128?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2399"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8148, to amendment H–8128?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2399"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8149, to amendment H–8128?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2399"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8180?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2716"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8199?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2329"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8236, to amendment H–8233?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8237, to amendment H–8233?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8238, to amendment H–8233?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8249?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF572"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8251?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF572"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8268, as amended?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2231"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8286?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2039"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8302?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2341"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8313?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2231"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8320?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF473"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8350, to amendment H–8319?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2254"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8385, to amendment H–8382?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2764"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8386, to the Senate amendment H–8335?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2676"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8397, to the committee amendment H–8394?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8411?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2768"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8421?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8423?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2772"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8424?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2772"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8425?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2772"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8426?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2772"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8427?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2772"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8434?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2787"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8454, to amendment H–8449?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2769"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8466, to amendment H–8461?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2782"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8481?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8482?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8484?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8485?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8486?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shall the rules be suspended to consider amendment H–8488?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3002 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF167"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3007 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF175"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3011 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF418"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3012 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF418"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3013 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF418"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3019 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF277"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3027 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF22"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3029 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3032 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF459"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3033 to House amendment S–3030 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3034 to House amendment S–3030 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF603"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3046 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF782"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3054 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF615"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3076 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF784"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3077 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF954"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3084 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF309"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3099 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF369"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3100 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF516"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3110 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF706"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3133 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3134 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3135 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3136 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF445"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3139 to amendment S–3138 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF383"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3161 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF975"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3165 to amendment S–3064 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF639"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3176 to amendment S–3171 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF189"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3184 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF607"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3185 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF607"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–3186 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF607"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5008 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR105"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5022 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2219"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5036 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2422"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5073 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2168"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5081 to amendment S–5075 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF579"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5123 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2694"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5145 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2543"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5163 to amendment S–5159 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2596"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5219 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5220 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5221 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5222 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5223 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5224 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2754"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall amendment S–5251 be adopted?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1036"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall the bill be moved to the Unfinished Business Calendar?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2464"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Shall the motion pass?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 50,
+      "maxTotal": 50,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF639"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "CR": 18,
+    "B": 3022,
+    "JR": 46,
+    "R": 69,
+    "SB": 1069
+  },
+  "sessionIds": {
+    "2177": 4224
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": [
+    {
+      "file": "IA/2025-2026_91st_General_Assembly/vote/1493899.json",
+      "error": "LegiScan roll call 1493899: nay says 3 but the member list holds 0"
+    },
+    {
+      "file": "IA/2025-2026_91st_General_Assembly/vote/1499267.json",
+      "error": "LegiScan roll call 1499267: nay says 6 but the member list holds 1"
+    }
+  ]
+}

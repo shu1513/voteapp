@@ -37,6 +37,13 @@ const OHIO_ACTIONS =
 // segments are display sugar the key must not depend on.
 const LEGISCAN_ROLLCALL =
   /^https?:\/\/(?:www\.)?legiscan\.com\/[A-Za-z]{2}\/rollcall\/[^/?#]+\/id\/(\d+)\/?(?:[?#].*)?$/i;
+// The Hawaii bill status page, one URL per BILL (Hawaii prints no roll
+// numbers; its floor votes are history lines on this page). Folded to a
+// per-bill key on the Ohio reasoning: the Hawaii fetcher refuses two floor
+// passage votes of one chamber on one bill and day, so on a given
+// candidate + date the bill identifies the vote.
+const HAWAII_MEASURE =
+  /^https?:\/\/(?:www\.)?capitol\.hawaii\.gov\/session\/measure_indiv\.aspx\?billtype=([A-Za-z]+)&billnumber=(\d+)&year=(\d{4})(?:[&#].*)?$/i;
 
 /** The roll call a URL cites, or null when it is not a roll-call URL. */
 export function rollCallUrlKey(url: string): RollCallUrlKey | null {
@@ -56,6 +63,10 @@ export function rollCallUrlKey(url: string): RollCallUrlKey | null {
   const legiscan = LEGISCAN_ROLLCALL.exec(trimmed);
   if (legiscan) {
     return { chamber: null, key: `ls:${Number(legiscan[1])}` };
+  }
+  const hawaii = HAWAII_MEASURE.exec(trimmed);
+  if (hawaii) {
+    return { chamber: null, key: `hi:${hawaii[3]}:${hawaii[1]!.toLowerCase()}${Number(hawaii[2])}` };
   }
   return null;
 }

@@ -1,0 +1,783 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "IA",
+  "session_id": 2177,
+  "note": "people_id -> VoteApp candidate id for Iowa's 91st General Assembly (LegiScan 2177, the 2025 and 2026 sessions). Seats are LegiScan's `district` field, read in preference to `role`; the two agree for all 155 members here. The 38 committee-sponsor pseudo-people in the people file (blank district, committee_sponsor set) are excluded, the Maryland shape. 102 of 155 members map to a candidate: 97 proposed by rollcall:legiscan:resolve and accepted after a hand check (94 with the seat agreeing, 3 sitting representatives running for the Senate), plus 5 added by hand. Two of the hand-adds are name forms the proposer cannot reach (a middle name, a legal name against a nickname) and three are members leaving the legislature for a federal or county office that the November 2026 ballot holds for them, the Oregon Drazan precedent. 53 members map to nothing: 25 sit in an even-numbered Senate district, which Iowa does not elect in 2026 (four-year staggered terms), so those are structural and not a coverage gap; the rest carry no November 2026 candidate row in any office in the database. All 100 House seats are on the ballot.",
+  "entries": [
+    {
+      "people_id": 24629,
+      "candidate_id": null,
+      "note": "J.D. Scholten, house HD-001 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 24102,
+      "candidate_id": "22036173-7397-4fd9-9e68-766259b2ccca",
+      "note": "Robert Henderson, house HD-002 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21160,
+      "candidate_id": null,
+      "note": "Thomas Jeneary, house HD-003 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 18961,
+      "candidate_id": "718f5245-5b0b-4384-b416-5eef1c2f23e3",
+      "note": "Skyler Wheeler, house HD-004 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24265,
+      "candidate_id": null,
+      "note": "Zachary Dieken, house HD-005 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 14793,
+      "candidate_id": "5a10c8fe-c75b-418c-bebc-f854dccb31b9",
+      "note": "Megan Hess Jones, house HD-006 in the 91st General Assembly; hand-added. LegiScan lists her as Megan Hess Jones; the HD-006 candidate row is Megan Jones, the same person and the same seat. The proposer needs the first and last name to agree and the middle name breaks the last-name comparison."
+    },
+    {
+      "people_id": 26570,
+      "candidate_id": "93210afe-aa10-4b59-b56f-bc4376da3516",
+      "note": "Wendy Larson, house HD-007 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 17458,
+      "candidate_id": null,
+      "note": "Michael Sexton, house HD-007 in the 91st General Assembly; one of two members the dataset lists for this seat (a mid-session replacement), and no November 2026 candidate row carries this name."
+    },
+    {
+      "people_id": 21125,
+      "candidate_id": "8f03818a-9f5c-4293-a83d-d1925f67354b",
+      "note": "Ann Meyer, house HD-008 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22664,
+      "candidate_id": "7a303e40-bb45-49a0-bae1-c8d0a2373e83",
+      "note": "Henry Stone, house HD-009 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 17290,
+      "candidate_id": "7a58832e-f031-4faa-a0b4-ac32a3f09755",
+      "note": "John Wills, house HD-010 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22553,
+      "candidate_id": "db8dcc3e-2ee3-448c-aa36-732d5b372f3c",
+      "note": "Craig Williams, house HD-011 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 17218,
+      "candidate_id": "748f1b6c-df25-46bb-9ad8-aa0883d1cd56",
+      "note": "Steven Holt, house HD-012 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26313,
+      "candidate_id": "c55d5a1b-f3b5-4efc-826a-488ad788a031",
+      "note": "Travis Sitzmann, house HD-013 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 19548,
+      "candidate_id": "6cb492b0-0834-42ac-b414-528802321d5e",
+      "note": "Jacob Bossman, house HD-014 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 6982,
+      "candidate_id": null,
+      "note": "Matt Windschitl, house HD-015 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 17617,
+      "candidate_id": "0bb425c7-20da-422a-b557-b94c85e59e94",
+      "note": "David Sieck, house HD-016 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24111,
+      "candidate_id": "f85277a2-f75a-42a6-aed1-47390a460d35",
+      "note": "Devon Wood, house HD-017 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 17825,
+      "candidate_id": "a6889b31-c91c-4ddc-bb73-2e0cb6966534",
+      "note": "Tom Moore, house HD-018 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22691,
+      "candidate_id": "c1968085-7ebb-4a64-a2fc-4e7aa6e2d06f",
+      "note": "Brent Siegrist, house HD-019 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24632,
+      "candidate_id": "16c830a4-e272-4cb0-9944-cba654be5e08",
+      "note": "Josh Turek, house HD-020 in the 91st General Assembly; hand-added. Josh Turek is leaving the House to run for United States Senator, and that is what the November 2026 ballot holds for him, so he is mapped to that candidacy (the Oregon Drazan precedent)."
+    },
+    {
+      "people_id": 22683,
+      "candidate_id": "7c4dbd56-ea9f-4d98-b991-9246db18698b",
+      "note": "Brooke Boden, house HD-021 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26306,
+      "candidate_id": "e59f02c7-2c43-48fe-96e4-78840e95a8b1",
+      "note": "Samantha Fett, house HD-022 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21044,
+      "candidate_id": "8bb71d77-786b-4b6e-b7d9-d608744a82e6",
+      "note": "Ray Sorensen, house HD-023 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26316,
+      "candidate_id": "2444ce50-7aa2-4ccd-b0ae-a32578183429",
+      "note": "Sam Wengryn, house HD-024 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24266,
+      "candidate_id": "20933f2a-2370-48bf-8bda-31ee541ae011",
+      "note": "Hans Wilz, house HD-025 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24101,
+      "candidate_id": "f70e2b74-a30e-4226-a844-2457b954b6e1",
+      "note": "Austin Harris, house HD-026 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21092,
+      "candidate_id": "0ce3ec3a-46f9-48ce-9e50-ff1183742c47",
+      "note": "Kenan Judge, house HD-027 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24113,
+      "candidate_id": "58d6bf08-1649-473a-930e-876f5a3eb86e",
+      "note": "David Young, house HD-028 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 16122,
+      "candidate_id": "4fb4efca-a513-4acc-8630-facd0ec4380c",
+      "note": "Brian Meyer, house HD-029 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24630,
+      "candidate_id": "8522a08b-000b-44c5-add1-db3f0dd7fa09",
+      "note": "Megan Srinivas, house HD-030 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24628,
+      "candidate_id": "6b738c8c-2c2b-48a9-9274-a0866173a658",
+      "note": "Mary Madison, house HD-031 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21057,
+      "candidate_id": null,
+      "note": "Jennifer Konfrst, house HD-032 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 11623,
+      "candidate_id": null,
+      "note": "Ruth Ann Gaines, house HD-033 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 26310,
+      "candidate_id": "16cc4be1-6138-4ead-a511-ca267bbe8abf",
+      "note": "Rob Johnson, house HD-034 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24811,
+      "candidate_id": "952e3fa2-7b9f-415b-b523-094d5af68f25",
+      "note": "Sean Bagniewski, house HD-035 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24621,
+      "candidate_id": "14a06df4-e47c-46ff-89e3-d9ee501be5e1",
+      "note": "Austin Baeth, house HD-036 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24104,
+      "candidate_id": "734263fd-54be-4174-932d-4072aee5f17d",
+      "note": "Barb Kniff McCulla, house HD-037 in the 91st General Assembly; proposed by name, seat disagrees on purpose: a sitting representative running for the Senate seat SD-019, which is what the November 2026 ballot holds."
+    },
+    {
+      "people_id": 22962,
+      "candidate_id": null,
+      "note": "Jon Dunwell, house HD-038 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 7069,
+      "candidate_id": null,
+      "note": "Rick Olson, house HD-039 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 24100,
+      "candidate_id": "03649412-a1c3-4e3d-b094-db30eb5f4830",
+      "note": "Bill Gustoff, house HD-040 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26315,
+      "candidate_id": "132b260c-0d0b-4d78-a61a-7d148888b57e",
+      "note": "Ryan Weldon, house HD-041 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21093,
+      "candidate_id": "3077ee3f-74f2-4cbd-ab11-2c90cccc4da3",
+      "note": "Heather Matson, house HD-042 in the 91st General Assembly; proposed by name, seat disagrees on purpose: a sitting representative running for the Senate seat SD-021, which is what the November 2026 ballot holds."
+    },
+    {
+      "people_id": 22682,
+      "candidate_id": null,
+      "note": "Eddie Andrews, house HD-043 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 26312,
+      "candidate_id": "c2a06c3b-61a7-47f8-8f37-dd2b3b65f71f",
+      "note": "Larry McBurney, house HD-044 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21242,
+      "candidate_id": null,
+      "note": "Brian Lohse, house HD-045 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 24098,
+      "candidate_id": "2a1cfb00-1adb-475d-bbc0-9d99e79b8789",
+      "note": "Dan Gehlbach, house HD-046 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22573,
+      "candidate_id": "281c5d63-b945-4168-8f07-8e2d11779a31",
+      "note": "Carter Nordman, house HD-047 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26304,
+      "candidate_id": "6027c0f5-2804-4669-970f-0afbe3b21490",
+      "note": "Chad Behn, house HD-048 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7033,
+      "candidate_id": "5d0234e3-fce5-4fe9-8023-5c65b53eced7",
+      "note": "Beth Wessel-Kroeschell, house HD-049 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21419,
+      "candidate_id": "42ad7678-f27f-4d94-8a69-4eeacf194474",
+      "note": "Ross Wilburn, house HD-050 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26303,
+      "candidate_id": "e9bab893-40ba-48ad-b090-a2f67b48e339",
+      "note": "Brett Barker, house HD-051 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26305,
+      "candidate_id": "092e4d02-1fb4-44c7-b586-9ecf2a349fdb",
+      "note": "David Blom, house HD-052 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 14790,
+      "candidate_id": "be7ba2cc-10c2-479e-aff9-1d83fed39a24",
+      "note": "Dean Fisher, house HD-053 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24105,
+      "candidate_id": "59daafb5-603f-4ce6-a1a4-c1e9d56fa643",
+      "note": "Joshua Meggers, house HD-054 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22689,
+      "candidate_id": null,
+      "note": "Shannon Latham, house HD-055 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 24631,
+      "candidate_id": "984ec2d2-6c8c-496a-8353-17c847542cbf",
+      "note": "Mark Thompson, house HD-056 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7075,
+      "candidate_id": "ebb0f2f2-b02f-4ef1-81cb-70fc072b8cd6",
+      "note": "Pat Grassley, house HD-057 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24109,
+      "candidate_id": "6f6195d8-467d-436a-b15b-2b7f4ae0b81d",
+      "note": "Charley Thomson, house HD-058 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26309,
+      "candidate_id": "cb2b0535-0ec6-450f-a6cf-f7328fc41045",
+      "note": "Christian Hermanson, house HD-059 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 18954,
+      "candidate_id": null,
+      "note": "Jane Bloomingdale, house HD-060 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 17287,
+      "candidate_id": "b4c6769c-afba-4c99-afdf-ff23671dfcb6",
+      "note": "Timi Brown-powers, house HD-061 in the 91st General Assembly; proposed by name, seat disagrees on purpose: a sitting representative running for the Senate seat SD-031, which is what the November 2026 ballot holds."
+    },
+    {
+      "people_id": 24620,
+      "candidate_id": "5b3b8398-3c5f-48bd-b0a3-7875050daef8",
+      "note": "Jerome Amos, house HD-062 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 18953,
+      "candidate_id": "9cd97576-6dc4-4db7-9225-003bfe43ae25",
+      "note": "Michael Bergan, house HD-063 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26307,
+      "candidate_id": "411b2b95-c2d6-4328-bb8f-c804c5520366",
+      "note": "Jason Gearhart, house HD-064 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 18958,
+      "candidate_id": "9f1240e6-808e-4313-9fa1-f8866ec36906",
+      "note": "Shannon Lundgren, house HD-065 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22663,
+      "candidate_id": "004363b2-0a6e-43cc-a4b4-321e0d6e4318",
+      "note": "Steven Bradley, house HD-066 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 19141,
+      "candidate_id": "7ba9bc32-78b1-4c91-9daf-b66f412eb917",
+      "note": "Craig Johnson, house HD-067 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22688,
+      "candidate_id": "592998ad-ecd8-481e-8e7f-1809324e01d1",
+      "note": "Chad Ingels, house HD-068 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24624,
+      "candidate_id": "b221ae33-0fb8-42ac-9a93-8bfb6c58e67d",
+      "note": "Tom Determann, house HD-069 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 17289,
+      "candidate_id": "0a0c5214-4b2f-46c4-9992-d5e6fc202bec",
+      "note": "Norlin Mommsen, house HD-070 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21091,
+      "candidate_id": "2cd301aa-cac1-436e-a78a-d8ea636ab42f",
+      "note": "Lindsay James, house HD-071 in the 91st General Assembly; hand-added. Lindsay James is leaving the House to run for United States Representative in Congressional District 2, and she is mapped to that candidacy (the Oregon Drazan precedent)."
+    },
+    {
+      "people_id": 26314,
+      "candidate_id": "b019bb8f-84f7-49af-a08e-fccfccf46d77",
+      "note": "Jennifer Smith, house HD-072 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24633,
+      "candidate_id": "7d07d2f1-9c15-4462-ba87-751efbe31ee2",
+      "note": "Elizabeth Wilson, house HD-073 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22572,
+      "candidate_id": "71c173c0-7b44-4f14-b9e6-29839f2c2ae6",
+      "note": "Eric Gjerde, house HD-074 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7000,
+      "candidate_id": null,
+      "note": "Bob Kressig, house HD-075 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 24112,
+      "candidate_id": null,
+      "note": "Derek Wulf, house HD-076 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 24623,
+      "candidate_id": "b5045bff-a9c9-4893-9c28-a78db1910c01",
+      "note": "Jeff Cooling, house HD-077 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26467,
+      "candidate_id": "235b5c70-691b-40ab-9576-3a236a23cd26",
+      "note": "Angel Ramirez, house HD-078 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24814,
+      "candidate_id": null,
+      "note": "Sami Scheetz, house HD-078 in the 91st General Assembly; one of two members the dataset lists for this seat (a mid-session replacement), and no November 2026 candidate row carries this name."
+    },
+    {
+      "people_id": 21056,
+      "candidate_id": "545c2718-da44-49df-bf26-d65342b663a8",
+      "note": "Tracy Ehlert, house HD-079 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26317,
+      "candidate_id": "5210fea9-7992-49cc-b1d7-7514f363c3f5",
+      "note": "Aime Wichtendahl, house HD-080 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26308,
+      "candidate_id": "c55d6407-f184-4bfc-81a2-2ec740aaa07b",
+      "note": "Daniel Gosa, house HD-081 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 6981,
+      "candidate_id": "0595215c-9cb2-475e-8d4c-9ccbaf30b266",
+      "note": "Bobby Kaufmann, house HD-082 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24099,
+      "candidate_id": "a7083ba9-23af-449b-83b6-a60d88c05e09",
+      "note": "Cindy Golding, house HD-083 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21115,
+      "candidate_id": "75c8cc22-f4bc-4670-b740-78b575aac919",
+      "note": "Thomas Gerhold, house HD-084 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 19016,
+      "candidate_id": "3a99b30f-8278-4c5c-8394-4ab29f546be7",
+      "note": "Amy Nielsen, house HD-085 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 6970,
+      "candidate_id": "75c18832-f06c-404b-a0af-0a8bb5619475",
+      "note": "Dave Jacoby, house HD-086 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21051,
+      "candidate_id": "3c7a99a1-9706-499f-bbaa-aa7f78f81a2f",
+      "note": "Jeff Shipley, house HD-087 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24626,
+      "candidate_id": "d0d2b801-4945-41f4-93fe-8b4de77a86a2",
+      "note": "Helena Hayes, house HD-088 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24627,
+      "candidate_id": "bb5da75a-4f97-494c-8660-eeca5fee0e9b",
+      "note": "Elinor Levin, house HD-089 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24815,
+      "candidate_id": "af1b6766-9437-4536-8464-c1a269b3ef1f",
+      "note": "Adam Zabner, house HD-090 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26311,
+      "candidate_id": "96833028-9aae-4238-a4f3-8173d986cb61",
+      "note": "Judd Lawler, house HD-091 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24103,
+      "candidate_id": "75847198-f7eb-4f2b-a17d-e39f91c65a3d",
+      "note": "Heather Hora, house HD-092 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 18960,
+      "candidate_id": "f8fd6378-80cf-4771-94dc-5d46ae1515bc",
+      "note": "Gary Mohr, house HD-093 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24110,
+      "candidate_id": "f7739294-942d-49a7-94d2-ca84661ca1ac",
+      "note": "Mike Vondran, house HD-094 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24097,
+      "candidate_id": "91c19f67-4b71-4a3e-be07-e6e43ef18d8a",
+      "note": "Taylor Collins, house HD-095 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22686,
+      "candidate_id": "df5fb011-b16f-4060-b633-94e1688c0e0d",
+      "note": "Mark Cisneros, house HD-096 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24813,
+      "candidate_id": null,
+      "note": "Ken Croken, house HD-097 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 19287,
+      "candidate_id": null,
+      "note": "Monica Kurth, house HD-098 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 24106,
+      "candidate_id": "c3bee3b1-ca23-425e-9884-6ca555feebe9",
+      "note": "Matthew Rinker, house HD-099 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22687,
+      "candidate_id": null,
+      "note": "Martin Graber, house HD-100 in the 91st General Assembly; one of two members the dataset lists for this seat (a mid-session replacement), and no November 2026 candidate row carries this name."
+    },
+    {
+      "people_id": 26448,
+      "candidate_id": "ae8d1b13-1001-460b-977c-d88e3586c2de",
+      "note": "Blaine Watkins, house HD-100 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 24516,
+      "candidate_id": null,
+      "note": "Rocky De Witt, senate SD-001 in the 91st General Assembly; one of two members the dataset lists for this seat (a mid-session replacement), and no November 2026 candidate row carries this name."
+    },
+    {
+      "people_id": 26571,
+      "candidate_id": "5ca8a6fd-f374-451c-8a58-e0d2582ce5b0",
+      "note": "Catelin Drey, senate SD-001 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22552,
+      "candidate_id": null,
+      "note": "Jeff Taylor, senate SD-002 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 24515,
+      "candidate_id": "d65cb9f1-dc56-45cb-be5f-037151864b9a",
+      "note": "Lynn Evans, senate SD-003 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 17368,
+      "candidate_id": null,
+      "note": "Tim Kraayenbrink, senate SD-004 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 23049,
+      "candidate_id": "3860a68c-004d-490a-8745-eaac59c51b9b",
+      "note": "Dave Rowley, senate SD-005 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 6973,
+      "candidate_id": null,
+      "note": "Jason Schultz, senate SD-006 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 24514,
+      "candidate_id": "feb20cb4-a0f0-4bde-8b5b-6d92cd2a8726",
+      "note": "Kevin Alons, senate SD-007 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 14789,
+      "candidate_id": null,
+      "note": "Mark Costello, senate SD-008 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 17430,
+      "candidate_id": null,
+      "note": "Tom Shipley, senate SD-009 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 18623,
+      "candidate_id": null,
+      "note": "Dan Dawson, senate SD-010 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 10728,
+      "candidate_id": null,
+      "note": "Julian Garrett, senate SD-011 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 15400,
+      "candidate_id": null,
+      "note": "Amy Sinclair, senate SD-012 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 22665,
+      "candidate_id": null,
+      "note": "Cherielynn Westrich, senate SD-013 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 22650,
+      "candidate_id": "84e1aa8a-30d6-4cd2-84d2-5abdcaf507b2",
+      "note": "Sarah Trone Garriott, senate SD-014 in the 91st General Assembly; hand-added. Sarah Trone Garriott is leaving the Senate to run for United States Representative in Congressional District 3, and she is mapped to that candidacy (the Oregon Drazan precedent)."
+    },
+    {
+      "people_id": 17037,
+      "candidate_id": "e6ffb681-b78e-4ac5-9af8-38898e36062f",
+      "note": "Tony Bisignano, senate SD-015 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 20957,
+      "candidate_id": null,
+      "note": "Claire Celsi, senate SD-016 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 26572,
+      "candidate_id": null,
+      "note": "Renee Hardman, senate SD-016 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 24258,
+      "candidate_id": null,
+      "note": "Izaah Knox, senate SD-017 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 7037,
+      "candidate_id": null,
+      "note": "Janet Petersen, senate SD-018 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 15398,
+      "candidate_id": null,
+      "note": "Ken Rozenboom, senate SD-019 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 26320,
+      "candidate_id": null,
+      "note": "Mike Pike, senate SD-020 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 22961,
+      "candidate_id": null,
+      "note": "Mike Bousselot, senate SD-021 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 26318,
+      "candidate_id": null,
+      "note": "Matt Blake, senate SD-022 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 13191,
+      "candidate_id": null,
+      "note": "Jack Whitver, senate SD-023 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 22488,
+      "candidate_id": null,
+      "note": "Jesse Green, senate SD-024 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7134,
+      "candidate_id": "910e452c-4620-48c3-a39a-6b9bac0db4cf",
+      "note": "Herman Quirmbach, senate SD-025 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26323,
+      "candidate_id": null,
+      "note": "Kara Warme, senate SD-026 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7010,
+      "candidate_id": "7cb7a7dc-6e42-4d0c-a888-75fea30fb490",
+      "note": "Annette Sweeney, senate SD-027 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 15397,
+      "candidate_id": null,
+      "note": "Dennis Guth, senate SD-028 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 14797,
+      "candidate_id": "96496996-eaf7-4202-952b-d7378452f7ed",
+      "note": "Sandy Salmon, senate SD-029 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26319,
+      "candidate_id": null,
+      "note": "Doug Campbell, senate SD-030 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7125,
+      "candidate_id": "e98598e7-f1b0-45e2-8aee-5d14b9393e47",
+      "note": "William Dotzler, senate SD-031 in the 91st General Assembly; hand-added. LegiScan carries the legal name William Dotzler with the nickname Bill; the ballot row is Bill Dotzler, running for Black Hawk County Supervisor. Same person (the Waterloo senator), mapped to the candidacy the November 2026 ballot holds for him."
+    },
+    {
+      "people_id": 22531,
+      "candidate_id": null,
+      "note": "Mike Klimesh, senate SD-032 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 21097,
+      "candidate_id": "caea4b70-d976-4c8a-b5a2-91314694c6e8",
+      "note": "Carrie Koelker, senate SD-033 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 15401,
+      "candidate_id": null,
+      "note": "Daniel Zumbach, senate SD-034 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 26409,
+      "candidate_id": "d27cd814-e13c-4ff9-a269-60b0f9471766",
+      "note": "Mike Zimmer, senate SD-035 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26322,
+      "candidate_id": null,
+      "note": "Thomas Townsend, senate SD-036 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 21055,
+      "candidate_id": "216022dc-5c56-40fd-a8f7-b98067c008c2",
+      "note": "Molly Donahue, senate SD-037 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 26321,
+      "candidate_id": null,
+      "note": "Dave Sires, senate SD-038 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 17286,
+      "candidate_id": "1ca50c79-b52e-4ae2-bb96-1762d9ca3b8a",
+      "note": "Liz Bennett, senate SD-039 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 15615,
+      "candidate_id": null,
+      "note": "Art Staed, senate SD-040 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 24625,
+      "candidate_id": "87b36d53-3408-4f81-b74f-843c4d9edc45",
+      "note": "Kerry Gruenhagen, senate SD-041 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22690,
+      "candidate_id": null,
+      "note": "Charlie McClintock, senate SD-042 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 21052,
+      "candidate_id": null,
+      "note": "Zach Wahls, senate SD-043 in the 91st General Assembly; no November 2026 candidate row carries this name in this seat or in any other office in the database, so the member is not on the ballot as far as the database knows."
+    },
+    {
+      "people_id": 22801,
+      "candidate_id": null,
+      "note": "Adrian Dickey, senate SD-044 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 24259,
+      "candidate_id": "33560195-5fa4-41a2-b7e1-6b20bf79c0f8",
+      "note": "Janice Weiner, senate SD-045 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22530,
+      "candidate_id": null,
+      "note": "Dawn Driscoll, senate SD-046 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 23866,
+      "candidate_id": "d6ffb962-e46c-438c-9fac-d9cc61097931",
+      "note": "Scott Webster, senate SD-047 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10726,
+      "candidate_id": null,
+      "note": "Mark Lofgren, senate SD-048 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7003,
+      "candidate_id": "121ff2a1-35bd-41a3-915b-cc9998bf7574",
+      "note": "Cindy Winckler, senate SD-049 in the 91st General Assembly; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22489,
+      "candidate_id": null,
+      "note": "Jeff Reichman, senate SD-050 in the 91st General Assembly; that seat is NOT on the November 2026 ballot. Iowa senators serve four-year staggered terms and the even-numbered districts are not up in 2026, so this is structural, not a roster gap."
+    }
+  ]
+}

@@ -1,0 +1,646 @@
+{
+  "runId": "rollcall-legiscan-fetch-sd-20260909T224243Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "SD",
+  "startedAt": "2026-09-09T22:42:43.368Z",
+  "finishedAt": "2026-09-09T22:42:43.816Z",
+  "datasetDir": "~/legiscan-data/sd-2170/SD/2025-2025_Regular_Session",
+  "bills": 571,
+  "votes": 1604,
+  "people": 124,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Do Pass",
+      "count": 351,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 70,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1001",
+        "HB1053",
+        "HB1003"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Do Pass",
+      "count": 325,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB30",
+        "SB38",
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Do Pass Amended",
+      "count": 230,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB5",
+        "SB13",
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Do Pass Amended",
+      "count": 227,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 70,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR5003",
+        "HB1053",
+        "HB1066"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Deferred to the 41st legislative day",
+      "count": 78,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB1045",
+        "HB1018",
+        "HB1064"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Tabled",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 70,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1083",
+        "HB1084",
+        "HB1077"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Deferred to the 41st legislative day",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB9",
+        "SB4",
+        "SB73"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Tabled",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB19",
+        "SB53",
+        "SB105"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Referred to",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1006",
+        "HB1005",
+        "HB1040"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Reconsidered",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1017",
+        "HB1021",
+        "HB1093"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Concurred in amendments",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1068",
+        "HB1093",
+        "HB1071"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to amend",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB11",
+        "SB12",
+        "HB1096"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt Resolution",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 70,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR6001",
+        "HR7001",
+        "HCR6004"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Referred to",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB28",
+        "SB86",
+        "SB56"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Concurred in Resolution",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 35,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR6001",
+        "HCR6005",
+        "HCR6007"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt Resolution",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 35,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR701",
+        "SCR602",
+        "SCR603"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Concurred in amendments",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB116",
+        "SB69",
+        "SB62"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Reconsidered",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB60",
+        "SB50",
+        "SB31"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Placed on calendar pursuant to JR 6F-6",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1164",
+        "HB1218",
+        "HB1025"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to amend",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB13",
+        "SB2",
+        "SB72"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Placed on calendar pursuant to JR 6F-6",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9",
+        "SB133",
+        "SB204"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Concurred in Resolution",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 69,
+      "maxTotal": 70,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR601",
+        "SCR603",
+        "SCR602"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Referred as Amended to",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1013",
+        "HB1016",
+        "HB1021"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Deferred to another day",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1004",
+        "HB1009",
+        "SB20"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Conference Committee Report adopted",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25",
+        "SB113",
+        "SB68"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Conference Committee Report adopted",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB25",
+        "SB68",
+        "SB91"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Referred as Amended to",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB54",
+        "SB95",
+        "SB104"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Report out of committee without recommendation",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB83",
+        "SB169"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Veto override",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1132",
+        "HB1169"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Report out of committee without recommendation",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB133",
+        "HB1188"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Conference Committee report not adopted, no committee appointed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB113"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Do Not Pass as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1267"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Failed to concur, appoint Conference Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1218"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Failed to concur, no committee appointed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1135"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Fiscal Note Requested",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1198"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Removed from table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1083"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Report out of committee without recommendation as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1076"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt Resolution as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR601"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Veto override",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1169"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 489,
+    "M": 44,
+    "CR": 21,
+    "JR": 14,
+    "R": 3
+  },
+  "sessionIds": {
+    "2170": 571
+  },
+  "committeeChamberVotes": 51,
+  "voteParseErrors": []
+}

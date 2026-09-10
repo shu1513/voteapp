@@ -1,0 +1,4977 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-09T23:06:08.126Z",
+  "finishedAt": "2026-09-09T23:06:08.323Z",
+  "jurisdiction": "WI",
+  "sessionId": 2197,
+  "scopeFrom": "2026-11-01",
+  "peopleMembers": 132,
+  "candidatePool": 230,
+  "crosswalkEntries": 132,
+  "crosswalkPeopleNotInSnapshot": [],
+  "files": 549,
+  "fileErrors": 0,
+  "counts": {
+    "matched": 27865,
+    "unmatched_reviewed": 8749
+  },
+  "note": "Per-member detail is left out of the repository: the full report is 5 MB and is reproducible by re-running rollcall:legiscan:resolve against the dataset. The per-roll counts that matter for review are kept below.",
+  "fanOut": {
+    "house": {
+      "rolls": 291,
+      "median": 86,
+      "min": 81,
+      "max": 88
+    },
+    "senate": {
+      "rolls": 258,
+      "median": 11.0,
+      "min": 10,
+      "max": 11
+    },
+    "rollsWithNoMatchedMember": 0
+  },
+  "rolls": [
+    {
+      "chamber": "house",
+      "roll": 1471207,
+      "bill": "SJR1",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1471408,
+      "bill": "SJR2",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1493267,
+      "bill": "AB1",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1493522,
+      "bill": "AB4",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1493523,
+      "bill": "AB4",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1493536,
+      "bill": "AB2",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1493554,
+      "bill": "AB6",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1493555,
+      "bill": "AB6",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1493715,
+      "bill": "AB5",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1494273,
+      "bill": "AB3",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1516900,
+      "bill": "AB14",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1516987,
+      "bill": "AB87",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517054,
+      "bill": "AB85",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517055,
+      "bill": "AB85",
+      "members": 96,
+      "matched": 86,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517060,
+      "bill": "AB16",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517187,
+      "bill": "AB66",
+      "members": 96,
+      "matched": 86,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517188,
+      "bill": "AB66",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517255,
+      "bill": "AB75",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517416,
+      "bill": "AB13",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517599,
+      "bill": "AB91",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517600,
+      "bill": "AB91",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517672,
+      "bill": "AB15",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1517763,
+      "bill": "AB89",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1519709,
+      "bill": "AB24",
+      "members": 94,
+      "matched": 85,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1520265,
+      "bill": "AB94",
+      "members": 94,
+      "matched": 85,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1520614,
+      "bill": "AB95",
+      "members": 94,
+      "matched": 85,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1520621,
+      "bill": "AB96",
+      "members": 94,
+      "matched": 85,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1522508,
+      "bill": "AB102",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1522672,
+      "bill": "AB100",
+      "members": 94,
+      "matched": 84,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1522724,
+      "bill": "AB103",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1522835,
+      "bill": "AB104",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1522970,
+      "bill": "AB105",
+      "members": 91,
+      "matched": 81,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1553530,
+      "bill": "AB162",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1553662,
+      "bill": "AB167",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1553690,
+      "bill": "AB73",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1553695,
+      "bill": "AB164",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1553728,
+      "bill": "AB168",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1553838,
+      "bill": "AB166",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1554222,
+      "bill": "AB169",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1554274,
+      "bill": "AB165",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1570316,
+      "bill": "SB24",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1570501,
+      "bill": "AB140",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1570629,
+      "bill": "AB23",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1570692,
+      "bill": "AB43",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1570733,
+      "bill": "AB137",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1592324,
+      "bill": "AJR50",
+      "members": 94,
+      "matched": 85,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1592505,
+      "bill": "AB269",
+      "members": 92,
+      "matched": 83,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594291,
+      "bill": "AB63",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594295,
+      "bill": "AB279",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594296,
+      "bill": "AB279",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594309,
+      "bill": "SB108",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594310,
+      "bill": "SB108",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594337,
+      "bill": "AB17",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594342,
+      "bill": "SB283",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594343,
+      "bill": "SB283",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594715,
+      "bill": "SB106",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1594716,
+      "bill": "SB106",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597339,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597340,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597341,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597342,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597343,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597344,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597345,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597346,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597347,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597348,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597349,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597350,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597351,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597352,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597353,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597354,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597355,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597356,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597357,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597358,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597359,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597360,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597361,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597362,
+      "bill": "AB50",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1597552,
+      "bill": "SB45",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1601820,
+      "bill": "AB39",
+      "members": 95,
+      "matched": 86,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1601822,
+      "bill": "AB39",
+      "members": 95,
+      "matched": 86,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1601823,
+      "bill": "AB58",
+      "members": 95,
+      "matched": 86,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1601824,
+      "bill": "AB58",
+      "members": 94,
+      "matched": 85,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1601825,
+      "bill": "AB211",
+      "members": 94,
+      "matched": 86,
+      "unmatchedReviewed": 8,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1601828,
+      "bill": "AB308",
+      "members": 95,
+      "matched": 86,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1601836,
+      "bill": "AB388",
+      "members": 95,
+      "matched": 86,
+      "unmatchedReviewed": 9,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603682,
+      "bill": "AB450",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603683,
+      "bill": "AB455",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603684,
+      "bill": "AB280",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603685,
+      "bill": "AB453",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603686,
+      "bill": "AB453",
+      "members": 94,
+      "matched": 83,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603687,
+      "bill": "AB451",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603894,
+      "bill": "SB66",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603896,
+      "bill": "SB76",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603897,
+      "bill": "SB76",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603903,
+      "bill": "SB309",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603911,
+      "bill": "SB183",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603923,
+      "bill": "SB182",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603924,
+      "bill": "SB182",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603925,
+      "bill": "SB279",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1603927,
+      "bill": "SJR88",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609616,
+      "bill": "AB156",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609617,
+      "bill": "AB156",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609619,
+      "bill": "AB582",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609630,
+      "bill": "SB11",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609642,
+      "bill": "AB614",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609648,
+      "bill": "AB597",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609654,
+      "bill": "SB270",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609655,
+      "bill": "AB617",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609656,
+      "bill": "AB617",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609657,
+      "bill": "SB10",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609658,
+      "bill": "AB648",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609660,
+      "bill": "AB648",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609661,
+      "bill": "AB616",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609662,
+      "bill": "AB596",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609663,
+      "bill": "AB596",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609664,
+      "bill": "AB646",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609665,
+      "bill": "AB649",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609666,
+      "bill": "AB644",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609667,
+      "bill": "AB644",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609669,
+      "bill": "AB592",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609678,
+      "bill": "AB582",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609699,
+      "bill": "AB375",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609704,
+      "bill": "AB647",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609705,
+      "bill": "AB385",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609706,
+      "bill": "AB240",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609707,
+      "bill": "AB602",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609708,
+      "bill": "AB185",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1609712,
+      "bill": "AB613",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613548,
+      "bill": "AB443",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613560,
+      "bill": "AB182",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613561,
+      "bill": "AB182",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613562,
+      "bill": "AB182",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613563,
+      "bill": "AB182",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613566,
+      "bill": "AJR10",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613568,
+      "bill": "AB543",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613571,
+      "bill": "AJR102",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613577,
+      "bill": "AB789",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613583,
+      "bill": "AB380",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613588,
+      "bill": "AB788",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613595,
+      "bill": "SB146",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613613,
+      "bill": "AB281",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613616,
+      "bill": "AB787",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613618,
+      "bill": "SB391",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613619,
+      "bill": "SB529",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613622,
+      "bill": "AB677",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613776,
+      "bill": "AB219",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1613777,
+      "bill": "AB786",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614173,
+      "bill": "SB214",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614174,
+      "bill": "SB214",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614179,
+      "bill": "SB96",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614180,
+      "bill": "AB38",
+      "members": 94,
+      "matched": 83,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614181,
+      "bill": "AB38",
+      "members": 94,
+      "matched": 83,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614184,
+      "bill": "AB461",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614192,
+      "bill": "AB226",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614194,
+      "bill": "AB226",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614204,
+      "bill": "AB377",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614216,
+      "bill": "AB457",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614218,
+      "bill": "AB457",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614265,
+      "bill": "AB461",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614567,
+      "bill": "AB650",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614585,
+      "bill": "AB699",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614632,
+      "bill": "AB651",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614716,
+      "bill": "AB840",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614717,
+      "bill": "AB840",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614718,
+      "bill": "AB840",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614719,
+      "bill": "AB840",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614720,
+      "bill": "AB840",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614742,
+      "bill": "SB533",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614779,
+      "bill": "AB652",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614780,
+      "bill": "AB652",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614870,
+      "bill": "SB482",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1614876,
+      "bill": "AB700",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1615864,
+      "bill": "AB472",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1615869,
+      "bill": "AB415",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1615882,
+      "bill": "AB612",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1615883,
+      "bill": "AB320",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1615888,
+      "bill": "AB459",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1615923,
+      "bill": "SB7",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616039,
+      "bill": "AB315",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616040,
+      "bill": "AB315",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616128,
+      "bill": "AB663",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616130,
+      "bill": "AB662",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616183,
+      "bill": "AB472",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616184,
+      "bill": "AB472",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616185,
+      "bill": "AB472",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616265,
+      "bill": "AB672",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616267,
+      "bill": "AB672",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616268,
+      "bill": "AB674",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616270,
+      "bill": "AB668",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616271,
+      "bill": "AB612",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616396,
+      "bill": "AB673",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1616397,
+      "bill": "AB673",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1628260,
+      "bill": "AB566",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1628279,
+      "bill": "AB565",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1628292,
+      "bill": "AB974",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1628360,
+      "bill": "AB682",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1631773,
+      "bill": "AJR133",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632095,
+      "bill": "SB620",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632126,
+      "bill": "SB405",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632134,
+      "bill": "SB275",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632135,
+      "bill": "AB486",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632179,
+      "bill": "SB277",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632219,
+      "bill": "SB289",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632222,
+      "bill": "AB657",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632280,
+      "bill": "SB652",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632462,
+      "bill": "SB276",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632467,
+      "bill": "SB432",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632556,
+      "bill": "SB610",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632655,
+      "bill": "AB625",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632657,
+      "bill": "AB625",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632669,
+      "bill": "AB757",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632677,
+      "bill": "SB498",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632679,
+      "bill": "SB498",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632733,
+      "bill": "SB267",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632852,
+      "bill": "SB532",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632893,
+      "bill": "AB909",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1632980,
+      "bill": "AB1005",
+      "members": 97,
+      "matched": 87,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635377,
+      "bill": "AB411",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635378,
+      "bill": "AB411",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635462,
+      "bill": "AB373",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635509,
+      "bill": "AB713",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635570,
+      "bill": "AB737",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635573,
+      "bill": "AB629",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635574,
+      "bill": "AB685",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635585,
+      "bill": "SB699",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635587,
+      "bill": "AB768",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635598,
+      "bill": "SB485",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635610,
+      "bill": "SB376",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635686,
+      "bill": "AB446",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635690,
+      "bill": "AB619",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635774,
+      "bill": "SB782",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635805,
+      "bill": "SB673",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1635997,
+      "bill": "SB622",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1636038,
+      "bill": "AB793",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1636048,
+      "bill": "AB640",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1636176,
+      "bill": "AB683",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1636241,
+      "bill": "AB676",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1637709,
+      "bill": "SB576",
+      "members": 99,
+      "matched": 88,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1637977,
+      "bill": "AB911",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1637978,
+      "bill": "AB973",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1637982,
+      "bill": "SB810",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1637995,
+      "bill": "AB1001",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1638011,
+      "bill": "SB785",
+      "members": 98,
+      "matched": 87,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1638012,
+      "bill": "AB1002",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1638030,
+      "bill": "AB970",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1638902,
+      "bill": "SB264",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1638973,
+      "bill": "AB1034",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639023,
+      "bill": "SB291",
+      "members": 94,
+      "matched": 83,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639034,
+      "bill": "SB23",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639107,
+      "bill": "SB389",
+      "members": 94,
+      "matched": 83,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639112,
+      "bill": "SB431",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639120,
+      "bill": "SB501",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639148,
+      "bill": "SB176",
+      "members": 94,
+      "matched": 83,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639154,
+      "bill": "SB36",
+      "members": 91,
+      "matched": 81,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639489,
+      "bill": "AB241",
+      "members": 94,
+      "matched": 83,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639506,
+      "bill": "AB913",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639531,
+      "bill": "SJR116",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639532,
+      "bill": "SJR116",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639558,
+      "bill": "SB420",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639572,
+      "bill": "AB957",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639573,
+      "bill": "AB915",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639574,
+      "bill": "AB878",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639575,
+      "bill": "AB659",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639576,
+      "bill": "AB659",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639581,
+      "bill": "AB812",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639583,
+      "bill": "AB923",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639827,
+      "bill": "AB961",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639884,
+      "bill": "AB963",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639886,
+      "bill": "AB962",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639914,
+      "bill": "SB799",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639929,
+      "bill": "SB480",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1639945,
+      "bill": "AB997",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640046,
+      "bill": "AB996",
+      "members": 97,
+      "matched": 86,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640057,
+      "bill": "AB598",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640070,
+      "bill": "AB670",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640152,
+      "bill": "SB439",
+      "members": 96,
+      "matched": 85,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640190,
+      "bill": "AB1004",
+      "members": 95,
+      "matched": 84,
+      "unmatchedReviewed": 11,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640226,
+      "bill": "AB870",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640307,
+      "bill": "AB387",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640319,
+      "bill": "AB884",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640323,
+      "bill": "AB131",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640329,
+      "bill": "SB179",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640331,
+      "bill": "AB180",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640333,
+      "bill": "AB130",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640343,
+      "bill": "SB181",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640348,
+      "bill": "AB1027",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "house",
+      "roll": 1640354,
+      "bill": "AB839",
+      "members": 93,
+      "matched": 83,
+      "unmatchedReviewed": 10,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1471205,
+      "bill": "SJR1",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1471206,
+      "bill": "SJR2",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1519583,
+      "bill": "SB5",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1519793,
+      "bill": "AB1",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1519839,
+      "bill": "SB4",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1519840,
+      "bill": "SB4",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1519897,
+      "bill": "SB25",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1519913,
+      "bill": "SJR7",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1520266,
+      "bill": "AB94",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1520615,
+      "bill": "AB95",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1520622,
+      "bill": "AB96",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1553496,
+      "bill": "SB76",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1553523,
+      "bill": "SB23",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1554081,
+      "bill": "SB24",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1554444,
+      "bill": "SB66",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1554445,
+      "bill": "SB66",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1571915,
+      "bill": "SJR48",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1571920,
+      "bill": "SB125",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1571921,
+      "bill": "SB125",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1571928,
+      "bill": "SB33",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1571994,
+      "bill": "SB96",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1572078,
+      "bill": "SB56",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1572079,
+      "bill": "SB56",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1572080,
+      "bill": "SB56",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1572104,
+      "bill": "SB146",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1572137,
+      "bill": "AB73",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1572138,
+      "bill": "AB73",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592317,
+      "bill": "SB182",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592318,
+      "bill": "SB182",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592319,
+      "bill": "SB182",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592333,
+      "bill": "SB232",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592343,
+      "bill": "AB85",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592348,
+      "bill": "SB108",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592349,
+      "bill": "SB108",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592350,
+      "bill": "SB108",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592435,
+      "bill": "SB111",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592436,
+      "bill": "SB111",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592437,
+      "bill": "SB111",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592438,
+      "bill": "SB111",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592439,
+      "bill": "SB94",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592450,
+      "bill": "AB87",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592506,
+      "bill": "AB269",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592543,
+      "bill": "SB106",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592544,
+      "bill": "SB106",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592545,
+      "bill": "SB106",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592596,
+      "bill": "AB140",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592620,
+      "bill": "SB41",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592621,
+      "bill": "SB41",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592622,
+      "bill": "SB41",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592623,
+      "bill": "SB41",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592633,
+      "bill": "SB184",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592649,
+      "bill": "SB179",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592688,
+      "bill": "SB10",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592689,
+      "bill": "SB10",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592703,
+      "bill": "SB283",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592704,
+      "bill": "SB283",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592705,
+      "bill": "SB283",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592710,
+      "bill": "SB279",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1592711,
+      "bill": "SB278",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597302,
+      "bill": "SB45",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597328,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597329,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597330,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597331,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597332,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597333,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597334,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597335,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597336,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597337,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597338,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597364,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597365,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597366,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597367,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597368,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597369,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597370,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597371,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597372,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597373,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597374,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597375,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597376,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597377,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597378,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597379,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1597380,
+      "bill": "SB45",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603895,
+      "bill": "SB214",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603901,
+      "bill": "AB162",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603902,
+      "bill": "AB168",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603904,
+      "bill": "AB5",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603905,
+      "bill": "AB5",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603906,
+      "bill": "SJR88",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603907,
+      "bill": "SJR88",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603908,
+      "bill": "SJR88",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603909,
+      "bill": "AB146",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603910,
+      "bill": "AB39",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603912,
+      "bill": "AB35",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603913,
+      "bill": "AB35",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603915,
+      "bill": "AB169",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603916,
+      "bill": "AB2",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603920,
+      "bill": "SB337",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603921,
+      "bill": "SB337",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1603922,
+      "bill": "SB264",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609426,
+      "bill": "SB210",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609436,
+      "bill": "SB11",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609438,
+      "bill": "SB16",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609457,
+      "bill": "SB498",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609458,
+      "bill": "SB432",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609464,
+      "bill": "SB389",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609468,
+      "bill": "SB553",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609469,
+      "bill": "AB211",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609470,
+      "bill": "SB439",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609471,
+      "bill": "AB280",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609472,
+      "bill": "SB482",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609473,
+      "bill": "SB291",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609474,
+      "bill": "SB529",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609475,
+      "bill": "SB533",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609479,
+      "bill": "AB89",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609480,
+      "bill": "SB532",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609481,
+      "bill": "AB165",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609484,
+      "bill": "AB308",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609524,
+      "bill": "AB265",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609525,
+      "bill": "AB450",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609530,
+      "bill": "SB210",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609538,
+      "bill": "SB376",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609541,
+      "bill": "SB394",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1609543,
+      "bill": "AB366",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615038,
+      "bill": "SB371",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615039,
+      "bill": "SB371",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615042,
+      "bill": "SB69",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615056,
+      "bill": "SB36",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615057,
+      "bill": "SB36",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615064,
+      "bill": "SB610",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615082,
+      "bill": "AJR10",
+      "members": 32,
+      "matched": 10,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615095,
+      "bill": "SB7",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615096,
+      "bill": "SB7",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615131,
+      "bill": "AB167",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615145,
+      "bill": "AB385",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615153,
+      "bill": "SB467",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615154,
+      "bill": "SB467",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615157,
+      "bill": "AJR102",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615159,
+      "bill": "AJR102",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615172,
+      "bill": "AB788",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615201,
+      "bill": "SJR116",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615222,
+      "bill": "SB323",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615224,
+      "bill": "SJR121",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615247,
+      "bill": "AB789",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615252,
+      "bill": "AB543",
+      "members": 32,
+      "matched": 11,
+      "unmatchedReviewed": 21,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615255,
+      "bill": "AB786",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615257,
+      "bill": "SB181",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615262,
+      "bill": "SB417",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615297,
+      "bill": "AB602",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615305,
+      "bill": "AB787",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615416,
+      "bill": "AB219",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615444,
+      "bill": "AB457",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1615445,
+      "bill": "AB457",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1629702,
+      "bill": "SB384",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1629708,
+      "bill": "SB748",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1629722,
+      "bill": "SB289",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1629776,
+      "bill": "SB176",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1629807,
+      "bill": "SB622",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1629808,
+      "bill": "SB622",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1629809,
+      "bill": "SB276",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630075,
+      "bill": "SB431",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630221,
+      "bill": "SB277",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630282,
+      "bill": "SB420",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630296,
+      "bill": "AB100",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630339,
+      "bill": "AB102",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630340,
+      "bill": "SB576",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630349,
+      "bill": "AB651",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630350,
+      "bill": "AB651",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630414,
+      "bill": "AB103",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630472,
+      "bill": "SB665",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630494,
+      "bill": "SB275",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630501,
+      "bill": "AB223",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630502,
+      "bill": "AB223",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630600,
+      "bill": "SB501",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630625,
+      "bill": "SJR89",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630631,
+      "bill": "AB104",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630648,
+      "bill": "AB596",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630649,
+      "bill": "AB596",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630674,
+      "bill": "SB480",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630684,
+      "bill": "AB320",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630805,
+      "bill": "AB443",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630809,
+      "bill": "AB699",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630864,
+      "bill": "AB614",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1630865,
+      "bill": "AB614",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1636743,
+      "bill": "AB549",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1636783,
+      "bill": "SB522",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1636786,
+      "bill": "SB287",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1636799,
+      "bill": "AB737",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1636813,
+      "bill": "SB799",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1636963,
+      "bill": "AB674",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637222,
+      "bill": "AB415",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637223,
+      "bill": "AB415",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637246,
+      "bill": "AJR133",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637263,
+      "bill": "AB672",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637480,
+      "bill": "AB453",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637481,
+      "bill": "AB453",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637505,
+      "bill": "AB663",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637506,
+      "bill": "AB663",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637587,
+      "bill": "SB825",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637600,
+      "bill": "AB673",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637675,
+      "bill": "SB444",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1637702,
+      "bill": "SB799",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664055,
+      "bill": "SB485",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664056,
+      "bill": "SB485",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664105,
+      "bill": "AB373",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664112,
+      "bill": "SB622",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664114,
+      "bill": "AB375",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664169,
+      "bill": "AB619",
+      "members": 32,
+      "matched": 10,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664184,
+      "bill": "AB461",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664187,
+      "bill": "AB461",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664195,
+      "bill": "AB24",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664219,
+      "bill": "AB241",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664227,
+      "bill": "AB670",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664275,
+      "bill": "AB598",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664380,
+      "bill": "SB798",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664398,
+      "bill": "AB460",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664407,
+      "bill": "AB387",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664409,
+      "bill": "SB376",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664411,
+      "bill": "AB454",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664413,
+      "bill": "AB601",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664414,
+      "bill": "AB595",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664416,
+      "bill": "AB968",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664436,
+      "bill": "AB659",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664466,
+      "bill": "AB1027",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664467,
+      "bill": "AB130",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664476,
+      "bill": "SB179",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664483,
+      "bill": "AB700",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664488,
+      "bill": "AB676",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664491,
+      "bill": "AB913",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664502,
+      "bill": "AB182",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664503,
+      "bill": "AB182",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664511,
+      "bill": "AB650",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664512,
+      "bill": "AB759",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664513,
+      "bill": "SJR116",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664522,
+      "bill": "SB480",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664566,
+      "bill": "AB911",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664571,
+      "bill": "SB248",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664622,
+      "bill": "SB176",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664624,
+      "bill": "SB799",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664628,
+      "bill": "SJR142",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664633,
+      "bill": "SB225",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664639,
+      "bill": "AB757",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664654,
+      "bill": "AB248",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664655,
+      "bill": "AB248",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664718,
+      "bill": "AB180",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664719,
+      "bill": "AB180",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664774,
+      "bill": "AB685",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664936,
+      "bill": "AB604",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664958,
+      "bill": "AB657",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1664970,
+      "bill": "AB1034",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1665034,
+      "bill": "AB884",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1665096,
+      "bill": "AB957",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    },
+    {
+      "chamber": "senate",
+      "roll": 1665132,
+      "bill": "AB1032",
+      "members": 33,
+      "matched": 11,
+      "unmatchedReviewed": 22,
+      "noCrosswalk": 0
+    }
+  ]
+}

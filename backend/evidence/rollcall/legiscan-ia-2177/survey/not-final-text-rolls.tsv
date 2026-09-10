@@ -1,0 +1,51 @@
+bill	chamber	roll	date	yea	nay	text_changed_after_the_vote
+HF189	H	1521992	2025-03-19	63	33	Amendment S-3187 to S-3171 filed, adopted. S.J. 1022. ; Amendment S-3171 adopted, as amended. S.J. 1023.
+HF189	H	1572714	2025-05-14	59	26	Amendment S-3187 to S-3171 filed, adopted. S.J. 1022. ; Amendment S-3171 adopted, as amended. S.J. 1023.
+HF2254	H	1641583	2026-02-23	70	19	Amendment S-5141 adopted. S.J. 738.
+HF2501	H	1645897	2026-02-25	67	25	Amendment S-5051 filed, adopted. S.J. 447. ; Amendment H-8289 to Senate amendment H-8131 adopted. H.J. 83
+HF2523	H	1645832	2026-02-25	70	21	Amendment S-5121 adopted. S.J. 728. ; Amendment H-8352 to Senate amendment H-8303 adopted. H.J. 89
+HF2542	H	1693496	2026-05-02	68	18	Amendment S-5252 filed, adopted. S.J. 972.
+HF2542	H	1693498	2026-05-02	66	20	Amendment S-5252 filed, adopted. S.J. 972.
+HF2542	H	1653249	2026-03-04	68	23	Amendment S-5252 filed, adopted. S.J. 972. ; Amendment H-8470, yeas 68, nays 18, adopted. H.J. 1123.
+HF2670	H	1659575	2026-03-10	59	33	Amendment S-5113 adopted. S.J. 781.
+HF2676	H	1651608	2026-03-03	65	30	Amendment S-5173 filed, adopted. S.J. 758. ; Amendment H-8380 to amendment H-8335 filed, adopted. H.J. 94
+HF2676	S	1678672	2026-04-08	30	15	Amendment H-8380 to amendment H-8335 filed, adopted. H.J. 94
+HF2694	H	1658965	2026-03-10	67	23	Amendment S-5234 to S-5123 filed, adopted. S.J. 922. ; Amendment S-5123 adopted, as amended. S.J. 923. ; Amendment S-5230 filed, adopted. S.J. 923.
+HF2769	S	1693946	2026-05-02	29	17	Amendment H-8449, yeas 59, nays 26, adopted. H.J. 1104.
+HF2770	S	1694246	2026-05-02	29	17	Amendment H-8451 to amendment H-8414, yeas 82, nays 3, adopt ; Amendment H-8414 adopted, as amended. H.J. 1109.
+HF2771	H	1693502	2026-05-01	65	21	Amendment S-5254 filed, adopted. S.J. 981.
+HF2771	H	1693504	2026-05-02	66	18	Amendment S-5254 filed, adopted. S.J. 981.
+HF2772	S	1693373	2026-04-28	30	16	Amendment H-8415 filed, adopted. H.J. 1023.
+HF2783	S	1694075	2026-04-30	27	15	Amendment H-8445 to amendment H-8439 filed, adopted. H.J. 10 ; Amendment H-8439, yeas 59, nays 25, adopted, as amended. H.J
+HF516	H	1515933	2025-03-12	67	28	Amendment S-3097 to S-3069 filed, adopted. S.J. 778. ; Amendment S-3069 adopted, as amended. S.J. 778.
+HF571	H	1528979	2025-03-26	64	32	Amendment S-5078 filed, adopted. S.J. 496.
+HF711	H	1519045	2025-03-17	67	29	Amendment S-3143 adopted. S.J. 964. ; Amendment H-1352 to Senate amendment H-1325 filed, adopted. 
+HF711	S	1570027	2025-05-12	30	20	Amendment H-1352 to Senate amendment H-1325 filed, adopted. 
+HF805	H	1523260	2025-03-20	70	19	Amendment S-3062 adopted. S.J. 751.
+HF856	H	1520300	2025-03-18	61	37	Amendment S-3073 adopted. S.J. 950. ; Amendment S-3149 filed, adopted. S.J. 950.
+SF167	H	1489925	2025-02-13	58	35	Amendment S-3067 to S-3004 filed, adopted. S.J. 699.
+SF167	S	1487146	2025-02-11	29	18	Amendment H-1010 adopted. H.J. 325. ; Amendment S-3067 to S-3004 filed, adopted. S.J. 699.
+SF175	S	1492468	2025-02-18	31	13	Amendment H-1237 adopted. H.J. 979.
+SF2039	S	1641592	2026-02-23	36	11	Amendment H-8286 adopted. H.J. 916.
+SF2168	S	1655453	2026-03-05	28	14	Amendment H-8363 to amendment H-8344 adopted. H.J. 913. ; Amendment S-5233 adopted. S.J. 942.
+SF2201	S	1629268	2026-02-10	28	20	Amendment H-8012 to committee amendment H-8004 filed, adopte ; Amendment H-8004 adopted, as amended. H.J. 353.
+SF2218	S	1694101	2026-04-28	37	10	Conference committee report adopted. H.J. 1037.
+SF2231	S	1652149	2026-03-03	30	14	Amendment H-8315 to amendment H-8268 adopted. H.J. 859. ; Amendment H-8268 adopted, as amended. H.J. 860. ; Amendment H-8316 adopted. H.J. 861.
+SF2378	S	1650013	2026-03-02	35	9	Amendment H-8296 adopted. H.J. 844.
+SF2399	H	1653290	2026-03-04	74	19	Amendment S-5161 to S-5068 filed, adopted. S.J. 733.
+SF2422	H	1693461	2026-04-30	60	24	Amendment S-5236 to S-5206 filed, adopted. S.J. 934.
+SF2422	H	1686971	2026-04-21	65	28	Amendment S-5236 to S-5206 filed, adopted. S.J. 934.
+SF2422	S	1645220	2026-02-25	30	17	Amendment H-8391 to amendment H-8384 filed, adopted. H.J. 97 ; Amendment H-8384 adopted, as amended. H.J. 971. ; Amendment S-5236 to S-5206 filed, adopted. S.J. 934.
+SF2426	H	1673985	2026-03-31	68	24	Amendment S-5156 adopted. S.J. 756.
+SF2472	H	1693405	2026-04-22	64	23	Amendment S-5260 to S-5210 filed, adopted. S.J. 1016.
+SF2472	H	1693407	2026-05-02	62	22	Amendment S-5260 to S-5210 filed, adopted. S.J. 1016.
+SF2484	H	1694093	2026-05-02	59	26	Amendment S-5258 filed, adopted. S.J. 997.
+SF2490	S	1684866	2026-04-16	32	15	Amendment H-8476 filed, adopted. H.J. 1126. ; Amendment H-8474 filed, adopted. H.J. 1126. ; Amendment H-8475 filed, adopted. H.J. 1126.
+SF2490	S	1693441	2026-05-02	35	11	Amendment H-8476 filed, adopted. H.J. 1126. ; Amendment H-8474 filed, adopted. H.J. 1126. ; Amendment H-8475 filed, adopted. H.J. 1126.
+SF378	S	1519666	2025-03-18	36	12	Amendment H-8245 adopted. H.J. 795.
+SF473	S	1527025	2025-03-25	35	14	Amendment H-8353 adopted. H.J. 937.
+SF512	S	1509562	2025-03-10	33	14	Amendment H-8356 filed, adopted. H.J. 891.
+SF607	H	1572558	2025-05-14	60	27	Amendment S-3181 filed, adopted. S.J. 1006.
+SF615	H	1528905	2025-03-26	61	35	Amendment S-3168 to S-3059 filed, adopted. S.J. 988.
+SF615	S	1527065	2025-03-25	33	15	Amendment H-1198 adopted. H.J. 846. ; Amendment S-3168 to S-3059 filed, adopted. S.J. 988.
+SF645	H	1572750	2025-05-13	61	30	Amendment S-3151 adopted. S.J. 979.
