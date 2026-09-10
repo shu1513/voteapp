@@ -1046,6 +1046,93 @@ describe("West Virginia's measured desc vocabulary", () => {
   });
 });
 
+describe("Washington's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.WA!;
+  const wa = (desc: string, chamber: "house" | "senate" = "house", total?: number) =>
+    classifyLegiscanRollCall({
+      desc,
+      total: total ?? (chamber === "house" ? 98 : 49),
+      chamber,
+      billType: "B",
+      config,
+    });
+
+  it("keeps every floor spelling, because they all say final passage", () => {
+    expect(wa("House 3rd Reading & Final Passage")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(wa("Senate 3rd Reading & Final Passage", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // A chamber passing its OWN amended bill is passage, not concurrence.
+    expect(wa("Senate 3rd Reading & Final Passage as Amended by the Senate", "senate")).toMatchObject({
+      questionClass: "passage",
+    });
+    expect(wa("House Final Passage as Amended by the House")).toMatchObject({ questionClass: "passage" });
+    expect(wa("House Final Passage on Reconsideration")).toMatchObject({ questionClass: "passage" });
+  });
+
+  it("calls a vote on the other chamber's amendments a concurrence", () => {
+    expect(wa("Senate Final Passage as Amended by the House", "senate")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    expect(wa("House Final Passage as Amended by the Senate")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    // The Senate receding from its own amendments.
+    expect(wa("Senate Final Passage without Senate Amendments", "senate")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    // Capitalisation varies in the feed ("As Amended" appears once); patterns
+    // are tested against the lowercased desc, so it must not matter.
+    expect(wa("Senate Final Passage As Amended by the House", "senate")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    // The anchor is load-bearing: the Senate amending its own bill must not be
+    // read as the Senate concurring.
+    expect(wa("Senate 3rd Reading & Final Passage as Amended by the Senate", "senate")).toMatchObject({
+      questionClass: "passage",
+    });
+  });
+
+  it("keeps both chambers' conference report spellings, with and without the article", () => {
+    expect(wa("House Final Passage as Recommended by the Conference Committee")).toMatchObject({
+      questionClass: "conference_report",
+    });
+    expect(wa("Senate Final Passage as Recommended by Conference Committee", "senate")).toMatchObject({
+      questionClass: "conference_report",
+    });
+  });
+
+  it("excludes the motion to BRING a measure to final passage", () => {
+    // The one description in the session that says "final passage" without
+    // being a vote on the bill. It is why the exclusion must run before the
+    // general passage pattern. It is also the session's only roll whose tally
+    // disagrees with Washington's own bill history.
+    expect(wa("House Motion to Place Measure on Final Passage as Amended by the House")).toMatchObject({
+      isFloorVote: false,
+      questionClass: null,
+      reason: "excluded_question",
+    });
+  });
+
+  it("rejects committee votes on their tally, since no committee desc says final passage", () => {
+    expect(wa("Senate Committee on Ways & Means: do pass", "senate", 24)).toMatchObject({
+      isFloorVote: false,
+      questionClass: null,
+    });
+    expect(wa("House Committee on Appropriations: 2nd substitute bill be substituted, do pass", "house", 31)).toMatchObject(
+      { isFloorVote: false, questionClass: null }
+    );
+    // The one committee roll that does not use the "Committee on" wording.
+    expect(wa("HCW - Majority; 1st substitute bill be substituted, do pass.", "house", 17)).toMatchObject({
+      isFloorVote: false,
+    });
+  });
+});
+
 describe("Alabama's 2023 desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS["AL-2014"]!;
   const al23 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
@@ -1523,6 +1610,7 @@ describe("getLegiscanStateConfig", () => {
       "SD",
       "SD-2231",
       "SD-2222",
+      "WA",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1561,6 +1649,7 @@ describe("getLegiscanStateConfig", () => {
       "WV",
       "NE",
       "SD",
+      "WA",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
