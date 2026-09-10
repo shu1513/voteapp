@@ -169,10 +169,13 @@ to `housing_affordability`, yea against, because on that axis the direction is
 plain.
 
 **House Bill 1084 was the one measure carried over undecided from batch 04,** and
-reading the marked text settled it. It widens the group whose home address, phone
-and personal email are withheld from the public voter file, from judges alone to
-statewide, legislative and federal officeholders, current and retired judges, and
-law enforcement officers. City and county stay public. `data_privacy`, yea for.
+reading the marked text settled it. It widens what is withheld from the public
+voter file, from judges' home addresses alone to the home address, phone and
+personal email of current and retired state and federal judges and of law
+enforcement officers. The introduced bill also covered statewide, legislative and
+federal officeholders; House Judiciary struck them before the floor vote, and the
+enrolled act does not have them. City and county stay public. `data_privacy`,
+yea for.
 
 **House Bill 1093 was dropped for the shape that is easiest to miss.** It moves
 school bond votes onto the primary or general ballot, which puts them before more
@@ -225,3 +228,39 @@ narrowed it to AI audio and video.
 House Bill 1238 does not reach representatives accredited or regulated by the
 United States Department of Veterans Affairs (section 6); both chambers'
 descriptions now carry that exception.
+
+## Review round, batch 05
+
+Four review findings on pull request #1277, all checked against the enrolled
+act and the marked versions on sdlegislature.gov, and all real. A fifth error
+turned up in the same reading. Corrected in the judgments, re-judged, and
+re-imported on the same record ids; counts unchanged at 63 roll calls and 2,130
+records. The ledger is `legiscan-sd-2231/batch-03/import-review-fixes-report.json`.
+
+House Bill 1084 does not cover statewide, legislative or federal officeholders.
+The introduced bill listed them; House Judiciary struck them before the floor
+vote, so the version the House passed and the enrolled act protect only current
+and retired state and federal judges and law enforcement officers. The
+description and the batch 05 note both said officeholders. Both now match the act.
+
+Senate Bill 106 has no inflation index. The introduced bill raised the set-aside
+and the reserve ceiling by the index factor each year from July 2027; House
+Appropriations removed both, and the enrolled act is a flat $5 million set-aside
+with the $5.5 million ceiling. The fifth error was in the next sentence: the
+description said the act drops the oversight board. It does not. "As provided in
+§ 13-37-60" is the Extraordinary Cost Oversight Board statute, which still has
+the board review requests and the secretary approve them.
+
+House Bill 1064 is conditional. Section 2 makes the whole act effective only on
+the date the attorney general certifies that federal law allows the sales, by
+statute or a final court ruling. The description had the permission as operative.
+It also had the sale venues wrong: the act lists the seller's residence, a
+farmers market, a roadside stand or another temporary venue, and requires a label
+saying the meat is uninspected and not for resale.
+
+House Bill 1130 adds one use, not five. Transportation contracts and mileage (up
+to fifteen percent), textbooks, instructional software and warranties on capital
+assets were already in § 13-16-6 as separate paragraphs; the act folds them into
+a numbered list. The only new item is premiums on a property insurance policy the
+district holds. `public_education_quality`, yea for, stands on that narrower
+change.
