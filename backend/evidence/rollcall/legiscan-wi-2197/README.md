@@ -62,6 +62,18 @@ Counting only real bills, which are the only measures that can become law:
 The vetoed group being five times the size of the enacted one is Wisconsin's
 divided government showing up in the data. The operator chose to work both scopes.
 
+## Batches
+
+| batch | scope | measures | rolls | records |
+| --- | --- | --- | --- | --- |
+| batch-01 | the whole enacted pool | 15 kept of 24 | 16 | 706 |
+| batch-02 | vetoed pool, education strand | 9 kept of 13 | 15 | 839 |
+
+The vetoed pool holds 74 measures on 122 closely divided rolls. Batch-02 read 13
+of them. The remaining strands, for later batches: crime and courts; immigration
+and foreign adversaries; health, gender and civil rights; labor, unemployment
+insurance and taxes; and elections, environment and state government operations.
+
 Nine of the passage rolls are the first chamber accepting the other chamber's
 amendment (`Senate: Assembly Substitute Amendment 7 concurred in`). When the
 second chamber `concurred in as amended`, the bill goes back and the first chamber
