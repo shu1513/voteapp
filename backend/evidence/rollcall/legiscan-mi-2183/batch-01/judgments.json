@@ -26,8 +26,8 @@
    "measure_id": "HB 4350",
    "vote_date": "2026-07-03",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 4350. It lets a person put out feed for wild birds and other wildlife even where the Natural Resources Commission has ordered a stop to deer and elk feeding. The feed must be within 300 feet of a home, and there must be less than two gallons of it. Any feeding order must still follow federal rules on stopping the spread of disease. The House agreed to the Senate version 76-32 and it became law.",
-   "nay_description": "Voted against House Bill 4350. It lets a person put out feed for wild birds and other wildlife even where the Natural Resources Commission has ordered a stop to deer and elk feeding. The feed must be within 300 feet of a home, and there must be less than two gallons of it. Any feeding order must still follow federal rules on stopping the spread of disease. The House agreed to the Senate version 76-32 and it became law.",
+   "yea_description": "Voted for House Bill 4350. It lets a person put out feed for wild birds and other wildlife even where the Natural Resources Commission has ordered a stop to deer and elk feeding. The feed must be within 300 feet of a home, and there can be no more than two gallons in total, counting feed already on the ground. Any feeding order must still follow federal rules on stopping the spread of disease. The House agreed to the Senate version 76-32 and it became law.",
+   "nay_description": "Voted against House Bill 4350. It lets a person put out feed for wild birds and other wildlife even where the Natural Resources Commission has ordered a stop to deer and elk feeding. The feed must be within 300 feet of a home, and there can be no more than two gallons in total, counting feed already on the ground. Any feeding order must still follow federal rules on stopping the spread of disease. The House agreed to the Senate version 76-32 and it became law.",
    "labels": [
     {
      "slug": "environment_and_public_health",
@@ -116,8 +116,8 @@
    "measure_id": "SB 293",
    "vote_date": "2026-07-03",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 293. It changes what happens to an animal taken away in a case of animal neglect or cruelty. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
-   "nay_description": "Voted against Senate Bill 293. It changes what happens to an animal taken away in a case of animal neglect or cruelty. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "yea_description": "Voted for Senate Bill 293. It changes what happens to an animal taken away in a case of animal neglect or cruelty. The agency holding the animal can now require the owner to put up a deposit for its care within 14 days or lose the animal for good, even before any conviction. The owner can ask a judge to review the deposit. A prosecutor can still ask a court to take the animal in a separate civil case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "nay_description": "Voted against Senate Bill 293. It changes what happens to an animal taken away in a case of animal neglect or cruelty. The agency holding the animal can now require the owner to put up a deposit for its care within 14 days or lose the animal for good, even before any conviction. The owner can ask a judge to review the deposit. A prosecutor can still ask a court to take the animal in a separate civil case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
@@ -134,8 +134,8 @@
    "measure_id": "SB 294",
    "vote_date": "2026-07-03",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 294. It changes what happens to an animal taken away in a case of torturing or killing an animal. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
-   "nay_description": "Voted against Senate Bill 294. It changes what happens to an animal taken away in a case of torturing or killing an animal. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "yea_description": "Voted for Senate Bill 294. It changes what happens to an animal taken away in a case of torturing or killing an animal. The agency holding the animal can now require the owner to put up a deposit for its care within 14 days or lose the animal for good, even before any conviction. The owner can ask a judge to review the deposit. A prosecutor can still ask a court to take the animal in a separate civil case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "nay_description": "Voted against Senate Bill 294. It changes what happens to an animal taken away in a case of torturing or killing an animal. The agency holding the animal can now require the owner to put up a deposit for its care within 14 days or lose the animal for good, even before any conviction. The owner can ask a judge to review the deposit. A prosecutor can still ask a court to take the animal in a separate civil case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",

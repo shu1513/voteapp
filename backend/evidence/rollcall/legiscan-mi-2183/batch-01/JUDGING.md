@@ -43,8 +43,17 @@ the Senate vote imported here, so those records are not duplicates.
 
 ### HB 4350 — environment_and_public_health, a yes vote is against
 The act lets a person feed wild birds and wildlife within 300 feet of a home,
-in quantities under two gallons, notwithstanding the Natural Resources
-Commission's order stopping deer and elk feeding.
+with no more than two gallons in total counting feed already present,
+notwithstanding the Natural Resources Commission's order stopping deer and elk
+feeding.
+
+**The threshold comes from the enacted text, not the analysis.** The House
+Fiscal Agency summary says "less than two gallons". Enacted section
+40111a(1)(b) says "not more than 2 gallons", and adds the feed "previously
+placed ... and still present" to the count. Exactly two gallons is allowed.
+The description follows the statute. Lesson for later batches: the Fiscal
+Agency summary is the guide to what changed, but every number and threshold
+must be checked against the enacted section.
 
 The direction rests on what the Commission's order is for. The House Fiscal
 Agency analysis quotes the Governor's 2022 veto of the nearly identical
@@ -101,21 +110,32 @@ Effective assistance of counsel is a right, so widening who receives it is
 ### SB 293 and SB 294 — public_safety_and_crime_control, a yes vote is for
 The two acts make the same change to two sections of the Michigan Penal Code:
 section 50, animal neglect or cruelty, and section 50b, torturing or killing an
-animal. A prosecutor no longer files a separate civil action to have a seized
-animal forfeited; the question is settled in the criminal case, on the model
-already used for animal fighting. A person convicted can be ordered to pay
-restitution covering the investigation and prosecution and the animal's seizure,
-care, housing, veterinary treatment and disposition.
+animal. Under the old law a seized animal could be forfeited before trial only
+if the prosecutor won a separate civil action. The acts add the notice-and-bond
+process already used for animal fighting (section 49): the animal control
+agency serves notice, and the owner has 14 days to post a security deposit
+covering the animal's care or request a hearing; missing that deadline, or
+failing to post after a hearing, forfeits the animal without any conviction.
+Acquittal returns the animal and any unused deposit. The separate civil action
+is kept as an alternative route when the notice process is not used. A person
+convicted can be ordered to pay restitution covering the investigation and
+prosecution and the animal's seizure, care, housing, veterinary treatment and
+disposition.
+
+An earlier draft of the descriptions said the forfeiture question is "now
+settled in the criminal case". That was wrong: the main new path is forfeiture
+by deadline before the criminal case ends. The descriptions now say so.
 
 Each act is described in its own terms, naming its own offense, so a reader is
 not told the two records are about the same thing.
 
-**The countervailing reading was considered.** Removing a separate civil
-proceeding takes away a step in which an owner could contest forfeiture before
-conviction. It is not enough to make the direction dishonest, because the
-replacement process is the one the Penal Code already applies to animal
-fighting, and the substantive question of whether the animal is forfeited is
-still decided in court.
+**The countervailing reading was considered.** The bond-or-forfeit process
+lets an owner lose an animal on a missed deadline, before any finding of guilt.
+That is a real cost to owners. It does not flip the direction, because the
+process is the one the Penal Code already applies to animal fighting, the owner
+keeps the right to a hearing before a judge, and an acquitted owner gets the
+animal back. The direction stays for, and the descriptions state the
+before-conviction forfeiture plainly so a reader can weigh it.
 
 ## Checks run before importing
 
