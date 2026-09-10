@@ -217,20 +217,24 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
 
   return (
     <>
-      <section className="rounded-xl border border-line bg-white p-4">
+      <section className="rounded-xl border border-member-line bg-member-ivory px-6 py-5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-member-bronze">Honorary member</p>
         {status === "active" ? (
           // What the money funds (things the site does today) — never member
           // perks, which the Terms limit to the newsletter.
           <>
-            <p className="text-sm text-ink">Thank you. Your membership is bringing:</p>
-            <ul className="mt-1 list-disc pl-5 text-sm text-ink">
-              <li>Deeper investigation of candidates&apos; actions</li>
-              <li>In-depth analysis of the effects of ballot measures</li>
-              <li>Ongoing research on the issues that could affect you</li>
+            <p className="mt-2 text-lg font-medium text-ink">Thank you.</p>
+            <p className="mt-1 text-sm text-ink">Your membership is bringing:</p>
+            <ul className="mt-2 divide-y divide-member-line text-sm text-ink">
+              <li className="py-1.5">Deeper investigation of candidates&apos; actions</li>
+              <li className="py-1.5">In-depth analysis of the effects of ballot measures</li>
+              <li className="py-1.5">Ongoing research on the issues that could affect you</li>
             </ul>
           </>
         ) : null}
-        <p className="mt-2 font-medium text-ink">{planLine(membership)}</p>
+        <p className="mt-4 inline-block rounded-full border border-member-line bg-white px-3 py-1 text-sm font-medium text-ink">
+          {planLine(membership)}
+        </p>
         {status === "incomplete" ? (
           // Cards-only Checkout confirms the payment before the session
           // completes, so `incomplete` is the seconds-wide gap between the

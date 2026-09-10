@@ -124,7 +124,7 @@ describe("MembershipPage", () => {
     renderMember(ACTIVE);
     renderPage();
 
-    expect(await screen.findByText("Thank you. Your membership is bringing:")).toBeInTheDocument();
+    expect(await screen.findByText("Your membership is bringing:")).toBeInTheDocument();
     expect(screen.getByText("Deeper investigation of candidates' actions")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "My honorary membership" })).toBeInTheDocument();
     expect(screen.getByText(`$10.00 per month · renews ${END_TEXT}`)).toBeInTheDocument();

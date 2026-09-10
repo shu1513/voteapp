@@ -89,6 +89,12 @@
   --color-nudge: #e8f5e9;
   --color-nudge-line: #a5d6a7;
   --color-nudge-deep: #166534;
+  /* Honorary-member card (/me/membership): ivory paper with a bronze mark —
+     quiet, warm, and unlike any other card on the site. Bronze on ivory is
+     4.9:1, AA for the small caps label. */
+  --color-member-ivory: #faf7f2;
+  --color-member-line: #e6dfd2;
+  --color-member-bronze: #8a6d3b;
 }
 
 /* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)
