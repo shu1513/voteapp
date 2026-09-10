@@ -1,0 +1,588 @@
+{
+  "mode": "apply",
+  "counts": {
+    "tagged": 58
+  },
+  "outcomes": [
+    {
+      "recordId": "ff3055af-f493-4043-bf41-48174bcdaa09",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/Governor",
+      "description": "Co-introduced the TAKE IT DOWN Act, which became law and created federal protections against nonconsensual intimate images and sexual deepfakes.",
+      "reason": "Co-introduced the TAKE IT DOWN Act, a federal rule against sexual deepfakes.",
+      "note": "Amy Klobuchar"
+    },
+    {
+      "recordId": "ba42d7ff-c588-4622-9405-71d5d6160aec",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Nardozzi voted for SB 1336, prohibiting the sharing of artificial-intelligence deepfake pornography and establishing it as a felony.",
+      "reason": "Voted for a felony ban on sharing AI deepfake pornography.",
+      "note": "Deborah Nardozzi"
+    },
+    {
+      "recordId": "024bb179-8c41-49b1-a50e-397c88721fa9",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Crowe sponsored Senate Bill 1580 prohibiting AI systems from advertising or representing themselves as qualified mental-health professionals; it became law.",
+      "reason": "Sponsored a law barring AI systems from posing as mental-health professionals.",
+      "note": "Dewey \"Rusty\" Crowe"
+    },
+    {
+      "recordId": "8d84c8ec-bcaf-4738-85f5-65add9b3c204",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/United States Senator",
+      "description": "Released an AI Accountability Agenda naming bills he introduced to limit how employers use automated systems to hire and fire workers, curb workplace surveillance, and bar targeted advertising to children. Other bills in it would block discriminatory algorithms, guarantee a human override of AI medical decisions, and require reporting on data centers' environmental effects.",
+      "reason": "Released an agenda of his own bills limiting employers' automated hiring and firing systems.",
+      "note": "Ed Markey"
+    },
+    {
+      "recordId": "70c4ed93-2a95-4579-b013-2f8ddc9bf98c",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/Attorney General",
+      "description": "On July 2, 2025, Rhode Island enacted Jason Knight's H 5046, expanding the state's revenge-porn law to cover sexually explicit images created or altered by digital devices, including deepfakes.",
+      "reason": "Sponsored the law extending revenge-porn protections to deepfakes.",
+      "note": "Jason Knight"
+    },
+    {
+      "recordId": "d3d57b38-a9b4-490e-9d01-7cb856facef5",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Filed a bill proposing fines up to $10,000 for spreading deepfakes of candidates - fake audio or video made to look real - within 90 days of an election, with exceptions for news, satire, and parody (Senate Bill 2321).",
+      "reason": "Filed a bill fining candidate deepfakes before an election.",
+      "note": "Jeff Yarbro"
+    },
+    {
+      "recordId": "4f6e2428-3fff-4dd5-b5f0-4e215d122790",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Jeff Yarbro co-sponsored Senate Bill 1624, whose companion became Public Chapter 625 on March 30, 2026, requiring disclaimers for political advertisements containing deceptive deepfake elements.",
+      "reason": "Co-sponsored the law requiring disclaimers on deceptive deepfake political ads.",
+      "note": "Jeff Yarbro"
+    },
+    {
+      "recordId": "00bf82fb-0ac1-45e6-8c0e-fb279135fc31",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Filed Senate Bill 1261 in February 2025, proposing limits on how health insurers use artificial intelligence to review claims. The bill proposed requiring a licensed doctor, not software, to decide whether care is medically necessary, and requiring insurers to disclose and review their AI tools.",
+      "reason": "Filed a bill limiting how health insurers use AI to review claims.",
+      "note": "Jeff Yarbro"
+    },
+    {
+      "recordId": "fc0d9620-cf3e-47a0-a60d-fb366ab76a8f",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/United States Senator",
+      "description": "Gave a Senate floor speech rolling out six artificial-intelligence bills. They included required security testing of advanced AI models, safeguards to stop AI from making child sexual abuse images, disclosure of the power and water data centers use, and money to retrain workers.",
+      "reason": "Rolled out six AI bills including required security testing of advanced models.",
+      "note": "Mark Warner"
+    },
+    {
+      "recordId": "4f9f46cb-01ba-405e-a59b-bcd2aaafe8ba",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/Governor",
+      "description": "Joined a bipartisan coalition of 47 state attorneys general in letters pressing major search engines and payment platforms to curb the creation, distribution and monetisation of computer-generated deepfake nonconsensual intimate imagery.",
+      "reason": "Joined AG letters pressing platforms to curb deepfake nonconsensual images.",
+      "note": "Taylor, Treg"
+    },
+    {
+      "recordId": "68aaeecf-c09e-4c80-862a-fb3f962a1fc6",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored Illinois HB1859, which barred artificial intelligence from serving as the sole instructor for a community-college course; it became Public Act 104-0201.",
+      "reason": "Sponsored the law barring AI as the sole instructor of a college course.",
+      "note": "Abdelnasser Rashid"
+    },
+    {
+      "recordId": "48563bd5-d391-4450-b7ea-b297643370cf",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Signed the Judiciary Committee's majority report backing a bill that makes campaign ads containing manipulated or AI-generated audio, video, or images carry a warning label. The governor signed it into law (LD 517).",
+      "reason": "Backed the law requiring warning labels on AI-manipulated campaign ads.",
+      "note": "Adam Lee"
+    },
+    {
+      "recordId": "507f6ce5-8216-44d7-bc63-390afc16a128",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Authored Wisconsin Assembly Bill 664 on disclosure of AI-generated content in political advertisements; Governor Tony Evers signed it as 2023 Wisconsin Act 123.",
+      "reason": "Authored the law requiring disclosure of AI-generated content in political ads.",
+      "note": "Adam Neylon"
+    },
+    {
+      "recordId": "6a62588e-dd6e-4212-9f7d-a0ae616a3927",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored 2026 HB 1395, proposing an Artificial Intelligence Bill of Rights. The bill would have limited government contracting and added privacy protections. It also proposed safeguards for minors using companion chatbots. It required consent for AI-created uses of a person's name, image, or likeness. The bill died in committee.",
+      "reason": "Sponsored an AI Bill of Rights with chatbot safeguards for minors.",
+      "note": "Alex Rizo"
+    },
+    {
+      "recordId": "1edea783-b8b0-4fb4-8c37-47d96fede772",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored Maine LD 2082, which became Public Law Chapter 687 and regulated the use of artificial intelligence in providing certain mental-health services; the Governor signed it on 2026-04-13.",
+      "reason": "Sponsored the law regulating AI in mental-health services.",
+      "note": "Amy Kuhn"
+    },
+    {
+      "recordId": "d61c86a5-406f-40f9-9ae5-e2c8754a5510",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored House Bill 2529, proposing to count AI-generated images of children in sexual situations as child pornography under Missouri criminal law. The House sent it to the Emerging Issues Committee, which took no further action.",
+      "reason": "Sponsored a bill treating AI-generated child sexual images as child pornography.",
+      "note": "Anthony Ealy"
+    },
+    {
+      "recordId": "555a9213-8c67-4652-a2f9-b18a5b836c9f",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Promoted two bills the legislature passed in 2026 in his end-of-session newsletter to constituents. One lets people delete data held by data brokers and bans selling precise location data (Senate Bill 4). The other sets safety and transparency rules for artificial intelligence, including hiring tools (Senate Bill 5).",
+      "reason": "Promoted the passed law setting safety and transparency rules for AI, including hiring tools.",
+      "note": "Anthony Nolan"
+    },
+    {
+      "recordId": "83e1794a-bff2-46be-9716-4aaa8b84d6f3",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "As a Wyoming representative, co-sponsored HB0102, which the governor signed on 2026-03-07 as House Enrolled Act 32, concerning criminal offenses involving synthetic sexual material and artificial intelligence.",
+      "reason": "Co-sponsored the enacted law on crimes involving synthetic sexual material and AI.",
+      "note": "Bill Allemand"
+    },
+    {
+      "recordId": "4e66c25b-12d0-4efb-9229-c5fc304b1988",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "On 2025-12-10, the official Missouri House activity register records HB 2321, introduced by Bill Lucas, establishing the AI-Generated Content Accountability and Privacy Protection Act.",
+      "reason": "Introduced the AI-Generated Content Accountability and Privacy Protection Act.",
+      "note": "Bill Lucas"
+    },
+    {
+      "recordId": "b9bf14b3-6ab7-4fc7-b7c9-36c75a972791",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored a bill making it a crime to share AI-made or AI-altered images of a real person without that person's consent, with heavier penalties for sexual images (House Bill 2321). A House committee advanced a rewritten version 10-0 with one member present.",
+      "reason": "Sponsored a bill criminalizing nonconsensual AI-made images of real people.",
+      "note": "Bill Lucas"
+    },
+    {
+      "recordId": "cc4b445b-0375-4a9c-98bc-c0844072ca70",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Filed HB 1806, which required licensed professionals to provide therapy and limited artificial intelligence use in treatment; it became law on August 1, 2025.",
+      "reason": "Filed the law limiting AI use in therapy; it passed.",
+      "note": "Bob Morgan"
+    },
+    {
+      "recordId": "db34c562-7f09-423d-a18d-928f771f0adc",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Primary sponsor of HB0823, Generative Artificial Intelligence - Training Data Transparency; the House scheduled and held its hearing on February 18, 2025.",
+      "reason": "Primary sponsor of a generative-AI training-data transparency bill.",
+      "note": "Chao Wu"
+    },
+    {
+      "recordId": "eade8fd9-b301-4f06-bf84-2d6adc7c1d53",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Hunschofsky sponsored 2026 HB 281 restricting artificial intelligence use in psychology, social work, family therapy, and mental-health counseling; it died in the House Health Professions & Programs Subcommittee.",
+      "reason": "Sponsored a bill restricting AI use in counseling and therapy.",
+      "note": "Christine Hunschofsky"
+    },
+    {
+      "recordId": "750d01b1-cd75-4446-9499-351be7417c7d",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Co-sponsored House Bill 1529, which criminalized unlawful creation or distribution of deepfake visual material and established a cause of action, and the bill became Act 827.",
+      "reason": "Co-sponsored the act criminalizing deepfake visual material.",
+      "note": "Cindy Crawford"
+    },
+    {
+      "recordId": "c51204b4-5259-43ab-b0fc-78c8325f49b4",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Prime-sponsored House Bill 1170, requiring users to be informed when content is generated or modified by artificial intelligence; the Governor signed it into law on 2026-03-24 as Chapter 167, 2026 Laws.",
+      "reason": "Prime-sponsored the law requiring notice when content is AI-generated.",
+      "note": "Clyde Shavers"
+    },
+    {
+      "recordId": "b3a14a7f-87de-4d98-8dbf-8b28eb796472",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Co-sponsored a Connecticut online safety law that sets standards for artificial intelligence systems, covering job automation, telling consumers when AI is used, fake AI-made media, and child safety (Senate Bill 5). The governor signed it.",
+      "reason": "Co-sponsored the law setting standards for AI systems, including fake AI media.",
+      "note": "Cristin Vahey"
+    },
+    {
+      "recordId": "dce438c6-92b7-4199-ad64-bcafd24ba0e2",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Was a lead sponsor of a law barring licensed therapists from letting artificial-intelligence systems talk with clients without a therapist supervising in real time, or write treatment plans without a therapist reviewing them. The law also set consumer-protection rules against misleading AI marketing in mental health care. The governor signed it on June 3, 2026 (House Bill 26-1195).",
+      "reason": "Lead sponsor of the law requiring live therapist supervision of AI client interactions.",
+      "note": "Gretchen Rydin"
+    },
+    {
+      "recordId": "ccfe20bc-6618-4629-8122-9fa113c73855",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored 2026 HB 527. It would have barred insurers from using AI or machine learning as the only basis for cutting or denying claims. It would also have required qualified human review. It died in Senate Rules.",
+      "reason": "Sponsored a bill barring insurers from AI-only claim denials.",
+      "note": "Hillary Cassel"
+    },
+    {
+      "recordId": "25508925-54bf-43c1-be4b-c3a300d796df",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Hubert Delany co-chaired the Connecticut General Assembly Artificial Intelligence Caucus and applauded House and Senate passage of Senate Bill 5, the C.A.R.T. Act concerning online safety.",
+      "reason": "Applauded passage of the AI safety act he championed as AI Caucus co-chair.",
+      "note": "Hubert Delany"
+    },
+    {
+      "recordId": "586bb5f7-9f90-47c9-90c4-df391e431b95",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Prime-sponsored a new law limiting artificial intelligence in health coverage decisions. A licensed clinician must review any denial based on medical necessity, and AI may not provide psychotherapy (House Bill 26-1139).",
+      "reason": "Prime-sponsored the law requiring clinician review of AI coverage denials.",
+      "note": "Junie Joseph"
+    },
+    {
+      "recordId": "ff87bf54-12d0-416b-99cc-35f595f70724",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Prime-sponsored ESHB 2225 (Regulating artificial intelligence companion chatbots), enacted into law as Chapter 168, Laws of 2026.",
+      "reason": "Prime-sponsored the enacted law regulating AI companion chatbots.",
+      "note": "Lisa Callan"
+    },
+    {
+      "recordId": "240ec10a-ff35-4ac2-8785-5729801f154e",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Co-sponsored HB 1399, a bill to stop businesses from using a person's likeness, expression, or AI-generated identity without permission. It also let the person sue. The House advanced it to a second reading.",
+      "reason": "Co-sponsored a bill against unauthorized use of a person's AI-generated identity.",
+      "note": "Long Tran"
+    },
+    {
+      "recordId": "4f1bdfe6-90a4-4536-a672-eb8e2c806fd6",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored HB 515 in the 2025 regular session. It regulated how insurers use artificial intelligence in health coverage decisions. It was read a first time on April 3, 2025 and referred to the House Committee on Insurance. It died there without a committee vote.",
+      "reason": "Sponsored a bill regulating insurers' use of AI in coverage decisions.",
+      "note": "Mark Shirey"
+    },
+    {
+      "recordId": "2ae2c3ab-362a-40a0-a1a9-33051966bd1c",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "On 2025-01-28, Assemblymember Melissa Hardy prefiled Assembly Bill 126, which proposed expanding Nevada prohibitions and penalties concerning pornography involving minors, including AI-generated or digitally altered images.",
+      "reason": "Prefiled a bill covering AI-generated child sexual images under pornography law.",
+      "note": "Melissa Hardy"
+    },
+    {
+      "recordId": "ac1e48e2-c26c-4280-93cd-3586b00ab17f",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored Pennsylvania House Bill 2474, which unanimously passed the House to modernize child-protective-services reporting for sexually explicit deepfake images of minors.",
+      "reason": "Sponsored the bill adding deepfake images of minors to child-protection reporting.",
+      "note": "Nikki Rivera"
+    },
+    {
+      "recordId": "4d0f8a94-b912-4c5f-9498-8963f0d17f76",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Wrote a law requiring political ads that use artificial intelligence to say so. The disclosure must appear on the ad itself. The governor signed it in December 2023.",
+      "reason": "Wrote the law requiring AI political ads to disclose AI use.",
+      "note": "Penelope Tsernoglou"
+    },
+    {
+      "recordId": "e8582d57-2002-491e-91aa-4c65c7cbaa3a",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Co-sponsored Arkansas House Bill 1529, which became Act 827 and created criminal offenses and a civil cause of action for unlawful creation or distribution of deepfake visual material.",
+      "reason": "Co-sponsored the act creating deepfake crimes and a civil cause of action.",
+      "note": "Roger Lynch"
+    },
+    {
+      "recordId": "de4de1e8-4574-4a67-b9e7-86fef7d47b9a",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Sponsored Arkansas House Bill 1071, which became Act 159 and protected an individual’s photograph, voice, or likeness when reproduced through artificial intelligence and used commercially.",
+      "reason": "Sponsored the act protecting a person's likeness from commercial AI reproduction.",
+      "note": "Scott Richardson"
+    },
+    {
+      "recordId": "5b6a18a4-2344-4f5a-ba2d-abe0fb15d585",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_lower/State Lower Chamber Legislator",
+      "description": "Co-sponsored Arkansas House Bill 1529, which became Act 827 and created a crime for distributing sexual deepfake images.",
+      "reason": "Co-sponsored the act criminalizing sexual deepfake distribution.",
+      "note": "Stetson Painter"
+    },
+    {
+      "recordId": "0118737f-49c4-4c3b-84bc-24ab584523c1",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Nebraska LB383, which began as Senator Brian Hardin's LB172, was signed into law on May 20, 2025; it prohibited AI-generated child sexual-abuse material and added felony penalties.",
+      "reason": "His bill banning AI-generated child sexual-abuse material became law.",
+      "note": "Brian Hardin"
+    },
+    {
+      "recordId": "8a052413-b03e-41be-8521-fef6f0f2b520",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Carroll sponsored SB 1565 to prohibit artificial intelligence or learning software in ballot processing and electronic adjudication; the bill passed both chambers and was vetoed by the governor.",
+      "reason": "Sponsored a bill prohibiting AI in ballot processing.",
+      "note": "Frank Carroll"
+    },
+    {
+      "recordId": "c8b4d31e-0854-445c-93f4-7e0258081eb0",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Kavanagh sponsored and voted for SB 1078, prohibiting specified artificial-intelligence deepfakes.",
+      "reason": "Sponsored and voted for a ban on specified AI deepfakes.",
+      "note": "John Kavanagh"
+    },
+    {
+      "recordId": "fb0337da-2118-4fd8-bca3-bf7b77a80c7b",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Presented S.B. 226, Artificial Intelligence Consumer Protection Amendments, and moved its second substitute out of the Utah Senate Business and Labor Standing Committee favorably.",
+      "reason": "Presented and advanced the AI Consumer Protection Amendments in committee.",
+      "note": "Kirk A. Cullimore"
+    },
+    {
+      "recordId": "f60857e6-6098-4330-9cca-85b13d4fcb87",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Circulated a formal notice to fellow senators on May 28, 2026 seeking co-sponsors for a bill barring schools from replacing teachers with artificial intelligence and requiring proof that any AI use only supports teachers.",
+      "reason": "Sought co-sponsors for a bill barring schools from replacing teachers with AI.",
+      "note": "Lindsey Williams"
+    },
+    {
+      "recordId": "d21a0ad0-41d4-46c4-950b-78f02427cabc",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Circulated a memo to fellow senators on June 30, 2026 asking them to co-sponsor a bill she was preparing, proposing to make it a crime to create, generate, or solicit an AI-made sexual image of a real, identifiable person without that person's consent. The memo also proposes letting victims sue over the creation of such images, not only their sharing, and limiting legal protection for AI companies to those that build in safeguards. The memo states the bill had not yet been submitted for introduction.",
+      "reason": "Sought co-sponsors for a bill criminalizing AI-made sexual images of real people.",
+      "note": "Maria Collett"
+    },
+    {
+      "recordId": "bee61aef-9556-4e05-85c1-af46e3acb020",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Voted yes on 2023 House Bill 5141, requiring disclosure when artificial intelligence is used in political advertisements; the bill passed the House 59-51, with Bierlein among only three Republicans voting yes.",
+      "reason": "Voted yes on the AI political-ad disclosure bill.",
+      "note": "Matthew Bierlein"
+    },
+    {
+      "recordId": "96f5d4a9-3914-413b-a061-268a35849108",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Sponsored 2023 House Bill 5143 as the prime sponsor, adding a definition of artificial intelligence to the Michigan Campaign Finance Act; Gov. Gretchen Whitmer signed the measure into law as 2023 Public Act 264.",
+      "reason": "Prime-sponsored the enacted companion bill defining AI for the ad-disclosure law.",
+      "note": "Matthew Bierlein"
+    },
+    {
+      "recordId": "23102f6d-cef9-44bf-8f05-4b1f018ecde9",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Voted for Connecticut Senate Bill 5, which requires AI chatbots to steer users showing suicidal thoughts to mental-health help and requires notice when employers use AI in hiring.",
+      "reason": "Voted for the law requiring chatbot crisis safeguards and AI hiring notice.",
+      "note": "Norm Needleman"
+    },
+    {
+      "recordId": "611d9d6b-0d84-469f-8cfc-19bf3247d6b6",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Authored Senate Bill 20 in the 89th Legislature, the Stopping AI-Generated Child Pornography Act. It created criminal offenses for AI-generated child sexual abuse material. It passed both chambers unanimously. It was signed into law on June 20, 2025.",
+      "reason": "Authored the enacted act criminalizing AI-generated child sexual abuse material.",
+      "note": "Pete Flores"
+    },
+    {
+      "recordId": "e381cad3-d47b-4c1a-abf5-ae985e6946e6",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Co-sponsored Senate Bill 649, enacted as Act No. 35 of 2025, which classified specified deepfake conduct as digital forgery under Pennsylvania’s Crimes and Offenses title.",
+      "reason": "Co-sponsored the enacted act classifying deepfakes as digital forgery.",
+      "note": "Rosemary Brown"
+    },
+    {
+      "recordId": "83ecbd1a-860a-49e2-befb-2959e5fb5779",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "state_upper/State Senator",
+      "description": "Introduced a bill extending Pennsylvania's invasion-of-privacy crime to cover AI-generated images (Senate Bill 1413). It has six co-sponsors from both parties.",
+      "reason": "Introduced a bill extending the invasion-of-privacy crime to AI-generated images.",
+      "note": "Tracy Pennycuick"
+    },
+    {
+      "recordId": "d36a5d22-c1c6-4ede-aa10-1efc4909c92e",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/Attorney General",
+      "description": "Sponsored Senate Bill 263 (2025), updating Nevada's child-pornography statutes to explicitly cover AI-generated and computer-generated content; signed into law June 6, 2025.",
+      "reason": "Sponsored the enacted law covering AI-generated child pornography.",
+      "note": "Nicole Cannizzaro"
+    },
+    {
+      "recordId": "221029a7-3b76-4eda-a8ab-0b0e5690b048",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/Governor",
+      "description": "Said in a televised candidate survey published on August 24, 2026 that he opposes data centres in Idaho, arguing they could become surveillance centres and that the state needs a way to shut down artificial intelligence and data centres.",
+      "reason": "Said the state needs a way to shut down AI and data centres.",
+      "note": "Pro-Life (A person formerly known as Marvin Richardson)"
+    },
+    {
+      "recordId": "97525e79-fec5-4a78-b368-1fe95d635a86",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/United States Senator",
+      "description": "Representative Harriet Hageman introduced the Preventing AI Censorship Act, proposing a private right of action against federal employees who violate First Amendment rights through artificial-intelligence systems.",
+      "reason": "Introduced a bill creating liability for AI systems that violate First Amendment rights.",
+      "note": "Harriet Hageman"
+    },
+    {
+      "recordId": "c5032e95-4a1c-43af-8808-1674825649c9",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "statewide/United States Senator",
+      "description": "Introduced the bipartisan CHAT Act 2.0 to require age verification and parental consent for minors using AI companion chatbots and to prohibit sexual content for minors.",
+      "reason": "Introduced the CHAT Act requiring age checks and parental consent for AI companion chatbots.",
+      "note": "Jon Husted"
+    },
+    {
+      "recordId": "66db476f-6264-4c1b-9af5-b1f092bf0332",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "us_house/United States Representative",
+      "description": "Authored California Senate Bills 926 and 981, which the governor signed. They address sexual imagery generated by artificial intelligence and set out how platforms must handle reports of non-consensual explicit images.",
+      "reason": "Authored enacted laws on AI-generated sexual imagery and platform takedown duties.",
+      "note": "Aisha Wahab"
+    },
+    {
+      "recordId": "eb97e459-a52a-4fe1-84e7-f85e99d2b974",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "us_house/United States Representative",
+      "description": "Introduced the AI Flaw Reporting and Security Enhancement Act with Reps. Jeff Hurd and Don Beyer, proposing a voluntary federal program for AI developers to report security flaws in their models.",
+      "reason": "Introduced the AI flaw-reporting act for developers to disclose model security flaws.",
+      "note": "Deborah K. Ross"
+    },
+    {
+      "recordId": "732c4528-c54d-468f-afba-3e9d1f43ae0f",
+      "researchAreaSlug": "ai_regulation",
+      "status": "tagged",
+      "stance": "for",
+      "office": "us_house/United States Representative",
+      "description": "Won House Science Committee approval, 35-0, for her bill directing federal standards for labeling and detecting AI-generated text, audio, images and video (H.R. 8893, Protecting Consumers From Deceptive AI Act).",
+      "reason": "Advanced her bill setting federal standards for labeling and detecting AI-generated content.",
+      "note": "Valerie P. Foushee"
+    }
+  ]
+}
