@@ -134,6 +134,11 @@ VALUES
     'gun_control',
     'Gun Control',
     'Regulate firearm access through background checks, licensing, and safe-storage requirements to reduce gun violence.'
+  ),
+  (
+    'ai_regulation',
+    'AI Regulation',
+    'Set and enforce safety, transparency, and accountability rules for AI systems, including automated decisions and deepfakes.'
   )
 ON CONFLICT (slug)
 DO UPDATE SET

@@ -1,0 +1,387 @@
+{
+  "judgments": [
+    {
+      "chamber": "house",
+      "jurisdiction": "AZ",
+      "session": "2155",
+      "roll": 1551093,
+      "measure_id": "SB 1462",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1462, which extends Arizona's law on sharing explicit images to fakes made by computer. The crime now covers an image that looks like a real, named person but was made or changed with software, artificial intelligence or editing tools. For such an image it no longer matters whether the person could expect privacy. Images made for science, teaching or news are left out. The Arizona House passed it 33-24, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1462, which extends Arizona's law on sharing explicit images to fakes made by computer. The crime now covers an image that looks like a real, named person but was made or changed with software, artificial intelligence or editing tools. For such an image it no longer matters whether the person could expect privacy. Images made for science, teaching or news are left out. The Arizona House passed it 33-24, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "CA",
+      "session": "2172",
+      "roll": 1601381,
+      "measure_id": "SB 524",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. It passed the California State Assembly 50-17 and became law.",
+      "nay_description": "Voted against passing Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. It passed the California State Assembly 50-17 and became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "CA",
+      "session": "2172",
+      "roll": 1601734,
+      "measure_id": "SB 524",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. The California State Senate agreed 28-10, sending the bill to the governor, and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. The California State Senate agreed 28-10, sending the bill to the governor, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "CA",
+      "session": "2172",
+      "roll": 1602234,
+      "measure_id": "SB 7",
+      "vote_date": "2025-09-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 7, which would have set rules for employers using automated systems to manage, discipline and fire workers. An automated decision system means a computer process using machine learning, statistical modeling, data analytics or artificial intelligence that produces a score, classification or recommendation used in place of or alongside human judgment. There is no general state law today requiring private employers to disclose or limit these systems. An employer would have had to give written notice to affected workers at least 30 days before using one. That notice would have listed the decisions it touches, the worker data used and its sources, any settings known to skew results, who built it, any quota it sets, and the worker's right to see and correct their data. Job applicants would have had to be told that hiring uses such a system. An employer could not have used one to break employment or civil rights law, to infer a worker's protected characteristics, or to punish a worker for exercising legal rights. An employer could not have relied solely on such a system to discipline, fire or deactivate a worker, and could not have used customer ratings as the main input. Workers could have requested their own data once a year. Employers under a union contract that expressly waives these rules would have been exempt, and the penalty was $500. The Senate passed it 28-9, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against passing Senate Bill 7, which would have set rules for employers using automated systems to manage, discipline and fire workers. An automated decision system means a computer process using machine learning, statistical modeling, data analytics or artificial intelligence that produces a score, classification or recommendation used in place of or alongside human judgment. There is no general state law today requiring private employers to disclose or limit these systems. An employer would have had to give written notice to affected workers at least 30 days before using one. That notice would have listed the decisions it touches, the worker data used and its sources, any settings known to skew results, who built it, any quota it sets, and the worker's right to see and correct their data. Job applicants would have had to be told that hiring uses such a system. An employer could not have used one to break employment or civil rights law, to infer a worker's protected characteristics, or to punish a worker for exercising legal rights. An employer could not have relied solely on such a system to discipline, fire or deactivate a worker, and could not have used customer ratings as the main input. Workers could have requested their own data once a year. Employers under a union contract that expressly waives these rules would have been exempt, and the penalty was $500. The Senate passed it 28-9, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "CA",
+      "session": "2172",
+      "roll": 1602570,
+      "measure_id": "SB 7",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 7, which would have set rules for employers using automated systems to manage, discipline and fire workers. An automated decision system means a computer process using machine learning, statistical modeling, data analytics or artificial intelligence that produces a score, classification or recommendation used in place of or alongside human judgment. There is no general state law today requiring private employers to disclose or limit these systems. An employer would have had to give written notice to affected workers at least 30 days before using one. That notice would have listed the decisions it touches, the worker data used and its sources, any settings known to skew results, who built it, any quota it sets, and the worker's right to see and correct their data. Job applicants would have had to be told that hiring uses such a system. An employer could not have used one to break employment or civil rights law, to infer a worker's protected characteristics, or to punish a worker for exercising legal rights. An employer could not have relied solely on such a system to discipline, fire or deactivate a worker, and could not have used customer ratings as the main input. Workers could have requested their own data once a year. Employers under a union contract that expressly waives these rules would have been exempt, and the penalty was $500. The Assembly passed it 45-17, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against passing Senate Bill 7, which would have set rules for employers using automated systems to manage, discipline and fire workers. An automated decision system means a computer process using machine learning, statistical modeling, data analytics or artificial intelligence that produces a score, classification or recommendation used in place of or alongside human judgment. There is no general state law today requiring private employers to disclose or limit these systems. An employer would have had to give written notice to affected workers at least 30 days before using one. That notice would have listed the decisions it touches, the worker data used and its sources, any settings known to skew results, who built it, any quota it sets, and the worker's right to see and correct their data. Job applicants would have had to be told that hiring uses such a system. An employer could not have used one to break employment or civil rights law, to infer a worker's protected characteristics, or to punish a worker for exercising legal rights. An employer could not have relied solely on such a system to discipline, fire or deactivate a worker, and could not have used customer ratings as the main input. Workers could have requested their own data once a year. Employers under a union contract that expressly waives these rules would have been exempt, and the penalty was $500. The Assembly passed it 45-17, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "CA",
+      "session": "2172",
+      "roll": 1602910,
+      "measure_id": "SB 53",
+      "vote_date": "2025-09-13",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 53, the Transparency in Frontier Artificial Intelligence Act. It applies to companies training the largest AI models, those built with more than 10 to the 26th power computing operations, and its heaviest duties fall on developers with over $500 million in yearly revenue. Those companies must publish a safety framework explaining how they handle catastrophic risk, and send the Office of Emergency Services summaries of their internal risk assessments. That office must run a channel for reporting serious safety incidents, open to companies and the public. Employees who report a serious danger to public safety are protected from retaliation, and large developers must offer an anonymous internal channel for such reports. Incident reports and risk assessments sent to that office are closed to public records requests. The Attorney General may seek penalties of up to $1 million per violation. The act also bars cities and counties from writing their own rules on catastrophic AI risk, and sets up a consortium to plan a public computing cluster if the Legislature funds it. The Senate agreed 29-8 and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 53, the Transparency in Frontier Artificial Intelligence Act. It applies to companies training the largest AI models, those built with more than 10 to the 26th power computing operations, and its heaviest duties fall on developers with over $500 million in yearly revenue. Those companies must publish a safety framework explaining how they handle catastrophic risk, and send the Office of Emergency Services summaries of their internal risk assessments. That office must run a channel for reporting serious safety incidents, open to companies and the public. Employees who report a serious danger to public safety are protected from retaliation, and large developers must offer an anonymous internal channel for such reports. Incident reports and risk assessments sent to that office are closed to public records requests. The Attorney General may seek penalties of up to $1 million per violation. The act also bars cities and counties from writing their own rules on catastrophic AI risk, and sets up a consortium to plan a public computing cluster if the Legislature funds it. The Senate agreed 29-8 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "CA",
+      "session": "2172",
+      "roll": 1726291,
+      "measure_id": "AB 1979",
+      "vote_date": "2026-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1979, which would apply medical privacy law to health chatbots and require a licensed person to stay in charge of clinical decisions. California's medical confidentiality law bars providers, plans and their contractors from selling or sharing medical information beyond what care requires, and already treats businesses offering mental health or reproductive health digital services as providers. The bill would add businesses offering a health care chatbot, meaning a generative artificial intelligence system with a conversational interface marketed as supporting health services that uses health information a consumer gives or that it infers. A health facility, clinic, physician's office or group practice would have to take reasonable steps to ensure a licensed professional keeps the ability to exercise independent judgment whenever care is informed by a clinical decision support system. No artificial intelligence tool could independently perform a clinical function the law requires a licensed person to perform, or direct or supervise unlicensed staff in performing one. Licensing boards could seek an injunction where a violation amounts to unlicensed practice. Systems handling documentation, scheduling, reminders and similar work that involves no professional judgment are excluded, and trainees may use these tools under supervision. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against passing Assembly Bill 1979, which would apply medical privacy law to health chatbots and require a licensed person to stay in charge of clinical decisions. California's medical confidentiality law bars providers, plans and their contractors from selling or sharing medical information beyond what care requires, and already treats businesses offering mental health or reproductive health digital services as providers. The bill would add businesses offering a health care chatbot, meaning a generative artificial intelligence system with a conversational interface marketed as supporting health services that uses health information a consumer gives or that it infers. A health facility, clinic, physician's office or group practice would have to take reasonable steps to ensure a licensed professional keeps the ability to exercise independent judgment whenever care is informed by a clinical decision support system. No artificial intelligence tool could independently perform a clinical function the law requires a licensed person to perform, or direct or supervise unlicensed staff in performing one. Licensing boards could seek an injunction where a violation amounts to unlicensed practice. Systems handling documentation, scheduling, reminders and similar work that involves no professional judgment are excluded, and trainees may use these tools under supervision. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "CO",
+      "session": "2224",
+      "roll": 1600086,
+      "measure_id": "SB 4",
+      "vote_date": "2025-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 25B-004. A 2024 Colorado law makes companies that build or use high-risk artificial intelligence guard against bias. They must also tell a person when such a system is deciding about them. Those duties were due to start on February 1, 2026. The act moves every one of those dates to June 30, 2026. It changes nothing else. The Colorado House passed it 48-14 in the August 2025 special session, and the governor signed it into law.",
+      "nay_description": "Voted against passing Senate Bill 25B-004. A 2024 Colorado law makes companies that build or use high-risk artificial intelligence guard against bias. They must also tell a person when such a system is deciding about them. Those duties were due to start on February 1, 2026. The act moves every one of those dates to June 30, 2026. It changes nothing else. The Colorado House passed it 48-14 in the August 2025 special session, and the governor signed it into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "CO",
+      "session": "2243",
+      "roll": 1663334,
+      "measure_id": "HB 1139",
+      "vote_date": "2026-03-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1139. Health insurers use artificial intelligence to review whether to cover care. The act says such a system must judge from the patient's own medical history, not from group data alone. It must not discriminate, and the insurer has to keep audit records and check how well it works. A denial based on medical need cannot rest on the machine alone. A licensed clinician has to review and approve it. Insurers, Medicaid and the children's health plan also cannot cover therapy given by a machine. The Colorado House passed it 47-15 and the governor signed it into law.",
+      "nay_description": "Voted against passing House Bill 1139. Health insurers use artificial intelligence to review whether to cover care. The act says such a system must judge from the patient's own medical history, not from group data alone. It must not discriminate, and the insurer has to keep audit records and check how well it works. A denial based on medical need cannot rest on the machine alone. A licensed clinician has to review and approve it. Insurers, Medicaid and the children's health plan also cannot cover therapy given by a machine. The Colorado House passed it 47-15 and the governor signed it into law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "ID",
+      "session": "2246",
+      "roll": 1666665,
+      "measure_id": "S 1297",
+      "vote_date": "2026-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1297, the Conversational AI Safety Act, which sets rules for chatbots used in Idaho. If a reasonable person could think they were talking to a human, the operator must say clearly that the service is artificial intelligence. The operator must have a protocol that points a user who raises suicidal thoughts to a crisis line or similar help, and may not program the service to claim it provides professional mental health care. For a user known to be a minor, the disclosure must be a standing notice or must repeat at the start of each session and at least every three hours. The operator may not use unpredictable rewards to keep a minor engaged. It must take reasonable steps to stop the service producing sexual material about a minor or claiming to be human or sentient. The Idaho Senate passed it 21-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1297, the Conversational AI Safety Act, which sets rules for chatbots used in Idaho. If a reasonable person could think they were talking to a human, the operator must say clearly that the service is artificial intelligence. The operator must have a protocol that points a user who raises suicidal thoughts to a crisis line or similar help, and may not program the service to claim it provides professional mental health care. For a user known to be a minor, the disclosure must be a standing notice or must repeat at the start of each session and at least every three hours. The operator may not use unpredictable rewards to keep a minor engaged. It must take reasonable steps to stop the service producing sexual material about a minor or claiming to be human or sentient. The Idaho Senate passed it 21-12, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "IL",
+      "session": "2176",
+      "roll": 1575036,
+      "measure_id": "HB 1859",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1859. House Bill 1859 said a community college course must be taught by a qualified faculty member. Artificial intelligence cannot be the only source of instruction. Faculty may still use artificial intelligence to help with their teaching. The Senate passed it 46-12, and it became law.",
+      "nay_description": "Voted against House Bill 1859. House Bill 1859 said a community college course must be taught by a qualified faculty member. Artificial intelligence cannot be the only source of instruction. Faculty may still use artificial intelligence to help with their teaching. The Senate passed it 46-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "MD",
+      "session": "2240",
+      "roll": 1685440,
+      "measure_id": "SB 141",
+      "vote_date": "2026-04-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 141, which made election deepfakes a crime. A deepfake is an image, audio or video made or altered with artificial intelligence or similar technology to show a real person convincingly doing or saying something they did not. It is now a misdemeanor to knowingly or recklessly make, use or spread one carrying materially false election information. The aim must be to sway or block someone's vote, misstate how voting or counting works, affect a ballot petition, or push a voter for or against a candidate, and harm must result or be intended. The penalty is up to $5,000 and up to five years in prison. Satire and parody are exempt, as are certain required or news broadcasts. The bill also requires the state elections administrator to put out corrections of election misinformation, and lets the administrator go to court to have it taken down. A yes vote created the crime and the correction duty. The Maryland House of Delegates passed it 85-38 and it was signed into law as Chapter 444 of 2026.",
+      "nay_description": "Voted against passing SB 141, which made election deepfakes a crime. A deepfake is an image, audio or video made or altered with artificial intelligence or similar technology to show a real person convincingly doing or saying something they did not. It is now a misdemeanor to knowingly or recklessly make, use or spread one carrying materially false election information. The aim must be to sway or block someone's vote, misstate how voting or counting works, affect a ballot petition, or push a voter for or against a candidate, and harm must result or be intended. The penalty is up to $5,000 and up to five years in prison. Satire and parody are exempt, as are certain required or news broadcasts. The bill also requires the state elections administrator to put out corrections of election misinformation, and lets the administrator go to court to have it taken down. A no vote opposed creating them. The Maryland House of Delegates passed it 85-38 over these votes and it was signed into law as Chapter 444 of 2026.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "senate",
+      "jurisdiction": "NV",
+      "session": "2144",
+      "roll": 1553538,
+      "measure_id": "SB 128",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Senate voted barred an insurer from using artificial intelligence at all to deny, cut back or end approved care, though it could still use it to approve care automatically. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law.",
+      "nay_description": "Voted against Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Senate voted barred an insurer from using artificial intelligence at all to deny, cut back or end approved care, though it could still use it to approve care automatically. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "NV",
+      "session": "2144",
+      "roll": 1583017,
+      "measure_id": "SB 128",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Assembly voted barred an insurer from relying on artificial intelligence alone to deny, cut back or end approved care, so the software could still be part of a denial. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Assembly passed it 23-16, but the governor vetoed the bill, so it never became law.",
+      "nay_description": "Voted against Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Assembly voted barred an insurer from relying on artificial intelligence alone to deny, cut back or end approved care, so the software could still be part of a denial. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Assembly passed it 23-16, but the governor vetoed the bill, so it never became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "PA",
+      "session": "2192",
+      "roll": 1709926,
+      "measure_id": "HB 95",
+      "vote_date": "2026-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 95. It would have required a clear label on ads that use artificial intelligence to create or heavily change images, video or audio. The label was needed when the change alters what the ad appears to show. The Pennsylvania House passed it 124-78. As of August 2026 the Senate had not voted on it.",
+      "nay_description": "Voted against House Bill 95. It would have required a clear label on ads that use artificial intelligence to create or heavily change images, video or audio. The label was needed when the change alters what the ad appears to show. The Pennsylvania House passed it 124-78. As of August 2026 the Senate had not voted on it.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 104,
+      "measure_id": "S 146",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass S. 146, the TAKE IT DOWN Act, 409-2 under suspension of the rules, a fast-track step needing two-thirds. It makes publishing intimate images shared without consent, including computer-made deepfakes, a federal crime and gives platforms 48 hours to take them down after a valid request. It was signed into law on May 19, 2025 (Public Law 119-12).",
+      "nay_description": "Voted against S. 146, the TAKE IT DOWN Act, which the House passed 409-2 on a fast-track vote. The law makes publishing intimate images shared without consent, including deepfakes, a federal crime and orders platforms to remove them within 48 hours. It was signed on May 19, 2025 (Public Law 119-12).",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

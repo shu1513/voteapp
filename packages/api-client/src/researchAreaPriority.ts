@@ -1,8 +1,10 @@
 // Display priority for research-area chips, ranked by real-world public
 // salience (2026 Gallup/Pew issue polling), not alphabetically — the chips a
 // card has room for should be the ones voters care about most. Keyed by slug
-// so renames in the DB don't silently break the ordering.
+// so renames in the DB don't silently break the ordering. AI Regulation is
+// pinned first (product call, 2026-09-09).
 const RESEARCH_AREA_PRIORITY: readonly string[] = [
+  "ai_regulation",
   "healthcare_affordability",
   "environment_and_public_health",
   "reduce_wealth_gap",
