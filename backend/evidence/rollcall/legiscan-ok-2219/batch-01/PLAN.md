@@ -51,8 +51,9 @@ itself.
   amended, so the text that chamber passed was diffed against the act. SB 364, SB 1344 and
   SB 889 came back identical apart from page headers. SB 139 differed in one way only: the
   version the Senate passed carried a July 2025 effective date and an emergency clause that
-  the final act drops. That changes when the act starts, not what it does, so no description
-  states an effective date. SB 109's two rolls are both votes to adopt the conference
+  the final act drops. That changes when the act starts, not what it does, so SB 139's
+  description states no effective date. SB 504's does: its act does not start until
+  1 November 2026, so saying the new rule applies now would be wrong. SB 109's two rolls are both votes to adopt the conference
   committee report, which is the text that became law.
 - **Reading level, measured before importing rather than after.** A first draft measured a
   median Flesch-Kincaid grade of 11.7 and was rewritten. The batch now measures a **median
@@ -69,6 +70,15 @@ Dry run planned 303 inserts. The real run inserted 303, across 53 candidates, wi
 errors and nobody notified. The three counts agree: the plan, the run, and the database
 under this run's own stamp `rollcall:OK:%:2026-09-10T02:38:35.564Z`. A convergence run
 after the import reports all 303 unchanged.
+
+Review of the pull request found three reading errors, all confirmed against the enrolled
+acts: SB 889's penalty is the whole debt, not the amount paid; SB 364's old law made
+protection the default and the education plan the exception, not the reverse; SB 504 does
+not take effect until 1 November 2026. The builder was corrected, `rollcall:judge` re-applied
+the eleven judgments (three measures updated), and a second import rewrote the 122 records
+on those four rolls in place (`import-dry-run-rerun-report.json` holds the plan,
+`import-rerun-report.json` the run). The other
+181 were unchanged; no record ids moved and nobody was notified.
 
 Tags: 206, predicted from the ledger before the database was read and matching exactly.
 That is the yes side only, which is correct where every no side is null.

@@ -14,17 +14,21 @@ to decide what to read.
 ## The seven measures
 
 **SB 364, corporal punishment.** The old law protected only students with the most severe
-cognitive disabilities, and only where the student's yearly education plan addressed it. The
-act extends the protection to any student identified with a disability under federal special
-education law, and deletes the subsection that let a parent or guardian waive the protection
-in writing. Scored `civil_rights`, yes = for. The no side is null: an objection here is
+cognitive disabilities, and even for them the protection was the default: it gave way only
+where the student's yearly education plan addressed the punishment ("unless addressed in an
+annual IEP"). The first draft read that clause backwards, as if the plan had to opt the
+student in; the review caught it. The act extends the protection to any student identified
+with a disability under federal special education law, strikes the education-plan exception,
+and deletes the subsection that let a parent or guardian waive the protection in writing. Scored `civil_rights`, yes = for. The no side is null: an objection here is
 usually about school discipline authority, which is a different question from the rights of
 the student.
 
 **SB 504, minimum marriage age.** The act deletes the whole of the subsection that allowed
 marriage below eighteen — parental consent for under-eighteens, and court approval for
 under-sixteens where a paternity or seduction suit was being settled or where the girl was
-pregnant or had given birth. Only the bar on marrying a close relative survives.
+pregnant or had given birth. Only the bar on marrying a close relative survives. Section 2
+sets the effective date at 1 November 2026, six months after the House vote, so the
+description states that date instead of presenting the new rule as current law.
 `civil_rights`, yes = for.
 
 **HB 2263, phones in school and work zones.** This one is a veto override, and the
@@ -59,8 +63,9 @@ statewide ban would be wrong. `public_education_quality`, yes = for.
 **SB 889, hospital prices.** Publication duties plus real consequences: a hospital that was
 materially out of compliance on the day it treated a patient may not pursue that patient for
 the bill, the patient may sue, collection stops while the case runs, and a hospital found out
-of compliance must refund the payment, pay the patient the same amount again, cover legal
-costs and clear the debt from the patient's credit record.
+of compliance must refund whatever was paid, pay the patient a penalty equal to the total
+debt (Section 7(C)(1) — the whole debt, not the amount paid, so a patient who paid nothing
+still collects), cover legal costs and clear the debt from the patient's credit record.
 `healthcare_affordability`, yes = for.
 
 ## Things worth recording
