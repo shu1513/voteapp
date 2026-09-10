@@ -1,0 +1,26 @@
+[
+ {
+  "recordId": "85798c63-8856-41d8-a74c-38034dcfa6e2",
+  "reason": "Duplicate of the roll-call record for HB 4183, the Senate vote of 2025-10-03. This hand-written record describes the same vote by Kevin Hertel on the same measure on the same day. Replaced by candidate_records id 1c1fd3cd-224d-41b9-8792-ae4c102bffc7, imported from LegiScan roll 1603641 in Michigan batch-02."
+ },
+ {
+  "recordId": "b8cdd5e0-55b1-4396-9d7e-725cb59d3cc8",
+  "reason": "Duplicate of the roll-call record for HB 4183, the Senate vote of 2025-10-03. This hand-written record describes the same vote by Roger Hauck on the same measure on the same day. Replaced by candidate_records id aa119de6-78d1-4f14-9e55-c236a9e4106c, imported from LegiScan roll 1603641 in Michigan batch-02."
+ },
+ {
+  "recordId": "538599f1-9fd8-4f3d-8c12-74a367f6d285",
+  "reason": "Duplicate of the roll-call record for HB 4183, the Senate vote of 2025-10-03. This hand-written record describes the same vote by Sarah Anthony on the same measure on the same day. Replaced by candidate_records id 419aacba-af68-40be-b42e-b54e133c8bab, imported from LegiScan roll 1603641 in Michigan batch-02."
+ },
+ {
+  "recordId": "3a294062-4474-4d2d-bc66-df8707539566",
+  "reason": "Duplicate of the roll-call record for HB 4183, the Senate vote of 2025-10-03. This hand-written record describes the same vote by Sue Shink on the same measure on the same day. Replaced by candidate_records id abc3cdc7-4f84-434e-a905-1f272d7a2852, imported from LegiScan roll 1603641 in Michigan batch-02."
+ },
+ {
+  "recordId": "0dfddd68-8285-4a01-9197-cfc7fc68d54a",
+  "reason": "Duplicate of the roll-call record for HB 4183, the Senate vote of 2025-10-03. This hand-written record describes the same vote by Thomas Albert on the same measure on the same day. Replaced by candidate_records id 3cde8ac3-73df-4ff2-ae97-ceca199310c0, imported from LegiScan roll 1603641 in Michigan batch-02."
+ },
+ {
+  "recordId": "e099bde3-0b7f-4e6f-bb22-62a683e1df70",
+  "reason": "Duplicate of the roll-call record for HB 4951, the Senate vote of 2025-10-03. This hand-written record describes the same vote by Sue Shink on the same measure on the same day, calling it \"the marijuana tax that anchored the 2025 road funding package\" without naming the bill number. Michigan batch-01's duplicate sweep matched on bill numbers and so did not find it. Replaced by candidate_records id e9290a65-9557-413b-9425-7b191c6a1bc7, imported from LegiScan roll 1603651 in Michigan batch-01."
+ }
+]
