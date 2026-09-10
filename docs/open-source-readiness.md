@@ -33,16 +33,18 @@ and the raw captures under `scratch/records-verify-*/` (any `src/` folder,
 HTML, PDF, XML, jina, bin). The notes beside them (`evidence.json`,
 `labels.json`, `records.json`, Markdown, `stored.txt`) stay trackable.
 
-## Local branches (pending, operator runs)
+## Local branches (done 2026-09-10)
 
 `claude/records-verify-major-city-mayor` (7 commits) and
 `claude/records-verify-state-governor` (16 commits) change nothing outside
-`scratch/`. Before either is pushed, strip the captures from their history.
-Backup refs already exist:
-`refs/backup/records-verify-major-city-mayor-pre-scrub-20260910` and
-`refs/backup/records-verify-state-governor-pre-scrub-20260910`.
+`scratch/`. Their history was rewritten on 2026-09-10 to drop the captures:
+65 and 596 files removed, all 140 and 282 notes kept, commit counts and
+messages unchanged, no capture left anywhere in either history. Pre-scrub
+backups: `refs/backup/records-verify-major-city-mayor-pre-scrub-20260910`
+and `refs/backup/records-verify-state-governor-pre-scrub-20260910`.
 
-Run from any checkout with a clean working tree, one branch at a time:
+The recipe, for any future capture branch. Run from a checkout with a clean
+working tree, one branch at a time:
 
 ```bash
 FILTER='git ls-files -z | /usr/bin/grep -zE "^scratch/records-verify-[^/]+/(.*/)?src/|^scratch/records-verify-[^/]+/.*\.(html?|pdf|xml|jina|bin)$" | git update-index --force-remove -z --stdin; true'
@@ -57,8 +59,8 @@ git ls-tree -r --name-only claude/records-verify-major-city-mayor | /usr/bin/gre
 ```
 
 The diff must show only deletions, and the second command must print `0`.
-Repeat for `claude/records-verify-state-governor`. Use `/usr/bin/grep`
-explicitly; the shell's `grep` is ugrep, where `-z` means something else.
+Use `/usr/bin/grep` explicitly; the shell's `grep` is ugrep, where `-z`
+means something else.
 
 ## Publishing (pending, after the decision)
 
