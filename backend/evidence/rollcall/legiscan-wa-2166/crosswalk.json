@@ -1,0 +1,762 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "WA",
+  "sessionId": 2166,
+  "entries": [
+    {
+      "people_id": 3500,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-002 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 3507,
+      "candidate_id": "1251844b-d225-4718-aea7-7c8becc78359",
+      "note": "first_and_last name match; district number agrees (house HD-009B)"
+    },
+    {
+      "people_id": 3509,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: seat senate SD-029 is on the 2026 ballot but this member is not running for it"
+    },
+    {
+      "people_id": 3516,
+      "candidate_id": "0265eaea-6119-4f67-bc8d-e5c5157abfac",
+      "note": "first_and_last name match; district number agrees (senate SD-033)"
+    },
+    {
+      "people_id": 3523,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: seat senate SD-013 is on the 2026 ballot but this member is not running for it"
+    },
+    {
+      "people_id": 3525,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-011 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 3531,
+      "candidate_id": "afbad79f-3c5d-4469-b1c5-dfc46f7ee170",
+      "note": "first_and_last name match; district number agrees (senate SD-021)"
+    },
+    {
+      "people_id": 3534,
+      "candidate_id": "d049dfbb-c906-4232-a1b3-d170ebbd89ea",
+      "note": "first_and_last name match; district number agrees (house HD-020B)"
+    },
+    {
+      "people_id": 3545,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-045B is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 3553,
+      "candidate_id": "cedb7726-e9c6-49ae-956d-23d9bcec4551",
+      "note": "first_and_last name match; district number agrees (senate SD-007)"
+    },
+    {
+      "people_id": 3566,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-003B is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 3568,
+      "candidate_id": "32d302a6-e170-44d1-b72d-716086b0cf75",
+      "note": "first_and_last name match; district number agrees (house HD-037A)"
+    },
+    {
+      "people_id": 3570,
+      "candidate_id": "af25395f-86d7-4460-8c54-5c5d84197182",
+      "note": "first_and_last name match; district number agrees (house HD-045A)"
+    },
+    {
+      "people_id": 3577,
+      "candidate_id": "10c606ae-9bb0-442a-a70d-9e6b4d560811",
+      "note": "first_and_last name match; district number agrees (senate SD-043)"
+    },
+    {
+      "people_id": 3602,
+      "candidate_id": "accaaa03-a742-4b89-866f-b118b7ecd0f1",
+      "note": "first_and_last name match; district number agrees (senate SD-047)"
+    },
+    {
+      "people_id": 3605,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-014 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 3617,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-009 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 10541,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-001 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 10543,
+      "candidate_id": "80124a2d-a874-4d17-8f32-96375c03f8ff",
+      "note": "first_and_last name match; district number agrees (house HD-034B)"
+    },
+    {
+      "people_id": 10544,
+      "candidate_id": "b89571ec-b066-4456-8358-7e3a97095f26",
+      "note": "first_and_last name match; district number agrees (house HD-027A)"
+    },
+    {
+      "people_id": 10551,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-017 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 10552,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-024B is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 10939,
+      "candidate_id": "2c47d6f1-0859-40d9-b83a-34635d6cc981",
+      "note": "sitting House member running for the same-numbered Senate district (house HD-032A -> SD-32); confirmed against current_office, and the LegiScan position suffix matches the stated position"
+    },
+    {
+      "people_id": 13047,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-049A is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 13683,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-023 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 13684,
+      "candidate_id": "0416b407-4d94-4f13-8ded-02751086f245",
+      "note": "first_and_last name match; district number agrees (house HD-046A)"
+    },
+    {
+      "people_id": 14810,
+      "candidate_id": "cfcd3783-5b70-4efd-ba19-fe41a3f1b45e",
+      "note": "first_and_last name match; district number agrees (house HD-011B)"
+    },
+    {
+      "people_id": 14812,
+      "candidate_id": "e609db6f-d871-415e-aa3b-5b4fd15e423d",
+      "note": "first_and_last name match; district number agrees (house HD-027B)"
+    },
+    {
+      "people_id": 14815,
+      "candidate_id": "f357b88b-54b5-4180-994a-d9b48f6bf484",
+      "note": "first_and_last name match; district number agrees (senate SD-006)"
+    },
+    {
+      "people_id": 14817,
+      "candidate_id": "0aca627a-1282-4db7-9a1e-3686199c7618",
+      "note": "first_and_last name match; district number agrees (senate SD-035)"
+    },
+    {
+      "people_id": 14822,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-003A is not on the 2026 ballot"
+    },
+    {
+      "people_id": 14824,
+      "candidate_id": "c09581e2-51d7-4cf6-870b-aa5084ca93d9",
+      "note": "first_and_last name match; district number agrees (house HD-049B)"
+    },
+    {
+      "people_id": 14828,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-020 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 14829,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-049 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 16130,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-004 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 16131,
+      "candidate_id": "0949477d-be6d-4f31-ad85-bd53aa94814e",
+      "note": "first_and_last name match; district number agrees (house HD-033B)"
+    },
+    {
+      "people_id": 16132,
+      "candidate_id": "9d9be837-8bd2-4dd7-a513-d8850f116258",
+      "note": "first_and_last name match; district number agrees (senate SD-038)"
+    },
+    {
+      "people_id": 16133,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-041A is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 16164,
+      "candidate_id": "ad9fa9a6-ea25-43ee-874b-a06e5f5f1f44",
+      "note": "first_and_last name match; district number agrees (house HD-021B)"
+    },
+    {
+      "people_id": 16642,
+      "candidate_id": "1e2ead6c-a7e3-47b2-9b84-8d1bf746cfbc",
+      "note": "first_and_last name match; district number agrees (house HD-031A)"
+    },
+    {
+      "people_id": 16715,
+      "candidate_id": "9dd6bf6c-cc18-45ed-adbb-462aac258d40",
+      "note": "first_and_last name match; district number agrees (house HD-021A)"
+    },
+    {
+      "people_id": 16740,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-026B is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 16768,
+      "candidate_id": "9e70b500-ee44-4fbc-bd7b-e3c7b896891f",
+      "note": "first_prefix name match; district number agrees (house HD-035A)"
+    },
+    {
+      "people_id": 17043,
+      "candidate_id": "a1af97da-b8b5-4f5e-99d2-4ccf351f6605",
+      "note": "first_and_last name match; district number agrees (house HD-013A)"
+    },
+    {
+      "people_id": 17700,
+      "candidate_id": "4b1b966d-4ef3-4964-a4c1-97b138a667b6",
+      "note": "first_and_last name match; district number agrees (house HD-009A)"
+    },
+    {
+      "people_id": 17795,
+      "candidate_id": "8799857a-15e1-40f2-b2d4-5b5a6ca7ee75",
+      "note": "first_and_last name match; district number agrees (senate SD-036)"
+    },
+    {
+      "people_id": 17893,
+      "candidate_id": "7da73a69-0c41-4e87-a3e3-a2dbef95cbbf",
+      "note": "first_and_last name match; district number agrees (house HD-002A)"
+    },
+    {
+      "people_id": 18045,
+      "candidate_id": "390ae1a6-a41c-4074-b3e4-9eca2857491d",
+      "note": "first_and_last name match; district number agrees (house HD-019A)"
+    },
+    {
+      "people_id": 18283,
+      "candidate_id": "49da75b0-5d67-4701-9ec0-6239aacc1574",
+      "note": "first_and_last name match; district number agrees (senate SD-044)"
+    },
+    {
+      "people_id": 18498,
+      "candidate_id": "de3a3c7f-cdd9-4ff2-8f59-b4610bea58d7",
+      "note": "first_and_last name match; district number agrees (house HD-022A)"
+    },
+    {
+      "people_id": 18499,
+      "candidate_id": "2bde6361-e3a6-4ddb-b2f5-cdbc8eee2754",
+      "note": "first_and_last name match; district number agrees (senate SD-031)"
+    },
+    {
+      "people_id": 18500,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-006A is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 18501,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-041 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 18514,
+      "candidate_id": "a87a95be-a1ee-40f4-8418-cc07b23f422f",
+      "note": "first_and_last name match; district number agrees (house HD-030B)"
+    },
+    {
+      "people_id": 18524,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-024 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 18529,
+      "candidate_id": "d1fb342c-4410-4fac-ba4b-d4bb24476e0a",
+      "note": "first_and_last name match; district number agrees (house HD-001B)"
+    },
+    {
+      "people_id": 18531,
+      "candidate_id": "87155f27-d0f2-416f-bec3-8b16cd4bb356",
+      "note": "first_and_last name match; district number agrees (house HD-043A)"
+    },
+    {
+      "people_id": 18534,
+      "candidate_id": "6d2acbfc-c3d3-4e55-b3fb-4c5b17c837bc",
+      "note": "first_and_last name match; district number agrees (senate SD-048A)"
+    },
+    {
+      "people_id": 18535,
+      "candidate_id": "cf6d9582-bbd1-4210-a9fb-a4503ec2f375",
+      "note": "first_and_last name match; district number agrees (house HD-012B)"
+    },
+    {
+      "people_id": 18538,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: seat senate SD-037 is on the 2026 ballot but this member is not running for it"
+    },
+    {
+      "people_id": 19399,
+      "candidate_id": "ff3259d9-f91b-443f-9508-16dc213caa0b",
+      "note": "first_and_last name match; district number agrees (senate SD-046)"
+    },
+    {
+      "people_id": 19455,
+      "candidate_id": "eec182a6-43b7-4ee5-9ad7-fa0213731f13",
+      "note": "first_and_last name match; district number agrees (senate SD-045)"
+    },
+    {
+      "people_id": 19463,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-039B is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 19513,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-039 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 20596,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: seat senate SD-034 is on the 2026 ballot but this member is not running for it"
+    },
+    {
+      "people_id": 20599,
+      "candidate_id": "5b68b71c-db86-4142-bff5-a4cc9cbd44e0",
+      "note": "first_and_last name match; district number agrees (senate SD-032)"
+    },
+    {
+      "people_id": 20600,
+      "candidate_id": "1c978bce-6334-4c84-840e-8590ffc64a22",
+      "note": "first_and_last name match; district number agrees (senate SD-030)"
+    },
+    {
+      "people_id": 20601,
+      "candidate_id": "926864e1-6429-4fe1-b843-5e1e6f6d82b5",
+      "note": "first_and_last name match; district number agrees (house HD-005B)"
+    },
+    {
+      "people_id": 20602,
+      "candidate_id": "880af1fb-b0fa-4f97-8a58-b8f2bb4a57de",
+      "note": "first_and_last name match; district number agrees (house HD-047A)"
+    },
+    {
+      "people_id": 20603,
+      "candidate_id": "1a0ae191-debc-4ed3-a23a-3ad351bf2987",
+      "note": "hand-added: LegiScan last_name is 'Kruger-Leavitt' while its name field is 'Mari Leavitt', byte-identical to our candidate. The proposer matches on first_name plus last_name and reads neither name nor nickname, so it missed an exact match. Seat HD-028A agrees with District 28 Position 1"
+    },
+    {
+      "people_id": 20604,
+      "candidate_id": "a500220e-f387-4a85-8511-534985e87d14",
+      "note": "first_and_last name match; district number agrees (house HD-040A)"
+    },
+    {
+      "people_id": 20614,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: seat senate SD-042 is on the 2026 ballot but this member is not running for it"
+    },
+    {
+      "people_id": 20619,
+      "candidate_id": "dad8224f-d8a0-4b1d-be1e-c0b7cf145920",
+      "note": "first_and_last name match; district number agrees (house HD-016B)"
+    },
+    {
+      "people_id": 20620,
+      "candidate_id": "17b46700-32e2-40af-9560-7ef9aa289d30",
+      "note": "first_and_last name match; district number agrees (house HD-032B)"
+    },
+    {
+      "people_id": 20629,
+      "candidate_id": "e53907b4-f7e6-4a4d-8daa-24399e665a92",
+      "note": "first_and_last name match; district number agrees (house HD-048B)"
+    },
+    {
+      "people_id": 20639,
+      "candidate_id": "6ef42d05-bc75-4829-9c06-390553bb9b6a",
+      "note": "first_and_last name match; district number agrees (house HD-010B)"
+    },
+    {
+      "people_id": 20641,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-006B is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 20686,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: seat senate SD-008 is on the 2026 ballot but this member is not running for it"
+    },
+    {
+      "people_id": 20687,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-025 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 20807,
+      "candidate_id": "ef89fc9b-697a-4832-aca5-f2f8f4e0c3c5",
+      "note": "first_and_last name match; district number agrees (house HD-041B)"
+    },
+    {
+      "people_id": 20870,
+      "candidate_id": "9569ecbc-730b-4b3f-b9bc-a64604b06c5a",
+      "note": "LegiScan district HD-014A is STALE: District 14's two seats are held by Gloria Mendoza (Position 1) and Deb Manjarrez (Position 2), both of whom appear separately, and our own record has Corry as the sitting District 15 Position 1 member. Same person, stale seat"
+    },
+    {
+      "people_id": 20871,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-012 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 20872,
+      "candidate_id": "b3bdc05f-74f8-43e3-8879-894c2a2b5518",
+      "note": "first_and_last name match; district number agrees (house HD-029A)"
+    },
+    {
+      "people_id": 20911,
+      "candidate_id": "1966b59b-d704-4072-9d30-643276a1cc78",
+      "note": "sitting House member running for the same-numbered Senate district (house HD-015B -> SD-15); confirmed against current_office, and the LegiScan position suffix matches the stated position"
+    },
+    {
+      "people_id": 20994,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-005 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 20995,
+      "candidate_id": "be13d61d-5368-4ca2-a803-17b6a682e938",
+      "note": "sitting House member running for the same-numbered Senate district (house HD-013B -> SD-13); confirmed against current_office, and the LegiScan position suffix matches the stated position"
+    },
+    {
+      "people_id": 21251,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-040 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 21403,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-010 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 21439,
+      "candidate_id": "88b7f0c0-765f-4290-b362-96bee23d2c9a",
+      "note": "first_and_last name match; district number agrees (house HD-001A)"
+    },
+    {
+      "people_id": 21492,
+      "candidate_id": "b6e01c0b-3342-445a-ae5d-778db9ffc724",
+      "note": "first_and_last name match; district number agrees (house HD-040B)"
+    },
+    {
+      "people_id": 22208,
+      "candidate_id": "2a697b02-ec33-4ce3-af5d-a613504dc76f",
+      "note": "first_and_last name match; district number agrees (house HD-025B)"
+    },
+    {
+      "people_id": 22252,
+      "candidate_id": "6b4ca6f0-8e5a-4965-bc0e-f83a10cebe11",
+      "note": "first_and_last name match; district number agrees (house HD-036B)"
+    },
+    {
+      "people_id": 22253,
+      "candidate_id": "ca259b69-489b-4859-82f0-ba39b90749cd",
+      "note": "first_and_last name match; district number agrees (house HD-016A)"
+    },
+    {
+      "people_id": 22255,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-016 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 22256,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-022 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 22257,
+      "candidate_id": "7ce04a5b-e62d-4cb6-a2fe-cab3e3b6bd86",
+      "note": "first_and_last name match; district number agrees (house HD-023A)"
+    },
+    {
+      "people_id": 22283,
+      "candidate_id": "1101d3e6-be88-46df-bab6-d25bd9f039b6",
+      "note": "first_and_last name match; district number agrees (house HD-020A)"
+    },
+    {
+      "people_id": 22284,
+      "candidate_id": "8c1c1143-d00d-476b-a7ba-ac160c54c668",
+      "note": "first_and_last name match; district number agrees (house HD-044B)"
+    },
+    {
+      "people_id": 22285,
+      "candidate_id": "46f0ec6f-8fc3-48fa-8c74-1212746e5a34",
+      "note": "first_and_last name match; district number agrees (house HD-011A)"
+    },
+    {
+      "people_id": 22323,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-028 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 22324,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-019 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 22370,
+      "candidate_id": "6d281b11-90a3-481a-be9c-542d22971d9e",
+      "note": "first_and_last name match; district number agrees (house HD-028B)"
+    },
+    {
+      "people_id": 22379,
+      "candidate_id": "fd9e57dd-609a-42bb-82d9-65184bd78433",
+      "note": "first_and_last name match; district number agrees (house HD-030A)"
+    },
+    {
+      "people_id": 22380,
+      "candidate_id": "6ef9c67d-6c72-4862-9c35-61bb5745b82f",
+      "note": "first_and_last name match; district number agrees (house HD-004B)"
+    },
+    {
+      "people_id": 22381,
+      "candidate_id": "9fc8600e-4e66-4a57-90af-977c5ae1b462",
+      "note": "first_and_last name match; district number agrees (house HD-019B)"
+    },
+    {
+      "people_id": 22382,
+      "candidate_id": "194acb5d-22c6-455f-8639-0c7d1d4b22fd",
+      "note": "first_and_last name match; district number agrees (house HD-042A)"
+    },
+    {
+      "people_id": 23003,
+      "candidate_id": "3cf71cf7-a6a4-40f3-9b9d-84d9dd5d3f4f",
+      "note": "first_and_last name match; district number agrees (house HD-044A)"
+    },
+    {
+      "people_id": 23004,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-027 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 23385,
+      "candidate_id": "abf392f4-3ad7-4fc1-b5c6-7698f17d810c",
+      "note": "sitting House member running for the same-numbered Senate district (house HD-029B -> SD-29); confirmed against current_office, and the LegiScan position suffix matches the stated position"
+    },
+    {
+      "people_id": 23750,
+      "candidate_id": "143c5c8b-71b5-4fb4-b0be-4dc5d40f8964",
+      "note": "first_and_last name match; district number agrees (house HD-042B)"
+    },
+    {
+      "people_id": 23810,
+      "candidate_id": "916f6211-50d7-4223-8f5a-ed72e1ce539f",
+      "note": "first_and_last name match; district number agrees (house HD-047B)"
+    },
+    {
+      "people_id": 23811,
+      "candidate_id": "6b7335c0-8c2a-4686-907e-f1610ee0a736",
+      "note": "first_and_last name match; district number agrees (senate SD-034)"
+    },
+    {
+      "people_id": 23812,
+      "candidate_id": "26cc6884-c844-481f-807a-97113718f062",
+      "note": "first_and_last name match; district number agrees (house HD-008A)"
+    },
+    {
+      "people_id": 23813,
+      "candidate_id": "f386c04b-aa05-4edc-88d1-48bba04d5626",
+      "note": "first_and_last name match; district number agrees (house HD-008B)"
+    },
+    {
+      "people_id": 23814,
+      "candidate_id": "134f516b-5aa0-4418-9d2b-5a056315bceb",
+      "note": "first_and_last name match; district number agrees (house HD-035B)"
+    },
+    {
+      "people_id": 23816,
+      "candidate_id": "16068107-652e-4e28-9954-a80e3588bc9d",
+      "note": "first_and_last name match; district number agrees (house HD-039A)"
+    },
+    {
+      "people_id": 23817,
+      "candidate_id": "d829fb8a-869e-4696-a62b-515fdb874b6b",
+      "note": "first_and_last name match; district number agrees (house HD-018A)"
+    },
+    {
+      "people_id": 23818,
+      "candidate_id": "d46201f0-65bd-4367-a60a-6d1e2e6c81f0",
+      "note": "first_and_last name match; district number agrees (house HD-036A)"
+    },
+    {
+      "people_id": 23820,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-004A is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 23821,
+      "candidate_id": "a4a57a12-a6cf-4902-940f-3491ae3749a0",
+      "note": "sitting House member running for the same-numbered Senate district (house HD-037B -> SD-37); confirmed against current_office, and the LegiScan position suffix matches the stated position"
+    },
+    {
+      "people_id": 23822,
+      "candidate_id": "98a13ed0-adf6-4f72-8077-2735f3f79cee",
+      "note": "sitting Senator for District 15, which LegiScan agrees with, running in District 8 in 2026; Jeremie Dufault is running for the District 15 Senate seat she is leaving"
+    },
+    {
+      "people_id": 23823,
+      "candidate_id": "6746df55-7ada-4968-bc4d-c811bda0162b",
+      "note": "first_and_last name match; district number agrees (house HD-017A)"
+    },
+    {
+      "people_id": 23824,
+      "candidate_id": "a62bdeb5-512e-4603-9358-9a8c957ee90f",
+      "note": "first_and_last name match; district number agrees (house HD-046B)"
+    },
+    {
+      "people_id": 23829,
+      "candidate_id": "0db6461d-1258-4c17-972d-76aea3647894",
+      "note": "first_and_last name match; district number agrees (house HD-038B)"
+    },
+    {
+      "people_id": 23830,
+      "candidate_id": "d8ff4660-1681-4cf6-8173-fe0fc84418d2",
+      "note": "first_and_last name match; district number agrees (house HD-010A)"
+    },
+    {
+      "people_id": 23898,
+      "candidate_id": "5c01fa77-c294-45e3-bfd6-21fe638e0f84",
+      "note": "first_and_last name match; district number agrees (house HD-038A)"
+    },
+    {
+      "people_id": 24992,
+      "candidate_id": "c3e079af-162c-496b-8cf8-04c424946a3a",
+      "note": "first_and_last name match; district number agrees (house HD-023B)"
+    },
+    {
+      "people_id": 25363,
+      "candidate_id": "db16ab7c-0be8-430d-a55b-bf133e99c10f",
+      "note": "first_and_last name match; district number agrees (house HD-024A)"
+    },
+    {
+      "people_id": 25508,
+      "candidate_id": "8298687c-6865-4f87-a368-0912d9af1112",
+      "note": "first_and_last name match; district number agrees (house HD-033A)"
+    },
+    {
+      "people_id": 25509,
+      "candidate_id": "2c554a95-e88c-461d-bc40-1c9126087392",
+      "note": "first_and_last name match; district number agrees (senate SD-026)"
+    },
+    {
+      "people_id": 26271,
+      "candidate_id": "783125fa-61e5-48a2-886b-fe3a1ae5604b",
+      "note": "first_and_last name match; district number agrees (house HD-048A)"
+    },
+    {
+      "people_id": 26286,
+      "candidate_id": "01c77885-679f-45bc-8055-934a31c1f612",
+      "note": "first_and_last name match; district number agrees (house HD-007B)"
+    },
+    {
+      "people_id": 26287,
+      "candidate_id": "b5e7a216-6e0a-4016-ae1d-c1590e19a433",
+      "note": "first_and_last name match; district number agrees (house HD-012A)"
+    },
+    {
+      "people_id": 26288,
+      "candidate_id": "a834f61b-c9e6-4dfa-bca5-6f2789beebea",
+      "note": "first_and_last name match; district number agrees (house HD-007A)"
+    },
+    {
+      "people_id": 26289,
+      "candidate_id": "d9c562d8-482d-4535-b95f-0c646c66df0d",
+      "note": "first_and_last name match; district number agrees (house HD-003A)"
+    },
+    {
+      "people_id": 26290,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-005A is not on the 2026 ballot; no candidate in the pool shares the name"
+    },
+    {
+      "people_id": 26291,
+      "candidate_id": "60656402-72f6-4735-aeab-967dac27092b",
+      "note": "first_and_last name match; district number agrees (house HD-025A)"
+    },
+    {
+      "people_id": 26292,
+      "candidate_id": "8b4c8d65-b361-4d3f-87b0-cbb36136e39e",
+      "note": "first_and_last name match; district number agrees (house HD-018B)"
+    },
+    {
+      "people_id": 26293,
+      "candidate_id": "12dddc7b-a5f1-487b-bf20-9af963f4fdf1",
+      "note": "first_and_last name match; district number agrees (house HD-014B)"
+    },
+    {
+      "people_id": 26294,
+      "candidate_id": "287c0ec6-7568-476a-865f-1d0b9487c1fe",
+      "note": "first_and_last name match; district number agrees (house HD-002B)"
+    },
+    {
+      "people_id": 26295,
+      "candidate_id": "410d69d9-d9bd-4821-954e-d901634183f8",
+      "note": "first_and_last name match; district number agrees (house HD-014A)"
+    },
+    {
+      "people_id": 26296,
+      "candidate_id": "b85794ce-bbe4-46a9-a8f6-afe987b4e450",
+      "note": "first_and_last name match; district number agrees (house HD-022B)"
+    },
+    {
+      "people_id": 26297,
+      "candidate_id": "83b20527-2095-489b-928e-b9fb1305b6a6",
+      "note": "first_and_last name match; district number agrees (house HD-031B)"
+    },
+    {
+      "people_id": 26298,
+      "candidate_id": "a9b0e43b-2833-4b9d-a5ab-efd38d55a5a8",
+      "note": "first_and_last name match; district number agrees (house HD-026A)"
+    },
+    {
+      "people_id": 26299,
+      "candidate_id": "f7538bcf-8d25-4964-bbd3-dd105402e212",
+      "note": "first_and_last name match; district number agrees (house HD-043B)"
+    },
+    {
+      "people_id": 26300,
+      "candidate_id": "5e959ae9-e798-4970-bf38-3c8d22bc4657",
+      "note": "first_and_last name match; district number agrees (house HD-017B)"
+    },
+    {
+      "people_id": 26301,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: STRUCTURAL. Washington staggers its Senate and senate SD-018 is not on the 2026 ballot"
+    },
+    {
+      "people_id": 26385,
+      "candidate_id": "5a7259af-dec3-4f4b-b2f6-47c336bd32b0",
+      "note": "first_and_last name match; district number agrees (house HD-034A)"
+    },
+    {
+      "people_id": 26386,
+      "candidate_id": "6ebbe892-8f84-4793-8dd8-a79b5c68bff5",
+      "note": "first_and_last name match; district number agrees (house HD-041A)"
+    },
+    {
+      "people_id": 26481,
+      "candidate_id": "d65ac3b7-58ac-45e5-ac32-fdf091dd9307",
+      "note": "first_and_last name match; district number agrees (house HD-005A)"
+    },
+    {
+      "people_id": 26547,
+      "candidate_id": null,
+      "note": "reviewed, no candidate: sitting member for house HD-026B is not on the 2026 ballot; no candidate in the pool shares the name"
+    }
+  ]
+}

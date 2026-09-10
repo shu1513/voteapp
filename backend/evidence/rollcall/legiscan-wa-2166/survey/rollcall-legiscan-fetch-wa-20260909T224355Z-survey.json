@@ -1,0 +1,3317 @@
+{
+  "runId": "rollcall-legiscan-fetch-wa-20260909T224355Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "WA",
+  "startedAt": "2026-09-09T22:43:55.985Z",
+  "finishedAt": "2026-09-09T22:43:58.031Z",
+  "datasetDir": "~/legiscan-data/wa-2166/WA/2025-2026_Regular_Session",
+  "bills": 3413,
+  "votes": 5038,
+  "people": 151,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Senate 3rd Reading & Final Passage",
+      "count": 733,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 49,
+      "billTypes": [
+        "B",
+        "CR",
+        "JM",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB5158",
+        "SB5068",
+        "SJM8005"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House 3rd Reading & Final Passage",
+      "count": 648,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B",
+        "CR",
+        "JM",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1006",
+        "HB1009",
+        "HB1012"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate 3rd Reading & Final Passage as Amended by the Senate",
+      "count": 164,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 49,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1018",
+        "HB1009",
+        "HB1371"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Final Passage as Amended by the Senate",
+      "count": 154,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1149",
+        "HB1171",
+        "HB1308"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Final Passage as Amended by the House",
+      "count": 149,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5004",
+        "SB5025",
+        "SB5167"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass",
+      "count": 146,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 24,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB5306",
+        "SB5529",
+        "SB5079"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage as Amended by the House",
+      "count": 141,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 49,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5093",
+        "SB5077",
+        "SB5303"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: 2nd substitute bill be substituted, do pass",
+      "count": 100,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1102",
+        "HB1217",
+        "HB1131"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass",
+      "count": 93,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 31,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1156",
+        "HB1300",
+        "HB1349"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Labor & Commerce: do pass",
+      "count": 68,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5054",
+        "SB5435",
+        "SB5039"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: 1st substitute bill be substituted, do pass",
+      "count": 60,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1123",
+        "HB1260",
+        "HB1116"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: 1st substitute bill be substituted, do pass",
+      "count": 60,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5252",
+        "SB5168",
+        "SB5431"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Law & Justice: 1st substitute bill be substituted, do pass",
+      "count": 57,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "SB5098",
+        "SB5067",
+        "SB5202"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Health & Long-Term Care: do pass",
+      "count": 56,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JM",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB5084",
+        "SB5244",
+        "SB5051"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: do pass",
+      "count": 55,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1004",
+        "HB1126",
+        "HJR4200"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on State Government & Tribal Relations: do pass",
+      "count": 55,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR",
+        "JM",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1017",
+        "HB1116",
+        "HB1030"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Labor & Commerce: 1st substitute bill be substituted, do pass",
+      "count": 53,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5191",
+        "SB5104",
+        "SB5062"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Labor & Workplace Standards: do pass",
+      "count": 50,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1105",
+        "HB1173",
+        "HB1275"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on State Government, Tribal Affairs & Elections: do pass",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 1,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR",
+        "JM"
+      ],
+      "sampleBills": [
+        "SB5069",
+        "SB5000",
+        "SB5102"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Health & Long-Term Care: 1st substitute bill be substituted, do pass",
+      "count": 48,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5239",
+        "SB5064",
+        "SB5335"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: 2nd substitute bill be substituted, do pass",
+      "count": 48,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5060",
+        "SB5502",
+        "SB5278"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Health Care & Wellness: do pass",
+      "count": 47,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "HB1009",
+        "HB1090",
+        "HB1157"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Civil Rights & Judiciary: do pass",
+      "count": 46,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "HB1046",
+        "HB1014",
+        "HB1112"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s)",
+      "count": 46,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1488",
+        "HB1258",
+        "HB1109"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Health Care & Wellness: 1st substitute bill be substituted, do pass",
+      "count": 45,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1129",
+        "HB1238",
+        "HB1186"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Early Learning & K-12 Education: 1st substitute bill be substituted, do pass",
+      "count": 45,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB5190",
+        "SB5181",
+        "SB5030"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Environment & Energy: 1st substitute bill be substituted, do pass",
+      "count": 43,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1154",
+        "HB1253",
+        "HB1024"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Human Services: 1st substitute bill be substituted, do pass",
+      "count": 42,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5029",
+        "SB5131",
+        "SB5266"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Transportation: 1st substitute bill be substituted, do pass",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 28,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "HB1371",
+        "HB1061",
+        "HB1418"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Labor & Workplace Standards: 1st substitute bill be substituted, do pass",
+      "count": 40,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1141",
+        "HB1162",
+        "HB1070"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Transportation: 1st substitute bill be substituted, do pass",
+      "count": 38,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "SB5215",
+        "SJM8000",
+        "SB5281"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Transportation: do pass",
+      "count": 38,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "SB5234",
+        "SB5081",
+        "SB5462"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Human Services: do pass",
+      "count": 37,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5079",
+        "SB5199",
+        "SB5032"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Community Safety: 1st substitute bill be substituted, do pass",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1149",
+        "HB1137",
+        "HB1192"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Law & Justice: do pass",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "SB5006",
+        "SB5021",
+        "SB5065"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Housing: 1st substitute bill be substituted, do pass",
+      "count": 35,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5129",
+        "SB5156",
+        "SB5332"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Community Safety: do pass",
+      "count": 34,
+      "withoutMemberList": 0,
+      "minTotal": 1,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1052",
+        "HB1091",
+        "HB1119"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: 1st substitute bill be substituted, do pass",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1210",
+        "HB1488",
+        "HB1261"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Local Government: 1st substitute bill be substituted, do pass",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1015",
+        "HB1212",
+        "HB1183"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Early Learning & K-12 Education: do pass",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5130",
+        "SB5187",
+        "SB5192"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Local Government: do pass",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5288",
+        "SB5315",
+        "SB5138"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Early Learning & Human Services: 1st substitute bill be substituted, do pass",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1243",
+        "HB1177",
+        "HB1263"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Environment, Energy & Technology: 1st substitute bill be substituted, do pass",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5175",
+        "SB5236",
+        "SB5360"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Agriculture & Natural Resources: do pass",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "HB1208",
+        "HB1309",
+        "HB1389"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s)",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5168",
+        "SB5390",
+        "SB5033"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Consumer Protection & Business: do pass",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "HB1005",
+        "HB1006",
+        "HB1269"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Transportation: do pass",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 29,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "HB1605",
+        "HB1616",
+        "HB1537"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Consumer Protection & Business: 1st substitute bill be substituted, do pass",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1209",
+        "HB1104",
+        "HB1066"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Agriculture & Natural Resources: do pass",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "SB5334",
+        "SB5343",
+        "SB5656"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Local Government: do pass",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1054",
+        "HB1304",
+        "HB1044"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on State Government & Tribal Relations: 1st substitute bill be substituted, do pass",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB1147",
+        "HB1321",
+        "HB1412"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Environment, Energy & Technology: do pass",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5036",
+        "SB5188",
+        "SB5317"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on State Government, Tribal Affairs & Elections: 1st substitute bill be substituted, do pass",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5017",
+        "SB5176",
+        "SB5106"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Civil Rights & Judiciary: 1st substitute bill be substituted, do pass",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1132",
+        "HB1163",
+        "HB1620"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Technology, Economic Development, & Veterans: 1st substitute bill be substituted, do pass",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1057",
+        "HB1102",
+        "HB1170"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Early Learning & Human Services: do pass",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1272",
+        "HB1028",
+        "HB1459"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Education: 1st substitute bill be substituted, do pass",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1296",
+        "HB1285",
+        "HB1079"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Housing: do pass",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5313",
+        "SB5471",
+        "SB5580"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Law & Justice: do pass with amendment(s)",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1731",
+        "HB1620",
+        "HB1052"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Local Government: 1st substitute bill be substituted, do pass",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5155",
+        "SB5221",
+        "SB5300"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Postsecondary Education & Workforce: 1st substitute bill be substituted, do pass",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1161",
+        "HB1136",
+        "HB1036"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Higher Education & Workforce Development: do pass",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5110",
+        "SB5158",
+        "SB5304"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Housing: 1st substitute bill be substituted, do pass",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1022",
+        "HB1217",
+        "HB1108"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Postsecondary Education & Workforce: do pass",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1023",
+        "HB1114",
+        "HB1298"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Environment, Energy & Technology: do pass with amendment(s)",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1018",
+        "HB1253",
+        "HB1497"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Business, Financial Services & Trade: do pass",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "SJM8005",
+        "SB5108",
+        "SB5016"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Environment & Energy: do pass",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1018",
+        "HB1329",
+        "HB1461"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Technology, Economic Development, & Veterans: do pass",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "HB1073",
+        "HB1271",
+        "HB1408"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Education: do pass",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1167",
+        "HB1795",
+        "HB1393"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Housing: do pass",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1003",
+        "HB1075",
+        "HB1380"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Agriculture & Natural Resources: 1st substitute bill be substituted, do pass",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5303",
+        "SB5165",
+        "SB5212"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Transportation: do pass with amendment(s)",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1371",
+        "HB1878",
+        "HB1902"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 49,
+      "billTypes": [
+        "B",
+        "JM"
+      ],
+      "sampleBills": [
+        "SB5240",
+        "SB5467",
+        "SB5098"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Agriculture & Natural Resources: 1st substitute bill be substituted, do pass",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1048",
+        "HB1325",
+        "HB1539"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: without recommendation",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5098",
+        "SB5470",
+        "SB5124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Education: do pass with amendment(s)",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5025",
+        "SB5004",
+        "SB5193"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Transportation: do pass with amendment(s)",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5690",
+        "SB5215",
+        "SB5595"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Final Passage on Reconsideration",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1390",
+        "HB1244",
+        "HB1688"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Higher Education & Workforce Development: 1st substitute bill be substituted, do pass",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5164",
+        "SB5027",
+        "SB5321"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Labor & Commerce: do pass with amendment(s)",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1162",
+        "HB1069",
+        "HB1213"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Capital Budget: do pass",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1064",
+        "HB1314",
+        "HB1633"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Community Safety: do pass with amendment(s)",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5068",
+        "SB5238",
+        "SB5139"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Environment & Energy: do pass with amendment(s)",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5317",
+        "SB5466",
+        "SB5627"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Local Government: do pass with amendment(s)",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5571",
+        "SB5184",
+        "SB5559"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Early Learning & K-12 Education: do pass with amendment(s)",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1648",
+        "HB1651",
+        "HB1796"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Health & Long-Term Care: do pass with amendment(s)",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1009",
+        "HB1395",
+        "HB1186"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: do pass with amendment(s)",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5576",
+        "SB5368",
+        "SB5813"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on State Government & Tribal Relations: do pass with amendment(s)",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5014",
+        "SB5017",
+        "SB5892"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Health Care & Wellness: do pass with amendment(s)",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5124",
+        "SB5579",
+        "SB5691"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Housing: do pass with amendment(s)",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5298",
+        "SB5313",
+        "SB5471"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Business, Financial Services & Trade: 1st substitute bill be substituted, do pass",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5294",
+        "SB5492",
+        "SB5262"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Business, Trade & Economic Development: 1st substitute bill be substituted, do pass",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5928",
+        "SB6031",
+        "SB6061"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Housing: do pass with amendment(s)",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1621",
+        "HB1757",
+        "HB1491"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Human Services: do pass with amendment(s)",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1130",
+        "HB1131",
+        "HB1171"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Early Learning &amp; K-12 Education",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB5009",
+        "SB5123",
+        "SJR8200"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Civil Rights & Judiciary: do pass with amendment(s)",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5169",
+        "SB5142",
+        "SB5098"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Early Learning & Human Services: do pass with amendment(s)",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5079",
+        "SB5232",
+        "SB5506"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: 2nd substitute bill be substituted, do pass",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1871",
+        "HB1847",
+        "HB1037"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Business, Trade & Economic Development: do pass",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5919",
+        "SB5831",
+        "SB6178"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Labor & Workplace Standards: do pass with amendment(s)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5217",
+        "SB5408",
+        "SB5694"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Technology, Economic Development, & Veterans: do pass with amendment(s)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5677",
+        "SB5420",
+        "SB5338"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on State Government, Tribal Affairs & Elections: do pass with amendment(s)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1372",
+        "HB1541",
+        "HB1633"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by Environment, Energy &amp; Technology",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1912",
+        "HB1497",
+        "HB1409"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Capital Budget: 1st substitute bill be substituted, do pass",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1967",
+        "HB1202",
+        "HB1216"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Final Passage as Recommended by the Conference Committee",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5041",
+        "HB1217",
+        "SB5167"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage as Recommended by Conference Committee",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 49,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5041",
+        "HB1217",
+        "SB5167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: 3rd substitute bill be substituted, do pass",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1491",
+        "HB1607",
+        "HB1710"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Early Learning &amp; Human Services",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5296",
+        "SB5291",
+        "SB5232"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Capital Budget: 2nd substitute bill be substituted, do pass",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1024",
+        "HB1549",
+        "HB1491"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Labor &amp; Commerce",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5694",
+        "SB5292",
+        "SB5433"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Environment &amp; Energy",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5627",
+        "SB5284",
+        "SB5466"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Consumer Protection & Business: do pass with amendment(s)",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5206",
+        "SB5419",
+        "SB5721"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Final Passage as Amended by the House on Reconsideration",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5079",
+        "SB5143",
+        "SB5752"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Local Government: do pass with amendment(s)",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1039",
+        "HB1562",
+        "HB1576"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Transportation: 2nd substitute bill be substituted, do pass",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5061",
+        "SB5098",
+        "SB5690"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Transportation: without recommendation",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5072",
+        "SB5624",
+        "SB5989"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Environment, Energy &amp; Technology",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5033",
+        "SB5628",
+        "SB5466"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Housing",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5298",
+        "SB5469",
+        "SB5587"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Agriculture & Natural Resources: do pass with amendment(s)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5303",
+        "SB5319",
+        "SB5971"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Environment &amp; Energy",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1670",
+        "HB1550",
+        "HB2301"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Labor &amp; Workplace Standards",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 28,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1622",
+        "HB2355",
+        "HB2405"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Health Care &amp; Wellness",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5124",
+        "SB5981",
+        "SB5845"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Transportation: 2nd substitute bill be substituted, do pass",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 27,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1440",
+        "HB2251",
+        "HB1923"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Health & Long-Term Care: without recommendation",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5178",
+        "SB5201",
+        "SB6194"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Human Services: without recommendation",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5481",
+        "SB5393",
+        "SB5394"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Human Services",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5163",
+        "SB5488",
+        "SB5911"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Civil Rights &amp; Judiciary",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2597",
+        "HB2548"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Early Learning &amp; Human Services",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1177",
+        "HB1351"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Education",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1651",
+        "HB2557"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by State Government &amp; Tribal Relations",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1750",
+        "HB2475"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Health Care &amp; Wellness",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5395",
+        "SB6210"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Local Government",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5559",
+        "SB6026"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Technology, Economic Development, &amp; Veterans",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5677",
+        "SB5420"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Early Learning &amp; Human Services",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5079",
+        "SB5911"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Environment &amp; Energy",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5036",
+        "SB6246"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Labor &amp; Workplace Standards",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5217",
+        "SB5292"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by State Government &amp; Tribal Relations",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB6034",
+        "SB5968"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Capital Budget: do pass with amendment(s)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB6076",
+        "SB6313"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Transportation: do pass with amendment(s) by Local Government",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5374"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Agriculture & Natural Resources: without recommendation",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5583",
+        "SB6154"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Business, Trade & Economic Development: do pass with amendment(s)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2334",
+        "HB2624"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: 3rd substitute bill be substituted, do pass",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5387",
+        "SB5466"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Business, Trade &amp; Economic Development",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB6289",
+        "SB6079"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by Early Learning &amp; K-12 Education",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1651",
+        "HB1796"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by Labor &amp; Commerce",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1162",
+        "HB1069"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by Law &amp; Justice",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1359",
+        "HB1219"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage without Senate Amendments",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 49,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1232",
+        "HB1408"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "HCW - Majority; 1st substitute bill be substituted, do pass.: 1st substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2577"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Finance",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 27,
+      "maxTotal": 27,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Health Care &amp; Wellness",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1971"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Housing",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2266"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 1st substitute bill proposed by Postsecondary Education &amp; Workforce",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2474"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 2nd substitute bill proposed by Capital Budget",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1549"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 2nd substitute bill proposed by Technology, Economic Development, &amp; Veterans",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 27,
+      "maxTotal": 27,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1170"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass 3rd substitute bill proposed by Finance",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1960"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Civil Rights &amp; Judiciary",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5098"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Finance",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5576"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Housing",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5613"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by Labor &amp; Workplace Standards",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5847"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) but without amendment(s) by State Government &amp; Tribal Relations",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB6160"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Agriculture &amp; Natural Resources",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5319"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Education",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5969"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Housing",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5686"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Appropriations: do pass with amendment(s) by Technology, Economic Development, &amp; Veterans",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5420"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Capital Budget: do pass 1st substitute bill proposed by Housing",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2236"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Capital Budget: do pass 1st substitute bill proposed by State Government &amp; Tribal Relations",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR4403"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Capital Budget: do pass with amendment(s) by Agriculture &amp; Natural Resources",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5303"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Community Safety: do pass with amendment(s) by Community Safety",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Consumer Protection & Business: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1701"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Early Learning & Human Services: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1544"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Education: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1634"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Education: 3rd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1662"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Environment & Energy: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1420"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Environment & Energy: do pass with amendment(s) by Environment &amp; Energy",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5445"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: 3rd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1960"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: do pass 1st substitute bill proposed by Environment &amp; Energy",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: do pass 1st substitute bill proposed by Local Government",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2224"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Finance: do pass 2nd substitute bill proposed by Appropriations",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1102"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Health Care & Wellness: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1784"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Health Care & Wellness: 3rd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1589"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Housing: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Labor & Workplace Standards: do pass with amendment(s) by Labor &amp; Workplace Standards",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5292"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Technology, Economic Development, & Veterans: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1170"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Transportation: do pass 1st substitute bill proposed by Civil Rights &amp; Judiciary",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 27,
+      "maxTotal": 27,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1733"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee on Transportation: do pass 1st substitute bill proposed by Labor &amp; Workplace Standards",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 27,
+      "maxTotal": 27,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1264"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Final Passage as Amended by the Senate on Reconsideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2156"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Place Measure on Final Passage as Amended by the House",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5181"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Agriculture & Natural Resources: do pass with amendment(s)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1539"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Business, Financial Services & Trade: do pass with amendment(s)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1080"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Early Learning & K-12 Education: without recommendation",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB6260"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Environment, Energy & Technology: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5466"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Higher Education & Workforce Development: do pass with amendment(s)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 3,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1587"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Higher Education & Workforce Development: without recommendation",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1722"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Housing: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5470"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Labor & Commerce: 2nd substitute bill be substituted, do pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5292"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Local Government: without recommendation",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5033"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on State Government, Tribal Affairs & Elections: without recommendation",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1562"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Transportation: do pass 1st substitute bill proposed by Law &amp; Justice",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5067"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Transportation: do pass with amendment(s) by Business, Trade &amp; Economic Development",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2334"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Agriculture &amp; Natural Resources",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5971"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Health &amp; Long-Term Care",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5933"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Higher Education &amp; Workforce Development",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5523"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Law &amp; Justice",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5906"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by Local Government",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5509"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 1st substitute bill proposed by State Government, Tribal Affairs &amp; Elections",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5827"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 2nd substitute bill proposed by Labor &amp; Commerce",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5292"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass 2nd substitute bill proposed by Ways &amp; Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5496"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by Health &amp; Long-Term Care",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1432"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by Higher Education &amp; Workforce Development",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1587"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by Human Services",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1390"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee on Ways & Means: do pass with amendment(s) by State Government, Tribal Affairs &amp; Elections",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1710"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage as Amended by the Senate",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 49,
+      "maxTotal": 49,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2325"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 3113,
+    "CR": 20,
+    "JM": 35,
+    "JR": 27,
+    "R": 218
+  },
+  "sessionIds": {
+    "2166": 3413
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": [
+    {
+      "file": "vote/1490403.json",
+      "error": "LegiScan roll call 1490403: nay says 2 but the member list holds 1"
+    },
+    {
+      "file": "vote/1621350.json",
+      "error": "LegiScan roll call 1621350: yea says 34 but the member list holds 17"
+    },
+    {
+      "file": "vote/1644893.json",
+      "error": "LegiScan roll call 1644893: yea says 28 but the member list holds 14"
+    },
+    {
+      "file": "vote/1645234.json",
+      "error": "LegiScan roll call 1645234: yea says 32 but the member list holds 16"
+    }
+  ]
+}
