@@ -1,0 +1,22 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NE",
+   "chamber": "senate",
+   "session": "2185",
+   "roll": 1580464,
+   "measure_id": "LB 415",
+   "vote_date": "2025-05-28",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Legislative Bill 415, which narrows the paid sick leave law Nebraska voters approved in 2024. That law lets a worker earn paid time off to use when they are sick. The act takes several groups out of it. Independent contractors, owner-operators, and farm workers in seasonal or temporary jobs no longer count as employees. Neither does anyone under sixteen. Only an employer with eleven or more workers is now covered, where the old rule started at one. A worker must be employed eighty hours in a row before paid sick time starts to build up. The act removes the worker's right to sue an employer over a violation, and the four-year deadline that went with that right. An employer whose own paid leave policy already meets the standard owes nothing further. Unused paid sick time does not have to be paid out when a job ends. The act separately lets the state take unemployment overpayments out of a person's gambling winnings, the way it already collects unpaid taxes that way. It also rewrites the state's rules for licensing elevator mechanics and contractors. The Nebraska Legislature passed it 33-16, and it became law.",
+   "nay_description": "Voted against Legislative Bill 415, which narrows the paid sick leave law Nebraska voters approved in 2024. That law lets a worker earn paid time off to use when they are sick. The act takes several groups out of it. Independent contractors, owner-operators, and farm workers in seasonal or temporary jobs no longer count as employees. Neither does anyone under sixteen. Only an employer with eleven or more workers is now covered, where the old rule started at one. A worker must be employed eighty hours in a row before paid sick time starts to build up. The act removes the worker's right to sue an employer over a violation, and the four-year deadline that went with that right. An employer whose own paid leave policy already meets the standard owes nothing further. Unused paid sick time does not have to be paid out when a job ends. The act separately lets the state take unemployment overpayments out of a person's gambling winnings, the way it already collects unpaid taxes that way. It also rewrites the state's rules for licensing elevator mechanics and contractors. The Nebraska Legislature passed it 33-16, and it became law."
+  }
+ ]
+}

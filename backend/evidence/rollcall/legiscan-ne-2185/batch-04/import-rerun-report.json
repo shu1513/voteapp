@@ -1,0 +1,199 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-10T06:14:53.636Z",
+  "finishedAt": "2026-09-10T06:14:54.204Z",
+  "jurisdiction": "NE",
+  "sessionId": 2185,
+  "evidenceDir": "evidence/rollcall/legiscan-ne-2185/batch-04",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ne-2185/crosswalk.json",
+  "crosswalkEntries": 50,
+  "peopleFile": "evidence/rollcall/legiscan-ne-2185/legiscan-people-ne-2185.json",
+  "peopleMembers": 50,
+  "files": 1,
+  "outcomes": {
+    "imported": 1
+  },
+  "actions": {
+    "unchanged": 12
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ne-senate-2185-roll1580464.json",
+      "state": "NE",
+      "chamber": "senate",
+      "sessionId": 2185,
+      "roll": 1580464,
+      "outcome": "imported",
+      "legislativeVoteId": "ac74e08c-e5da-4762-bbd9-2ed89b5716b7",
+      "reviewStatus": "approved",
+      "bill": "LB415",
+      "voteDate": "2025-05-28",
+      "officialVoteDate": null,
+      "measureId": "LB 415",
+      "question": "Passed on Final Reading 33-16-0",
+      "originRunId": "rollcall:NE:senate:2185:1580464:2026-09-10T06:14:53.636Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 12,
+        "unmatched_reviewed": 37
+      },
+      "actions": {
+        "unchanged": 12
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "f35b23a9-735f-4b7d-a0c3-677433e316b3",
+          "candidateName": "Merv Riepe",
+          "peopleId": 16896,
+          "memberName": "Merv Riepe",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "92a2a836-abd2-4167-81ce-6258a735cf4f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "3b816690-42af-41be-b031-6069a040397a",
+          "candidateName": "Mike Jacobson",
+          "peopleId": 23101,
+          "memberName": "Michael Jacobson",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "25741b58-7043-4d5c-944c-8f454e538166",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4c591565-e04a-449e-b056-e92a85ec18ba",
+          "candidateName": "Loren Lippincott",
+          "peopleId": 23685,
+          "memberName": "Loren Lippincott",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "c716f63b-8eec-443e-9882-69919d6e0061",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "51b97126-6d01-427b-afe1-42aeab75d395",
+          "candidateName": "Barry DeKay",
+          "peopleId": 23763,
+          "memberName": "Barry DeKay",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "ab950022-2d46-4ca5-a871-bfebc8c0468e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4859f44f-7376-492a-af78-1a5a4d8760d0",
+          "candidateName": "Rick Holdcroft",
+          "peopleId": 23876,
+          "memberName": "Rick Holdcroft",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "47adeccc-9cb5-4d01-ab77-ab7e25e9af58",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "df1dc14e-c67a-4b29-a065-4b092c9e81b7",
+          "candidateName": "R. Brad von Gillern",
+          "peopleId": 23877,
+          "memberName": "Brad Von Gillern",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "bcea003d-795b-4a5a-bf71-cc9770495724",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "21060c5a-b768-4623-b370-08d99a91d338",
+          "candidateName": "Teresa Ibach",
+          "peopleId": 23980,
+          "memberName": "Teresa Ibach",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "e1c3966e-2e6d-47ac-a9b0-d0fefa70fd6a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "427da471-1e68-42d1-a94f-66705f122301",
+          "candidateName": "Brian Hardin",
+          "peopleId": 24301,
+          "memberName": "Brian Hardin",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "12a8f154-89c0-487e-809f-bd7ce9557a22",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4341cfe0-3f4e-421d-9100-cb10bf0d55f6",
+          "candidateName": "Jana Hughes",
+          "peopleId": 24682,
+          "memberName": "Jana Hughes",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "8e44678b-c5ed-4856-b14d-684699633a39",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d87591b5-d9a6-4392-bcaf-765d71dc7ed3",
+          "candidateName": "Danielle Conrad",
+          "peopleId": 6952,
+          "memberName": "Danielle Conrad",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "8643453a-58fa-4961-9f79-d776cba9b153",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1e4dfe8d-2557-442e-b09b-bc336a760725",
+          "candidateName": "George Dungan",
+          "peopleId": 23684,
+          "memberName": "George Dungan",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "d38bedaf-6dd3-406c-b6d3-ccb27fe07a83",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "126b0e30-b036-405a-a79f-f1fc8e838185",
+          "candidateName": "John Fredrickson",
+          "peopleId": 23764,
+          "memberName": "John Fredrickson",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "da284f37-3e06-4bf5-9bd4-8e6300398723",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}
