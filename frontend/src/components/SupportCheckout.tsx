@@ -237,7 +237,7 @@ function OutcomeBanners({ outcome, kind }: { outcome: string | null; kind: Membe
           {kind === "monthly" ? (
             <>
               Thank you for your support! You&apos;re now an honorary member. You&apos;ll get our occasional
-              reports on key issues that could affect you, and you can manage your membership from{" "}
+              members-only reports, and you can manage your membership from{" "}
               <Link to="/me/settings" className={linkClass}>
                 Settings
               </Link>
