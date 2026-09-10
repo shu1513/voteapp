@@ -1,0 +1,185 @@
+# South Dakota roll-call judging notes
+
+Covers batches 01 to 04, across the 2025 Regular Session (2170), the 2026
+Regular Session (2231) and the 2025 First Special Session (2222).
+
+Everything here was written from South Dakota's own published record: the bill
+history, the adopted amendments and the enrolled act on `sdlegislature.gov`.
+Committee testimony was not used. Sponsor material was not used. No AI provider
+was called at any point.
+
+## What was imported
+
+    Batch 01  2170 + 2222   12 measures   18 roll calls     601 records
+    Batch 02  2170            9 measures   12 roll calls     381 records
+    Batch 03  2231            7 measures   10 roll calls     341 records
+    Batch 04  2231            5 measures    5 roll calls     171 records
+    Total                    33 measures   45 roll calls   1,494 records
+
+68 candidates, 1,093 research area tags. Production holds zero South Dakota
+records.
+
+## The rules that decided each vote
+
+**The roll call is the chamber's last recorded passage on the text that became
+law.** Where a chamber passed a bill, the other chamber amended it, and the
+first chamber then agreed, the concurrence vote is the one imported and the
+earlier vote is not. House Bill 1218 is imported on the conference committee
+report rather than on either chamber's earlier vote.
+
+**Whether a vote carried comes from South Dakota's own history line, never from
+LegiScan's `passed` flag.** The flag is wrong 31 times in these two sessions, in
+both directions: 29 votes it calls passes were defeats under a two-thirds
+requirement, and 2 votes it calls failures passed on the Lieutenant Governor's
+tie-breaking vote in the Senate.
+
+**Every signing date is read out of the state's action log by the builder,** not
+typed by hand. Two dates in a first draft were wrong and this caught both.
+
+**Descriptions come from the enrolled act.** South Dakota's enrolled act carries
+no markup — it is the clean final law — so what a bill *changed* was read from
+the last marked version instead, where new language is underlined and deleted
+language is struck through. A plain text dump loses both marks, so the marks are
+read from the page.
+
+## The hoghouse check
+
+A hoghouse amendment strikes a bill's whole text and replaces it, sometimes on a
+different subject, while the number and often the title stay the same. Every
+measure here had its amendment list read.
+
+**House Bill 1239 is the case that proves the check.** It started as a repeal of
+the affirmative defense that protects school and public library staff from
+obscenity charges. The Senate struck the entire bill and put in something else
+altogether: schools and libraries must let a person appeal to the school board or
+library governing body over whether material is obscene, with court review.
+The House's first vote (38-32) and its final vote (36-34) were on two different
+bills. **Dropped**, because on the text that actually became law neither
+direction is honest — a formal appeal path with judicial review reads as a
+safeguard and as a book-challenge mechanism at the same time.
+
+**Senate Bill 12 is a hoghouse that undid itself.** The House added a cap on
+transfers from a candidate's federal committee and then removed it again before
+passage, so the Senate's earlier vote and the House's vote are on the same loan
+rule after all. Both are imported.
+
+**Senate Bill 216 needed an acknowledgment.** The House rejected it 35-34, voted
+to reconsider, and passed it 53-16 the same day. Same-day votes cannot be
+ordered by date, so the successful vote is judged and the failed one is listed in
+`acknowledge_later_rolls`.
+
+## Labels worth explaining
+
+**House Bill 1052, carbon pipeline eminent domain, went to
+`corporate_accountability`, not `environment_and_public_health`.** The act does
+not change any health or emissions standard. It changes who may force a
+landowner to sell. On the environment the direction is genuinely arguable,
+because the pipeline exists to capture carbon; on a company's power over private
+land it is not.
+
+**The prison bill went to `government_spending_reduction`, yea against.** A
+$650 million appropriation is the clearest single fiscal decision in either
+session. `public_safety_and_crime_control` was considered and rejected: whether
+more prison capacity improves safety is exactly the argument the vote was about.
+
+**Senate Bill 44 carries two labels pointing opposite ways.** A new
+attorney general subpoena for business records is an investigative tool
+(`public_safety_and_crime_control`, for) and an expansion of government access to
+electronic records (`data_privacy`, against). Both are true, and the judicial
+approval step is stated in the description so a reader can weigh it.
+
+**Voter registration measures went to `election_integrity`, not `civil_rights`.**
+House Bill 1066, House Bill 1208, House Bill 1127 and Senate Bill 214 all bear on
+whether the rolls describe people who actually live where they vote, or on what
+the public can check. The class affected by the mailbox rule is not a protected
+class and the mechanism is roll accuracy. Senate Bill 214 was also weighed under
+`data_privacy`, since it publishes the statewide file weekly; the fields state
+law keeps private are excluded, and the file was already open to inspection, so
+only `election_integrity` was used.
+
+**Senate Bill 83 is `public_safety_and_crime_control`, yea for, because the area
+names justice system reform.** Cutting a first drug ingestion offense from a
+felony to a misdemeanor with mandatory evaluation and supervised probation is
+that. Senate Bill 179, which lets a court commit a juvenile weapons offender to
+the Department of Corrections, was **dropped** rather than labeled the same way:
+the area names both accountability and reform, and that measure is read as one by
+its supporters and the other by its opponents.
+
+## Drops worth remembering
+
+**Senate Bill 96** lets a county levy a new local gross receipts tax to cut
+property tax on owner-occupied homes. It raises one household tax to lower
+another, so on cost of living neither direction is honest.
+
+**House Bill 1256 and House Bill 1184**, on petition signature information and
+the initiative filing deadline, are dropped under the rule that a measure about
+how hard it is to make law by petition carries no honest direction.
+
+**Two joint resolutions** — House Joint Resolution 5002, applying for a federal
+constitutional convention, and Senate Joint Resolution 501, approving a future
+water permit — never went to the Governor and neither history carries an
+enactment action, so both fail the "became law" filter.
+
+**Routine fee schedules, internal state paperwork, single-parcel land bills and
+plain spending bills** are dropped on subject, with the reason recorded per
+measure in `dispositions.json`.
+
+## Where the state stands
+
+The full ledger is `dispositions.json` in this directory: one row per measure,
+with its roll calls and a written disposition.
+
+    99 measures with a closely divided final vote
+    33 imported over four batches
+    42 dropped with a written reason
+     1 deferred (House Bill 1084)
+    23 still to read
+
+The 23 open measures are listed in the ledger with an empty disposition. None has
+been read yet, so none has been ruled in or out.
+
+## One gap worth raising
+
+South Dakota has no research area for labor or workplace rights, the same gap
+that has cost measures in seven other states in this campaign. Senate Bill 63,
+the state office of apprenticeship, was placed under `reduce_wealth_gap` because
+that area names economic mobility, which an apprenticeship route into skilled
+work plainly is. A labor area would have been the better home.
+
+## Review round
+
+Seven review findings on pull request #1272, all checked against the enrolled
+act and all real. Corrected in the judgments, re-judged, and re-imported on the
+same record ids: 272 records rewritten, counts unchanged at 45 roll calls and
+1,494 records. Each batch keeps its ledger in
+`import-review-fixes-report.json`; `import-report.json` is untouched.
+
+House Bill 1220 had vapes on the wrong side of the line. The new chapter's
+"nicotine product" is an alternative nicotine product or a vapor product; only
+cigarettes and tobacco products are outside it. The description also now says
+that distributors and wholesalers already licensed under chapter 10-50 do not
+need the new license.
+
+Senate Bill 44 was described as a general criminal-subpoena power. Section 2
+limits it to Division of Criminal Investigation cases involving internet crimes
+against children or human trafficking, and section 5 limits what can be demanded
+to subscriber and account details. Both limits are now in the text.
+
+House Bill 1219 said an agency "may now obtain" an interpreter. Section 2 says
+the agency shall procure, appoint and pay for one. The description now reads as
+the duty it is.
+
+Senate Bill 159 omitted two conditions on the under-eighteen exception: the
+applicants may be no more than four years apart in age, and the license may not
+issue until thirty days after the court approves.
+
+House Bill 1092 caps a grant at $5,000 per school district or accredited school,
+not per school.
+
+Senate Bill 164 defines a deepfake as an image, audio or video made or altered
+with artificial intelligence or other digital technology; the description had
+narrowed it to AI audio and video.
+
+House Bill 1238 does not reach representatives accredited or regulated by the
+United States Department of Veterans Affairs (section 6); both chambers'
+descriptions now carry that exception.

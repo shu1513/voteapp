@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2222",
+      "roll": 1603107,
+      "measure_id": "SB 2",
+      "vote_date": "2025-09-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2, which paid for a new state prison in Minnehaha County. The act appropriates $650 million for buying the land and building a men's prison, and moves $78.8 million into the fund that pays for it. The Department of Corrections may buy the site and trade away two quarter sections the state owns in Lincoln County. Each construction package must be bid publicly on the state website. Money not spent by June 30, 2032 goes back. The South Dakota House vote was 51-18. This was the only bill passed at the September 2025 special session. The Governor signed it on September 23, 2025.",
+      "nay_description": "Voted against Senate Bill 2, which paid for a new state prison in Minnehaha County. The act appropriates $650 million for buying the land and building a men's prison, and moves $78.8 million into the fund that pays for it. The Department of Corrections may buy the site and trade away two quarter sections the state owns in Lincoln County. Each construction package must be bid publicly on the state website. Money not spent by June 30, 2032 goes back. The South Dakota House vote was 51-18. This was the only bill passed at the September 2025 special session. The Governor signed it on September 23, 2025.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2222",
+      "roll": 1603108,
+      "measure_id": "SB 2",
+      "vote_date": "2025-09-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2, which paid for a new state prison in Minnehaha County. The act appropriates $650 million for buying the land and building a men's prison, and moves $78.8 million into the fund that pays for it. The Department of Corrections may buy the site and trade away two quarter sections the state owns in Lincoln County. Each construction package must be bid publicly on the state website. Money not spent by June 30, 2032 goes back. The South Dakota Senate vote was 24-11. This was the only bill passed at the September 2025 special session. The Governor signed it on September 23, 2025.",
+      "nay_description": "Voted against Senate Bill 2, which paid for a new state prison in Minnehaha County. The act appropriates $650 million for buying the land and building a men's prison, and moves $78.8 million into the fund that pays for it. The Department of Corrections may buy the site and trade away two quarter sections the state owns in Lincoln County. Each construction package must be bid publicly on the state website. Money not spent by June 30, 2032 goes back. The South Dakota Senate vote was 24-11. This was the only bill passed at the September 2025 special session. The Governor signed it on September 23, 2025.",
+      "labels": [
+        {
+          "slug": "government_spending_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

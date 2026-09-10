@@ -1,0 +1,99 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1636171,
+      "measure_id": "HB 1219",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1219, which required state agencies to provide an interpreter in a contested hearing. A contested case is a hearing where a state agency decides someone's rights, such as a license or a benefit. When a party or a witness needs a language interpreter or translator, the agency must find and appoint one and pay for it from its own budget, and the winning party may recover any other interpreter costs it had to pay. The bill was not amended. The South Dakota House vote was 48-18. The Governor signed it on March 09, 2026.",
+      "nay_description": "Voted against House Bill 1219, which required state agencies to provide an interpreter in a contested hearing. A contested case is a hearing where a state agency decides someone's rights, such as a license or a benefit. When a party or a witness needs a language interpreter or translator, the agency must find and appoint one and pay for it from its own budget, and the winning party may recover any other interpreter costs it had to pay. The bill was not amended. The South Dakota House vote was 48-18. The Governor signed it on March 09, 2026.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1655358,
+      "measure_id": "HB 1220",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1220, which set up state licensing for sellers of nicotine products. The act writes a new chapter covering vapes and other nicotine products that are not cigarettes or tobacco, including nicotine pouches and anything made with a substance built to act like nicotine. Anyone selling these to retailers must hold a state distributor license, one for each place of business, at a fee of $1,000, and must hold a sales tax license and be current on state and local taxes. Distributors and wholesalers already licensed under the cigarette and tobacco law do not need the new license. Each shipment made in breach of the chapter counts as its own violation, and the penalties come on top of any other law. The South Dakota Senate vote was 27-7. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against House Bill 1220, which set up state licensing for sellers of nicotine products. The act writes a new chapter covering vapes and other nicotine products that are not cigarettes or tobacco, including nicotine pouches and anything made with a substance built to act like nicotine. Anyone selling these to retailers must hold a state distributor license, one for each place of business, at a fee of $1,000, and must hold a sales tax license and be current on state and local taxes. Distributors and wholesalers already licensed under the cigarette and tobacco law do not need the new license. Each shipment made in breach of the chapter counts as its own violation, and the penalties come on top of any other law. The South Dakota Senate vote was 27-7. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1646948,
+      "measure_id": "SB 113",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 113, which made it a felony to stop someone practicing their religion by force. Using a threat or violence to intentionally stop another person from doing something their religion calls for was a Class 1 misdemeanor. The act makes it a Class 6 felony. The bill was not amended. The South Dakota House vote was 48-18. The Governor signed it on March 10, 2026.",
+      "nay_description": "Voted against Senate Bill 113, which made it a felony to stop someone practicing their religion by force. Using a threat or violence to intentionally stop another person from doing something their religion calls for was a Class 1 misdemeanor. The act makes it a Class 6 felony. The bill was not amended. The South Dakota House vote was 48-18. The Governor signed it on March 10, 2026.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1619280,
+      "measure_id": "SB 42",
+      "vote_date": "2026-01-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 42, which raised the penalties for smuggling drugs and phones into prisons. The act rewrites the penalty schedule for anyone, including staff, who delivers or hides banned articles for an inmate at a state correctional facility, or on the grounds or in a vehicle entering them. Alcohol or marijuana is a Class 6 felony. A cell phone or other banned electronic device carries its own felony grade, and the schedule rises with the seriousness of the article. The South Dakota Senate vote was 26-7. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against Senate Bill 42, which raised the penalties for smuggling drugs and phones into prisons. The act rewrites the penalty schedule for anyone, including staff, who delivers or hides banned articles for an inmate at a state correctional facility, or on the grounds or in a vehicle entering them. Alcohol or marijuana is a Class 6 felony. A cell phone or other banned electronic device carries its own felony grade, and the schedule rises with the seriousness of the article. The South Dakota Senate vote was 26-7. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1653091,
+      "measure_id": "SB 44",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 44, which gave the attorney general power to subpoena account records in child exploitation and human trafficking cases. In a Division of Criminal Investigation case involving internet crimes against children or human trafficking, the attorney general, or a person the attorney general names, may issue a written demand for records, but only after a judge approves it. It reaches providers of electronic communication, internet access, remote computing and similar services, and is limited to subscriber and account details such as name, address, phone number, email, device identifiers and IP address. The provider may be barred from telling the customer. The South Dakota House vote was 52-15. The Governor signed it on March 30, 2026.",
+      "nay_description": "Voted against Senate Bill 44, which gave the attorney general power to subpoena account records in child exploitation and human trafficking cases. In a Division of Criminal Investigation case involving internet crimes against children or human trafficking, the attorney general, or a person the attorney general names, may issue a written demand for records, but only after a judge approves it. It reaches providers of electronic communication, internet access, remote computing and similar services, and is limited to subscriber and account details such as name, address, phone number, email, device identifiers and IP address. The provider may be barred from telling the customer. The South Dakota House vote was 52-15. The Governor signed it on March 30, 2026.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "data_privacy",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

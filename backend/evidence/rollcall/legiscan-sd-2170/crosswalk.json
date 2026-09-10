@@ -1,0 +1,662 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "SD",
+  "note": "One crosswalk for all three South Dakota sessions (2170, 2231, 2222). LegiScan people_ids are stable across them: every person proposed in more than one session was proposed for the same candidate, with no conflicts.",
+  "entries": [
+    {
+      "people_id": 8222,
+      "candidate_id": "a7a25eee-fe24-4f11-877d-3ece22c2dbff",
+      "note": "Phil Jensen HD-033 -> Phil Jensen (state_lower: State House District 33 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 8256,
+      "candidate_id": null,
+      "note": "State Affairs no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8257,
+      "candidate_id": null,
+      "note": "Agriculture and Natural Resources no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8259,
+      "candidate_id": null,
+      "note": "Judiciary no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8260,
+      "candidate_id": null,
+      "note": "Education no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8261,
+      "candidate_id": null,
+      "note": "Health and Human Services no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8262,
+      "candidate_id": null,
+      "note": "Taxation no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8263,
+      "candidate_id": null,
+      "note": "Transportation no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8264,
+      "candidate_id": null,
+      "note": "Local Government no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8296,
+      "candidate_id": null,
+      "note": "Al Novstrup HD-003: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8325,
+      "candidate_id": null,
+      "note": "Local Government no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8326,
+      "candidate_id": null,
+      "note": "Transportation no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8328,
+      "candidate_id": null,
+      "note": "Retirement Laws no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8329,
+      "candidate_id": null,
+      "note": "Education no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8331,
+      "candidate_id": null,
+      "note": "Taxation no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8332,
+      "candidate_id": null,
+      "note": "Agriculture and Natural Resources no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8333,
+      "candidate_id": null,
+      "note": "Health and Human Services no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8334,
+      "candidate_id": null,
+      "note": "Judiciary no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 8335,
+      "candidate_id": null,
+      "note": "State Affairs no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 10613,
+      "candidate_id": null,
+      "note": "Retirement Laws no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 10984,
+      "candidate_id": null,
+      "note": "Jon Hansen HD-025: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 12217,
+      "candidate_id": null,
+      "note": "Commerce and Energy no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 13688,
+      "candidate_id": null,
+      "note": "Commerce and Energy no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 14196,
+      "candidate_id": "6dc2483a-57b7-4e95-8008-27cc5555d080",
+      "note": "Ernie Otten SD-006 -> Ernie Otten Jr. (state_upper: State Senate District 6 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 14420,
+      "candidate_id": "06efa8e5-ac94-4539-bedd-8c55aaa2648d",
+      "note": "Mike Stevens HD-018 -> Mike Stevens (state_lower: State House District 18 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 14500,
+      "candidate_id": null,
+      "note": "Leslie Heinemann HD-025: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 14687,
+      "candidate_id": "293ffb2e-94c4-45ed-93c1-f4f87dadddd0",
+      "note": "Added by hand. Liz May, House District 27. LegiScan stores the legal first name Elizabeth and the ballot name Liz in its nickname field. South Dakota's own 2026 member roster lists May, Liz M. in House District 27."
+    },
+    {
+      "people_id": 14691,
+      "candidate_id": null,
+      "note": "Herman Otten HD-006: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 14692,
+      "candidate_id": "0fd2dac3-e9ce-4a69-9aa8-df71f60683c8",
+      "note": "Kyle Schoenfish SD-019 -> Kyle Schoenfish (state_upper: State Senate District 19 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 17180,
+      "candidate_id": null,
+      "note": "Arch Beal SD-012: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 17182,
+      "candidate_id": "e1745dd3-8bda-4f6f-9f9c-5eb04dca3bb4",
+      "note": "Lana Greenfield HD-022 -> Lana Greenfield (state_lower: State House District 22 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 17186,
+      "candidate_id": "1301d1d4-a6e1-4c92-a989-5a4d1a6f0176",
+      "note": "Added by hand. Sam Marty, Senate District 28. The ballot name carries a leading initial, J. Sam Marty, so the first name the matcher reads is J. South Dakota's own 2026 member roster lists Marty, Sam S. in Senate District 28."
+    },
+    {
+      "people_id": 17190,
+      "candidate_id": "40b5e106-ba46-4c74-9469-5ff6200d6095",
+      "note": "Larry Zikmund SD-014 -> Larry P. Zikmund (state_upper: State Senate District 14 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 17822,
+      "candidate_id": null,
+      "note": "William Shorma HD-017: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 18629,
+      "candidate_id": "0124e5ca-13ba-47c4-ad77-77e638c801bd",
+      "note": "Timothy Goodwin HD-030 -> Tim R Goodwin (state_lower: State House District 30 (2024); South Dakota); matched on first_prefix"
+    },
+    {
+      "people_id": 18630,
+      "candidate_id": "2a76ecea-73f2-4ec2-934d-d12a7ac612c6",
+      "note": "Taffy Howard SD-034 -> Taffy Howard (state_upper: State Senate District 34 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 18690,
+      "candidate_id": null,
+      "note": "Greg Jamison HD-012: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 18691,
+      "candidate_id": "83d4610e-1c1c-424b-8f5f-3c8d7d570177",
+      "note": "Kevin Jensen SD-016 -> Kevin Jensen (state_upper: State Senate District 16 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 18693,
+      "candidate_id": "a1de513d-e2d4-4db9-af96-6c670980cd17",
+      "note": "Chris Karr SD-011 -> Chris Karr (state_upper: State Senate District 11 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 18700,
+      "candidate_id": "3439687f-252d-4035-aff9-4448c2ebcba9",
+      "note": "Added by hand. Sue Peterson, Senate District 13. LegiScan carries the surname as Lucas-Peterson, which the matcher cannot align with the ballot surname Peterson. South Dakota's own 2026 member roster lists Peterson, Sue in Senate District 13."
+    },
+    {
+      "people_id": 18701,
+      "candidate_id": "eb5d31fa-d11a-4a87-9c8b-4c1e39549b5d",
+      "note": "Tom Pischke SD-025 -> Tom Pischke (state_upper: State Senate District 25 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 18702,
+      "candidate_id": "edcb53f4-8c85-4795-9bcf-324952abcb78",
+      "note": "Tim Reed SD-007 -> Tim Reed (state_upper: State Senate District 7 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 18703,
+      "candidate_id": null,
+      "note": "Jamie Smith SD-015: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 18792,
+      "candidate_id": "dd425af3-fffa-4ab7-b77f-f87ee2cdb391",
+      "note": "Jack Kolbeck HD-013 -> Jack R Kolbeck (state_lower: State House District 13 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 19679,
+      "candidate_id": "a3156e1a-bfd2-4f2d-918c-5d48fa05833d",
+      "note": "Rebecca Reimer HD-026 -> Rebecca Reimer (state_upper: State Senate District 26 (2024); South Dakota); matched on first_and_last; seat differs, the member is running for a different seat or South Dakota's subdistrict naming differs"
+    },
+    {
+      "people_id": 19905,
+      "candidate_id": null,
+      "note": "Tony Randolph HD-035: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 19915,
+      "candidate_id": null,
+      "note": "Tina Mulally HD-035: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 20397,
+      "candidate_id": null,
+      "note": "Red Foster SD-027: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 20539,
+      "candidate_id": null,
+      "note": "Carl Perry SD-003: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 20577,
+      "candidate_id": "bcd55248-b8ae-4600-93a7-993e1dbda945",
+      "note": "Paul Miskimins SD-020 -> Paul Miskimins (state_upper: State Senate District 20 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 20582,
+      "candidate_id": null,
+      "note": "Erin Healy HD-010: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 20585,
+      "candidate_id": "986ba775-7052-4be8-afaf-39e66b505d6b",
+      "note": "Peri Pourier HD-027 -> Peri Pourier (state_upper: State Senate District 27 (2024); South Dakota); matched on first_and_last; seat differs, the member is running for a different seat or South Dakota's subdistrict naming differs"
+    },
+    {
+      "people_id": 21187,
+      "candidate_id": null,
+      "note": "Military and Veterans Affairs no district: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 21373,
+      "candidate_id": "0ff92182-17d8-4e81-8f7e-f3ce5097d585",
+      "note": "Spencer Gosch HD-023 -> Spencer Gosch (state_lower: State House District 23 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 21437,
+      "candidate_id": "3571fb4b-0774-42b2-8b79-cc2297c9030c",
+      "note": "Helene Duhamel SD-032 -> Helene Duhamel (state_upper: State Senate District 32 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 21501,
+      "candidate_id": "9f41d625-88c8-4aa0-b2fe-70b9629cebc7",
+      "note": "Marty Overweg HD-021 -> Marty Overweg (state_lower: State House District 21 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 21672,
+      "candidate_id": "4de9f0f8-8530-4d14-b5ce-7a49546538dc",
+      "note": "Casey Crabtree SD-008 -> Casey Crabtree (state_upper: State Senate District 8 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22243,
+      "candidate_id": "a8509f95-aa29-4935-9b4f-a96192514f74",
+      "note": "Mike Weisgram HD-024 -> Mike Weisgram (state_lower: State House District 24 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22353,
+      "candidate_id": null,
+      "note": "Will Mortenson HD-024: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 22419,
+      "candidate_id": "23551ff8-3fba-4559-a357-ec4e91a6808d",
+      "note": "Trish Ladner HD-030 -> Trish Ladner (state_lower: State House District 30 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22420,
+      "candidate_id": null,
+      "note": "Richard Vasgaard HD-016: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 22449,
+      "candidate_id": null,
+      "note": "Aaron Aylward HD-006: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 22450,
+      "candidate_id": "77228fe0-70bd-4ace-9c36-798bfc1f58ca",
+      "note": "Scott Odenbach HD-031 -> Scott Odenbach (state_lower: State House District 31 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22451,
+      "candidate_id": "38db46d2-d541-4599-b9f2-b31a235a0764",
+      "note": "Taylor Rehfeldt HD-014 -> Taylor Rae Rehfeldt (state_lower: State House District 14 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22483,
+      "candidate_id": null,
+      "note": "Bethany Soye HD-009: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 22503,
+      "candidate_id": "b0077bc1-e9a6-4506-9b34-8718f7abe6cb",
+      "note": "Mary Fitzgerald HD-031 -> Mary J. Fitzgerald (state_lower: State House District 31 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22504,
+      "candidate_id": "f66b8d8a-0148-469a-927d-6af8010abe63",
+      "note": "Michael Rohl SD-001 -> Michael Rohl (state_upper: State Senate District 1 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22513,
+      "candidate_id": "8b8eb781-de4d-414a-a969-d309c7a2cb3a",
+      "note": "Mike Derby HD-034 -> Mike Derby (state_lower: State House District 34 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 22632,
+      "candidate_id": null,
+      "note": "David Wheeler SD-022: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 22640,
+      "candidate_id": "e58a2d1b-63a3-424e-a4c6-5544342b6ca2",
+      "note": "Sydney Davis SD-017 -> Sydney Davis (state_upper: State Senate District 17 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 23766,
+      "candidate_id": "af2fabfc-c7d8-44ed-b727-af796c862aa3",
+      "note": "Jessica Bahmuller HD-019 -> Jessica Bahmuller (state_lower: State House District 19 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 23768,
+      "candidate_id": "c15a2072-6651-4a66-b776-c09cc6715336",
+      "note": "Eric Emery HD-026 -> Eric E. Emery (state_lower: State House District 26A (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 23769,
+      "candidate_id": "b843e21b-1ada-4a41-91c2-9e8c140436ee",
+      "note": "Chris Kassin HD-017 -> Chris Kassin (state_lower: State House District 17 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 23771,
+      "candidate_id": null,
+      "note": "David Kull HD-002: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 23772,
+      "candidate_id": "5acc0d71-0609-4a94-9c91-cb17fc4de749",
+      "note": "Curt Massie HD-033 -> Curt Massie (state_lower: State House District 33 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 23774,
+      "candidate_id": null,
+      "note": "Tim Reisch HD-008: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 23775,
+      "candidate_id": null,
+      "note": "Tony Venhuizen HD-013: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 23776,
+      "candidate_id": "02c0b71a-edef-446e-a427-8237d9649abf",
+      "note": "Kadyn Wittman HD-015 -> Kadyn Wittman (state_lower: State House District 15 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 23777,
+      "candidate_id": "b76222f3-4d86-4549-bb06-157bea26825c",
+      "note": "Randy Deibert SD-031 -> Randy Deibert (state_upper: State Senate District 31 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 23778,
+      "candidate_id": null,
+      "note": "Steve Kolbeck SD-002: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 23899,
+      "candidate_id": null,
+      "note": "Scott Moore HD-023: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 24121,
+      "candidate_id": "75c75c9f-27bb-4086-a211-25eb598a3f24",
+      "note": "Stephanie Sauder SD-004 -> Stephanie Sauder (state_upper: State Senate District 4 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24155,
+      "candidate_id": "96d83a70-3575-4d0d-9df1-25023dd7bb4f",
+      "note": "Amber Arlint HD-012 -> Amber Arlint (state_lower: State House District 12 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24156,
+      "candidate_id": "9ba499f0-9674-47a7-9029-107c0a8f9dfe",
+      "note": "Brian Mulder HD-011 -> Brian Mulder (state_lower: State House District 11 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24157,
+      "candidate_id": "51be53fc-cb98-4924-833b-eea0da37155f",
+      "note": "Drew Peterson HD-019 -> Drew Peterson (state_lower: State House District 19 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24260,
+      "candidate_id": null,
+      "note": "Brandei Schaefbauer HD-003: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 24274,
+      "candidate_id": null,
+      "note": "Karla Lems HD-016: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 24312,
+      "candidate_id": "aebb97a3-b7fa-432f-bc49-447817edff5c",
+      "note": "Jim Mehlhaff SD-024 -> Jim Mehlhaff (state_upper: State Senate District 24 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24392,
+      "candidate_id": "d88f9630-9dcb-49d3-9ae0-e3bb2d1e2da9",
+      "note": "Roger Degroot HD-007 -> Roger DeGroot (state_lower: State House District 7 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24393,
+      "candidate_id": "b2b264f0-6f84-4123-b69a-50579cc9d7bb",
+      "note": "Mellissa Heermann HD-007 -> Mellissa Heermann (state_lower: State House District 7 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24395,
+      "candidate_id": "b36b0767-1e5c-4726-a729-f3c11690d73e",
+      "note": "Steve Duffy HD-032 -> Steve Duffy (state_lower: State House District 32 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 24400,
+      "candidate_id": "feea9286-c571-4b02-9fe1-4ee6d1820938",
+      "note": "John Sjaarda HD-002 -> John Sjaarda (state_upper: State Senate District 2 (2024); South Dakota); matched on first_and_last; seat differs, the member is running for a different seat or South Dakota's subdistrict naming differs"
+    },
+    {
+      "people_id": 24401,
+      "candidate_id": "148ec75b-2cba-4001-ad54-055250992e67",
+      "note": "Added by hand. Liz Larson, Senate District 10. LegiScan stores the legal first name Elizabeth and the ballot name Liz in its nickname field. South Dakota's own 2026 member roster lists Larson, Liz in Senate District 10."
+    },
+    {
+      "people_id": 24487,
+      "candidate_id": null,
+      "note": "Julie Auch HD-018: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25631,
+      "candidate_id": null,
+      "note": "Bobbi Andera HD-010: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25632,
+      "candidate_id": "e015156d-a968-4dc2-b6ad-351fb08806df",
+      "note": "Jeff Bathke HD-020 -> Jeff Bathke (state_lower: State House District 20 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25633,
+      "candidate_id": null,
+      "note": "Heather Baxter HD-034: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25634,
+      "candidate_id": null,
+      "note": "Josephine Garcia HD-005: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25635,
+      "candidate_id": "681ebc86-42d7-4c6a-a8f3-f727d177d0e2",
+      "note": "Jim Halverson HD-021 -> Jim Halverson (state_lower: State House District 21 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25636,
+      "candidate_id": "6604d3cc-dc79-4c98-a407-4bcb3234cd05",
+      "note": "John Hughes HD-013 -> John Hughes (state_lower: State House District 13 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25637,
+      "candidate_id": "f79a317f-609e-419d-bdf4-54cafca92ae4",
+      "note": "Jana Hunt HD-028 -> Jana Hunt (state_lower: State House District 28A (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25638,
+      "candidate_id": "2f24b888-0b98-4651-b4bb-9beab88c3083",
+      "note": "Travis Ismay HD-028 -> Travis Ismay (state_lower: State House District 28B (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25639,
+      "candidate_id": null,
+      "note": "Dylan Jordan HD-004: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25640,
+      "candidate_id": null,
+      "note": "Terri Jorgenson HD-029: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25641,
+      "candidate_id": null,
+      "note": "Tony Kayser HD-014: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25642,
+      "candidate_id": null,
+      "note": "Logan Manhart HD-001: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25643,
+      "candidate_id": "c2ebe091-1a72-474e-bc69-a11a9d44e9bc",
+      "note": "Erik Muckey HD-015 -> Erik Muckey (state_upper: State Senate District 15 (2024); South Dakota); matched on first_and_last; seat differs, the member is running for a different seat or South Dakota's subdistrict naming differs"
+    },
+    {
+      "people_id": 25644,
+      "candidate_id": null,
+      "note": "Kaley Nolz HD-020: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25645,
+      "candidate_id": null,
+      "note": "Christopher Reder HD-001: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25646,
+      "candidate_id": null,
+      "note": "Kathy Rice HD-029: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25647,
+      "candidate_id": "99c73eff-5fb8-4be4-9fd4-8b20cffc7cb5",
+      "note": "Matt Roby HD-005 -> Matt Roby (state_lower: State House District 5 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25648,
+      "candidate_id": null,
+      "note": "Kent Roe HD-004: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25649,
+      "candidate_id": "28f762ba-429e-4d49-9d2c-f7d997554dd7",
+      "note": "Tesa Schwans HD-009 -> Tesa Schwans (state_lower: State House District 9 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25650,
+      "candidate_id": "2138e078-0a79-44c5-b2d0-c7bdd357ff22",
+      "note": "Nicole Uhre-Balk HD-032 -> Nicole Uhre-Balk (state_lower: State House District 32 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25651,
+      "candidate_id": "48c3b32d-57c3-40c3-b573-d69bfad3bf48",
+      "note": "Kevin Van Diepen HD-022 -> Kevin Van Diepen (state_lower: State House District 22 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25652,
+      "candidate_id": null,
+      "note": "Tim Walburg HD-008: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25653,
+      "candidate_id": "f74335d8-a7a4-4515-ab0e-28594819b9d5",
+      "note": "Keri Weems HD-011 -> Keri K Weems (state_lower: State House District 11 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25654,
+      "candidate_id": "c581373b-7177-43ba-bacd-f1e4e0b1bf32",
+      "note": "Greg Blanc SD-035 -> Greg Blanc (state_upper: State Senate District 35 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25655,
+      "candidate_id": null,
+      "note": "John Carley SD-029: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25656,
+      "candidate_id": null,
+      "note": "Tamara Grove SD-026: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25657,
+      "candidate_id": "5debb080-a730-4f7b-bb00-713fa52e9740",
+      "note": "Joy Hohn SD-009 -> Joy Hohn (state_upper: State Senate District 9 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25658,
+      "candidate_id": "6a6007c0-f29a-4edb-9630-dfc916ccd573",
+      "note": "Amber Hulse SD-030 -> Amber Hulse (state_upper: State Senate District 30 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25659,
+      "candidate_id": "65d91c34-cd6a-483e-8668-5ef2e4df86b3",
+      "note": "Mark Lapka SD-023 -> Mark Lapka (state_upper: State Senate District 23 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25660,
+      "candidate_id": "0ecc8326-7d66-4bf2-930f-a5e9ed0ddeb3",
+      "note": "Lauren Nelson SD-018 -> Lauren Nelson (state_upper: State Senate District 18 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25661,
+      "candidate_id": "66813136-6f7d-42c9-bbe4-f42f2a0bcd71",
+      "note": "Glen Vilhauer SD-005 -> Glen Vilhauer (state_upper: State Senate District 5 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 25662,
+      "candidate_id": null,
+      "note": "Curt Voight SD-033: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 25663,
+      "candidate_id": "9c0b5d22-746f-49b6-8e1f-0f48f83831bb",
+      "note": "Mykala Voita SD-021 -> MyKala Voita (state_upper: State Senate District 21 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 26414,
+      "candidate_id": null,
+      "note": "Tim Czmowski HD-006: no November 2026 South Dakota legislative candidate. Reviewed by hand against the state's own 2026 member roster and the candidate pool."
+    },
+    {
+      "people_id": 26498,
+      "candidate_id": "7a3ffc40-90c4-4f23-b3b5-98d216588785",
+      "note": "Added by hand. Nick Fosness, House District 1. LegiScan stores the legal first name Nicholas and the ballot name Nick in its nickname field, and Nicholas is not a prefix of Nick, so the name matcher cannot reach him. South Dakota's own 2026 member roster lists Fosness, Nick in House District 1."
+    },
+    {
+      "people_id": 26499,
+      "candidate_id": "a55c22dd-c7d8-4109-8029-26ef761f582d",
+      "note": "John Shubeck HD-016 -> John Shubeck (state_lower: State House District 16 (2024); South Dakota); matched on first_and_last"
+    },
+    {
+      "people_id": 26500,
+      "candidate_id": "88819801-0c66-4af6-8c3d-8f90a10cc930",
+      "note": "Brandon Wipf SD-022 -> Brandon Wipf (state_upper: State Senate District 22 (2024); South Dakota); matched on first_and_last"
+    }
+  ]
+}

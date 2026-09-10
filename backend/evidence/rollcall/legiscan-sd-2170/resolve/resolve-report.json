@@ -1,0 +1,1459 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-10T02:21:08.138Z",
+  "finishedAt": "2026-09-10T02:21:08.729Z",
+  "jurisdiction": "SD",
+  "sessionId": 2170,
+  "evidenceDir": "evidence/rollcall/legiscan-sd-2170/resolve",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/sd-2170/SD/2025-2025_Regular_Session",
+  "peopleMembers": 107,
+  "candidatePool": 160,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 8222,
+      "rosterName": "Phil Jensen",
+      "rosterSeat": "house HD-033",
+      "candidateId": "a7a25eee-fe24-4f11-877d-3ece22c2dbff",
+      "candidateName": "Phil Jensen",
+      "candidacy": "state_lower: State House District 33 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14196,
+      "rosterName": "Ernie Otten",
+      "rosterSeat": "senate SD-006",
+      "candidateId": "6dc2483a-57b7-4e95-8008-27cc5555d080",
+      "candidateName": "Ernie Otten Jr.",
+      "candidacy": "state_upper: State Senate District 6 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14420,
+      "rosterName": "Mike Stevens",
+      "rosterSeat": "house HD-018",
+      "candidateId": "06efa8e5-ac94-4539-bedd-8c55aaa2648d",
+      "candidateName": "Mike Stevens",
+      "candidacy": "state_lower: State House District 18 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14692,
+      "rosterName": "Kyle Schoenfish",
+      "rosterSeat": "senate SD-019",
+      "candidateId": "0fd2dac3-e9ce-4a69-9aa8-df71f60683c8",
+      "candidateName": "Kyle Schoenfish",
+      "candidacy": "state_upper: State Senate District 19 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17182,
+      "rosterName": "Lana Greenfield",
+      "rosterSeat": "house HD-022",
+      "candidateId": "e1745dd3-8bda-4f6f-9f9c-5eb04dca3bb4",
+      "candidateName": "Lana Greenfield",
+      "candidacy": "state_lower: State House District 22 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17190,
+      "rosterName": "Larry Zikmund",
+      "rosterSeat": "house SD-014",
+      "candidateId": "40b5e106-ba46-4c74-9469-5ff6200d6095",
+      "candidateName": "Larry P. Zikmund",
+      "candidacy": "state_upper: State Senate District 14 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18629,
+      "rosterName": "Timothy Goodwin",
+      "rosterSeat": "house HD-030",
+      "candidateId": "0124e5ca-13ba-47c4-ad77-77e638c801bd",
+      "candidateName": "Tim R Goodwin",
+      "candidacy": "state_lower: State House District 30 (2024); South Dakota",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18630,
+      "rosterName": "Taffy Howard",
+      "rosterSeat": "house SD-034",
+      "candidateId": "2a76ecea-73f2-4ec2-934d-d12a7ac612c6",
+      "candidateName": "Taffy Howard",
+      "candidacy": "state_upper: State Senate District 34 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18691,
+      "rosterName": "Kevin Jensen",
+      "rosterSeat": "house SD-016",
+      "candidateId": "83d4610e-1c1c-424b-8f5f-3c8d7d570177",
+      "candidateName": "Kevin Jensen",
+      "candidacy": "state_upper: State Senate District 16 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18693,
+      "rosterName": "Chris Karr",
+      "rosterSeat": "senate SD-011",
+      "candidateId": "a1de513d-e2d4-4db9-af96-6c670980cd17",
+      "candidateName": "Chris Karr",
+      "candidacy": "state_upper: State Senate District 11 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18701,
+      "rosterName": "Tom Pischke",
+      "rosterSeat": "senate SD-025",
+      "candidateId": "eb5d31fa-d11a-4a87-9c8b-4c1e39549b5d",
+      "candidateName": "Tom Pischke",
+      "candidacy": "state_upper: State Senate District 25 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18702,
+      "rosterName": "Tim Reed",
+      "rosterSeat": "senate SD-007",
+      "candidateId": "edcb53f4-8c85-4795-9bcf-324952abcb78",
+      "candidateName": "Tim Reed",
+      "candidacy": "state_upper: State Senate District 7 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18792,
+      "rosterName": "Jack Kolbeck",
+      "rosterSeat": "house HD-013",
+      "candidateId": "dd425af3-fffa-4ab7-b77f-f87ee2cdb391",
+      "candidateName": "Jack R Kolbeck",
+      "candidacy": "state_lower: State House District 13 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19679,
+      "rosterName": "Rebecca Reimer",
+      "rosterSeat": "house HD-026",
+      "candidateId": "a3156e1a-bfd2-4f2d-918c-5d48fa05833d",
+      "candidateName": "Rebecca Reimer",
+      "candidacy": "state_upper: State Senate District 26 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 20577,
+      "rosterName": "Paul Miskimins",
+      "rosterSeat": "house SD-020",
+      "candidateId": "bcd55248-b8ae-4600-93a7-993e1dbda945",
+      "candidateName": "Paul Miskimins",
+      "candidacy": "state_upper: State Senate District 20 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20585,
+      "rosterName": "Peri Pourier",
+      "rosterSeat": "house HD-027",
+      "candidateId": "986ba775-7052-4be8-afaf-39e66b505d6b",
+      "candidateName": "Peri Pourier",
+      "candidacy": "state_upper: State Senate District 27 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 21373,
+      "rosterName": "Spencer Gosch",
+      "rosterSeat": "house HD-023",
+      "candidateId": "0ff92182-17d8-4e81-8f7e-f3ce5097d585",
+      "candidateName": "Spencer Gosch",
+      "candidacy": "state_lower: State House District 23 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21437,
+      "rosterName": "Helene Duhamel",
+      "rosterSeat": "senate SD-032",
+      "candidateId": "3571fb4b-0774-42b2-8b79-cc2297c9030c",
+      "candidateName": "Helene Duhamel",
+      "candidacy": "state_upper: State Senate District 32 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21501,
+      "rosterName": "Marty Overweg",
+      "rosterSeat": "house HD-021",
+      "candidateId": "9f41d625-88c8-4aa0-b2fe-70b9629cebc7",
+      "candidateName": "Marty Overweg",
+      "candidacy": "state_lower: State House District 21 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21672,
+      "rosterName": "Casey Crabtree",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "4de9f0f8-8530-4d14-b5ce-7a49546538dc",
+      "candidateName": "Casey Crabtree",
+      "candidacy": "state_upper: State Senate District 8 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22243,
+      "rosterName": "Mike Weisgram",
+      "rosterSeat": "house HD-024",
+      "candidateId": "a8509f95-aa29-4935-9b4f-a96192514f74",
+      "candidateName": "Mike Weisgram",
+      "candidacy": "state_lower: State House District 24 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22419,
+      "rosterName": "Trish Ladner",
+      "rosterSeat": "house HD-030",
+      "candidateId": "23551ff8-3fba-4559-a357-ec4e91a6808d",
+      "candidateName": "Trish Ladner",
+      "candidacy": "state_lower: State House District 30 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22450,
+      "rosterName": "Scott Odenbach",
+      "rosterSeat": "house HD-031",
+      "candidateId": "77228fe0-70bd-4ace-9c36-798bfc1f58ca",
+      "candidateName": "Scott Odenbach",
+      "candidacy": "state_lower: State House District 31 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22451,
+      "rosterName": "Taylor Rehfeldt",
+      "rosterSeat": "house HD-014",
+      "candidateId": "38db46d2-d541-4599-b9f2-b31a235a0764",
+      "candidateName": "Taylor Rae Rehfeldt",
+      "candidacy": "state_lower: State House District 14 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22503,
+      "rosterName": "Mary Fitzgerald",
+      "rosterSeat": "house HD-031",
+      "candidateId": "b0077bc1-e9a6-4506-9b34-8718f7abe6cb",
+      "candidateName": "Mary J. Fitzgerald",
+      "candidacy": "state_lower: State House District 31 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22504,
+      "rosterName": "Michael Rohl",
+      "rosterSeat": "senate SD-001",
+      "candidateId": "f66b8d8a-0148-469a-927d-6af8010abe63",
+      "candidateName": "Michael Rohl",
+      "candidacy": "state_upper: State Senate District 1 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22513,
+      "rosterName": "Mike Derby",
+      "rosterSeat": "house HD-034",
+      "candidateId": "8b8eb781-de4d-414a-a969-d309c7a2cb3a",
+      "candidateName": "Mike Derby",
+      "candidacy": "state_lower: State House District 34 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22640,
+      "rosterName": "Sydney Davis",
+      "rosterSeat": "senate SD-017",
+      "candidateId": "e58a2d1b-63a3-424e-a4c6-5544342b6ca2",
+      "candidateName": "Sydney Davis",
+      "candidacy": "state_upper: State Senate District 17 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23766,
+      "rosterName": "Jessica Bahmuller",
+      "rosterSeat": "house HD-019",
+      "candidateId": "af2fabfc-c7d8-44ed-b727-af796c862aa3",
+      "candidateName": "Jessica Bahmuller",
+      "candidacy": "state_lower: State House District 19 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23768,
+      "rosterName": "Eric Emery",
+      "rosterSeat": "house HD-026",
+      "candidateId": "c15a2072-6651-4a66-b776-c09cc6715336",
+      "candidateName": "Eric E. Emery",
+      "candidacy": "state_lower: State House District 26A (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23769,
+      "rosterName": "Chris Kassin",
+      "rosterSeat": "house HD-017",
+      "candidateId": "b843e21b-1ada-4a41-91c2-9e8c140436ee",
+      "candidateName": "Chris Kassin",
+      "candidacy": "state_lower: State House District 17 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23772,
+      "rosterName": "Curt Massie",
+      "rosterSeat": "house HD-033",
+      "candidateId": "5acc0d71-0609-4a94-9c91-cb17fc4de749",
+      "candidateName": "Curt Massie",
+      "candidacy": "state_lower: State House District 33 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23776,
+      "rosterName": "Kadyn Wittman",
+      "rosterSeat": "house HD-015",
+      "candidateId": "02c0b71a-edef-446e-a427-8237d9649abf",
+      "candidateName": "Kadyn Wittman",
+      "candidacy": "state_lower: State House District 15 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23777,
+      "rosterName": "Randy Deibert",
+      "rosterSeat": "senate SD-031",
+      "candidateId": "b76222f3-4d86-4549-bb06-157bea26825c",
+      "candidateName": "Randy Deibert",
+      "candidacy": "state_upper: State Senate District 31 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24121,
+      "rosterName": "Stephanie Sauder",
+      "rosterSeat": "senate SD-004",
+      "candidateId": "75c75c9f-27bb-4086-a211-25eb598a3f24",
+      "candidateName": "Stephanie Sauder",
+      "candidacy": "state_upper: State Senate District 4 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24155,
+      "rosterName": "Amber Arlint",
+      "rosterSeat": "house HD-012",
+      "candidateId": "96d83a70-3575-4d0d-9df1-25023dd7bb4f",
+      "candidateName": "Amber Arlint",
+      "candidacy": "state_lower: State House District 12 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24156,
+      "rosterName": "Brian Mulder",
+      "rosterSeat": "house HD-011",
+      "candidateId": "9ba499f0-9674-47a7-9029-107c0a8f9dfe",
+      "candidateName": "Brian Mulder",
+      "candidacy": "state_lower: State House District 11 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24157,
+      "rosterName": "Drew Peterson",
+      "rosterSeat": "house HD-019",
+      "candidateId": "51be53fc-cb98-4924-833b-eea0da37155f",
+      "candidateName": "Drew Peterson",
+      "candidacy": "state_lower: State House District 19 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24312,
+      "rosterName": "Jim Mehlhaff",
+      "rosterSeat": "senate SD-024",
+      "candidateId": "aebb97a3-b7fa-432f-bc49-447817edff5c",
+      "candidateName": "Jim Mehlhaff",
+      "candidacy": "state_upper: State Senate District 24 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24392,
+      "rosterName": "Roger Degroot",
+      "rosterSeat": "house HD-007",
+      "candidateId": "d88f9630-9dcb-49d3-9ae0-e3bb2d1e2da9",
+      "candidateName": "Roger DeGroot",
+      "candidacy": "state_lower: State House District 7 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24393,
+      "rosterName": "Mellissa Heermann",
+      "rosterSeat": "house HD-007",
+      "candidateId": "b2b264f0-6f84-4123-b69a-50579cc9d7bb",
+      "candidateName": "Mellissa Heermann",
+      "candidacy": "state_lower: State House District 7 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24395,
+      "rosterName": "Steve Duffy",
+      "rosterSeat": "house HD-032",
+      "candidateId": "b36b0767-1e5c-4726-a729-f3c11690d73e",
+      "candidateName": "Steve Duffy",
+      "candidacy": "state_lower: State House District 32 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24400,
+      "rosterName": "John Sjaarda",
+      "rosterSeat": "house HD-002",
+      "candidateId": "feea9286-c571-4b02-9fe1-4ee6d1820938",
+      "candidateName": "John Sjaarda",
+      "candidacy": "state_upper: State Senate District 2 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 25632,
+      "rosterName": "Jeff Bathke",
+      "rosterSeat": "house HD-020",
+      "candidateId": "e015156d-a968-4dc2-b6ad-351fb08806df",
+      "candidateName": "Jeff Bathke",
+      "candidacy": "state_lower: State House District 20 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25635,
+      "rosterName": "Jim Halverson",
+      "rosterSeat": "house HD-021",
+      "candidateId": "681ebc86-42d7-4c6a-a8f3-f727d177d0e2",
+      "candidateName": "Jim Halverson",
+      "candidacy": "state_lower: State House District 21 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25636,
+      "rosterName": "John Hughes",
+      "rosterSeat": "house HD-013",
+      "candidateId": "6604d3cc-dc79-4c98-a407-4bcb3234cd05",
+      "candidateName": "John Hughes",
+      "candidacy": "state_lower: State House District 13 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25637,
+      "rosterName": "Jana Hunt",
+      "rosterSeat": "house HD-028",
+      "candidateId": "f79a317f-609e-419d-bdf4-54cafca92ae4",
+      "candidateName": "Jana Hunt",
+      "candidacy": "state_lower: State House District 28A (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25638,
+      "rosterName": "Travis Ismay",
+      "rosterSeat": "house HD-028",
+      "candidateId": "2f24b888-0b98-4651-b4bb-9beab88c3083",
+      "candidateName": "Travis Ismay",
+      "candidacy": "state_lower: State House District 28B (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25643,
+      "rosterName": "Erik Muckey",
+      "rosterSeat": "house HD-015",
+      "candidateId": "c2ebe091-1a72-474e-bc69-a11a9d44e9bc",
+      "candidateName": "Erik Muckey",
+      "candidacy": "state_upper: State Senate District 15 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 25647,
+      "rosterName": "Matt Roby",
+      "rosterSeat": "house HD-005",
+      "candidateId": "99c73eff-5fb8-4be4-9fd4-8b20cffc7cb5",
+      "candidateName": "Matt Roby",
+      "candidacy": "state_lower: State House District 5 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25649,
+      "rosterName": "Tesa Schwans",
+      "rosterSeat": "house HD-009",
+      "candidateId": "28f762ba-429e-4d49-9d2c-f7d997554dd7",
+      "candidateName": "Tesa Schwans",
+      "candidacy": "state_lower: State House District 9 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25650,
+      "rosterName": "Nicole Uhre-Balk",
+      "rosterSeat": "house HD-032",
+      "candidateId": "2138e078-0a79-44c5-b2d0-c7bdd357ff22",
+      "candidateName": "Nicole Uhre-Balk",
+      "candidacy": "state_lower: State House District 32 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25651,
+      "rosterName": "Kevin Van Diepen",
+      "rosterSeat": "house HD-022",
+      "candidateId": "48c3b32d-57c3-40c3-b573-d69bfad3bf48",
+      "candidateName": "Kevin Van Diepen",
+      "candidacy": "state_lower: State House District 22 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25653,
+      "rosterName": "Keri Weems",
+      "rosterSeat": "house HD-011",
+      "candidateId": "f74335d8-a7a4-4515-ab0e-28594819b9d5",
+      "candidateName": "Keri K Weems",
+      "candidacy": "state_lower: State House District 11 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25654,
+      "rosterName": "Greg Blanc",
+      "rosterSeat": "senate SD-035",
+      "candidateId": "c581373b-7177-43ba-bacd-f1e4e0b1bf32",
+      "candidateName": "Greg Blanc",
+      "candidacy": "state_upper: State Senate District 35 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25657,
+      "rosterName": "Joy Hohn",
+      "rosterSeat": "senate SD-009",
+      "candidateId": "5debb080-a730-4f7b-bb00-713fa52e9740",
+      "candidateName": "Joy Hohn",
+      "candidacy": "state_upper: State Senate District 9 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25658,
+      "rosterName": "Amber Hulse",
+      "rosterSeat": "senate SD-030",
+      "candidateId": "6a6007c0-f29a-4edb-9630-dfc916ccd573",
+      "candidateName": "Amber Hulse",
+      "candidacy": "state_upper: State Senate District 30 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25659,
+      "rosterName": "Mark Lapka",
+      "rosterSeat": "senate SD-023",
+      "candidateId": "65d91c34-cd6a-483e-8668-5ef2e4df86b3",
+      "candidateName": "Mark Lapka",
+      "candidacy": "state_upper: State Senate District 23 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25660,
+      "rosterName": "Lauren Nelson",
+      "rosterSeat": "senate SD-018",
+      "candidateId": "0ecc8326-7d66-4bf2-930f-a5e9ed0ddeb3",
+      "candidateName": "Lauren Nelson",
+      "candidacy": "state_upper: State Senate District 18 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25661,
+      "rosterName": "Glen Vilhauer",
+      "rosterSeat": "senate SD-005",
+      "candidateId": "66813136-6f7d-42c9-bbe4-f42f2a0bcd71",
+      "candidateName": "Glen Vilhauer",
+      "candidacy": "state_upper: State Senate District 5 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25663,
+      "rosterName": "Mykala Voita",
+      "rosterSeat": "senate SD-021",
+      "candidateId": "9c0b5d22-746f-49b6-8e1f-0f48f83831bb",
+      "candidateName": "MyKala Voita",
+      "candidacy": "state_upper: State Senate District 21 (2024); South Dakota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 10984,
+      "name": "Jon Hansen",
+      "seat": "house HD-025"
+    },
+    {
+      "peopleId": 14500,
+      "name": "Leslie Heinemann",
+      "seat": "house HD-025"
+    },
+    {
+      "peopleId": 14687,
+      "name": "Elizabeth May",
+      "seat": "house HD-027"
+    },
+    {
+      "peopleId": 14691,
+      "name": "Herman Otten",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 17180,
+      "name": "Arch Beal",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 17186,
+      "name": "Sam Marty",
+      "seat": "senate SD-028"
+    },
+    {
+      "peopleId": 17822,
+      "name": "William Shorma",
+      "seat": "house HD-017"
+    },
+    {
+      "peopleId": 18690,
+      "name": "Greg Jamison",
+      "seat": "house HD-012"
+    },
+    {
+      "peopleId": 18700,
+      "name": "Sue Lucas-Peterson",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 18703,
+      "name": "Jamie Smith",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 19905,
+      "name": "Tony Randolph",
+      "seat": "house HD-035"
+    },
+    {
+      "peopleId": 19915,
+      "name": "Tina Mulally",
+      "seat": "house HD-035"
+    },
+    {
+      "peopleId": 20397,
+      "name": "Red Foster",
+      "seat": "senate SD-027"
+    },
+    {
+      "peopleId": 20539,
+      "name": "Carl Perry",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 20582,
+      "name": "Erin Healy",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 22353,
+      "name": "Will Mortenson",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 22420,
+      "name": "Richard Vasgaard",
+      "seat": "house HD-016"
+    },
+    {
+      "peopleId": 22449,
+      "name": "Aaron Aylward",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 22483,
+      "name": "Bethany Soye",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 22632,
+      "name": "David Wheeler",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 23771,
+      "name": "David Kull",
+      "seat": "house HD-002"
+    },
+    {
+      "peopleId": 23774,
+      "name": "Tim Reisch",
+      "seat": "house HD-008"
+    },
+    {
+      "peopleId": 23775,
+      "name": "Tony Venhuizen",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 23778,
+      "name": "Steve Kolbeck",
+      "seat": "senate SD-002"
+    },
+    {
+      "peopleId": 23899,
+      "name": "Scott Moore",
+      "seat": "house HD-023"
+    },
+    {
+      "peopleId": 24260,
+      "name": "Brandei Schaefbauer",
+      "seat": "house HD-003"
+    },
+    {
+      "peopleId": 24274,
+      "name": "Karla Lems",
+      "seat": "house HD-016"
+    },
+    {
+      "peopleId": 24401,
+      "name": "Liz Larson",
+      "seat": "senate SD-010"
+    },
+    {
+      "peopleId": 24487,
+      "name": "Julie Auch",
+      "seat": "house HD-018"
+    },
+    {
+      "peopleId": 25631,
+      "name": "Bobbi Andera",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 25633,
+      "name": "Heather Baxter",
+      "seat": "house HD-034"
+    },
+    {
+      "peopleId": 25634,
+      "name": "Josephine Garcia",
+      "seat": "house HD-005"
+    },
+    {
+      "peopleId": 25639,
+      "name": "Dylan Jordan",
+      "seat": "house HD-004"
+    },
+    {
+      "peopleId": 25640,
+      "name": "Terri Jorgenson",
+      "seat": "house HD-029"
+    },
+    {
+      "peopleId": 25641,
+      "name": "Tony Kayser",
+      "seat": "house HD-014"
+    },
+    {
+      "peopleId": 25642,
+      "name": "Logan Manhart",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 25644,
+      "name": "Kaley Nolz",
+      "seat": "house HD-020"
+    },
+    {
+      "peopleId": 25645,
+      "name": "Christopher Reder",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 25646,
+      "name": "Kathy Rice",
+      "seat": "house HD-029"
+    },
+    {
+      "peopleId": 25648,
+      "name": "Kent Roe",
+      "seat": "house HD-004"
+    },
+    {
+      "peopleId": 25652,
+      "name": "Tim Walburg",
+      "seat": "house HD-008"
+    },
+    {
+      "peopleId": 25655,
+      "name": "John Carley",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 25656,
+      "name": "Tamara Grove",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 25662,
+      "name": "Curt Voight",
+      "seat": "senate SD-033"
+    },
+    {
+      "peopleId": 26414,
+      "name": "Tim Czmowski",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 8296,
+      "name": "Al Novstrup",
+      "seat": "house HD-003"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "54655a54-c5ba-4328-9b49-e03c70ee581d",
+      "name": "Aaron Matson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); South Dakota"
+    },
+    {
+      "candidateId": "9c7fc5b0-4433-4446-81df-6b61a55cd731",
+      "name": "Adam Bair",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); South Dakota"
+    },
+    {
+      "candidateId": "9e8cb9ff-c259-4b92-8969-54918abd6374",
+      "name": "Adam Long",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); South Dakota"
+    },
+    {
+      "candidateId": "af02540f-7026-4ff0-aadc-299b00e69012",
+      "name": "Ali Rae Horsted",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); South Dakota"
+    },
+    {
+      "candidateId": "32027310-f8a6-4688-872e-57244cee7a9a",
+      "name": "Amanda Potter",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); South Dakota"
+    },
+    {
+      "candidateId": "797acbf3-2f10-4dc8-ac72-2c492260cb61",
+      "name": "Andre Zachariahs",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); South Dakota"
+    },
+    {
+      "candidateId": "743da42c-6cb4-4a52-ba29-205f1b1535a3",
+      "name": "Angi Hanzlik",
+      "scope": "state_lower",
+      "districtName": "State House District 26B (2024); South Dakota"
+    },
+    {
+      "candidateId": "1f2a14b1-9276-4850-b912-8767f3d2c249",
+      "name": "Anthony Kathol",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); South Dakota"
+    },
+    {
+      "candidateId": "47babd99-0023-41e2-a081-c903b9ceb4c7",
+      "name": "Austin Brunick",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); South Dakota"
+    },
+    {
+      "candidateId": "893c5e96-93bc-495f-bf81-76ee0ad75907",
+      "name": "Austin Wolf",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); South Dakota"
+    },
+    {
+      "candidateId": "e11fdabf-513d-4a1d-a7a9-b3e7e25e6a0b",
+      "name": "Becky J Drury",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); South Dakota"
+    },
+    {
+      "candidateId": "88aef1ca-656c-4276-8969-c525b5f6e971",
+      "name": "Bill Meirose",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); South Dakota"
+    },
+    {
+      "candidateId": "346eadd2-2423-4cc5-b5f5-7f7c285112be",
+      "name": "Blake Rife",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); South Dakota"
+    },
+    {
+      "candidateId": "85603d0f-ade4-4614-ac64-9fb1f695b095",
+      "name": "Blake Stevens",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); South Dakota"
+    },
+    {
+      "candidateId": "88819801-0c66-4af6-8c3d-8f90a10cc930",
+      "name": "Brandon Wipf",
+      "scope": "state_upper",
+      "districtName": "State Senate District 22 (2024); South Dakota"
+    },
+    {
+      "candidateId": "0b3bb8a4-5d5c-419e-8993-ebb802f37a3c",
+      "name": "Brenda Lawrence",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); South Dakota"
+    },
+    {
+      "candidateId": "4b5fd2cf-f937-4686-a837-f8e079319695",
+      "name": "Bret Swanson",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); South Dakota"
+    },
+    {
+      "candidateId": "c36ffcb9-b4e6-4300-b067-a509c0537823",
+      "name": "Bryan Breitling",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); South Dakota"
+    },
+    {
+      "candidateId": "a9388ee5-9586-47fa-bff6-3990ca3e924a",
+      "name": "Byron I. Callies",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); South Dakota"
+    },
+    {
+      "candidateId": "1ba0acb1-0ed1-483f-8a5c-ce3bc457da21",
+      "name": "Carrie Sanderson",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); South Dakota"
+    },
+    {
+      "candidateId": "4fba2efa-b407-45d0-93fa-b134f7fdaddf",
+      "name": "Celestine Stadnick",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); South Dakota"
+    },
+    {
+      "candidateId": "d8749a76-94dd-4981-b8da-441a130da11e",
+      "name": "Chastity \"Chas\" Jewett",
+      "scope": "state_lower",
+      "districtName": "State House District 28A (2024); South Dakota"
+    },
+    {
+      "candidateId": "e9fdd5d4-9e9e-4319-92f0-57d22fb69eeb",
+      "name": "Christopher Baumgartner",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); South Dakota"
+    },
+    {
+      "candidateId": "833d8bc0-52b8-430f-938d-f7d651f5756e",
+      "name": "Clint Hoyer",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); South Dakota"
+    },
+    {
+      "candidateId": "709760e3-8b34-4da0-9217-7e2a0d91b87b",
+      "name": "Courtney Gale Enfield",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); South Dakota"
+    },
+    {
+      "candidateId": "630c2179-6bc1-4e15-900a-f677ed776624",
+      "name": "Cully Williams",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); South Dakota"
+    },
+    {
+      "candidateId": "417a8583-d513-4172-b29c-d5362d77ef8e",
+      "name": "Dale Bartscher",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); South Dakota"
+    },
+    {
+      "candidateId": "fd2ca215-3e77-4621-9074-3c9b413ff707",
+      "name": "Dan Andersson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); South Dakota"
+    },
+    {
+      "candidateId": "329be768-8d9d-4efe-88b5-789f9ede7a44",
+      "name": "Daniel Kjos",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); South Dakota"
+    },
+    {
+      "candidateId": "c0410b95-6049-4dcf-be4e-5ac39a92f194",
+      "name": "David Johnson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); South Dakota"
+    },
+    {
+      "candidateId": "969455f7-adfe-4084-83ae-9e097d4e80ca",
+      "name": "Dick Werner",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); South Dakota"
+    },
+    {
+      "candidateId": "d8c54bb1-1716-4ff3-8744-75d3c9474409",
+      "name": "Elizabeth Lone Eagle",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); South Dakota"
+    },
+    {
+      "candidateId": "d5d890ae-f1b9-46d2-b027-6963d670d80c",
+      "name": "Elliott Neff",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); South Dakota"
+    },
+    {
+      "candidateId": "994a2f03-aebc-4703-924b-bcfc5bf08524",
+      "name": "Emelia Enquist",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); South Dakota"
+    },
+    {
+      "candidateId": "750d78ec-ae6d-427c-b079-e5e8d13e3397",
+      "name": "Erin Ronayne Rudner",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); South Dakota"
+    },
+    {
+      "candidateId": "e90f5f96-350f-49b7-8f31-a57a16652e4b",
+      "name": "Erinn Williams",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); South Dakota"
+    },
+    {
+      "candidateId": "4971d348-740b-4f25-b737-903b29230afe",
+      "name": "Evangeline Poor Bear",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); South Dakota"
+    },
+    {
+      "candidateId": "209e9a47-9d8f-46fb-bbe2-3eacb1e7b261",
+      "name": "Fred Deutsch",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); South Dakota"
+    },
+    {
+      "candidateId": "e860d368-78fa-42fe-a36f-3ede533fcbce",
+      "name": "Garett Heinz",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); South Dakota"
+    },
+    {
+      "candidateId": "1c18dbfd-5f02-4408-82f8-9503f568ac7f",
+      "name": "Garret M Campbell",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); South Dakota"
+    },
+    {
+      "candidateId": "f9309576-ea6f-420d-bd5e-fc7adc936bf0",
+      "name": "Gary Deering",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); South Dakota"
+    },
+    {
+      "candidateId": "5e83fc8a-9e00-4a55-aa77-b18457df33a7",
+      "name": "Gary L Cammack",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); South Dakota"
+    },
+    {
+      "candidateId": "ba563ca6-2c60-4567-a7e0-41516b322ead",
+      "name": "Heidi Hora",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); South Dakota"
+    },
+    {
+      "candidateId": "1301d1d4-a6e1-4c92-a989-5a4d1a6f0176",
+      "name": "J. Sam Marty",
+      "scope": "state_upper",
+      "districtName": "State Senate District 28 (2024); South Dakota"
+    },
+    {
+      "candidateId": "93795918-0250-4e80-bf93-aaab1d0b6305",
+      "name": "Jarod Holcomb",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); South Dakota"
+    },
+    {
+      "candidateId": "fe857935-6059-46f3-b32f-7fe8396d62a4",
+      "name": "Jason Fleming",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); South Dakota"
+    },
+    {
+      "candidateId": "6b63c4a8-c67b-408c-b720-8b1fac8b5dc9",
+      "name": "Jay Yohner",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); South Dakota"
+    },
+    {
+      "candidateId": "59e5ad10-84f3-40dc-9875-c11605936c39",
+      "name": "Jeff Shelton",
+      "scope": "state_upper",
+      "districtName": "State Senate District 32 (2024); South Dakota"
+    },
+    {
+      "candidateId": "409f670e-da86-40c0-adf3-9ceb8ab5cad8",
+      "name": "Jerry Jongeling",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); South Dakota"
+    },
+    {
+      "candidateId": "4764034d-8070-4f40-bdd2-21c0978bf82b",
+      "name": "Joe Flood",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); South Dakota"
+    },
+    {
+      "candidateId": "ec1a72cd-d6a4-496e-bfdb-d9af16954984",
+      "name": "Joe Zweifel",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); South Dakota"
+    },
+    {
+      "candidateId": "d8ea0893-7a0c-45ed-b962-1fe69866ae3b",
+      "name": "John Pohlman",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); South Dakota"
+    },
+    {
+      "candidateId": "4b4000f0-9653-482a-bdaa-bcd70e05afd8",
+      "name": "John R. Marquardt",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); South Dakota"
+    },
+    {
+      "candidateId": "a55c22dd-c7d8-4109-8029-26ef761f582d",
+      "name": "John Shubeck",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); South Dakota"
+    },
+    {
+      "candidateId": "18c9bccd-810a-436d-97e9-33e7cb00c5a0",
+      "name": "Jon Nelson",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); South Dakota"
+    },
+    {
+      "candidateId": "a8d9d424-e86b-40e4-a4e4-4445f1a7a9fb",
+      "name": "Joni Tschetter",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); South Dakota"
+    },
+    {
+      "candidateId": "c25bd845-7537-4699-8127-7e6dcd9b87ae",
+      "name": "June CopperStad",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); South Dakota"
+    },
+    {
+      "candidateId": "0223418e-bae6-40fa-a0df-84af157981f6",
+      "name": "Karen Springer",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); South Dakota"
+    },
+    {
+      "candidateId": "0d0f5ed7-c977-4848-a8e4-0a1ad9a6b574",
+      "name": "Kari Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 33 (2024); South Dakota"
+    },
+    {
+      "candidateId": "653407a9-5477-4b1c-9824-286745bd0c19",
+      "name": "Kari Shanard-Koenders",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); South Dakota"
+    },
+    {
+      "candidateId": "8a4229ac-9aca-4472-8011-84e9602ecc41",
+      "name": "Katherine Washnok",
+      "scope": "state_upper",
+      "districtName": "State Senate District 3 (2024); South Dakota"
+    },
+    {
+      "candidateId": "a08c19ed-b597-48d1-8979-80e0237fa0a8",
+      "name": "Kathleen Brudvig",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); South Dakota"
+    },
+    {
+      "candidateId": "8790f50f-5904-4de0-96a9-652c0e230b0d",
+      "name": "Kay Swihart",
+      "scope": "state_upper",
+      "districtName": "State Senate District 18 (2024); South Dakota"
+    },
+    {
+      "candidateId": "8c858cfb-6733-4ade-8052-85ff68cea56f",
+      "name": "Ken Jeakins",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); South Dakota"
+    },
+    {
+      "candidateId": "1b1e8962-ae66-41aa-9a64-447256f822dd",
+      "name": "Kerry Loudenslager",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); South Dakota"
+    },
+    {
+      "candidateId": "12e8c0ce-5cdd-43c5-838b-c99ec689b078",
+      "name": "Kimberly Petterson",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); South Dakota"
+    },
+    {
+      "candidateId": "694df264-195c-4177-abf7-cc69949f51ff",
+      "name": "Laurie Gill",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); South Dakota"
+    },
+    {
+      "candidateId": "6f6590cc-ff01-4de9-8c56-6f6231148b7f",
+      "name": "Leslie Gerrish",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); South Dakota"
+    },
+    {
+      "candidateId": "012782e9-168d-4c1d-8706-cf714ec9e28b",
+      "name": "Lewis J. GrassRope",
+      "scope": "state_lower",
+      "districtName": "State House District 26B (2024); South Dakota"
+    },
+    {
+      "candidateId": "d545d403-727c-4e11-82a1-9bb1a89c5178",
+      "name": "Lisa Bogue",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); South Dakota"
+    },
+    {
+      "candidateId": "148ec75b-2cba-4001-ad54-055250992e67",
+      "name": "Liz Larson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); South Dakota"
+    },
+    {
+      "candidateId": "293ffb2e-94c4-45ed-93c1-f4f87dadddd0",
+      "name": "Liz May",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); South Dakota"
+    },
+    {
+      "candidateId": "dc43ef51-ce02-4643-bee4-2a3ce76d567e",
+      "name": "Manuel Luschas",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); South Dakota"
+    },
+    {
+      "candidateId": "77455c79-9661-4585-bb4c-60351e2f090f",
+      "name": "Megan Tschetter",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); South Dakota"
+    },
+    {
+      "candidateId": "bc497f77-7280-4832-b6c7-46c0512e6bb0",
+      "name": "Michael Calabrese",
+      "scope": "state_upper",
+      "districtName": "State Senate District 34 (2024); South Dakota"
+    },
+    {
+      "candidateId": "ad606c7f-6b6d-4bf5-95ce-b64025313b5c",
+      "name": "Michael Dupic",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); South Dakota"
+    },
+    {
+      "candidateId": "87371f00-99ef-438d-8dee-1f5e0669bd62",
+      "name": "Morgan Plucker",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); South Dakota"
+    },
+    {
+      "candidateId": "9580204d-3873-4446-a66b-7ce423dc2586",
+      "name": "Neal Tapio",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); South Dakota"
+    },
+    {
+      "candidateId": "42606674-edc5-4952-898f-5a3b17dce7f0",
+      "name": "Nick Buchholz",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); South Dakota"
+    },
+    {
+      "candidateId": "7a3ffc40-90c4-4f23-b3b5-98d216588785",
+      "name": "Nick Fosness",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); South Dakota"
+    },
+    {
+      "candidateId": "8bec2cc3-4f52-48f9-ad27-231142a0fe31",
+      "name": "Ron Frederick",
+      "scope": "state_lower",
+      "districtName": "State House District 26A (2024); South Dakota"
+    },
+    {
+      "candidateId": "4a199700-74ee-4516-b0c7-23fcf761eab2",
+      "name": "Russell Graeff",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); South Dakota"
+    },
+    {
+      "candidateId": "aab212dc-f16b-4112-8e60-4e9ee392874a",
+      "name": "Ryan Kohl",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); South Dakota"
+    },
+    {
+      "candidateId": "d15b403a-cad2-41e8-a17c-de41b3e92008",
+      "name": "Samuel Froehlke",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); South Dakota"
+    },
+    {
+      "candidateId": "958405c6-f49a-4242-9af1-6aeb7d6f0dfd",
+      "name": "Samuel Hare Sr",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); South Dakota"
+    },
+    {
+      "candidateId": "90e8eed5-6bcc-4acc-92be-acb0e0d2e362",
+      "name": "Shawn Bordeaux",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); South Dakota"
+    },
+    {
+      "candidateId": "d1ba37e2-5a4d-4388-8f7d-ad5c4ef766ca",
+      "name": "Sonja Mentzer",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); South Dakota"
+    },
+    {
+      "candidateId": "bc30af18-6a8b-4a0d-9d4f-fe6a434b9a57",
+      "name": "Spencer Sommers",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); South Dakota"
+    },
+    {
+      "candidateId": "05c6c7ee-4945-4cf3-b9a1-b047f9e19045",
+      "name": "Stephanie Arne",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); South Dakota"
+    },
+    {
+      "candidateId": "3439687f-252d-4035-aff9-4448c2ebcba9",
+      "name": "Sue Peterson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); South Dakota"
+    },
+    {
+      "candidateId": "ad7153c1-5c41-4473-bac2-f2aa35356d7d",
+      "name": "Terry Sabers",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); South Dakota"
+    },
+    {
+      "candidateId": "037f21f6-25e2-4d38-9b2b-9cfa59e36758",
+      "name": "Tim Rhead",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); South Dakota"
+    },
+    {
+      "candidateId": "b113f9fd-94dd-4750-809b-83795956017d",
+      "name": "Timothy Hanigan",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); South Dakota"
+    },
+    {
+      "candidateId": "2b03b6f7-a5a9-4107-b724-76fb1d4f1cc1",
+      "name": "Todd Wilkinson",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); South Dakota"
+    },
+    {
+      "candidateId": "76c29801-4dc5-4c8d-ae5a-3acdf8b507e2",
+      "name": "Tracey Quint",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); South Dakota"
+    },
+    {
+      "candidateId": "5184250c-34e5-44d6-bd4a-c5a021f862b7",
+      "name": "Troy Redler",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); South Dakota"
+    },
+    {
+      "candidateId": "07c1db06-0d53-49fe-91d3-1cea692ab061",
+      "name": "Tyler Tordsen",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); South Dakota"
+    },
+    {
+      "candidateId": "65a0e7ee-132d-4ab8-a7b9-c801c1895aa1",
+      "name": "Victor Diego Dominquez",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); South Dakota"
+    },
+    {
+      "candidateId": "7ec7959b-ab6f-4923-ba2f-2a79aa22e527",
+      "name": "Zachary Martin",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); South Dakota"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}
