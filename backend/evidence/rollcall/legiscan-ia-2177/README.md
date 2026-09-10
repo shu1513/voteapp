@@ -51,29 +51,28 @@ Dispositions are in `survey/divided-enacted-worklist.tsv`.
 | 03 | 8 | 12 | 634 | 2026-09-10T04:40:03.722Z |
 | 04 | 5 | 8 | 374 | 2026-09-10T04:45:48.520Z |
 | 05 | 4 | 5 | 263 | 2026-09-10T04:47:41.463Z |
+| 06 | 3 | 4 | 187 | 2026-09-10T06:34:25.892Z |
 
 Review fixes re-ran the importer in place; rewritten rows carry the re-run stamp instead:
 batch 02 `2026-09-10T05:44:42.259Z` (112 rows), batch 03 `2026-09-10T05:44:47.601Z` (176),
 batch 04 `2026-09-10T05:44:51.277Z` (92), batch 05 `2026-09-10T04:48:47.712Z` (15).
 
-**Local total: 2,817 candidate records, 102 candidates, 60 approved roll calls over 37
+**Local total: 3,004 candidate records, 102 candidates, 64 approved roll calls over 40
 measures. Production holds zero Iowa roll-call records.**
 
 ## Every slot is dispositioned
 
 `survey/divided-enacted-worklist.tsv` accounts for all 144 measure-chamber slots on 91
-measures:
+measures, with nothing deferred:
 
 | disposition | slots |
 |---|---|
-| imported in batches 01 to 05 | 60 |
-| appropriations, set aside under filter 3 | 30 |
-| dropped under filter 5 or filter 3, each with a written reason | 31 |
-| deferred, the act is too long to judge responsibly in one sitting | 23 |
+| imported in batches 01 to 06 | 64 |
+| appropriations, set aside under filter 3 | 32 |
+| dropped under filter 5 or filter 3, each with a written reason | 48 |
 
-The 23 deferred slots are 15 measures, listed by name with a reason in the worklist. Seven of
-them are omnibus acts between 11,000 and 91,000 characters. They are the only Iowa work left
-at the measure level.
+The divided-and-enacted pool is finished. Iowa's remaining roll-call work is the
+not-enacted scope, which has not been opened, and production promotion.
 
 ## Two corrections worth carrying forward
 
