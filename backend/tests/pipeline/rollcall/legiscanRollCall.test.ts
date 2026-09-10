@@ -76,7 +76,13 @@ describe("formatLegiscanMeasureId", () => {
     expect(formatLegiscanMeasureId("HB1")).toBe("HB 1");
     expect(formatLegiscanMeasureId("SB0544")).toBe("SB 544");
     expect(formatLegiscanMeasureId("sjr10")).toBe("SJR 10");
-    expect(() => formatLegiscanMeasureId("RV#105")).toThrow("not <letters><digits>");
+    // Nebraska numbers a bill's appropriation after the bill and a proposed
+    // constitutional amendment with a trailing CA. The trailing letters are
+    // part of the measure's identity and are kept.
+    expect(formatLegiscanMeasureId("LB48A")).toBe("LB 48A");
+    expect(formatLegiscanMeasureId("LR19CA")).toBe("LR 19CA");
+    expect(formatLegiscanMeasureId("lb0048a")).toBe("LB 48A");
+    expect(() => formatLegiscanMeasureId("RV#105")).toThrow("not <letters><digits><letters>");
   });
 });
 
@@ -174,9 +180,16 @@ describe("parseLegiscanRollCall", () => {
     expect(parseLegiscanRollCall(rollCallElement({ chamber: "S" })).chamber).toBe("senate");
   });
 
+  it("reads Nebraska's single house as the senate", () => {
+    // Nebraska has one house, the Legislature, and LegiScan prints `L` for
+    // it: all 1,774 rolls of NE 2185 carry `L`. Its members are State
+    // Senators, and a Nebraska config names only `senate` in chamberSizes.
+    expect(parseLegiscanRollCall(rollCallElement({ chamber: "L" })).chamber).toBe("senate");
+  });
+
   it("rejects a roll_call_id outside the int4 range and a bad chamber", () => {
     expect(() => parseLegiscanRollCall(rollCallElement({ roll_call_id: 2_200_000_000 }))).toThrow("storable range");
-    expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H, A or S");
+    expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H, A, L or S");
   });
 });
 
@@ -1506,6 +1519,7 @@ describe("getLegiscanStateConfig", () => {
       "ID-2246",
       "WV",
       "WV-2254",
+      "NE",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1542,6 +1556,7 @@ describe("getLegiscanStateConfig", () => {
       "ND",
       "ID",
       "WV",
+      "NE",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1572,6 +1587,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("OR").sessionId).toBe(2191);
     expect(getLegiscanStateConfig("OR-2252")).toMatchObject({ jurisdiction: "OR", sessionId: 2252 });
     expect(getLegiscanStateConfig("ND").sessionId).toBe(2140);
+    expect(getLegiscanStateConfig("NE")).toMatchObject({ jurisdiction: "NE", sessionId: 2185 });
 
     expect(getLegiscanStateConfig("WV")).toMatchObject({ jurisdiction: "WV", sessionId: 2196 });
     expect(getLegiscanStateConfig("WV-2254")).toMatchObject({ jurisdiction: "WV", sessionId: 2254 });
@@ -2169,7 +2185,7 @@ describe("getLegiscanStateConfig", () => {
     expect(isLegiscanCommitteeChamberRollCall({ chamber: "A" })).toBe(false);
     expect(isLegiscanCommitteeChamberRollCall({ chamber: "S" })).toBe(false);
     expect(isLegiscanCommitteeChamberRollCall({})).toBe(false);
-    expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H, A or S: J");
+    expect(() => parseLegiscanRollCall(rollCallElement({ chamber: "J" }))).toThrow("chamber is not H, A, L or S: J");
   });
 
   it("classifies Georgia's real desc vocabulary as surveyed", () => {
@@ -2257,6 +2273,48 @@ describe("getLegiscanStateConfig", () => {
     // Every other committee is cut by tally in both chambers.
     expect(fl("House Budget Committee", 30).reason).toBe("committee_tally:30/120");
     expect(fl("Senate Fiscal Policy", 19, "senate").reason).toBe("committee_tally:19/40");
+  });
+
+  it("classifies Nebraska's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.NE!;
+    // Nebraska has one house, so every roll is stored under `senate`.
+    const ne = (desc: string, total = 49, billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber: "senate", billType, config });
+    // Final Reading is the passage vote, and the tally is printed inside the
+    // description, so no pattern may be anchored at the end.
+    expect(ne("Passed on Final Reading 27-21-1")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ne("Passed on Final Reading 48-1*-0")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // Nebraska votes the emergency clause together with the bill.
+    expect(ne("Passed on Final Reading with Emergency Clause 35-13-1")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // A proposed constitutional amendment is passed to the ballot.
+    expect(ne("Passed on Final Reading for General Election 39-10-0")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // The two earlier floor stages are amend-and-advance steps, not passage.
+    expect(ne("Advanced to Enrollment and Review Initial 25-10-14").reason).toBe("excluded_question");
+    expect(ne("Advanced to Enrollment and Review for Engrossment 33-0-16").reason).toBe("excluded_question");
+    expect(ne("Readvanced to Enrollment and Review for Engrossment 25-10-14").reason).toBe("excluded_question");
+    expect(ne("Failed to advance to Enrollment and Review Initial 20-24-5").reason).toBe("excluded_question");
+    // A Final Reading the bill lost, including one lost only because the
+    // emergency clause fell short of the 33 votes it needs.
+    expect(ne("Failed on Final Reading with Emergency Clause 26-22*-1").reason).toBe("excluded_question");
+    // Sending a bill back a stage for one amendment.
+    expect(ne("Returned to Select File for specific amendment 25-0-24").reason).toBe("excluded_question");
+    expect(ne("Motion to return to Select File failed 17-25-7").reason).toBe("excluded_question");
+    // Resolution adoption. Type R is dropped before the config is read; the
+    // rule is here so a resolution on a kept type could never read as passage.
+    expect(ne("Adopted 43-0-6").reason).toBe("excluded_question");
+    // Amendment and motion votes name their own number and lead with the
+    // sponsor, so the rule cannot be anchored at either end.
+    expect(ne("Hansen AM1097 lost 20-25-4").reason).toBe("excluded_question");
+    expect(ne("Judiciary AM556 adopted 30-0-19").reason).toBe("excluded_question");
+    expect(ne("Conrad MO38 failed 12-30-7").reason).toBe("excluded_question");
+    expect(ne("Cavanaugh, J. FA3136 lost 15-28-6").reason).toBe("excluded_question");
+    expect(ne("Enrollment and Review ER79 adopted 44-0-5").reason).toBe("excluded_question");
   });
 
   it("classifies Illinois's real desc vocabulary as surveyed", () => {
