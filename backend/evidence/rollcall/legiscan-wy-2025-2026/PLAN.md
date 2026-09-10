@@ -70,9 +70,9 @@ resolutions, which the kept set already covers.
 
 ## The pool, measured before any batch size was promised
 
-Across both sessions there are 982 kept floor votes. 216 of them are closely
+Across both sessions there are 991 kept floor votes. 222 of them are closely
 divided under the standard gate, where the smaller side is at least a quarter
-of the larger. 121 of those are on measures that became law.
+of the larger. 126 of those are on measures that became law.
 
 | | kept floor | divided | share | divided and enacted | measures | measure-chamber slots |
 |---|---|---|---|---|---|---|
@@ -152,10 +152,39 @@ roll. The Senate number is low by design, not a coverage gap: all 62 House
 seats are on the 2026 ballot but only about half of the 31 Senate seats are,
 so roughly half the Senate can never match a 2026 candidacy.
 
-## Batch 01
+## A correction found while working batch 02
 
-Ten measures, one roll call each, 281 candidate records, 214 research-area
-tags. See JUDGING.md for how each was judged and why the drops were dropped.
+The House's veto-override votes were being thrown away. Wyoming's constitution
+says a chamber "reconsiders" a bill the governor has vetoed, and the feed
+renders the House's reconsideration under the veto's own `VT` code, as
+`HB0064VT001 Amendment Reconsideration Motion Passed by Roll Call`. It is not
+a vote on an amendment, and the entry's amendment-reconsideration exclusion
+was treating it as one.
+
+The 2025 session holds exactly five of these captions, matching the five
+overridden bills one for one. Each is in that bill's house of origin, on the
+day that chamber acted on the veto, paired with a Senate `Veto Override` roll
+under the same `VT001` code, and at or above the two thirds of 62 the
+constitution requires: 45-16, 44-15, 47-13, 55-5 and 48-13. The one House
+override that failed is captioned `Did Not Override Veto` at 35-27, which is
+below two thirds. A real motion to reconsider carries its stage instead of a
+`VT` code and is still excluded.
+
+The fix adds five floor votes to the 2025 session, four of them closely
+divided, and changes which roll is the House's last word on those five bills.
+The pool numbers above are from the corrected classifier. The 2026 session is
+unaffected, because all three of its vetoes were sustained.
+
+## Batches
+
+| batch | measures | roll calls | records | tags |
+|---|---|---|---|---|
+| 01 | 10 | 10 | 281 | 214 |
+| 02 | 8 | 12 | 224 | 164 |
+
+Each batch has its own JUDGING.md. `divided-enacted-worklist.tsv` lists all
+126 closely divided votes on measures that became law, each with a
+disposition.
 
 ## Reproducing this
 

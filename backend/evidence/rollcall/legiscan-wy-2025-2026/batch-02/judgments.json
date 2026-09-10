@@ -1,0 +1,220 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1506616,
+      "measure_id": "HB 36",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to override the governor's veto of a bill extending the Hathaway scholarship to short job-training programs. The act opens the Hathaway scholarship to short community college programs. These are programs that mix classroom credit with training on the job. Before the change, a certificate had to be a two-year applied science degree or a full school year of study. A certificate now means any community college program that leads to a license, a permit, or a trade qualification the industry accepts. Students in these programs who take fewer than six credit hours a term get a share of the full award. The share is their hours divided by twelve. They meet the progress rule by finishing every hour they sign up for, plus their training hours. The change reaches all four Hathaway award levels. The Senate voted 23-8 to override, above the two thirds it needed, and the bill became law as chapter 125 of the 2025 session laws.",
+      "nay_description": "Voted against overriding the governor's veto of a bill extending the Hathaway scholarship to short job-training programs. The act opens the Hathaway scholarship to short community college programs. These are programs that mix classroom credit with training on the job. Before the change, a certificate had to be a two-year applied science degree or a full school year of study. A certificate now means any community college program that leads to a license, a permit, or a trade qualification the industry accepts. Students in these programs who take fewer than six credit hours a term get a share of the full award. The share is their hours divided by twelve. They meet the progress rule by finishing every hour they sign up for, plus their training hours. The change reaches all four Hathaway award levels. The Senate voted 23-8 to override, above the two thirds it needed, and the bill became law as chapter 125 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "house",
+      "session": "2157",
+      "roll": 1504299,
+      "measure_id": "HB 64",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to override the governor's veto of a bill requiring an ultrasound before a medication abortion. The act requires a woman to have an ultrasound before she can get medication to end a pregnancy. It must come at least forty-eight hours before she picks up the drug, or before a provider hands it over, whichever is first. She must be offered the chance to view the scan and to see or hear the fetal heartbeat if it can be heard. The scan must meet the standard of care where she lives. Whoever performs it must give her a paper with the date, time and place, the name of the provider who ordered it, and the name of the one who did it. The paper must also confirm the pregnancy is in the womb and how far along it is. The provider who hands over the drug must first check that the scan happened. Breaking the rule is a crime carrying up to six months in jail, a fine of up to $9,000, or both. The pregnant woman can never be charged. The House voted 45-16 to override, above the two thirds it needed, and the bill became law as chapter 126 of the 2025 session laws.",
+      "nay_description": "Voted against overriding the governor's veto of a bill requiring an ultrasound before a medication abortion. The act requires a woman to have an ultrasound before she can get medication to end a pregnancy. It must come at least forty-eight hours before she picks up the drug, or before a provider hands it over, whichever is first. She must be offered the chance to view the scan and to see or hear the fetal heartbeat if it can be heard. The scan must meet the standard of care where she lives. Whoever performs it must give her a paper with the date, time and place, the name of the provider who ordered it, and the name of the one who did it. The paper must also confirm the pregnancy is in the womb and how far along it is. The provider who hands over the drug must first check that the scan happened. Breaking the rule is a crime carrying up to six months in jail, a fine of up to $9,000, or both. The pregnant woman can never be charged. The House voted 45-16 to override, above the two thirds it needed, and the bill became law as chapter 126 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1506086,
+      "measure_id": "HB 64",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to override the governor's veto of a bill requiring an ultrasound before a medication abortion. The act requires a woman to have an ultrasound before she can get medication to end a pregnancy. It must come at least forty-eight hours before she picks up the drug, or before a provider hands it over, whichever is first. She must be offered the chance to view the scan and to see or hear the fetal heartbeat if it can be heard. The scan must meet the standard of care where she lives. Whoever performs it must give her a paper with the date, time and place, the name of the provider who ordered it, and the name of the one who did it. The paper must also confirm the pregnancy is in the womb and how far along it is. The provider who hands over the drug must first check that the scan happened. Breaking the rule is a crime carrying up to six months in jail, a fine of up to $9,000, or both. The pregnant woman can never be charged. The Senate voted 22-9 to override, above the two thirds it needed, and the bill became law as chapter 126 of the 2025 session laws.",
+      "nay_description": "Voted against overriding the governor's veto of a bill requiring an ultrasound before a medication abortion. The act requires a woman to have an ultrasound before she can get medication to end a pregnancy. It must come at least forty-eight hours before she picks up the drug, or before a provider hands it over, whichever is first. She must be offered the chance to view the scan and to see or hear the fetal heartbeat if it can be heard. The scan must meet the standard of care where she lives. Whoever performs it must give her a paper with the date, time and place, the name of the provider who ordered it, and the name of the one who did it. The paper must also confirm the pregnancy is in the womb and how far along it is. The provider who hands over the drug must first check that the scan happened. Breaking the rule is a crime carrying up to six months in jail, a fine of up to $9,000, or both. The pregnant woman can never be charged. The Senate voted 22-9 to override, above the two thirds it needed, and the bill became law as chapter 126 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1503522,
+      "measure_id": "HB 136",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to let volunteer firefighters and medics join the state health plan and get help with the premium. Volunteer firefighters, emergency medical technicians and search and rescue members may join the state employees' group health plan. Before the change, being eligible for any government health program disqualified them. The act carves out the Affordable Care Act marketplace, so being able to buy there no longer bars a volunteer from the state plan. Volunteers also used to have to pay the whole premium themselves, with no help from anyone. Their fire department, ambulance service or search and rescue unit may now pay part of it. Volunteers still send their own monthly premium to the state, and now prove their volunteer status once a year instead of every month. The Senate passed the bill 23-8 and it became law as chapter 133 of the 2025 session laws.",
+      "nay_description": "Voted against letting volunteer firefighters and medics join the state health plan and get help with the premium. Volunteer firefighters, emergency medical technicians and search and rescue members may join the state employees' group health plan. Before the change, being eligible for any government health program disqualified them. The act carves out the Affordable Care Act marketplace, so being able to buy there no longer bars a volunteer from the state plan. Volunteers also used to have to pay the whole premium themselves, with no help from anyone. Their fire department, ambulance service or search and rescue unit may now pay part of it. Volunteers still send their own monthly premium to the state, and now prove their volunteer status once a year instead of every month. The Senate passed the bill 23-8 and it became law as chapter 133 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1505444,
+      "measure_id": "HB 259",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to spend about $207 million on school buildings, most of it on a new high school in Campbell County. The act pays for school building work for the rest of the two-year budget period ending June 30, 2026. It puts $29.8 million into seventeen major maintenance projects at named schools around the state. Campbell County School District 1 gets $14.5 million for a transportation building. The same district gets $150.9 million for a new high school, $20 million of it at once and the rest from March 15, 2026. Another $11.7 million covers costs nobody planned for. Up to $13.4 million left over from earlier construction money is held back to cover inflation on projects already approved, without changing what those projects build. The state construction department must report every month on how the money is going out. The Senate passed the bill 23-8 and it became law as chapter 118 of the 2025 session laws.",
+      "nay_description": "Voted against spending about $207 million on school buildings, most of it on a new high school in Campbell County. The act pays for school building work for the rest of the two-year budget period ending June 30, 2026. It puts $29.8 million into seventeen major maintenance projects at named schools around the state. Campbell County School District 1 gets $14.5 million for a transportation building. The same district gets $150.9 million for a new high school, $20 million of it at once and the rest from March 15, 2026. Another $11.7 million covers costs nobody planned for. Up to $13.4 million left over from earlier construction money is held back to cover inflation on projects already approved, without changing what those projects build. The state construction department must report every month on how the money is going out. The Senate passed the bill 23-8 and it became law as chapter 118 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1472543,
+      "measure_id": "SF 4",
+      "vote_date": "2025-01-21",
+      "review_status": "approved",
+      "yea_description": "Voted to widen which state park staff are peace officers and when they may act outside a park. The act widens who counts as a peace officer among Wyoming state park staff. Superintendents, assistant superintendents, district managers, park rangers and reserve rangers all qualify. Each must have finished state peace officer training. The old law reached only superintendents and full-time rangers. Inside a state park, recreation area, historic site or dig site, their powers do not change. Outside those lines they could act before only when another agency asked for help in its own area. They may now enforce felony law when they saw or found the felony while doing their job. The Senate passed the bill 21-8 and it became law as chapter 54 of the 2025 session laws.",
+      "nay_description": "Voted against widening which state park staff are peace officers and when they may act outside a park. The act widens who counts as a peace officer among Wyoming state park staff. Superintendents, assistant superintendents, district managers, park rangers and reserve rangers all qualify. Each must have finished state peace officer training. The old law reached only superintendents and full-time rangers. Inside a state park, recreation area, historic site or dig site, their powers do not change. Outside those lines they could act before only when another agency asked for help in its own area. They may now enforce felony law when they saw or found the felony while doing their job. The Senate passed the bill 21-8 and it became law as chapter 54 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "house",
+      "session": "2157",
+      "roll": 1498230,
+      "measure_id": "SF 4",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted to widen which state park staff are peace officers and when they may act outside a park. The act widens who counts as a peace officer among Wyoming state park staff. Superintendents, assistant superintendents, district managers, park rangers and reserve rangers all qualify. Each must have finished state peace officer training. The old law reached only superintendents and full-time rangers. Inside a state park, recreation area, historic site or dig site, their powers do not change. Outside those lines they could act before only when another agency asked for help in its own area. They may now enforce felony law when they saw or found the felony while doing their job. The House passed the bill 40-20 and it became law as chapter 54 of the 2025 session laws.",
+      "nay_description": "Voted against widening which state park staff are peace officers and when they may act outside a park. The act widens who counts as a peace officer among Wyoming state park staff. Superintendents, assistant superintendents, district managers, park rangers and reserve rangers all qualify. Each must have finished state peace officer training. The old law reached only superintendents and full-time rangers. Inside a state park, recreation area, historic site or dig site, their powers do not change. Outside those lines they could act before only when another agency asked for help in its own area. They may now enforce felony law when they saw or found the felony while doing their job. The House passed the bill 40-20 and it became law as chapter 54 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "house",
+      "session": "2157",
+      "roll": 1504265,
+      "measure_id": "SF 34",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to count more school building space when the state pays districts for maintenance. The act raises how much school building space the state counts when it pays districts to maintain their buildings. For the 2025-2026 school year only, space up to 135% of the standard size counts, instead of the usual 115%. The act also lifts the rate used to work out major maintenance payments from 2% to 2.5%, for 2025-2026 and every year after. It sets aside $38.1 million for the larger payments that follow. A further $20 million goes toward a new high school in Campbell County School District 1, cut dollar for dollar by whatever a separate 2025 bill gives the same project. The House passed the bill 38-23 and it became law as chapter 145 of the 2025 session laws.",
+      "nay_description": "Voted against counting more school building space when the state pays districts for maintenance. The act raises how much school building space the state counts when it pays districts to maintain their buildings. For the 2025-2026 school year only, space up to 135% of the standard size counts, instead of the usual 115%. The act also lifts the rate used to work out major maintenance payments from 2% to 2.5%, for 2025-2026 and every year after. It sets aside $38.1 million for the larger payments that follow. A further $20 million goes toward a new high school in Campbell County School District 1, cut dollar for dollar by whatever a separate 2025 bill gives the same project. The House passed the bill 38-23 and it became law as chapter 145 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1507367,
+      "measure_id": "SF 34",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House version of a bill counting more school building space when the state pays districts for maintenance. The act raises how much school building space the state counts when it pays districts to maintain their buildings. For the 2025-2026 school year only, space up to 135% of the standard size counts, instead of the usual 115%. The act also lifts the rate used to work out major maintenance payments from 2% to 2.5%, for 2025-2026 and every year after. It sets aside $38.1 million for the larger payments that follow. A further $20 million goes toward a new high school in Campbell County School District 1, cut dollar for dollar by whatever a separate 2025 bill gives the same project. The Senate had refused the House changes, then voted 20-7 to accept them, and the bill became law as chapter 145 of the 2025 session laws.",
+      "nay_description": "Voted against accepting the House version of a bill counting more school building space when the state pays districts for maintenance. The act raises how much school building space the state counts when it pays districts to maintain their buildings. For the 2025-2026 school year only, space up to 135% of the standard size counts, instead of the usual 115%. The act also lifts the rate used to work out major maintenance payments from 2% to 2.5%, for 2025-2026 and every year after. It sets aside $38.1 million for the larger payments that follow. A further $20 million goes toward a new high school in Campbell County School District 1, cut dollar for dollar by whatever a separate 2025 bill gives the same project. The Senate had refused the House changes, then voted 20-7 to accept them, and the bill became law as chapter 145 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1504898,
+      "measure_id": "SF 132",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to override the governor's veto of a bill banning drone flights over critical infrastructure. The act makes it a crime to fly a drone over or near critical infrastructure to photograph it, to hover there, or to help commit another crime. Carrying an explosive by drone over such a site is banned outright. Critical infrastructure is defined broadly. The list covers refineries, chemical plants, water and sewage plants, dams, power plants and high-voltage lines. It also covers phone towers, gas sites, railroads, courthouses, jails, military bases, mines, and hospitals that take air ambulances. The governor may add anything else to the list. A first offense is a crime carrying up to six months in jail, a fine of up to $2,500, or both. A second is a felony carrying up to two years, a fine of up to $5,000, or both. Police may disable, damage or remove a drone breaking the rule, and the governor may send the National Guard to help. The attorney general must defend officers and Guard members who are sued for doing so. The rule does not reach drones flown with federal approval, government drones, the site owner, emergency crews, or a landowner over their own land. The Senate voted 23-8 to override, above the two thirds it needed, and the bill became law as chapter 112 of the 2025 session laws.",
+      "nay_description": "Voted against overriding the governor's veto of a bill banning drone flights over critical infrastructure. The act makes it a crime to fly a drone over or near critical infrastructure to photograph it, to hover there, or to help commit another crime. Carrying an explosive by drone over such a site is banned outright. Critical infrastructure is defined broadly. The list covers refineries, chemical plants, water and sewage plants, dams, power plants and high-voltage lines. It also covers phone towers, gas sites, railroads, courthouses, jails, military bases, mines, and hospitals that take air ambulances. The governor may add anything else to the list. A first offense is a crime carrying up to six months in jail, a fine of up to $2,500, or both. A second is a felony carrying up to two years, a fine of up to $5,000, or both. Police may disable, damage or remove a drone breaking the rule, and the governor may send the National Guard to help. The attorney general must defend officers and Guard members who are sued for doing so. The rule does not reach drones flown with federal approval, government drones, the site owner, emergency crews, or a landowner over their own land. The Senate voted 23-8 to override, above the two thirds it needed, and the bill became law as chapter 112 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "house",
+      "session": "2157",
+      "roll": 1504899,
+      "measure_id": "SF 132",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to override the governor's veto of a bill banning drone flights over critical infrastructure. The act makes it a crime to fly a drone over or near critical infrastructure to photograph it, to hover there, or to help commit another crime. Carrying an explosive by drone over such a site is banned outright. Critical infrastructure is defined broadly. The list covers refineries, chemical plants, water and sewage plants, dams, power plants and high-voltage lines. It also covers phone towers, gas sites, railroads, courthouses, jails, military bases, mines, and hospitals that take air ambulances. The governor may add anything else to the list. A first offense is a crime carrying up to six months in jail, a fine of up to $2,500, or both. A second is a felony carrying up to two years, a fine of up to $5,000, or both. Police may disable, damage or remove a drone breaking the rule, and the governor may send the National Guard to help. The attorney general must defend officers and Guard members who are sued for doing so. The rule does not reach drones flown with federal approval, government drones, the site owner, emergency crews, or a landowner over their own land. The House voted 47-13 to override, above the two thirds it needed, and the bill became law as chapter 112 of the 2025 session laws.",
+      "nay_description": "Voted against overriding the governor's veto of a bill banning drone flights over critical infrastructure. The act makes it a crime to fly a drone over or near critical infrastructure to photograph it, to hover there, or to help commit another crime. Carrying an explosive by drone over such a site is banned outright. Critical infrastructure is defined broadly. The list covers refineries, chemical plants, water and sewage plants, dams, power plants and high-voltage lines. It also covers phone towers, gas sites, railroads, courthouses, jails, military bases, mines, and hospitals that take air ambulances. The governor may add anything else to the list. A first offense is a crime carrying up to six months in jail, a fine of up to $2,500, or both. A second is a felony carrying up to two years, a fine of up to $5,000, or both. Police may disable, damage or remove a drone breaking the rule, and the governor may send the National Guard to help. The attorney general must defend officers and Guard members who are sued for doing so. The rule does not reach drones flown with federal approval, government drones, the site owner, emergency crews, or a landowner over their own land. The House voted 47-13 to override, above the two thirds it needed, and the bill became law as chapter 112 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "house",
+      "session": "2157",
+      "roll": 1504563,
+      "measure_id": "SF 160",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to open Wyoming's court-run treatment programs to people with mental illness. Wyoming's court-run treatment programs handled drug and alcohol cases. The act opens them to mental health cases as well. A person with schizophrenia, major depression, bipolar disorder or post-traumatic stress may now take part. So may someone who has both a mental illness and a drug or alcohol problem. That includes people the police dealt with over an offense but never arrested. The programs gain a stated goal of keeping people with mental illness out of jail, out of court and out of the state hospital. A program may now take cases from anywhere in the state, not just its own area. The public defender may sit on a program team and speak for those in it, including when someone faces sanctions or removal. The act renames substance abuse as substance use disorder through the statutes, and says treatment may include medication. The House passed the bill 38-22 and it became law as chapter 160 of the 2025 session laws.",
+      "nay_description": "Voted against opening Wyoming's court-run treatment programs to people with mental illness. Wyoming's court-run treatment programs handled drug and alcohol cases. The act opens them to mental health cases as well. A person with schizophrenia, major depression, bipolar disorder or post-traumatic stress may now take part. So may someone who has both a mental illness and a drug or alcohol problem. That includes people the police dealt with over an offense but never arrested. The programs gain a stated goal of keeping people with mental illness out of jail, out of court and out of the state hospital. A program may now take cases from anywhere in the state, not just its own area. The public defender may sit on a program team and speak for those in it, including when someone faces sanctions or removal. The act renames substance abuse as substance use disorder through the statutes, and says treatment may include medication. The House passed the bill 38-22 and it became law as chapter 160 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
