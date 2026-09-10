@@ -20,7 +20,11 @@ where a stale comment hid a session nobody had worked.
 - `crosswalk.json` — LegiScan people_id to VoteApp candidate id, 50 entries
 - `legiscan-people-ne-2185.json` — the people snapshot the crosswalk is checked against
 - `survey/divided-enacted-worklist.tsv` — every roll in the pool, with its disposition
-- `batch-01/` — the first batch: plan, judging notes, judgments, roll evidence, import ledgers
+- `batch-01/`, `batch-02/` — measures that became law
+- `batch-03/` — measures the Governor vetoed, which never became law
+
+Each batch directory holds its plan, judging notes, judgments, roll evidence
+and import ledgers.
 
 The dataset itself and the full evidence set live outside the repository at
 `/Users/shu/legiscan-data/ne-2185*`, with the run state at
@@ -50,6 +54,16 @@ no equivalent of the one-chamber scope other states opened.
   measures; 1 superseded
 - of those 49, **5 measures were vetoed and never became law** (see below), so
   the real enacted pool is 44
+
+**Every one of the 49 now carries a final disposition** in the worklist: 13
+imported over three batches, 25 dropped with a written reason, 5 excluded as
+appropriations, 1 held, 2 vetoed measures dropped on the merits, and 2 left as
+candidates for a later pass because each needs a full read of a long,
+multi-subject act (LB 415 on paid sick leave, LB 530 on motor vehicle
+homicide). Nothing needs triaging twice.
+
+**Local totals: 191 records, 12 candidates, 137 tags, 16 approved rolls.**
+Production holds none of them.
 
 ## Three things about this feed to keep
 
@@ -99,8 +113,15 @@ Sources, all from `nebraskalegislature.gov/FloorDocs/109/PDF/`:
 - `Slip/<BILL>.pdf` — the enacted act, and the ground truth
 - `CS/<BILL>.pdf` — the Committee Statement: official, neutral, section by
   section. **It also prints a labeled list of the people who testified for and
-  against. Read only the summary sections.** And it describes the bill as the
-  committee sent it out, which is not always what passed.
+  against. Read only the summary sections.**
+
+  ⚠ **And it describes the bill as the committee sent it out, which is often not
+  what passed.** In batch-02 it disagreed with the enacted act on five of the
+  measures read: a notice threshold of 25 employees where the act says 100, a
+  tax rise of $1.50 where the act says $1.00, a duty removed for all employers
+  where the act removes it only for private ones, a cap on denying students with
+  disabilities that is not in the act at all, and a training requirement dropped
+  for all teachers where the act drops it only for substitutes. Read the act.
 - `Final/`, `Engrossed/`, `Intro/`, `AM/<AM####>.pdf`
 - **Never `SI/<BILL>.pdf`.** That is the introducer's own statement of intent,
   which is advocacy. `ne_docs.py` will not fetch it.
