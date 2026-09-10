@@ -70,9 +70,10 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 const FEDERAL_JURISDICTION = "US";
 // State entries name their jurisdiction explicitly; only sources with a
 // fetcher are accepted, so a typo cannot write a judgment nothing imports:
-// the Ohio pilot's own feed, plus every state registered in the LegiScan
-// config registry (whose session id is the entry's session key).
-const STATE_JURISDICTIONS = new Set(["OH", ...LEGISCAN_RECORD_JURISDICTIONS]);
+// the Ohio pilot's own feed, Hawaii's history-line fetcher (rollcall:hi:*),
+// plus every state registered in the LegiScan config registry (whose
+// session id is the entry's session key).
+const STATE_JURISDICTIONS = new Set(["OH", "HI", ...LEGISCAN_RECORD_JURISDICTIONS]);
 const REVIEW_STATUSES = ["pending", "approved"] as const;
 
 function fail(index: number, message: string): never {

@@ -1,0 +1,730 @@
+{
+  "runId": "rollcall-legiscan-fetch-hi-20260909T224513Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "HI",
+  "startedAt": "2026-09-09T22:45:13.084Z",
+  "finishedAt": "2026-09-09T22:45:15.142Z",
+  "datasetDir": "~/legiscan-data/hi-2175/HI/2025-2025_Regular_Session",
+  "bills": 4058,
+  "votes": 2826,
+  "people": 76,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Senate Conference: Passed, With Amendments",
+      "count": 262,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB601",
+        "SB1452",
+        "SB1413"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Conference: Passed, With Amendments",
+      "count": 261,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB601",
+        "SB1452",
+        "SB1413"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Ways and Means: Passed, With Amendments",
+      "count": 226,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB440",
+        "SB1186",
+        "SB325"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary: Passed, With Amendments",
+      "count": 199,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB175",
+        "SB263",
+        "SB264"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Ways and Means: Passed, Unamended",
+      "count": 195,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1470",
+        "SB1567",
+        "SB855"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services: Passed, With Amendments",
+      "count": 178,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB144",
+        "SB191",
+        "SB960"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Commerce and Consumer Protection: Passed, With Amendments",
+      "count": 159,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB332",
+        "SB102",
+        "SB157"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Agriculture and Environment: Passed, With Amendments",
+      "count": 144,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB13",
+        "SB177",
+        "SB250"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Transportation and Culture and the Arts: Passed, With Amendments",
+      "count": 138,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1160",
+        "SB106",
+        "SB1117"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary: Passed, Unamended",
+      "count": 105,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB121",
+        "SB267",
+        "SB265"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Energy and Intergovernmental Affairs: Passed, With Amendments",
+      "count": 86,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1068",
+        "SB996",
+        "SB371"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Labor and Technology: Passed, With Amendments",
+      "count": 84,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB327",
+        "SB717",
+        "SB742"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety, Intergovernmental and Military Affairs: Passed, With Amendments",
+      "count": 76,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB116",
+        "SB138",
+        "SB112"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Water and Land: Passed, With Amendments",
+      "count": 71,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB534",
+        "SB848",
+        "SB841"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Housing: Passed, With Amendments",
+      "count": 69,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB65",
+        "SB35",
+        "SB40"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Economic Development and Technology: Passed, With Amendments",
+      "count": 65,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB148",
+        "SB125",
+        "SB983"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Operations: Passed, With Amendments",
+      "count": 62,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB133",
+        "SB462",
+        "SB375"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety, Intergovernmental and Military Affairs: Passed, Unamended",
+      "count": 47,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB88",
+        "SB224",
+        "SB601"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Higher Education: Passed, With Amendments",
+      "count": 46,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB865",
+        "SB1158",
+        "SB666"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Agriculture and Environment: Passed, Unamended",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB184",
+        "SB328",
+        "SB351"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education: Passed, With Amendments",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1300",
+        "SB747",
+        "SB1391"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Transportation and Culture and the Arts: Passed, Unamended",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB30",
+        "SB282",
+        "SB95"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Energy and Intergovernmental Affairs: Passed, Unamended",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1336",
+        "SB1088",
+        "SB233"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Water and Land: Passed, Unamended",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB130",
+        "SB15",
+        "SB145"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Hawaiian Affairs: Passed, With Amendments",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB269",
+        "SB268",
+        "SB624"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Commerce and Consumer Protection: Passed, Unamended",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1620",
+        "SB1197",
+        "SB1341"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services: Passed, Unamended",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1202",
+        "SB1425",
+        "SB1447"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Higher Education: Passed, Unamended",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB741",
+        "SB1254",
+        "SB1530"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Housing: Passed, Unamended",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB75",
+        "SB165",
+        "SB379"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Economic Development and Technology: Passed, Unamended",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "HB448",
+        "HB774",
+        "HB454"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Hawaiian Affairs: Passed, Unamended",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1653",
+        "SB759",
+        "SB1549"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Labor and Technology: Passed, Unamended",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB336",
+        "SB1359",
+        "SB1454"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Operations: Passed, Unamended",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB546",
+        "SB382",
+        "SB998"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education: Passed, Unamended",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB422",
+        "SCR66",
+        "SR44"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Ways and Means: Passed, With Amendments And Be Recommitted",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB933",
+        "SB938",
+        "SB934"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Commerce and Consumer Protection: Passed, With Amendments And Be Recommitted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB890",
+        "SB1291"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Economic Development and Technology: Passed, With Amendments And Be Recommitted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB891",
+        "SB893"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education: Passed, With Amendments And Be Recommitted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB894"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Energy and Intergovernmental Affairs: Passed, With Amendments And Be Recommitted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB897"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Hawaiian Affairs: Passed, With Amendments And Be Recommitted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB903"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Transportation and Culture and the Arts: Passed, With Amendments And Be Recommitted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB927"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 3172,
+    "CR": 451,
+    "R": 435
+  },
+  "sessionIds": {
+    "2175": 4058
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
