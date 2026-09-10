@@ -1035,6 +1035,76 @@ const WASHINGTON_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = 
   /motion to place measure on final passage/,
 ];
 
+// Wyoming's floor-question vocabulary, shared by the 2025 general session
+// and the 2026 budget session. Both were surveyed separately.
+//
+// ⚠ WYOMING PRINTS THE TALLY INSIDE THE DESCRIPTION. Every roll reads
+// `3rd Reading:Passed 60-0-2-0-0`, never a bare `3rd Reading:Passed`, so no
+// pattern here may be anchored with `$` after the question text. Each one
+// ends by requiring the first digit of the tally instead.
+//
+// ⚠ THE TWO SESSIONS DO NOT PRINT THE SAME QUESTIONS. A budget session may
+// only take up a non-budget bill if two thirds of the chamber vote to
+// introduce it, so the 2026 session holds 281 introduction roll calls that
+// the 2025 session does not hold at all. An introduction vote is NOT a
+// passage vote, and Wyoming spells it two ways: `Failed Introduction` for
+// the ones that fall short, and `Introduced and Referred to <committee>` for
+// the ones that carry. The second spelling is the dangerous one — it names a
+// committee but the tally is the whole chamber, so a tally test cannot catch
+// it, and 10 of those rolls are both closely divided and on bills that
+// became law. Both spellings are excluded below. They are harmless against
+// the 2025 session, where zero rolls match either.
+const WYOMING_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Third reading is Wyoming's passage vote in both chambers.
+  { pattern: /^3rd reading:(?:passed|failed) \d/, questionClass: "passage" },
+  // The chamber of origin taking up its bill as returned with the other
+  // chamber's amendments.
+  { pattern: /^concur:(?:passed|failed) \d/, questionClass: "concurrence" },
+  // The chamber of origin, having refused to concur, taking the other
+  // chamber's text after all. Despite the name this is not a motion about
+  // where the bill sits: it is the chamber's second and final decision on
+  // the amended bill, and enrollment follows the same day. All four rolls in
+  // the 2025 session came straight after a `Concur:Failed`; three passed and
+  // the bill was enrolled (SF 34 20-7, SF 33 28-3, SF 103 27-4), one failed
+  // and the bill died (SF 40 8-23). Wyoming spells it `Recede` or `Rescind`
+  // and sometimes omits the result word, so the feed's passed flag decides.
+  { pattern: /^re(?:cede|scind) from non-concurrence\b/, questionClass: "concurrence" },
+  // Adoption of a joint conference committee report, printed with the
+  // report's own number: `HB0199JC001 Adopted HB0199JC001: 42-19-1-0-0`,
+  // `HB0154JC001 Did Not Adopt HB0154JC001: 24-36-2-0-0`.
+  { pattern: /^[a-z]{2}\d{4}jc\d{3} (?:adopted|did not adopt)\b/, questionClass: "conference_report" },
+  // Whole-bill veto override: `SF0127VT001 Veto Override 21-10-0-0-0`,
+  // `HB0079VT001 Did Not Override Veto 32-28-2-0-0`. Line-item overrides on
+  // the budget bill are excluded below — they are votes on single lines of
+  // an act that is already law, not on the measure.
+  { pattern: /^[a-z]{2}\d{4}vt\d{3} (?:veto override|did not override veto)\b/, questionClass: "veto_override" },
+];
+const WYOMING_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // The budget session's two-thirds introduction vote, both spellings.
+  /^failed introduction \d/,
+  /^introduced and referred to /,
+  // Votes on individual amendments, printed with the amendment's own number:
+  // `HB0001H2001 Amendment failed 25-35-2-0-0`.
+  / amendment (?:failed|adopted) \d/,
+  / amendment reconsideration motion /,
+  // Committee of the Whole and second reading: Wyoming's amend-and-engross
+  // stages, both taken by the full chamber, neither one passage.
+  /^cow:/,
+  /^2nd reading:/,
+  // Motions to reconsider a vote already taken.
+  /reconsideration motion (?:passed|failed) by roll call \d/,
+  // Motions about where a bill sits rather than about the bill.
+  /^:?recall(?:ed)? from committee/,
+  /^recalled from committee pursuant to/,
+  /^suspension of the rules/,
+  /^3rd reading:suspension of rules/,
+  /^s: motion to place bill on general file/,
+  /^pursuant to hr /,
+  // Line-item vetoes on the budget bill: seven separate votes in each
+  // chamber on single lines of an act that had already become law.
+  /^[a-z]{2}\d{4}vt\d{3} (?:line item veto override|did not override line item veto)/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -4655,6 +4725,28 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 98, senate: 49 },
     keptQuestions: WASHINGTON_KEPT_QUESTIONS,
     excludedQuestions: WASHINGTON_EXCLUDED_QUESTIONS,
+  },
+  // Wyoming, surveyed 2026-09-09 on both sessions of the 2025-2026
+  // legislature. The dataset carries only bill types B and JR, so no extra
+  // type has to be opted in: Wyoming proposes its constitutional amendments
+  // as joint resolutions, which the kept set already covers.
+  //
+  // Every roll call in both sessions classifies: 1,575 rolls in 2025 and
+  // 1,252 in 2026, with zero left as an unknown question. Wyoming publishes
+  // no committee-body (`J`) tallies and the feed had no parse errors.
+  "WY": {
+    jurisdiction: "WY",
+    sessionId: 2157,
+    chamberSizes: { house: 62, senate: 31 },
+    keptQuestions: WYOMING_KEPT_QUESTIONS,
+    excludedQuestions: WYOMING_EXCLUDED_QUESTIONS,
+  },
+  "WY-2213": {
+    jurisdiction: "WY",
+    sessionId: 2213,
+    chamberSizes: { house: 62, senate: 31 },
+    keptQuestions: WYOMING_KEPT_QUESTIONS,
+    excludedQuestions: WYOMING_EXCLUDED_QUESTIONS,
   },
 };
 
