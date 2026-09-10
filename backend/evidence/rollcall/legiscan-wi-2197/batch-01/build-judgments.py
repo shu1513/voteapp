@@ -49,9 +49,10 @@ add('AB 180', 1664719, 'senate', '2026-03-17', 25, 8,
 add('AB 2', 1493536, 'house', '2025-02-19', 53, 45,
     'Assembly Bill 2, which requires every school board in Wisconsin to adopt a policy '
     'banning pupils from using their own phones and other wireless devices during '
-    'class time by July 1, 2026. Boards must allow exceptions for an emergency, for a '
-    'health need written into a pupil\'s care plan, for a pupil\'s special education or '
-    'disability plan, and for use a teacher approves for schoolwork. A board may set '
+    'class time by July 1, 2026. Boards must allow exceptions for an emergency or a '
+    'perceived threat, for managing a pupil\'s health care, for a use in a pupil\'s '
+    'special education or disability plan, and for use a teacher approves for '
+    'schoolwork. A board may set '
     'consequences for breaking the policy, including taking the device for the rest of '
     'the school day. Schools must send their policy to the state and report any changes '
     'each year. The Assembly passed it 53-45 and it became law as 2025 Wisconsin Act 42.',
@@ -210,10 +211,11 @@ add('SB 825', 1637587, 'senate', '2026-02-18', 24, 9,
     'Transportation Projects Commission could not recommend a major highway project '
     'until it was told that a final environmental impact statement or final environmental '
     'assessment had been approved by the Federal Highway Administration. The act lets a '
-    'draft do instead of a final one, adds a third option called a categorical '
-    'exclusion, which means no environmental study is required at all, and lets the state '
-    'transportation department give the approval unless federal money makes federal '
-    'approval necessary. The Senate passed it 24-9 and it became law as 2025 Wisconsin '
+    'draft do instead of a final one and lets the state transportation department give '
+    'the approval unless federal money makes federal approval necessary. It also adds a '
+    'third option called a categorical exclusion, a federal label for projects expected '
+    'to have little effect on the environment, which excuses them from the full '
+    'environmental study. The Senate passed it 24-9 and it became law as 2025 Wisconsin '
     'Act 110.',
     L('environment_and_public_health', 'against', 'for'))
 

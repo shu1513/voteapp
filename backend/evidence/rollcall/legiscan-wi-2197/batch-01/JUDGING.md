@@ -161,8 +161,8 @@ same position.
 
 **SB 825 is the only stated nay in the batch.** The act lets a major highway
 project clear its environmental review step on a draft statement rather than a
-final one, adds a categorical exclusion, which means no environmental study at
-all, and moves the approval from the Federal Highway Administration to the state
+final one, adds a categorical exclusion, which excuses a project from the full
+environmental study, and moves the approval from the Federal Highway Administration to the state
 transportation department. It is single-subject and its whole content is the
 environmental review requirement itself, so a no vote evidences a position for
 keeping that requirement. That is the same test used for North Dakota HB 1318
@@ -205,3 +205,29 @@ something while the campaign runs states in parallel.
 'rollcall:%'`, one record on a batch measure turned up: a hand-written note that
 Representative David Steffen was a prime sponsor of AB 35. It states no vote and
 no tally, so it is a distinct claim, matching the Arkansas finding.
+
+## Review fixes, after the first import
+
+Two findings from external review, both checked against the enacted acts and
+both real.
+
+- **AB 2 (Act 42).** The description said the health exception was for a need
+  "written into a pupil's care plan". The act, s. 120.12 (29) (b) 2. b., says
+  only "to manage the pupil's health care"; no written plan is required, and the
+  IEP/504 exception is a separate item. The emergency exception also covers "a
+  perceived threat", which the description had dropped. Both fixed.
+- **SB 825 (Act 110).** The description said a categorical exclusion "means no
+  environmental study is required at all". The act defines it by reference to
+  23 CFR 771.117: an exclusion from preparing an environmental assessment or
+  impact statement. A project still has to be shown to qualify, and unusual
+  circumstances can call for more study. Now described as a federal label for
+  low-impact projects that excuses them from the full study. The sentence was
+  split to stay under the 45-word limit.
+
+Fix path: `build-judgments.py` -> `judgments.json` -> `rollcall:judge` ->
+`rollcall:legiscan:import`. Dry run predicted `rewrite 98, unchanged 608`; the
+real run at `2026-09-10T05:35:09.281Z` did exactly that (87 records on AB 2, 11
+on SB 825), 0 errors. Convergence dry run afterwards: 706 unchanged
+(`import-dry-run-rerun-report.json`). Wisconsin still holds 706 roll-call
+records. Lint over all 32 descriptions: 0 warnings; longest sentence still 44
+words.
