@@ -51,6 +51,11 @@ SF 418, HF 856, SF 615, HF 2788, HF 924 (Senate only), HF 2296, SF 579, HF 2527,
 - Three ways: report 769 = run-stamp rows 769 (102 candidates, 578 tags) = table delta 0 to
   769. Per-roll counts identical between dry and real runs.
 - `import-report.json` is the importer's own file and is preserved as written.
+- Re-run 2026-09-10 after review: HF 2788 descriptions wrongly said anyone who dispenses
+  abortion drugs outside a health care setting can be sued; section 146F.4 makes chapter 148/155A
+  licensees immune, so only unlicensed dispensers face the civil action. Judge updated 2 rolls
+  (16 unchanged); import rewrote 92 records, 677 unchanged, zero errors. Reports in
+  `import-dry-run-rerun-report.json` and `import-rerun-report.json`.
 - Duplicate sweep: nine hand-written records share a candidate and a date with a batch record,
   and every one is about a different measure (amendment offers, SF 607, HF 189, HF 2292, a
   committee roll). No duplicates; nothing retired.

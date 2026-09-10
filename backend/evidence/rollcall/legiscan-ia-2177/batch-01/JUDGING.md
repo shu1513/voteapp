@@ -34,7 +34,7 @@ vote on the same day.
 In-person exam and coercion screening before any abortion (section 146A.1(1A)); signed
 federal patient-agreement form and written confirmation of listed risks before abortion
 drugs (146A.2); dispensing only in a health care setting directly to the woman, except in an
-emergency (146F.2); private damages action against anyone who dispenses otherwise (146F.4);
+emergency (146F.2); private damages action against unlicensed dispensers, with chapter 148/155A licensees immune (146F.4);
 license discipline (146A.2, 146F.5). It also carves miscarriage and ectopic-pregnancy care out
 of the definition of abortion and repeals chapter 146C, the 2018 fetal-heartbeat chapter,
 which chapter 146E (2023) replaced. The Senate roll is dated 2026-05-03 in both LegiScan and
