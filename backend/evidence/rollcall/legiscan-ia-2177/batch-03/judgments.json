@@ -1,0 +1,220 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1551298,
+      "measure_id": "HF 295",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 295, which bars an accrediting agency from punishing an Iowa public university or community college for following state law. Accreditors review colleges, and their approval is what lets a college's students use federal aid. If an accreditor takes adverse action against an Iowa public institution because the institution obeyed a state law, or refused to break one, the institution may sue for damages and legal fees. The act also lets emergency medical training programs be approved by any federally recognized accreditor instead of only the Higher Learning Commission. The Iowa Senate passed it 32-15, and it became law.",
+      "nay_description": "Voted against House File 295, which bars an accrediting agency from punishing an Iowa public university or community college for following state law. Accreditors review colleges, and their approval is what lets a college's students use federal aid. If an accreditor takes adverse action against an Iowa public institution because the institution obeyed a state law, or refused to break one, the institution may sue for damages and legal fees. The act also lets emergency medical training programs be approved by any federally recognized accreditor instead of only the Higher Learning Commission. The Iowa Senate passed it 32-15, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1520125,
+      "measure_id": "HF 295",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 295, which bars an accrediting agency from punishing an Iowa public university or community college for following state law. Accreditors review colleges, and their approval is what lets a college's students use federal aid. If an accreditor takes adverse action against an Iowa public institution because the institution obeyed a state law, or refused to break one, the institution may sue for damages and legal fees. The act also lets emergency medical training programs be approved by any federally recognized accreditor instead of only the Higher Learning Commission. The Iowa House passed it 65-32, and it became law.",
+      "nay_description": "Voted against House File 295, which bars an accrediting agency from punishing an Iowa public university or community college for following state law. Accreditors review colleges, and their approval is what lets a college's students use federal aid. If an accreditor takes adverse action against an Iowa public institution because the institution obeyed a state law, or refused to break one, the institution may sue for damages and legal fees. The act also lets emergency medical training programs be approved by any federally recognized accreditor instead of only the Higher Learning Commission. The Iowa House passed it 65-32, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1549033,
+      "measure_id": "HF 437",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 437, which creates a Center for Intellectual Freedom at the University of Iowa. It is an independent academic unit under the Board of Regents that teaches and researches the ideas, traditions and texts behind the American constitutional order. The center hires its own tenure-track faculty, may take private and outside money, and reports to the legislature each year. An advisory council named by the regents picks the director, and the director alone controls the center's hiring. The Iowa Senate passed it 32-15, and it became law.",
+      "nay_description": "Voted against House File 437, which creates a Center for Intellectual Freedom at the University of Iowa. It is an independent academic unit under the Board of Regents that teaches and researches the ideas, traditions and texts behind the American constitutional order. The center hires its own tenure-track faculty, may take private and outside money, and reports to the legislature each year. An advisory council named by the regents picks the director, and the director alone controls the center's hiring. The Iowa Senate passed it 32-15, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1520490,
+      "measure_id": "HF 437",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 437, which creates a Center for Intellectual Freedom at the University of Iowa. It is an independent academic unit under the Board of Regents that teaches and researches the ideas, traditions and texts behind the American constitutional order. The center hires its own tenure-track faculty, may take private and outside money, and reports to the legislature each year. An advisory council named by the regents picks the director, and the director alone controls the center's hiring. The Iowa House passed it 60-37, and it became law.",
+      "nay_description": "Voted against House File 437, which creates a Center for Intellectual Freedom at the University of Iowa. It is an independent academic unit under the Board of Regents that teaches and researches the ideas, traditions and texts behind the American constitutional order. The center hires its own tenure-track faculty, may take private and outside money, and reports to the legislature each year. An advisory council named by the regents picks the director, and the director alone controls the center's hiring. The Iowa House passed it 60-37, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1520446,
+      "measure_id": "HF 440",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 440, which goes after the cost of a degree at Iowa's public universities. The Board of Regents must give students thirty days' notice of any proposed tuition increase, send them the memo it will consider, and make the final decision at a regular meeting. Each university must work toward offering at least one bachelor's degree that can be finished in three years. Each must also start at least one work study program in which an employer pays a student's tuition and fees while the student works part time. The regents must study holding a resident undergraduate's tuition at the first-year rate. The Iowa House passed it 64-33, and it became law.",
+      "nay_description": "Voted against House File 440, which goes after the cost of a degree at Iowa's public universities. The Board of Regents must give students thirty days' notice of any proposed tuition increase, send them the memo it will consider, and make the final decision at a regular meeting. Each university must work toward offering at least one bachelor's degree that can be finished in three years. Each must also start at least one work study program in which an employer pays a student's tuition and fees while the student works part time. The regents must study holding a resident undergraduate's tuition at the first-year rate. The Iowa House passed it 64-33, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1541714,
+      "measure_id": "HF 785",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 785, which changes who may sit on the governing board of an Iowa charter school. A majority of the board must still live in the area the school serves. Iowa law required every other member to live in Iowa, and the act replaces that with a requirement that they be United States citizens. It also allows one member of the board to live in another state. The Iowa Senate passed it 32-15, and it became law.",
+      "nay_description": "Voted against House File 785, which changes who may sit on the governing board of an Iowa charter school. A majority of the board must still live in the area the school serves. Iowa law required every other member to live in Iowa, and the act replaces that with a requirement that they be United States citizens. It also allows one member of the board to live in another state. The Iowa Senate passed it 32-15, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1529045,
+      "measure_id": "HF 785",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 785, which changes who may sit on the governing board of an Iowa charter school. A majority of the board must still live in the area the school serves. Iowa law required every other member to live in Iowa, and the act replaces that with a requirement that they be United States citizens. It also allows one member of the board to live in another state. The Iowa House passed it 60-36, and it became law.",
+      "nay_description": "Voted against House File 785, which changes who may sit on the governing board of an Iowa charter school. A majority of the board must still live in the area the school serves. Iowa law required every other member to live in Iowa, and the act replaces that with a requirement that they be United States citizens. It also allows one member of the board to live in another state. The Iowa House passed it 60-36, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1693511,
+      "measure_id": "HF 2230",
+      "vote_date": "2026-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2230, which changes how Iowa trains and licenses teachers. From July 1, 2027, every approved teacher preparation program must give each student clinical experience and training in teaching children with disabilities and English learners, under standards the state board sets for all such programs. Anyone applying to teach in a special education setting must also finish a free self-paced state course on special education law, assessment and core skills before receiving a class B or conditional license. The Iowa Senate passed it 28-15, and it became law.",
+      "nay_description": "Voted against House File 2230, which changes how Iowa trains and licenses teachers. From July 1, 2027, every approved teacher preparation program must give each student clinical experience and training in teaching children with disabilities and English learners, under standards the state board sets for all such programs. Anyone applying to teach in a special education setting must also finish a free self-paced state course on special education law, assessment and core skills before receiving a class B or conditional license. The Iowa Senate passed it 28-15, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1551628,
+      "measure_id": "SF 369",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 369, which makes passing a civics test a condition of graduating from an Iowa high school. The education department must build a multiple-choice test from the questions on the United States naturalization civics test and send it to public, charter and accredited nonpublic schools, updating it after each presidential election. Starting with the 2026-2027 school year, schools must give the test to students in grades nine through twelve and must make sure each student passes it once before graduating. The Iowa House passed it 60-33, and it became law.",
+      "nay_description": "Voted against Senate File 369, which makes passing a civics test a condition of graduating from an Iowa high school. The education department must build a multiple-choice test from the questions on the United States naturalization civics test and send it to public, charter and accredited nonpublic schools, updating it after each presidential election. Starting with the 2026-2027 school year, schools must give the test to students in grades nine through twelve and must make sure each student passes it once before graduating. The Iowa House passed it 60-33, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1559504,
+      "measure_id": "SF 175",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 175, which adds fetal development to what Iowa schools must teach. In grades five and six, instruction in human growth and development must now cover human development inside the womb, and must include a high-definition ultrasound video showing the brain, heart and other organs as they develop. The same standards flow into the health unit high school students must take, and they apply to charter schools and innovation zone schools as well as school districts. The Iowa Senate passed it 33-16, and it became law.",
+      "nay_description": "Voted against Senate File 175, which adds fetal development to what Iowa schools must teach. In grades five and six, instruction in human growth and development must now cover human development inside the womb, and must include a high-definition ultrasound video showing the brain, heart and other organs as they develop. The same standards flow into the health unit high school students must take, and they apply to charter schools and innovation zone schools as well as school districts. The Iowa Senate passed it 33-16, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1551752,
+      "measure_id": "SF 175",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 175, which adds fetal development to what Iowa schools must teach. In grades five and six, instruction in human growth and development must now cover human development inside the womb, and must include a high-definition ultrasound video showing the brain, heart and other organs as they develop. The same standards flow into the health unit high school students must take, and they apply to charter schools and innovation zone schools as well as school districts. The Iowa House passed it 60-31, and it became law.",
+      "nay_description": "Voted against Senate File 175, which adds fetal development to what Iowa schools must teach. In grades five and six, instruction in human growth and development must now cover human development inside the womb, and must include a high-definition ultrasound video showing the brain, heart and other organs as they develop. The same standards flow into the health unit high school students must take, and they apply to charter schools and innovation zone schools as well as school districts. The Iowa House passed it 60-31, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1682389,
+      "measure_id": "SF 2399",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2399, which makes it harder to be released before trial in Iowa. A magistrate may not set bail below the amount on the state's uniform bond schedule, or release a defendant without bail, unless the magistrate puts the reason in writing. When setting conditions of release the court must give significant weight to the danger the defendant poses to another person or to property. The judicial council must revise the uniform bond schedule. The Iowa House passed it 72-21, and it became law.",
+      "nay_description": "Voted against Senate File 2399, which makes it harder to be released before trial in Iowa. A magistrate may not set bail below the amount on the state's uniform bond schedule, or release a defendant without bail, unless the magistrate puts the reason in writing. When setting conditions of release the court must give significant weight to the danger the defendant poses to another person or to property. The judicial council must revise the uniform bond schedule. The Iowa House passed it 72-21, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
