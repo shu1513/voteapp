@@ -137,9 +137,10 @@ add('SB 25', 1519897, 'senate', '2025-03-18',
 sb76 = (
     'Senate Bill 76, which would have limited what a prosecutor can do with a set of '
     'charges the bill calls covered crimes. Those are domestic abuse offenses, taking '
-    'a vehicle without consent, strangulation and abuse of a vulnerable adult, sexual '
+    'a vehicle without consent, physical abuse of an elder or at-risk adult, sexual '
     'assault, crimes against children, gun possession by someone with a violent felony '
-    'record, and hit and run causing death. A prosecutor could not have dismissed or '
+    'record, and reckless driving that causes great bodily harm. A prosecutor could '
+    'not have dismissed or '
     'reduced such a charge without a judge\'s approval, and the judge could approve '
     'only after finding it serves the public interest in deterring those crimes. A '
     'court that approved any such request would have had to report every one of them '
@@ -181,9 +182,11 @@ add('SB 432', 1632467, 'house', '2026-02-12', sb432.format(t=agreed('house', 61,
 # ---------------------------------------------------------------- SB 610
 sb610 = (
     'Senate Bill 610, which would have added homeless shelters to the places where '
-    'dealing methamphetamine carries an extra penalty. Wisconsin already adds up to '
-    'five years in prison when the offense happens in or within 1,000 feet of a school, '
-    'a park, a public housing project or a treatment center. The bill would have '
+    'dealing drugs carries an extra penalty. Wisconsin already adds up to five years '
+    'in prison when someone delivers a controlled substance, or holds it with intent '
+    'to deliver, in or within 1,000 feet of a school, a park, a public housing project '
+    'or a treatment center. That covers drugs such as cocaine, heroin, fentanyl, '
+    'methamphetamine and marijuana. The bill would have '
     'covered a person inside a shelter, or within 1,000 feet of one, who knew or should '
     'have known where they were, or where the shelter is plainly recognizable as one. '
     '{t}')

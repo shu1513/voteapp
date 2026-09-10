@@ -146,3 +146,32 @@ mechanism, so no stated no-side position is defensible here.
 - 99 distinct candidates, the same 99 the earlier batches reached.
 - **Duplicate sweep: nothing to retire.** No record outside the roll-call runs
   mentions any of these ten Wisconsin measures.
+
+## Review fixes, after the first import
+
+Two findings from external review, both checked against the enrolled print and
+both real.
+
+- **SB 76.** The covered-crime list named "strangulation" and "hit and run
+  causing death". Neither is in the bill. Item (c) is s. 940.198 and s. 940.285,
+  physical abuse of an elder person and abuse of an individual at risk; item (g)
+  is s. 346.62 (4), reckless driving causing great bodily harm. Strangulation
+  (s. 940.235) and hit and run (s. 346.67) appear nowhere in the text. Now
+  "physical abuse of an elder or at-risk adult" and "reckless driving that causes
+  great bodily harm".
+- **SB 610.** The description presented the enhancer as methamphetamine-only. It
+  is not. Section 1 creates s. 961.49 (1m) (e), which adds shelters to the
+  general enhancer for delivering, or possessing with intent to deliver, any of
+  the substances in s. 961.41 (1) (cm) to (h): cocaine, heroin, fentanyl,
+  carfentanil, methamphetamine, LSD, psilocybin and THC. Section 2 then folds the
+  new place into the separate methamphetamine-materials enhancer in s. 961.49
+  (2m). Now "dealing drugs", with one sentence naming the main substances. The
+  existing-law sentence was split to stay under the 45-word limit.
+
+Fix path: `build-judgments.py` -> `judgments.json` -> `rollcall:judge` ->
+`rollcall:legiscan:import`. Lint over all 36 descriptions: 0 warnings, longest
+sentence 41 words. Dry run predicted `rewrite 194, unchanged 684`; the real run
+at `2026-09-10T06:44:55.044Z` did exactly that (85 + 11 records on SB 76, 87 +
+11 on SB 610), 0 errors, 0 notified (`import-rerun-report.json`). Convergence
+dry run afterwards: 878 unchanged (`import-dry-run-rerun-report.json`). No
+record with the old wording remains.
