@@ -927,6 +927,15 @@ const WYOMING_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // The chamber of origin taking up its bill as returned with the other
   // chamber's amendments.
   { pattern: /^concur:(?:passed|failed) \d/, questionClass: "concurrence" },
+  // The chamber of origin, having refused to concur, taking the other
+  // chamber's text after all. Despite the name this is not a motion about
+  // where the bill sits: it is the chamber's second and final decision on
+  // the amended bill, and enrollment follows the same day. All four rolls in
+  // the 2025 session came straight after a `Concur:Failed`; three passed and
+  // the bill was enrolled (SF 34 20-7, SF 33 28-3, SF 103 27-4), one failed
+  // and the bill died (SF 40 8-23). Wyoming spells it `Recede` or `Rescind`
+  // and sometimes omits the result word, so the feed's passed flag decides.
+  { pattern: /^re(?:cede|scind) from non-concurrence\b/, questionClass: "concurrence" },
   // Adoption of a joint conference committee report, printed with the
   // report's own number: `HB0199JC001 Adopted HB0199JC001: 42-19-1-0-0`,
   // `HB0154JC001 Did Not Adopt HB0154JC001: 24-36-2-0-0`.
@@ -954,8 +963,6 @@ const WYOMING_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   // Motions about where a bill sits rather than about the bill.
   /^:?recall(?:ed)? from committee/,
   /^recalled from committee pursuant to/,
-  /^rescind from non-concurrence/,
-  /^recede from non-concurrence/,
   /^suspension of the rules/,
   /^3rd reading:suspension of rules/,
   /^s: motion to place bill on general file/,

@@ -1635,6 +1635,18 @@ describe("getLegiscanStateConfig", () => {
       isFloorVote: true,
       questionClass: "concurrence",
     });
+    // A chamber that refused to concur and then takes the other chamber's
+    // text after all: the final decision on the bill, so it must stay a
+    // floor vote or the failed `Concur` would read as the chamber's last
+    // word. Every spelling the 2025 session printed.
+    for (const desc of [
+      "Recede from Non-Concurrence Passed: 20-7-4-0-0",
+      "Recede from Non-Concurrence : 27-4-0-0-0",
+      "Recede from Non-Concurrence Failed : 8-23-0-0-0",
+      "Rescind from Non-Concurrence : 28-3-0-0-0",
+    ]) {
+      expect(classify(desc, "senate", 31)).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    }
     expect(classify("HB0199JC001 Adopted HB0199JC001: 42-19-1-0-0", "house", 62)).toMatchObject({
       isFloorVote: true,
       questionClass: "conference_report",
