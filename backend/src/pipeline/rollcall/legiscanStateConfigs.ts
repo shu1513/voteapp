@@ -1209,6 +1209,25 @@ const WYOMING_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // the budget bill are excluded below — they are votes on single lines of
   // an act that is already law, not on the measure.
   { pattern: /^[a-z]{2}\d{4}vt\d{3} (?:veto override|did not override veto)\b/, questionClass: "veto_override" },
+  // ⚠ THE HOUSE'S SUCCESSFUL OVERRIDE CARRIES THE WRONG CAPTION. Wyoming's
+  // constitution says a chamber "reconsiders" a vetoed bill, and the feed
+  // renders the House's reconsideration as
+  // `HB0064VT001 Amendment Reconsideration Motion Passed by Roll Call`. It is
+  // not a vote on an amendment. In the 2025 session there are exactly five,
+  // one for each bill that was vetoed and became law anyway, each in that
+  // bill's house of origin, each on the day that chamber acted on the veto,
+  // each paired with a Senate `Veto Override` roll under the SAME `VT001`
+  // code, and each at or above the two thirds of 62 the constitution
+  // requires (45-16, 44-15, 47-13, 55-5, 48-13). The one House override that
+  // FAILED is captioned `Did Not Override Veto` (35-27, below two thirds).
+  // A genuine reconsideration motion looks nothing like this: it is
+  // `3rd Reading:S Bill Reconsideration Motion Passed by Roll Call`, with no
+  // bill-number prefix and no `VT` code, and the exclusion below still
+  // catches it. The `VT` code is what separates the two.
+  {
+    pattern: /^[a-z]{2}\d{4}vt\d{3} amendment reconsideration motion (?:passed|failed) by roll call \d/,
+    questionClass: "veto_override",
+  },
 ];
 const WYOMING_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   // The budget session's two-thirds introduction vote, both spellings.
@@ -1217,13 +1236,14 @@ const WYOMING_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   // Votes on individual amendments, printed with the amendment's own number:
   // `HB0001H2001 Amendment failed 25-35-2-0-0`.
   / amendment (?:failed|adopted) \d/,
-  / amendment reconsideration motion /,
   // Committee of the Whole and second reading: Wyoming's amend-and-engross
   // stages, both taken by the full chamber, neither one passage.
   /^cow:/,
   /^2nd reading:/,
-  // Motions to reconsider a vote already taken.
-  /reconsideration motion (?:passed|failed) by roll call \d/,
+  // Motions to reconsider a vote already taken. Written to require the
+  // stage prefix, so it cannot claim the `VT`-coded House veto override
+  // above, which the feed also calls a reconsideration.
+  /^(?:3rd reading|cow):[a-z] bill reconsideration motion (?:passed|failed) by roll call \d/,
   // Motions about where a bill sits rather than about the bill.
   /^:?recall(?:ed)? from committee/,
   /^recalled from committee pursuant to/,

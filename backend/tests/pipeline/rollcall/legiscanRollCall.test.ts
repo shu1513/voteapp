@@ -2328,6 +2328,42 @@ describe("getLegiscanStateConfig", () => {
     }
   });
 
+  it("reads Wyoming's mis-captioned House veto override as an override, not an amendment vote", () => {
+    const config = getLegiscanStateConfig("WY");
+    const classify = (desc: string) =>
+      classifyLegiscanRollCall({ desc, total: 62, chamber: "house", billType: "B", config });
+
+    // Wyoming's constitution says a chamber "reconsiders" a vetoed bill, and
+    // the feed renders the House's reconsideration under the veto's own `VT`
+    // code. All five of these in the 2025 session are overrides of a veto on
+    // a bill that became law.
+    for (const desc of [
+      "HB0064VT001 Amendment Reconsideration Motion Passed by Roll Call 45-16-1-0-0",
+      "HB0094VT001 Amendment Reconsideration Motion Passed by Roll Call 44-15-3-0-0",
+      "SF0132VT001 Amendment Reconsideration Motion Passed by Roll Call 47-13-2-0-0",
+      "SF0127VT001 Amendment Reconsideration Motion Passed by Roll Call 48-13-1-0-0",
+    ]) {
+      expect(classify(desc)).toMatchObject({ isFloorVote: true, questionClass: "veto_override" });
+    }
+
+    // A genuine motion to reconsider carries its stage instead of a `VT`
+    // code, and is still excluded.
+    expect(classify("3rd Reading:S Bill Reconsideration Motion Passed by Roll Call 16-13-2-0-0")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+    expect(classify("COW:S Bill Reconsideration Motion Passed by Roll Call 16-15-0-0-0")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+
+    // A vote on an actual amendment is still excluded.
+    expect(classify("HB0001H2001 Amendment failed 25-35-2-0-0")).toMatchObject({
+      isFloorVote: false,
+      reason: "excluded_question",
+    });
+  });
+
   it("gives Wyoming's two sessions the same vocabulary and different session ids", () => {
     const general = getLegiscanStateConfig("WY");
     const budget = getLegiscanStateConfig("WY-2213");
