@@ -1,0 +1,778 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "OK",
+  "session_id": 2219,
+  "note": "people_id to VoteApp candidate id for the Oklahoma 60th Legislature (LegiScan session 2219, which holds both the 2025 and 2026 regular sessions). Seats come from LegiScan's `district` field, never from `role`: four sitting senators are filed as `Rep` (Shane Jett SD-017, Casey Murdock SD-027, Avery Frix SD-009, Regina Goodwin SD-011). 53 of 154 members map to a candidate: 51 proposed and accepted, 2 hand-added. Every unmatched member was checked by surname and by seat against every unmatched candidate, and only those two were real misses. The nulls split into members whose seat has no candidate row in our November 2026 roster and members whose seat is on the ballot but who are not seeking it.",
+  "entries": [
+    {
+      "people_id": 3681,
+      "candidate_id": null,
+      "note": "Shane Jett, senate SD-017. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 3693,
+      "candidate_id": null,
+      "note": "Ken Luttrell, house HD-037. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 17176,
+      "candidate_id": null,
+      "note": "Chris Kannady, house HD-091. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 17276,
+      "candidate_id": null,
+      "note": "Chad Caldwell, house HD-040. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 17281,
+      "candidate_id": null,
+      "note": "Casey Murdock, senate SD-027. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 17282,
+      "candidate_id": null,
+      "note": "John Pfeiffer, house HD-038. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 17318,
+      "candidate_id": null,
+      "note": "Darcy Jech, senate SD-026. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 17462,
+      "candidate_id": null,
+      "note": "Mark Lepak, house HD-009. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 17823,
+      "candidate_id": null,
+      "note": "Regina Goodwin, senate SD-011. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 17840,
+      "candidate_id": null,
+      "note": "Cyndi Munson, house HD-085. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 18901,
+      "candidate_id": null,
+      "note": "Micheal Bergstrom, senate SD-001. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18902,
+      "candidate_id": null,
+      "note": "Julie Daniels, senate SD-029. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18903,
+      "candidate_id": null,
+      "note": "Avery Frix, senate SD-009. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18908,
+      "candidate_id": null,
+      "note": "Adam Pugh, senate SD-041. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18909,
+      "candidate_id": null,
+      "note": "Dave Rader, senate SD-039. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18911,
+      "candidate_id": null,
+      "note": "Rande Worthen, house HD-064. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 18948,
+      "candidate_id": null,
+      "note": "Roland Pederson, senate SD-019. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18986,
+      "candidate_id": null,
+      "note": "Forrest Bennett, house HD-092. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18987,
+      "candidate_id": null,
+      "note": "Tom Gann, house HD-008. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18988,
+      "candidate_id": null,
+      "note": "Josh West, house HD-005. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 18989,
+      "candidate_id": null,
+      "note": "Kevin West, house HD-054. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 18990,
+      "candidate_id": "e6b39e1f-04c0-48c5-abd0-28745210cc66",
+      "note": "Rick West, house HD-003. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 18991,
+      "candidate_id": "6551fe48-b7b8-4d58-9188-22769ba04bb5",
+      "note": "Tammy West, house HD-084. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 19006,
+      "candidate_id": null,
+      "note": "Dell Kerbs, house HD-026. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 19007,
+      "candidate_id": null,
+      "note": "Mike Osburn, house HD-081. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 19011,
+      "candidate_id": null,
+      "note": "Mickey Dollens, house HD-093. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19013,
+      "candidate_id": null,
+      "note": "Justin Humphrey, house HD-019. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19014,
+      "candidate_id": null,
+      "note": "Lonnie Paxton, senate SD-023. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19028,
+      "candidate_id": null,
+      "note": "Kyle Hilbert, house HD-029. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19041,
+      "candidate_id": "f2447216-bf85-4b47-b126-6188d36253a9",
+      "note": "Meloyde Blancett, house HD-078. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 19042,
+      "candidate_id": "bea82db0-f8bd-43a0-8825-81b8b4e955b5",
+      "note": "Carl Newton, house HD-058. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 19043,
+      "candidate_id": null,
+      "note": "Scott Fetgatter, house HD-016. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 19045,
+      "candidate_id": null,
+      "note": "Jason Lowe, house HD-097. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19243,
+      "candidate_id": "53b3aea2-fbfc-4f04-b9dd-d2808173560d",
+      "note": "Mark Lawson, house HD-030. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 19437,
+      "candidate_id": null,
+      "note": "Paul Rosino, senate SD-045. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19492,
+      "candidate_id": null,
+      "note": "Jacob Rosecrants, house HD-046. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19493,
+      "candidate_id": "61720d46-0ee3-4c53-882f-2188a5ef5475",
+      "note": "Ross Ford, house HD-076. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 19617,
+      "candidate_id": null,
+      "note": "Brad Boles, house HD-051. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19629,
+      "candidate_id": null,
+      "note": "General Conference Committee on Appropriations carries no district in the people file, so it is a sponsor placeholder rather than a serving member; it casts no vote."
+    },
+    {
+      "people_id": 19636,
+      "candidate_id": null,
+      "note": "Michael Brooks, senate SD-044. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19705,
+      "candidate_id": "ca22e0a4-c359-4871-9fb0-8f29c1fb1ca6",
+      "note": "David Bullard, senate SD-006. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 19924,
+      "candidate_id": null,
+      "note": "Jim Olsen, house HD-002. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19961,
+      "candidate_id": null,
+      "note": "Brent Howard, senate SD-038. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 19964,
+      "candidate_id": null,
+      "note": "Darrell Weaver, senate SD-024. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 19965,
+      "candidate_id": null,
+      "note": "Julia Kirt, senate SD-030. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20007,
+      "candidate_id": "65f53954-0d2f-4613-a58e-875251d23363",
+      "note": "Bill Coleman, senate SD-010. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20038,
+      "candidate_id": null,
+      "note": "Mary Boren, senate SD-016. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20170,
+      "candidate_id": "933ce780-ba77-4eaa-8876-c3c710239a43",
+      "note": "Nicole Miller, house HD-082. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20564,
+      "candidate_id": null,
+      "note": "Ty Burns, house HD-035. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20612,
+      "candidate_id": "861c9be2-fe6c-49ef-9668-524364482844",
+      "note": "Danny Sterling, house HD-027. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20691,
+      "candidate_id": null,
+      "note": "Ronny Johns, house HD-025. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20692,
+      "candidate_id": "31c1a519-3494-42a2-b308-8a0aab0b42cc",
+      "note": "Daniel Pae, house HD-062. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20740,
+      "candidate_id": null,
+      "note": "Brian Hill, house HD-047. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 20741,
+      "candidate_id": null,
+      "note": "Robert Manger, house HD-101. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20757,
+      "candidate_id": null,
+      "note": "Jim Grego, house HD-017. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20758,
+      "candidate_id": null,
+      "note": "Tammy Townley, house HD-048. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20811,
+      "candidate_id": null,
+      "note": "Toni Hasenbeck, house HD-065. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20812,
+      "candidate_id": "4ef03a3d-a819-433f-9b47-8b87432a8f76",
+      "note": "John Haste, senate SD-036. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20813,
+      "candidate_id": null,
+      "note": "Carri Hicks, senate SD-040. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20814,
+      "candidate_id": null,
+      "note": "David Smith, house HD-018. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20829,
+      "candidate_id": "da93d685-bb87-40f4-9acc-c8d0b5b3c381",
+      "note": "Denise Hader, house HD-041. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20831,
+      "candidate_id": null,
+      "note": "Andy Fugate, house HD-094. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20832,
+      "candidate_id": "5fb89fa7-a901-456e-88e9-c366fadff8e2",
+      "note": "David Hardin, house HD-086. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20833,
+      "candidate_id": "08d8877e-6e60-40b2-b550-dd28d09fea31",
+      "note": "Marilyn Stark, house HD-100. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20835,
+      "candidate_id": null,
+      "note": "John Waldron, house HD-077. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20877,
+      "candidate_id": "fc3c171d-72de-40e7-887b-09a8999caf26",
+      "note": "Melissa Provenzano, house HD-079. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20878,
+      "candidate_id": "ddf89488-3ea9-4a8f-a9ea-bac8596977db",
+      "note": "Trish Ranson, house HD-034. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20879,
+      "candidate_id": null,
+      "note": "Cynthia Roe, house HD-042. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20880,
+      "candidate_id": "3d3aa4e1-db86-4e94-a758-34915736db8a",
+      "note": "Judd Strom, house HD-010. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20881,
+      "candidate_id": null,
+      "note": "Mark Vancuren, house HD-074. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 20886,
+      "candidate_id": "292008e6-d454-4d95-a223-d4ca69b4a21c",
+      "note": "Trey Caldwell, house HD-063. Hand-added: LegiScan files the legal first name and puts the working name in `nickname` (`Hurchel` against `Trey`), so the proposer could not reach the match. Same seat, and the candidate row is State House District 63 (2024); Oklahoma."
+    },
+    {
+      "people_id": 20887,
+      "candidate_id": null,
+      "note": "Rusty Cornwell, house HD-006. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20889,
+      "candidate_id": "c4bb758d-ab94-48a5-9999-174655408f08",
+      "note": "Thomas Marti, house HD-075. Hand-added: LegiScan files the legal first name `Thomas` while the ballot carries the initials `T. J.`, so the proposer could not reach the match. Same seat, and the candidate row is State House District 75 (2024); Oklahoma."
+    },
+    {
+      "people_id": 20890,
+      "candidate_id": "5fd1f36a-fbe3-4544-84bc-9f1ffbbe9767",
+      "note": "Stan May, house HD-080. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20891,
+      "candidate_id": null,
+      "note": "Kenton Patzkowsky, house HD-061. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 20893,
+      "candidate_id": "08f9432c-1ba1-484a-9c19-7e011fe1b803",
+      "note": "Chris Sneed, house HD-014. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20894,
+      "candidate_id": "1c33df3f-ab8b-4f22-99b4-19a6fe784dd8",
+      "note": "Brenda Stanley, senate SD-042. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 20895,
+      "candidate_id": null,
+      "note": "Jay Steagall, house HD-043. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 21238,
+      "candidate_id": null,
+      "note": "Chuck Hall, senate SD-020. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 21326,
+      "candidate_id": null,
+      "note": "Ajay Pittman, house HD-099. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 21885,
+      "candidate_id": null,
+      "note": "Warren Hamilton, senate SD-007. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 21886,
+      "candidate_id": null,
+      "note": "Jo Dossett, senate SD-035. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 22506,
+      "candidate_id": null,
+      "note": "Gerrid Kendrix, house HD-052. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 22515,
+      "candidate_id": null,
+      "note": "Eddy Dempsey, house HD-001. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 22548,
+      "candidate_id": null,
+      "note": "Mike Dobrinski, house HD-059. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 22549,
+      "candidate_id": "448b117f-a328-4d67-a12f-bca5d2fe2573",
+      "note": "Eric Roberts, house HD-083. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 22558,
+      "candidate_id": "a87a8bb0-27ef-4ade-947c-72fff6ea701c",
+      "note": "Danny Williams, house HD-028. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 22576,
+      "candidate_id": "6100c46c-06f3-44f2-8400-f99372f9075c",
+      "note": "Dick Lowe, house HD-056. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 22577,
+      "candidate_id": "41d618c3-c065-4566-ba63-0959b541c5ea",
+      "note": "Preston Stinson, house HD-096. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 22578,
+      "candidate_id": "d1b76f19-57a0-433c-a0c4-54d8bf6b09b0",
+      "note": "Max Wolfley, house HD-095. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 22633,
+      "candidate_id": null,
+      "note": "Steve Bashore, house HD-007. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 22765,
+      "candidate_id": "acc00098-72c3-4b22-bcf0-8b4dae696ac2",
+      "note": "Bob Culver, house HD-004. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 22854,
+      "candidate_id": null,
+      "note": "George Burns, senate SD-005. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 22855,
+      "candidate_id": null,
+      "note": "Anthony Moore, house HD-057. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23531,
+      "candidate_id": null,
+      "note": "Dana Prieto, senate SD-034. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 23557,
+      "candidate_id": "5e2d3c84-d4ab-4127-9af7-777e26dd6bd8",
+      "note": "Kristen Thompson, senate SD-022. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23559,
+      "candidate_id": "f06bb525-8454-4dc5-9633-cd1850bd8308",
+      "note": "Todd Gollihare, senate SD-012. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23722,
+      "candidate_id": null,
+      "note": "Arturo Alonso-Sandoval, house HD-089. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23723,
+      "candidate_id": null,
+      "note": "Nick Archer, house HD-055. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23724,
+      "candidate_id": "542b2bbf-0520-4c17-999e-6be6592618f0",
+      "note": "Chris Banning, house HD-024. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23725,
+      "candidate_id": "efd913f6-f02e-4c0d-b151-bc2e36326192",
+      "note": "Josh Cantrell, house HD-049. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23726,
+      "candidate_id": null,
+      "note": "Collin Duel, house HD-031. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23727,
+      "candidate_id": "6067fe1f-6f81-4c95-b755-f10c48c24931",
+      "note": "John George, house HD-036. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23728,
+      "candidate_id": null,
+      "note": "John Kane, house HD-011. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23729,
+      "candidate_id": null,
+      "note": "Cody Maynard, house HD-021. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23730,
+      "candidate_id": null,
+      "note": "Mark Tedford, house HD-069. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 23731,
+      "candidate_id": null,
+      "note": "Jared Deck, house HD-044. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23732,
+      "candidate_id": null,
+      "note": "Neil Hays, house HD-013. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23733,
+      "candidate_id": "a8627eec-9c7e-4afb-b8e8-03438435592c",
+      "note": "Ellyn Hefner, house HD-087. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23734,
+      "candidate_id": "9a2449a8-cec5-48b0-889e-fbabaa4995bb",
+      "note": "Annie Menz, house HD-045. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23735,
+      "candidate_id": null,
+      "note": "Suzanne Schreiber, house HD-070. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23736,
+      "candidate_id": "8f541f38-83c6-4d5d-b547-95da7a7cf525",
+      "note": "Clay Staires, house HD-066. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 23737,
+      "candidate_id": null,
+      "note": "Amanda Swope, house HD-071. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 23878,
+      "candidate_id": "11c7ac5b-e357-4c12-bb84-9ad04b8f63ff",
+      "note": "Ally Seifried, senate SD-002. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 24164,
+      "candidate_id": null,
+      "note": "Jerry Alvord, senate SD-014. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 24706,
+      "candidate_id": "19f980e0-7c18-43df-8336-723108c3e792",
+      "note": "Grant Green, senate SD-028. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 24707,
+      "candidate_id": null,
+      "note": "Jack Stewart, senate SD-018. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 24708,
+      "candidate_id": "86d412a4-f706-4bc3-8778-3221eb02c13c",
+      "note": "Tom Woods, senate SD-004. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25063,
+      "candidate_id": null,
+      "note": "Dusty Deevers, senate SD-032. The seat is on the November 2026 ballot and carries candidate rows, but none of them is this member, so the member is not seeking the seat."
+    },
+    {
+      "people_id": 25169,
+      "candidate_id": null,
+      "note": "Erick Harris, house HD-039. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25453,
+      "candidate_id": null,
+      "note": "Stacy Jo Adams, house HD-050. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25454,
+      "candidate_id": "8e60362c-8375-4fe1-90ee-b0529d38a20a",
+      "note": "Jason Blair, house HD-053. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25455,
+      "candidate_id": "647763e5-9bc1-468f-adbf-586e8193f2da",
+      "note": "Mark Chapman, house HD-012. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25456,
+      "candidate_id": null,
+      "note": "Ryan Eaves, house HD-022. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25457,
+      "candidate_id": "0ed040ce-504d-43a1-8a3c-faed1f9670c4",
+      "note": "Emily Gise, house HD-090. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25458,
+      "candidate_id": null,
+      "note": "Rob Hall, house HD-067. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25459,
+      "candidate_id": "a6482b94-6787-4403-a3b1-76a9e04b4a59",
+      "note": "Derrick Hildebrant, house HD-023. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25460,
+      "candidate_id": "123cbf32-257e-4f4a-8f3e-c21e5bba97ee",
+      "note": "Molly Jenkins, house HD-033. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25461,
+      "candidate_id": "1324401b-1936-407f-8eb6-bfa4991b6fc1",
+      "note": "Mike Kelley, house HD-060. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25462,
+      "candidate_id": "66a7297b-49a3-49af-80b1-59b23a3ed52f",
+      "note": "Mike Lay, house HD-068. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25463,
+      "candidate_id": "71d4713d-bec7-46fa-9071-14b76c31e0f3",
+      "note": "Michelle McCane, house HD-072. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25464,
+      "candidate_id": null,
+      "note": "Ellen Pogemiller, house HD-088. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25465,
+      "candidate_id": "91f565ae-772f-47d2-9508-271c8756ed1e",
+      "note": "Jim Shaw, house HD-032. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25466,
+      "candidate_id": null,
+      "note": "Ronald Stewart, house HD-073. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25467,
+      "candidate_id": null,
+      "note": "Tim Turner, house HD-015. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25468,
+      "candidate_id": "a80739d8-a2dc-4610-b6f4-240f9ef5888e",
+      "note": "Jonathan Wilk, house HD-020. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25469,
+      "candidate_id": "8d704d1c-ef5e-4d6f-8071-03b4fd6f6356",
+      "note": "Gabe Woolley, house HD-098. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 25470,
+      "candidate_id": null,
+      "note": "Christi Gillespie, senate SD-033. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25471,
+      "candidate_id": null,
+      "note": "Randy Grellner, senate SD-021. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25472,
+      "candidate_id": null,
+      "note": "Brian Guthrie, senate SD-025. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25473,
+      "candidate_id": null,
+      "note": "Kelly Hines, senate SD-047. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25474,
+      "candidate_id": null,
+      "note": "Spencer Kern, senate SD-031. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25475,
+      "candidate_id": null,
+      "note": "Mark Mann, senate SD-046. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25476,
+      "candidate_id": null,
+      "note": "Julie McIntosh, senate SD-003. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25477,
+      "candidate_id": null,
+      "note": "Nikki Nice, senate SD-048. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25478,
+      "candidate_id": null,
+      "note": "Aaron Reinhardt, senate SD-037. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25479,
+      "candidate_id": null,
+      "note": "Kendal Sacchieri, senate SD-043. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25480,
+      "candidate_id": null,
+      "note": "Lisa Standridge, senate SD-015. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 25481,
+      "candidate_id": null,
+      "note": "Jonathan Wingard, senate SD-013. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 26469,
+      "candidate_id": "a4c6937e-8e89-421c-b1fb-5169f82b0ccc",
+      "note": "Bryan Logan, senate SD-008. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 26482,
+      "candidate_id": null,
+      "note": "Amanda Clinton, house HD-071. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 26483,
+      "candidate_id": "7d89af67-499d-400b-88c0-833495ae044a",
+      "note": "Kevin Norwood, house HD-074. Proposed by name and seat (first_and_last, seat agrees: true) and accepted."
+    },
+    {
+      "people_id": 26484,
+      "candidate_id": null,
+      "note": "Aletia Timmons, house HD-097. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    },
+    {
+      "people_id": 26631,
+      "candidate_id": null,
+      "note": "Dillon Travis, house HD-035. No candidate row exists for that seat in the November 2026 roster, so there is nobody to map to."
+    }
+  ]
+}

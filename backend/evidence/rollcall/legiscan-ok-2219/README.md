@@ -112,6 +112,25 @@ It is a large pool for a state where one party holds both chambers, and the Sena
 2026 ballot, against all 101 House seats, so a Senate roll will reach far fewer candidates
 than a House roll. Check the fan-out per chamber before choosing what a first batch holds.
 
+## Crosswalk and reach
+
+154 people, 53 mapped, 101 null, no unresolved member. Fifty-one mappings were proposed by
+name and seat and all were accepted. Two were added by hand, both the nickname class that has
+appeared in eleven states: Trey Caldwell, whose legal first name in the feed is `Hurchel`,
+and T. J. Marti, filed as `Thomas`. Every unmatched member was checked by surname and seat
+against every unmatched candidate, and those two were the only real misses.
+
+Seats come from LegiScan's `district` field, never `role`: four sitting senators are filed as
+`Rep` (Shane Jett SD-017, Casey Murdock SD-027, Avery Frix SD-009, Regina Goodwin SD-011).
+
+**Reach is the binding constraint, and it favours the House.** A full-chamber House roll
+reaches about 41 of our candidates, a Senate roll about 9. All 101 House seats are on the
+November 2026 ballot but only 24 of 48 Senate seats are, and our roster covers 55 of those
+125 seats. Prefer House-side measures when choosing a batch, and re-import after any roster
+work — that adds members without any new judging.
+
 ## Layout
 
-    survey/     the measured description histogram this config was written from
+    survey/     the measured description histogram this config was written from,
+                the divided-and-enacted worklist, and the triage decisions
+    batch-01/   seven measures, eleven rolls, 303 records
