@@ -1,0 +1,21 @@
+{
+  "jurisdiction": "HI",
+  "session_id": 2175,
+  "note": "Hawaii prints no aye list, so the fetcher counts every sitting member not named as a no or excused as an aye. This file says who was NOT sitting on a date. The House prints no aye count, so a vacancy is invisible in its text and must come from an official source.",
+  "windows": [
+    {
+      "people_id": 8388,
+      "from": null,
+      "to": "2025-03-31",
+      "note": "Rep. Gene Ward, HD-018. Retirement effective March 31, 2025 (Governor's May 28, 2025 release naming his successor: 'His retirement was effective March 31'); he died April 4, 2025. Every House floor vote from April 1 to sine die was taken with 50 members."
+    }
+  ],
+  "vacancies": [
+    {
+      "district": "HD-018",
+      "from": "2025-04-01",
+      "to": "2025-12-31",
+      "note": "Vacant from Ward's retirement until Joe Gedeon was appointed (announced May 28, 2025) and sworn in, after the 2025 session had adjourned; no 2025 floor vote falls after the appointment."
+    }
+  ]
+}
