@@ -1,7 +1,9 @@
 # South Dakota roll-call judging notes
 
-Covers batches 01 to 04, across the 2025 Regular Session (2170), the 2026
-Regular Session (2231) and the 2025 First Special Session (2222).
+Covers batches 01 to 05, across the 2025 Regular Session (2170), the 2026
+Regular Session (2231) and the 2025 First Special Session (2222). **The enacted
+pool is closed: every measure with a closely divided final vote now carries a
+disposition, and none is deferred.**
 
 Everything here was written from South Dakota's own published record: the bill
 history, the adopted amendments and the enrolled act on `sdlegislature.gov`.
@@ -14,9 +16,10 @@ was called at any point.
     Batch 02  2170            9 measures   12 roll calls     381 records
     Batch 03  2231            7 measures   10 roll calls     341 records
     Batch 04  2231            5 measures    5 roll calls     171 records
-    Total                    33 measures   45 roll calls   1,494 records
+    Batch 05  2170 + 2231     14 measures   18 roll calls     636 records
+    Total                    47 measures   63 roll calls   2,130 records
 
-68 candidates, 1,093 research area tags. Production holds zero South Dakota
+68 candidates, 1,579 research area tags. Production holds zero South Dakota
 records.
 
 ## The rules that decided each vote
@@ -130,13 +133,55 @@ The full ledger is `dispositions.json` in this directory: one row per measure,
 with its roll calls and a written disposition.
 
     99 measures with a closely divided final vote
-    33 imported over four batches
-    42 dropped with a written reason
-     1 deferred (House Bill 1084)
-    23 still to read
+    47 imported over five batches
+    52 dropped with a written reason
+     0 deferred
+     0 open
 
-The 23 open measures are listed in the ledger with an empty disposition. None has
-been read yet, so none has been ruled in or out.
+**Nothing in the enacted pool is unread.** What remains for South Dakota is the
+scope this campaign has not opened here — the closely divided votes on measures
+that did NOT become law — and production promotion.
+
+## Batch 05: what closed the pool
+
+The last fourteen measures were the ones that needed the most reading, because
+their titles say least. Worth recording:
+
+**Senate Bill 21 was dropped after the act was read in full, not before.** Its
+title says it modifies tax refunds for elderly and disabled people. It repeals
+chapter 10-18A, the property tax refund, and folds the benefit into the sales
+tax refund, where a claimant now receives a pro rata share of a fixed
+appropriation capped at $500 for one person and $1,000 for a larger household.
+Whether a claimant ends up better or worse off depends on what is appropriated
+each year, so the direction cannot be established from the act itself.
+
+**House Bill 1062 shows why a renumbering is not a change.** Most of the marked
+text is subsections being renumbered and two subsections repealed years ago being
+deleted. The single real addition is that aggravated assault now covers menacing
+someone with "a physical object realistically simulating a deadly weapon". The
+description says that and nothing more.
+
+**Senate Bill 6 and Senate Bill 76 are the same measure a year apart** — both let
+the housing infrastructure fund, created to pay for water lines, streets and
+sidewalks serving housing projects, lend for something else: a school building
+next to a military installation in 2025, airport infrastructure in 2026. Both go
+to `housing_affordability`, yea against, because on that axis the direction is
+plain.
+
+**House Bill 1084 was the one measure carried over undecided from batch 04,** and
+reading the marked text settled it. It widens what is withheld from the public
+voter file, from judges' home addresses alone to the home address, phone and
+personal email of current and retired state and federal judges and of law
+enforcement officers. The introduced bill also covered statewide, legislative and
+federal officeholders; House Judiciary struck them before the floor vote, and the
+enrolled act does not have them. City and county stay public. `data_privacy`,
+yea for.
+
+**House Bill 1093 was dropped for the shape that is easiest to miss.** It moves
+school bond votes onto the primary or general ballot, which puts them before more
+voters, and it also lets a district put a question rejected at the primary back on
+the general ballot. More voters decide, and the district gets two tries. Those
+pull opposite ways on the same axis.
 
 ## One gap worth raising
 
@@ -183,3 +228,39 @@ narrowed it to AI audio and video.
 House Bill 1238 does not reach representatives accredited or regulated by the
 United States Department of Veterans Affairs (section 6); both chambers'
 descriptions now carry that exception.
+
+## Review round, batch 05
+
+Four review findings on pull request #1277, all checked against the enrolled
+act and the marked versions on sdlegislature.gov, and all real. A fifth error
+turned up in the same reading. Corrected in the judgments, re-judged, and
+re-imported on the same record ids; counts unchanged at 63 roll calls and 2,130
+records. The ledger is `legiscan-sd-2231/batch-03/import-review-fixes-report.json`.
+
+House Bill 1084 does not cover statewide, legislative or federal officeholders.
+The introduced bill listed them; House Judiciary struck them before the floor
+vote, so the version the House passed and the enrolled act protect only current
+and retired state and federal judges and law enforcement officers. The
+description and the batch 05 note both said officeholders. Both now match the act.
+
+Senate Bill 106 has no inflation index. The introduced bill raised the set-aside
+and the reserve ceiling by the index factor each year from July 2027; House
+Appropriations removed both, and the enrolled act is a flat $5 million set-aside
+with the $5.5 million ceiling. The fifth error was in the next sentence: the
+description said the act drops the oversight board. It does not. "As provided in
+§ 13-37-60" is the Extraordinary Cost Oversight Board statute, which still has
+the board review requests and the secretary approve them.
+
+House Bill 1064 is conditional. Section 2 makes the whole act effective only on
+the date the attorney general certifies that federal law allows the sales, by
+statute or a final court ruling. The description had the permission as operative.
+It also had the sale venues wrong: the act lists the seller's residence, a
+farmers market, a roadside stand or another temporary venue, and requires a label
+saying the meat is uninspected and not for resale.
+
+House Bill 1130 adds one use, not five. Transportation contracts and mileage (up
+to fifteen percent), textbooks, instructional software and warranties on capital
+assets were already in § 13-16-6 as separate paragraphs; the act folds them into
+a numbered list. The only new item is premiums on a property insurance policy the
+district holds. `public_education_quality`, yea for, stands on that narrower
+change.

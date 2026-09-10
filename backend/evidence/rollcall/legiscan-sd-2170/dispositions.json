@@ -283,8 +283,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Moves school bond and capital outlay votes off special elections onto the primary or general, and also lets a district put a question rejected at the primary back on the general ballot. More voters decide, and a district gets two tries. Those pull opposite ways on the same axis, so the direction is contested."
  },
  {
   "session": 2170,
@@ -348,8 +348,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2170,
@@ -372,8 +372,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Moves the choice of a lieutenant governor nominee from the party convention to the candidate for Governor. It is a party nomination mechanic and no research area carries an honest direction on it."
  },
  {
   "session": 2170,
@@ -614,8 +614,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2170,
@@ -730,8 +730,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Requires a school to admit someone free if it refuses their cash at the door. No research area fits the subject; filing it under the nearest one would misdescribe why members voted."
  },
  {
   "session": 2170,
@@ -870,8 +870,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2170,
@@ -887,8 +887,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2170,
@@ -904,8 +904,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2170,
@@ -972,8 +972,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2170,
@@ -1105,8 +1105,8 @@
     "desc": "Concurred in amendments"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
@@ -1122,8 +1122,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
@@ -1139,8 +1139,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
@@ -1180,8 +1180,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "deferred",
-  "reason": "Reorganizes where voter registration forms must be available and adds a cross-reference to the exceptions to public inspection. Whether it narrows or widens what the public may see needs the cited sections read side by side. Not yet judged."
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
@@ -1214,8 +1214,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Moves municipal nominating petition deadlines to match the new June and November election dates and adds a registered mail filing rule. A conforming administrative change."
  },
  {
   "session": 2231,
@@ -1255,8 +1255,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Lets a court modify a restriction on land conveyed for a public purpose when conditions change. No research area fits, and whether a given change helps or harms depends entirely on the parcel."
  },
  {
   "session": 2231,
@@ -1279,8 +1279,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
@@ -1303,8 +1303,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Adds booster clubs to the organizations that may run bingo and lotteries without it counting as gambling. No research area carries an honest direction on it."
  },
  {
   "session": 2231,
@@ -1378,8 +1378,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
@@ -1402,8 +1402,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Lets a city create a capital improvement board and put a local sales tax for capital projects to its voters, who must approve it by sixty percent. It authorizes but does not impose, so the effect on household costs depends on a later local vote."
  },
  {
   "session": 2231,
@@ -1467,8 +1467,8 @@
     "desc": "Concurred in amendments"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
@@ -1566,8 +1566,8 @@
     "desc": "Do Pass"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Sets how a city fills a vacancy in the office of mayor. Internal municipal procedure, and a voter would not recognize it as a policy choice."
  },
  {
   "session": 2231,
@@ -1607,8 +1607,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Shifts the split of the housing infrastructure fund between two of its own programs from thirty and seventy to fifty and fifty, and adds site work to what counts. A reallocation inside one fund, with no honest direction on housing affordability."
  },
  {
   "session": 2231,
@@ -1624,8 +1624,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "dropped",
+  "reason": "Repeals the property tax refund for elderly and disabled people and folds the benefit into the sales tax refund, where each claimant now receives a pro rata share of a fixed appropriation, capped at $500 for one person and $1,000 for a larger household. Whether a claimant ends up better or worse off depends on what is appropriated each year, so the direction cannot be established from the act."
  },
  {
   "session": 2231,
@@ -1825,8 +1825,8 @@
     "desc": "Do Pass Amended"
    }
   ],
-  "disposition": "",
-  "reason": ""
+  "disposition": "batch-05",
+  "reason": "imported"
  },
  {
   "session": 2231,
