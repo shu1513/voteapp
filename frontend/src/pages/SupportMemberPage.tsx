@@ -36,8 +36,8 @@ export default function SupportMemberPage() {
           member and help us keep bringing you higher-quality content.
         </p>
         <p>
-          As an honorary member, you will get our private analysis reports on the important issues
-          that could affect you.
+          As an honorary member, you will get our private analysis reports on issues that could
+          affect you.
         </p>
       </section>
 
