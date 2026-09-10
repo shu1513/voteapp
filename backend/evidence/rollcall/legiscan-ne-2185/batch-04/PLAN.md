@@ -21,12 +21,14 @@ folded into it, and they pull in opposite directions inside one policy area:
   rises from a Class IIIA to a Class IIA felony, and a second grade rises from
   IIA to II. A drug penalty enhancement is extended to violations that cause
   death or serious bodily injury. A sealed juvenile record now counts toward the
-  firearm prohibition.
-- Penalties go **down**. The license revocation that a basic motor vehicle
-  homicide conviction carried — mandatory, one to fifteen years — becomes a
-  discretionary suspension of up to two years. Probation fees become waivable
-  for an offender already found indigent or facing undue hardship. A court may
-  extend probation on the offender's own joint application rather than revoke it.
+  firearm prohibition. Driving bans for motor vehicle homicide also go up: a
+  drunk- or drugged-driving homicide moves from a mandatory one-to-fifteen-year
+  ban to a flat fifteen years (§ 3, new 28-306(4)(b)), and the misdemeanor and
+  reckless-driving grades, which carried no driving ban before, now let the
+  court impose one of up to two years (new 28-306(4)(a)).
+- Penalties go **down**. Probation fees become waivable for an offender already
+  found indigent or facing undue hardship. A court may extend probation on the
+  offender's own joint application rather than revoke it.
 - Juvenile detention moves both ways at once. New grounds to detain are added,
   while the age below which a child may never be detained falls from twelve to
   ten and a new five-day review is required for children of twelve and under.

@@ -27,8 +27,10 @@ Reading print, it does all of the following:
   seasonal or other temporary agricultural jobs, and anyone under sixteen out
   of the definition of employee.
 - Raises the floor for a covered employer from one worker to eleven.
-- Requires eighty hours of consecutive employment before paid sick time starts
-  to accrue, where the old text began accrual at the start of employment.
+- Requires eighty hours of work in continuous employment before paid sick time
+  starts to accrue, where the old text began accrual at the start of
+  employment. (Eighty hours worked, not an eighty-hour stretch: the state
+  Department of Labor's FAQ reads the clause the same way.)
 - Strikes the subsection that let an employee sue an employer for a violation
   and recover the judgment plus costs and attorney's fees, and strikes the
   four-year limitation period that went with it.
@@ -71,10 +73,17 @@ honestly. The rule is the one that dropped LB 921.
 Two things are worth recording for a future operator. First, the eight folded
 bills are only visible in the history, dated after the Governor's signature,
 and their titles alone were enough to raise the question — but only the full
-read settled it. Second, the reader has to be careful about direction: the
-change from a mandatory one-to-fifteen-year revocation to a discretionary
-two-year suspension looks like a tightening if the deleted text is read as if
-it were new, which is exactly the trap the markup reader exists to prevent.
+read settled it. Second, the reader has to be careful about direction in § 3.
+The first draft of PLAN.md read the driving-ban change backwards, as a
+mandatory one-to-fifteen-year revocation becoming a discretionary two-year
+suspension. Review against the enrolled act and current 28-306 showed the
+opposite: drunk- or drugged-driving homicide now carries a flat fifteen-year
+ban, and the lower grades gain a discretionary ban where they had none. That
+correction moves the largest item out of the "penalties go down" list, so the
+act leans harder toward tougher penalties than the first read suggested. It is
+still dropped: the probation-fee waiver, the extend-rather-than-revoke rule,
+and the new five-day juvenile review pull the other way inside the same act,
+and filter 5 asks whether the strands conflict, not which side is heavier.
 
 ## Quality
 
