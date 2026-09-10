@@ -948,10 +948,15 @@ const UTAH_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // A failed floor vote. Kept rather than dropped so a rejection is
   // dispositioned in the worklist instead of disappearing (the West Virginia
   // precedent). The caption does not say WHICH question failed: in the trail
-  // it follows a third reading, a substitute, a floor amendment or an
-  // uncircling, so selection must read the bill history before treating one
-  // as a failed passage vote. `passed` is 0 on these rolls and the enacted
-  // filter keeps them out of any enacted batch.
+  // it follows a third reading, a second reading (HB 190, 2025, 13-5 short of
+  // the 15-vote constitutional majority), a substitute, a floor amendment or
+  // an uncircling, so selection must read the bill history before treating
+  // one as a failed passage vote. The enacted gate is NOT what keeps these
+  // out of a batch: HB 190 became law. What does is the judge's
+  // superseded-stage gate: on an enacted bill the chamber's successful
+  // passage roll always comes after its failed one, so a `failed` roll can
+  // only be approved by naming that later roll in acknowledge_later_rolls on
+  // purpose.
   { pattern: /^(?:house|senate)\/ failed$/, questionClass: "passage" },
 ];
 
