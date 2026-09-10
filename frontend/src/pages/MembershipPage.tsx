@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest, useMe } from "@voteapp/api-client";
 import type { MembershipMembership, MembershipStatus } from "@voteapp/api-client";
+import { EmailPreferenceToggles } from "../components/EmailPreferenceToggles";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { AmountForm, Disclaimer, formatCents, formatDate, secondaryButtonClass, SupportHistory } from "../components/SupportCheckout";
 import { VerifyPrompt } from "../components/VerifyPrompt";
@@ -310,6 +311,11 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
             ) : null}
           </div>
         ) : null}
+      </section>
+      {/* Opting out of the emails never touches the subscription (the flag
+          lives on users, not billing) — the same switch as in Settings. */}
+      <section className="rounded-xl border border-line bg-white p-4">
+        <EmailPreferenceToggles only={["email_member_newsletter"]} />
       </section>
     </>
   );

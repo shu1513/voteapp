@@ -53,8 +53,21 @@ function renderPage() {
   );
 }
 
+const EMAIL_PREFERENCES = {
+  email_digest: true,
+  email_election_reminders: false,
+  email_new_election_alerts: true,
+  email_issue_updates: true,
+  email_member_newsletter: true,
+};
+
 function renderMember(status: unknown, routes: Parameters<typeof stubApiRoutes>[0] = {}) {
-  return stubApiRoutes({ "/api/me": { body: ME_VERIFIED }, "/api/me/membership": { body: status }, ...routes });
+  return stubApiRoutes({
+    "/api/me": { body: ME_VERIFIED },
+    "/api/me/membership": { body: status },
+    "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+    ...routes,
+  });
 }
 
 afterEach(() => {
@@ -113,6 +126,8 @@ describe("MembershipPage", () => {
     expect(screen.getByRole("button", { name: "Cancel membership…" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Keep membership" })).not.toBeInTheDocument();
+    // The reports opt-out lives here too, and stays separate from the plan.
+    expect(await screen.findByRole("checkbox", { name: /Members-only reports/ })).toBeChecked();
 
     // History is there but folded away, and carries no running total.
     const details = screen.getByText("Support history").closest("details");
