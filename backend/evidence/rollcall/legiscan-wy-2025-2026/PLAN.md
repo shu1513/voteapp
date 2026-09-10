@@ -181,10 +181,32 @@ unaffected, because all three of its vetoes were sustained.
 |---|---|---|---|---|
 | 01 | 10 | 10 | 281 | 214 |
 | 02 | 8 | 12 | 224 | 164 |
+| 03 | 11 | 11 | 246 | 190 |
+| total | 29 | 33 | 751 | 568 |
 
-Each batch has its own JUDGING.md. `divided-enacted-worklist.tsv` lists all
-126 closely divided votes on measures that became law, each with a
-disposition.
+The 751 records cover 44 candidates. Each batch has its own JUDGING.md.
+
+## Wyoming is finished
+
+All 126 closely divided votes on measures that became law carry a disposition
+in `divided-enacted-worklist.tsv`. None is left unworked.
+
+| disposition | roll calls |
+|---|---|
+| imported | 33 |
+| superseded by a later vote in the same chamber | 22 |
+| dropped on filter 3, subject not recognisable | 29 |
+| dropped on filter 4, no divided vote on the enacted text | 2 |
+| dropped on filter 5, no defensible direction | 40 |
+
+Two drops are open questions for the operator rather than settled calls. SF 44
+in 2025, on college sports and biological sex, and HB 318 in 2025, on voter
+list maintenance, both clear filters 1 through 4 and fail only on direction,
+where two research areas point opposite ways. Each is a class of measure that
+will recur in other states, so both are worth deciding once.
+
+Yield fell as the campaign expects: 10 measures in the first pass, 8 in the
+second, 11 in the third, and then nothing left clearing all five filters.
 
 ## Reproducing this
 
