@@ -1,0 +1,117 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "HI",
+      "chamber": "house",
+      "session": "2245",
+      "roll": 418540230,
+      "measure_id": "HB 1961",
+      "vote_date": "2026-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1961, which makes it a crime to block someone's way into or out of a health care facility. It is also a crime to tie up a facility's phone lines with repeated calls, or to threaten its patients, staff, or owners. A first offense is a petty misdemeanor with at least 24 hours in jail and a $250 fine. A third offense carries up to 30 days. Patients, staff, and facilities may also sue, and the attorney general may seek a court order. The criminal penalties apply only to adults. It says it does not limit peaceful protest or labor strikes. The Hawaii House gave it final approval 40-10, and it became law. Hawaii's journal names only members voting no or excused, so this yes vote is inferred from that list.",
+      "nay_description": "Voted against House Bill 1961, which makes it a crime to block someone's way into or out of a health care facility. It is also a crime to tie up a facility's phone lines with repeated calls, or to threaten its patients, staff, or owners. A first offense is a petty misdemeanor with at least 24 hours in jail and a $250 fine. A third offense carries up to 30 days. Patients, staff, and facilities may also sue, and the attorney general may seek a court order. The criminal penalties apply only to adults. It says it does not limit peaceful protest or labor strikes. The Hawaii House gave it final approval 40-10, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "HI",
+      "chamber": "senate",
+      "session": "2245",
+      "roll": 418636851,
+      "measure_id": "HB 2023",
+      "vote_date": "2026-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2023, which sets up a state program for speed-limiting devices in cars. The devices warn a driver, or keep the car from going over the speed limit. The Department of Transportation will certify them and pick one vendor to install them. Starting in 2028, a driver whose license is suspended for excessive speeding may keep driving a car fitted with the device, at the driver's own cost. A judge may allow the same after a street racing conviction. Tampering with a device is a misdemeanor. Driving without a required device carries at least three days in jail. The Hawaii Senate gave it final approval 20-5, and it became law. Hawaii's journal names only members voting no or excused, so this yes vote is inferred from that list.",
+      "nay_description": "Voted against House Bill 2023, which sets up a state program for speed-limiting devices in cars. The devices warn a driver, or keep the car from going over the speed limit. The Department of Transportation will certify them and pick one vendor to install them. Starting in 2028, a driver whose license is suspended for excessive speeding may keep driving a car fitted with the device, at the driver's own cost. A judge may allow the same after a street racing conviction. Tampering with a device is a misdemeanor. Driving without a required device carries at least three days in jail. The Hawaii Senate gave it final approval 20-5, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "HI",
+      "chamber": "house",
+      "session": "2245",
+      "roll": 417002242,
+      "measure_id": "SB 2239",
+      "vote_date": "2026-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2239, which registers people to vote automatically when they apply for a Hawaii driver's license or state ID. They can say no. Today applicants must choose to opt in. If a voter is already registered, the act updates the voter's name and address from the application unless the voter declines. The licensing office sends registration information to election officials only if the applicant shows proof of United States citizenship, or the office already has that proof on file. A non-citizen is not offered registration. It takes effect January 1, 2027. The Hawaii House gave it final approval 40-11, and it became law. Hawaii's journal names only members voting no or excused, so this yes vote is inferred from that list.",
+      "nay_description": "Voted against Senate Bill 2239, which registers people to vote automatically when they apply for a Hawaii driver's license or state ID. They can say no. Today applicants must choose to opt in. If a voter is already registered, the act updates the voter's name and address from the application unless the voter declines. The licensing office sends registration information to election officials only if the applicant shows proof of United States citizenship, or the office already has that proof on file. A non-citizen is not offered registration. It takes effect January 1, 2027. The Hawaii House gave it final approval 40-11, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "HI",
+      "chamber": "house",
+      "session": "2245",
+      "roll": 417475641,
+      "measure_id": "SB 2400",
+      "vote_date": "2026-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2400, which exempts companies that carry passengers on seagliders from Hawaii's Water Carrier Act. Seagliders are electric craft that fly just above the water between islands. Because of the exemption, the Public Utilities Commission will not regulate their fares, routes, or service. The act says the United States Coast Guard oversees their safety. Seagliders that carry cargo stay regulated. The Hawaii House gave it final approval 40-11, and it became law. Hawaii's journal names only members voting no or excused, so this yes vote is inferred from that list.",
+      "nay_description": "Voted against Senate Bill 2400, which exempts companies that carry passengers on seagliders from Hawaii's Water Carrier Act. Seagliders are electric craft that fly just above the water between islands. Because of the exemption, the Public Utilities Commission will not regulate their fares, routes, or service. The act says the United States Coast Guard oversees their safety. Seagliders that carry cargo stay regulated. The Hawaii House gave it final approval 40-11, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "HI",
+      "chamber": "house",
+      "session": "2245",
+      "roll": 418523844,
+      "measure_id": "SB 2694",
+      "vote_date": "2026-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2694, which lets regulated shipping companies raise cargo rates each year without a full rate case. The Public Utilities Commission must create an automatic adjustment tied to the state's wharfage fee increases. The adjustment is capped at 5 percent a year. The commission must apply it from July 2026 through June 2029, and may apply it through June 2033. Every third year the carrier must still file a full rate case. Customers on agricultural rates are exempt. The commission may also waive any requirement of the Water Carrier Act for a carrier. The law expires July 1, 2033. The Hawaii House gave it final approval 35-15, and it became law. Hawaii's journal names only members voting no or excused, so this yes vote is inferred from that list.",
+      "nay_description": "Voted against Senate Bill 2694, which lets regulated shipping companies raise cargo rates each year without a full rate case. The Public Utilities Commission must create an automatic adjustment tied to the state's wharfage fee increases. The adjustment is capped at 5 percent a year. The commission must apply it from July 2026 through June 2029, and may apply it through June 2033. Every third year the carrier must still file a full rate case. Customers on agricultural rates are exempt. The commission may also waive any requirement of the Water Carrier Act for a carrier. The law expires July 1, 2033. The Hawaii House gave it final approval 35-15, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "HI",
+      "chamber": "senate",
+      "session": "2245",
+      "roll": 418488639,
+      "measure_id": "SB 2697",
+      "vote_date": "2026-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2697, which bans driving on the shoulder of a road. The Department of Transportation may allow it at set hours. The fine is $250, or $1,000 for a repeat within five years. The act also changes when a car can be seized for unpaid registration taxes. Seizure is now allowed only when the taxes are a year or more overdue, and owners get 30 days instead of 10 to reclaim the car. Owners who bring a car from another state and do not register it face a $500 to $1,000 fine. Misusing a carpool lane now costs $250 to $1,000, up from $75 to $200. The Hawaii Senate gave it final approval 20-5, and it became law. Hawaii's journal names only members voting no or excused, so this yes vote is inferred from that list.",
+      "nay_description": "Voted against Senate Bill 2697, which bans driving on the shoulder of a road. The Department of Transportation may allow it at set hours. The fine is $250, or $1,000 for a repeat within five years. The act also changes when a car can be seized for unpaid registration taxes. Seizure is now allowed only when the taxes are a year or more overdue, and owners get 30 days instead of 10 to reclaim the car. Owners who bring a car from another state and do not register it face a $500 to $1,000 fine. Misusing a carpool lane now costs $250 to $1,000, up from $75 to $200. The Hawaii Senate gave it final approval 20-5, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

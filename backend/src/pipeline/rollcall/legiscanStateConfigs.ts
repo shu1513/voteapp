@@ -902,6 +902,139 @@ const WEST_VIRGINIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"]
   /\brefused to concur\b/,
 ];
 
+// South Dakota's floor vocabulary, measured on all three sessions in scope
+// (2170 = 2025 Regular, 2231 = 2026 Regular, 2222 = 2025 First Special) and
+// shared by all three, because the three surveys print the same families.
+//
+// South Dakota has the SMALLEST and PLAINEST caption vocabulary of the
+// campaign: 39 families in 2025, 41 in 2026, and four of them carry almost
+// every vote. It also has a property no other surveyed state has: THE SAME
+// CAPTION COVERS COMMITTEE AND FLOOR VOTES. A committee reporting a bill out
+// and the whole House passing it both print `Do Pass`, with nothing in the
+// roll call to tell them apart but the size of the tally.
+//
+// That is safe here, and measurably so. The two populations do not overlap or
+// even come close: House committee rolls seat 5 to 15 members against a
+// 70-seat chamber, House floor rolls seat 68 to 70; Senate committee rolls
+// seat 5 to 9 against a 35-seat chamber, Senate floor rolls seat 35. Not one
+// roll in either session falls in between. The floor line (60% of the
+// chamber) therefore separates them cleanly, and the committee copies land in
+// the surfaced bucket rather than being dropped — 557 rolls in 2025 and 579
+// in 2026. Surfaced rows are stored, never queued and never approved, so a
+// large surfaced count here is the expected shape of this state, not a defect
+// to chase.
+//
+// ⚠ THE STATE'S OWN HISTORY, NOT LEGISCAN'S `passed` FLAG, SAYS WHETHER A
+// VOTE CARRIED. South Dakota prints the tally AND the outcome word in its
+// bill history (`House of Representatives Do Pass Amended, Passed, YEAS 68,
+// NAYS 2.`), and the two sources disagree on 31 of the 1,255 floor rolls on
+// kept bill types. Both directions occur:
+//   - 29 rolls read `passed: 1` where the history says Failed, because the
+//     measure needed a TWO-THIRDS majority (47 of 70, 24 of 35) that a bare
+//     majority of those voting does not reach. A 46-22 House vote is a
+//     failure in South Dakota and LegiScan calls it a pass.
+//   - 2 rolls read `passed: 0` where the history says Passed, because the
+//     Senate divided 17-17 and the Lieutenant Governor broke the tie. The
+//     tie-breaking vote is not in the member list, so the feed sees a
+//     deadlock.
+// `result` is written from the flag and read by nothing in the pipeline, but
+// SELECTION must read the history's own outcome word. Same defect class as
+// Montana's two-thirds rolls and Indiana's constitutional-majority rolls.
+const SOUTH_DAKOTA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Ordinary passage. `Do Pass` is the vote on the bill as it stands and
+  // `Do Pass Amended` the vote on a bill amended earlier in the same sitting;
+  // together they are 1,173 of the 1,255 floor rolls on kept bill types.
+  // Anchored end to end so that `Do Not Pass as amended`, a committee
+  // recommendation, cannot match.
+  { pattern: /^do pass(?: amended)?$/, questionClass: "passage" },
+  // The first chamber accepting the second chamber's amendments. `Failed to
+  // concur, appoint Conference Committee` and `Failed to concur, no committee
+  // appointed` are excluded below and never reach this line.
+  { pattern: /^concurred in amendments$/, questionClass: "concurrence" },
+  // Adoption of a conference committee report. The rejecting spelling,
+  // `Conference Committee report not adopted, no committee appointed`, is
+  // excluded below; the anchors alone would not separate them.
+  { pattern: /^conference committee report adopted$/, questionClass: "conference_report" },
+  // The five veto overrides across the three sessions.
+  { pattern: /^veto override$/, questionClass: "veto_override" },
+];
+
+// Checked BEFORE the kept list. Thirteen rules, every one of which fires on
+// kept-type bills in these sessions; two further drafted rules for South
+// Dakota's resolution captions (`Adopt Resolution`, `Concurred in
+// Resolution`) were removed after measurement showed they never fire, because
+// those captions appear only on concurrent and simple resolutions, which the
+// shared bill-type filter drops before any question is matched.
+const SOUTH_DAKOTA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // How South Dakota kills a bill. The regular session runs about 38 working
+  // days, so a measure deferred to the 41st legislative day is dead: the day
+  // never arrives. `Deferred to another day` is an ordinary postponement.
+  // Neither is a vote on the measure's merits.
+  /^deferred to /,
+  /^tabled$/,
+  /^removed from table$/,
+  // Referral to a committee, including referral of an amended bill.
+  /^referred (?:as amended )?to\b/,
+  // The motion to reconsider a vote already taken. The re-vote that follows a
+  // successful reconsideration is a fresh `Do Pass` roll and IS kept.
+  /^reconsidered$/,
+  /^motion to amend$/,
+  // A scheduling motion under Joint Rule 6F-6.
+  /^placed on calendar\b/,
+  // Committee recommendations that are not `Do Pass`. These carry
+  // committee-sized tallies, so the floor line would surface them anyway;
+  // excluding them by caption keeps them out of the surfaced bucket, where
+  // they would be noise a reviewer has to read past.
+  /^report out of committee without recommendation(?: as amended)?$/,
+  /^do not pass(?: as amended)?$/,
+  /^fiscal note requested$/,
+  // The rejecting spellings of the two kept end-of-bill questions.
+  /^conference committee report not adopted/,
+  /^failed to concur/,
+  // Recalling a bill from committee.
+  /^recalled$/,
+];
+
+// Washington's floor questions. Measured from the 2166 survey, where every one
+// of the state's 2,038 floor rolls says "final passage" and not one of its
+// 2,966 committee rolls does.
+//
+// Order matters: `keptQuestions` is resolved by FIRST match, so the three
+// narrow rules that name a specific question come before the general passage
+// rule that would otherwise swallow them. The question class is report-only
+// metadata and is never persisted, but it should still read true.
+const WASHINGTON_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Both chambers voting the conference committee's text. The House spells it
+  // with "the" and the Senate without it, so the article is optional.
+  {
+    pattern: /final passage as recommended by (?:the )?conference committee/,
+    questionClass: "conference_report",
+  },
+  // A chamber voting on the OTHER chamber's amendments is a concurrence. The
+  // chamber that is voting leads the description, so these are anchored: a
+  // SENATE roll reading "as amended by the house" is the Senate taking the
+  // House's changes, and the mirror image is the House taking the Senate's.
+  // Anchoring is what keeps them off the Senate's own "as amended by the
+  // senate", which is that chamber passing its own amended bill.
+  { pattern: /^senate final passage as amended by the house/, questionClass: "concurrence" },
+  { pattern: /^house final passage as amended by the senate/, questionClass: "concurrence" },
+  // The Senate receding from its own amendments and passing the House text.
+  { pattern: /^senate final passage without senate amendments/, questionClass: "concurrence" },
+  // Everything else that reaches here is a chamber passing a bill: the plain
+  // third reading, a chamber passing its own amended version, and either
+  // chamber's vote on reconsideration.
+  { pattern: /final passage/, questionClass: "passage" },
+];
+
+const WASHINGTON_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // ⚠ The one description that says "final passage" without being a vote on
+  // the bill: a motion to BRING a measure to final passage. Excluded rules run
+  // before kept rules, which is the only reason the general "final passage"
+  // pattern above is safe. One roll in this session, on SB 5181, and it is
+  // also the session's only tally that disagrees with Washington's own record.
+  /motion to place measure on final passage/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -4285,6 +4418,244 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "AB 460 Senate 2026-03-17: captioned as the concurrence vote at 18-15, but Wisconsin's history records NO tally on the concurrence line and prints 18-15 on the decision-of-the-chair vote immediately above it. The caption names a question Wisconsin took no recorded vote on. Verify against vote sheet sv0233 before ever using it",
     },
   },
+  // Nebraska, the only state with one house. Surveyed 2026-09-09 against the
+  // 109th Legislature dataset (LegiScan session 2185, dated 2026-07-12):
+  // 1,847 bill files, 1,774 roll calls, 64 people. Both years of the
+  // Legislature sit in that ONE dataset, so there is no second session to
+  // register — every other Nebraska dataset LegiScan lists belongs to the
+  // 108th Legislature or earlier.
+  //
+  // Nebraska's members are State Senators, so the single house is `senate`
+  // and `chamberSizes` names nothing else. LegiScan prints the chamber as
+  // `L`, which parseLegiscanRollCall maps to `senate`.
+  //
+  // A bill moves through three floor stages: General File, Select File, and
+  // Final Reading. Only Final Reading is a vote on whether the measure
+  // passes; the two earlier stages are amend-and-advance steps, the analog
+  // of the second readings Texas, California, Missouri and Montana all
+  // exclude. So `Advanced to Enrollment and Review Initial` (407 rolls, the
+  // General File step) and `Advanced to Enrollment and Review for
+  // Engrossment` (38, the Select File step) are excluded, along with their
+  // failed and repeated spellings.
+  //
+  // Nebraska votes the emergency clause TOGETHER with the bill rather than
+  // separately the way Arkansas and West Virginia do, so `Passed on Final
+  // Reading with Emergency Clause` is passage and is kept. The clause needs
+  // 33 of 49 votes where the bill itself needs 25, and when the clause falls
+  // short the caption reads `Failed on Final Reading with Emergency Clause`
+  // — which is excluded, and which LegiScan nonetheless marks `passed: 1`,
+  // the bare-majority defect already recorded for Montana, Arizona and
+  // Indiana. LB 48 of 2025 is the worked example: it failed 26-22 with the
+  // clause, then passed 27-21 the same day with the clause stricken.
+  //
+  // THE TALLY IS PRINTED INSIDE THE DESCRIPTION (`Passed on Final Reading
+  // 49-0-0`, sometimes with an asterisk, `48-1*-0`), so no pattern may be
+  // anchored at the end of the string. The three numbers are yes, no, and
+  // not voting; the bill history prints the same vote with the middle column
+  // holding no votes PLUS present-and-not-voting, which is what the asterisk
+  // marks. Audited over all 373 kept rolls, not just the divided ones (the
+  // Oregon SB 1565 lesson): the history agrees with LegiScan's own yea/nay
+  // fields and member list on 372, and on LB 1187 the history simply prints
+  // the two trailing columns the other way round. Three descriptions
+  // understate the no votes against their own roll's member list (LB 396,
+  // LB 247, LB 377 of 2025), and NOT ONE divided roll has any disagreement,
+  // so nothing is held.
+  //
+  // Every remaining description names an amendment, a floor amendment, a
+  // motion, or an enrollment-and-review report by number (`Hansen AM1097
+  // lost`, `Conrad MO38 failed`, `Judiciary AM556 adopted`). Those are votes
+  // on a change to the measure, never on the measure, and they carry the
+  // sponsor's name first, so their exclusion is not anchored at either end.
+  // With these rules the whole dataset classifies: 373 kept, 1,401 excluded,
+  // NOTHING surfaced.
+  //
+  // ONE THING THE PIPELINE CANNOT REACH HERE, recorded rather than patched:
+  // Nebraska proposes constitutional amendments as legislative resolutions
+  // numbered `LR###CA`, LegiScan type `R`, which LEGISCAN_KEPT_BILL_TYPES
+  // drops before this config is read — the Georgia, Kansas and North Dakota
+  // gap. LR 19CA (legislative term limits) passed 39-10 and went to the
+  // voters. Nothing in the campaign's gate is lost by it: under the standing
+  // rule taken from Arkansas and North Dakota, a measure about who may take
+  // part in lawmaking carries no honest direction and would be dropped.
+  //
+  // 104 Nebraska bill numbers end in a letter — 74 `LB####A` bills, which
+  // are the appropriation that pays for the bill of the same number, and
+  // those 30 resolutions. `formatLegiscanMeasureId` reads the trailing
+  // letters as part of the measure's identity, so `LB48A` stores as
+  // `LB 48A` and is never confused with `LB 48`. The A bills are
+  // appropriations and are dropped at selection under the standing rule,
+  // with the reason written on the worklist row.
+  //
+  // There are no committee votes at all in the dataset (West Virginia's
+  // shape): every roll's total is the full chamber, 49 or 48 where a seat
+  // was vacant.
+  //
+  // ⚠ NEBRASKA NEVER USES THE WORD VETO. Its history reads `Returned by
+  // Governor without approval`, and an override is `That the bill becomes
+  // law notwithstanding the objections of the Governor`. Searching for the
+  // word finds nothing and makes the session look veto-free; it is not.
+  // Five of the measures LegiScan marks enacted were vetoed and never became
+  // law, four of them after an override vote failed, so a measure's fate
+  // must be read off its own history and never off `status`.
+  NE: {
+    jurisdiction: "NE",
+    sessionId: 2185,
+    chamberSizes: { senate: 49 },
+    keptQuestions: [
+      // Covers the plain caption, the emergency-clause caption, and
+      // `Passed on Final Reading for General Election`, which is how a
+      // proposed constitutional amendment is sent to the ballot.
+      { pattern: /^passed on final reading\b/, questionClass: "passage" },
+    ],
+    excludedQuestions: [
+      // The General File and Select File stages, and their re-runs.
+      /^(?:re)?advanced to enrollment and review\b/,
+      /^failed to advance to enrollment and review\b/,
+      // A Final Reading the measure lost, including one lost only because
+      // the emergency clause fell short of 33 votes.
+      /^failed on final reading\b/,
+      // Sending a bill back a stage so one amendment can be taken up.
+      /^returned to select file\b/,
+      /^motion to return to select file\b/,
+      // Adoption of a resolution. All seven in this session are type R,
+      // which is dropped before this config is read; the rule is here so a
+      // resolution riding a kept type could never be read as passage.
+      /^adopted\b/,
+      // Every amendment, floor amendment, motion, enrollment-and-review
+      // report and standing amendment vote names its own number. The
+      // sponsor's name comes first, so this cannot be anchored.
+      //
+      // ⚠ This also catches Nebraska's VETO OVERRIDE votes, which the
+      // Legislature takes as a numbered motion ("That the bill becomes law
+      // notwithstanding the objections of the Governor") and which LegiScan
+      // files under the bare caption `Rountree MO259 failed`. Nothing in the
+      // caption separates an override from any other motion; only the bill
+      // history names the question. Four such votes exist in this session,
+      // all of them close, and all on bills that stayed vetoed. Reaching
+      // them would need a per-roll disposition file, the design already
+      // parked for Maine's surfaced rolls.
+      /\b(?:am|fa|mo|er|st)\d+\b/,
+    ],
+    // Audited over all 373 kept rolls, comparing each roll's caption with
+    // the caption Nebraska's own bill history prints for that vote. Two
+    // disagree, and in both the feed claims a bill passed when the state
+    // says it failed — LegiScan's `passed` flag is a bare-majority check and
+    // does not know Nebraska's 33-vote thresholds, the same defect recorded
+    // for Montana, Arizona, Delaware and Indiana.
+    heldRollCallIds: {
+      1571011:
+        "LB 258, 2025-05-14, 31-17: LegiScan captions it `Passed on Final Reading`, but Nebraska's own history reads `Failed on Final Reading 31-17*-1`. The bill amends a law Nebraska's voters adopted by initiative, which takes 33 votes, so 31 was not enough. The Legislature passed it 33-16 on 2026-02-05, and that roll (1624711) is the one that stands",
+      1582140:
+        "LB 48A, 2025-05-30, 27-21: LegiScan captions it `Passed on Final Reading`, but Nebraska's own history reads `Failed on Final Reading with Emergency Clause 27-21*-1`. An emergency clause takes 33 votes, so the bill failed at 27",
+    },
+  },
+  // South Dakota Legislature. Three sessions are in scope and all three were
+  // surveyed: the 2025 Regular Session (2170), the 2026 Regular Session
+  // (2231), and the 2025 First Special Session (2222). South Dakota meets
+  // every year for a short session — about 38 working days — so each year is
+  // its own dataset and its own entry, the Alabama and Oregon shape.
+  //
+  // The special session is registered rather than dismissed. It is tiny, two
+  // bills and four roll calls, but it is not empty: SB 2 authorized the
+  // Department of Corrections to buy land for a new prison, it became law,
+  // and both chambers divided on it (House 51-18, Senate 24-11). A session
+  // was passed over once in this campaign on the assumption that a special
+  // session yields nothing, and it cost a whole batch, so each one is
+  // measured now.
+  //
+  // Every seat in both chambers is elected every two years, so unlike North
+  // Dakota there is no structural half of the legislature that the Nov-2026
+  // crosswalk cannot reach.
+  //
+  // TALLY AUDIT, run before any import and NOT bounded by the closely divided
+  // gate: South Dakota prints the tally inside its own bill history, which
+  // gives a free second source for every roll. 1,254 of the 1,255 floor rolls
+  // on kept bill types in the two regular sessions match the history exactly.
+  // The single exception is held below.
+  "SD": {
+    jurisdiction: "SD",
+    sessionId: 2170,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: SOUTH_DAKOTA_KEPT_QUESTIONS,
+    excludedQuestions: SOUTH_DAKOTA_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1494248:
+        "HB 1096 House 2025-02-19, 69-1: HB 1096's own history records no vote at all on that day — the House passed it 68-0 on 2025-02-11 — and this roll's member list is byte-identical to the 69-1 votes filed the same day under HB 1099 and HB 1196, which the history does record. It is another bill's vote copied onto this one",
+    },
+  },
+  "SD-2231": {
+    jurisdiction: "SD",
+    sessionId: 2231,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: SOUTH_DAKOTA_KEPT_QUESTIONS,
+    excludedQuestions: SOUTH_DAKOTA_EXCLUDED_QUESTIONS,
+  },
+  "SD-2222": {
+    jurisdiction: "SD",
+    sessionId: 2222,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: SOUTH_DAKOTA_KEPT_QUESTIONS,
+    excludedQuestions: SOUTH_DAKOTA_EXCLUDED_QUESTIONS,
+  },
+  // WASHINGTON, 2025-2026 Regular Session (LegiScan 2166). Washington runs a
+  // two-year biennium in ONE dataset, and its bulk list carries no special
+  // session at all, so this single entry covers the whole current term.
+  //
+  // Washington has the cleanest floor-versus-committee split measured so far.
+  // Every floor vote says FINAL PASSAGE and no committee vote does: the survey
+  // folded 5,038 rolls into 212 description families, and of those, 196 are
+  // spelled `<Chamber> Committee on <Name>: <question>` while the other 16 all
+  // contain "final passage". The overlap between the two sets is exactly zero
+  // rolls, checked over the whole dataset, so a single kept pattern does the
+  // work that other states need a dozen for.
+  //
+  // The tally cut is a comfortable second line rather than the mechanism.
+  // Committee rolls top out at 34 of 98 in the House and 24 of 49 in the
+  // Senate, while every floor roll is exactly 98 in the House and 48 or 49 in
+  // the Senate. Nothing lands in the band that would surface. The Senate
+  // margin is the narrow one — 24 against a cut of 24.5 — so if a future
+  // session seats a 25-member Senate committee, its rolls would surface rather
+  // than be rejected, which is the safe direction to fail.
+  //
+  // ⚠ THE ONE TRAP: "final passage" is NOT sufficient on its own, because
+  // Washington also prints `House Motion to Place Measure on Final Passage as
+  // Amended by the House`. That is a scheduling motion, not a vote on the
+  // bill, so the exclusion has to run first — which it does, by contract.
+  // There is exactly one such roll in the session, on SB 5181, and it is the
+  // ONLY roll in the whole dataset whose tally disagrees with Washington's own
+  // record (see the audit note below). Two independent signals condemn the
+  // same roll.
+  //
+  // TALLY AUDIT, run over EVERY floor roll and deliberately NOT bounded by the
+  // divided gate, because a tally error can itself decide whether a roll
+  // passes that gate (the Oregon SB 1565 lesson). Washington ships its own
+  // oracle: 2,038 bill-history action lines carry the state's tally in the
+  // form `Third reading, passed; yeas, 41; nays, 8; absent, 0; excused, 0`,
+  // one for every floor roll, so the audit needs no network. Result: 2,037 of
+  // 2,038 match exactly. The single exception is the procedural motion above,
+  // which is excluded by rule and sits on a bill that never became law. No
+  // roll needs holding, so this state has no `heldRollCallIds`.
+  //
+  // ⚠ ROLL IDS DO NOT ASCEND WITH DATE — 63 inversions in the House and 43 in
+  // the Senate. Anything picking a chamber's last vote must order by DATE and
+  // settle same-day ties from the bill history, never by roll_call_id.
+  //
+  // ⚠ VETOES: the session has 16 PARTIAL vetoes and 1 full veto, and no
+  // override roll exists at all. A partial veto means part of an enacted act
+  // never took effect, so any selected measure must be checked against the
+  // veto message before it is described.
+  //
+  // Constitutional amendments ride JOINT RESOLUTIONS, which is already a kept
+  // bill type, so the Georgia resolution gap does not arise. It is moot here
+  // in any case: all 27 joint resolutions in the session are still at
+  // introduced status and none ever reached a floor vote.
+  WA: {
+    jurisdiction: "WA",
+    sessionId: 2166,
+    chamberSizes: { house: 98, senate: 49 },
+    keptQuestions: WASHINGTON_KEPT_QUESTIONS,
+    excludedQuestions: WASHINGTON_EXCLUDED_QUESTIONS,
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
@@ -4311,13 +4682,24 @@ export const LEGISCAN_RECORD_JURISDICTIONS: readonly string[] = [
 // LegiScan exactly on chamber + date + measure + yea + nay, including all 24
 // judged rolls. Remove a state from this set only when its own pipeline is
 // being retired and its existing records are migrated or retired first.
-const JURISDICTIONS_WITH_DEDICATED_PIPELINES: ReadonlySet<string> = new Set(["OH"]);
+//
+// Hawaii (rollcall:hi:*) is here for the opposite reason: LegiScan's Hawaii
+// vote feed holds NO floor votes at all (every roll call in the 2025 and
+// 2026 datasets is a committee vote; the largest tally is a 17-member
+// conference committee against a 51-seat House), so a LegiScan config
+// could never queue a Hawaii record. Its floor votes are read out of the
+// bill histories by hawaiiRollCall.ts.
+const JURISDICTIONS_WITH_DEDICATED_PIPELINES: ReadonlyMap<string, string> = new Map([
+  ["OH", "rollcall:oh:*"],
+  ["HI", "rollcall:hi:*"],
+]);
 
 export function getLegiscanStateConfig(state: string): LegiscanStateConfig {
   const jurisdiction = state.trim().toUpperCase();
-  if (JURISDICTIONS_WITH_DEDICATED_PIPELINES.has(jurisdiction)) {
+  const dedicated = JURISDICTIONS_WITH_DEDICATED_PIPELINES.get(jurisdiction);
+  if (dedicated !== undefined) {
     throw new Error(
-      `${jurisdiction} is served by its own roll-call pipeline (rollcall:oh:*), not LegiScan; ` +
+      `${jurisdiction} is served by its own roll-call pipeline (${dedicated}), not LegiScan; ` +
         "importing it here would write a duplicate record for every vote already imported from that source"
     );
   }

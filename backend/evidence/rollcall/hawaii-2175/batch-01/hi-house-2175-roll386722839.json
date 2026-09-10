@@ -1,0 +1,105 @@
+{
+  "jurisdiction": "HI",
+  "sessionId": 2175,
+  "chamber": "house",
+  "rollNumber": 386722839,
+  "billId": 1933614,
+  "bill": "SB1433",
+  "measureId": "SB 1433",
+  "historyIndex": 39,
+  "machineUrl": "https://www.capitol.hawaii.gov/session/measure_indiv.aspx?billtype=SB&billnumber=1433&year=2025",
+  "fetchedAt": "2026-09-09T23:46:19.324Z",
+  "reading": "final_reading",
+  "draft": "CD 1",
+  "history": {
+    "date": "2025-04-30",
+    "action": "Passed Final Reading as amended in CD 1 with Representative(s) Souza voting aye with reservations; Representative(s) Alcos, Chun, Garcia, Kila, Kong, Lamosao, Lee, M., Matsumoto, Muraoka, Olds, Pierick, Reyes Oda, Shimizu voting no (13) and Representative(s) Cochran excused (1).",
+    "chamber": "H",
+    "chamber_id": 31,
+    "importance": 0
+  },
+  "named": {
+    "reservations": [
+      "Souza"
+    ],
+    "noes": [
+      "Alcos",
+      "Chun",
+      "Garcia",
+      "Kila",
+      "Kong",
+      "Lamosao",
+      "Lee, M.",
+      "Matsumoto",
+      "Muraoka",
+      "Olds",
+      "Pierick",
+      "Reyes Oda",
+      "Shimizu"
+    ],
+    "excused": [
+      "Cochran"
+    ]
+  },
+  "members": {
+    "yeas": [
+      8365,
+      8389,
+      11513,
+      11514,
+      11516,
+      15002,
+      15005,
+      15164,
+      19023,
+      19024,
+      19050,
+      19089,
+      20848,
+      20849,
+      20851,
+      20852,
+      22564,
+      22565,
+      22566,
+      22568,
+      22569,
+      24414,
+      24416,
+      24417,
+      24511,
+      24518,
+      24619,
+      24907,
+      24910,
+      25051,
+      25668,
+      25669,
+      25670,
+      25671,
+      25672,
+      25678
+    ],
+    "nays": [
+      16119,
+      17297,
+      24410,
+      24412,
+      24415,
+      24512,
+      24618,
+      24788,
+      25673,
+      25674,
+      25675,
+      25676,
+      25677
+    ],
+    "excused": [
+      24411
+    ],
+    "reservations": [
+      24619
+    ]
+  }
+}
