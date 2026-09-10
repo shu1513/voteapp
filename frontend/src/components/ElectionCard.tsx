@@ -349,7 +349,7 @@ function ElectionCard({
       // Faint tint at rest; on hover the border goes brand and the title
       // takes the link color (via group-hover below). The old cue — gray bg
       // one step grayer — was under 2% lightness and read as nothing.
-      className="group block rounded-xl border border-line bg-surface/50 p-4 shadow-sm transition hover:border-rausch hover:shadow-md"
+      className="group block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:border-rausch hover:shadow-md"
     >
       {/* No per-card date: ElectionList's group heading carries it. The title
           row keeps vote power and the candidate count flush right, so every

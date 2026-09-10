@@ -89,12 +89,19 @@
   --color-nudge: #e8f5e9;
   --color-nudge-line: #a5d6a7;
   --color-nudge-deep: #166534;
-  /* Honorary-member card (/me/membership): ivory paper with a bronze mark —
-     quiet, warm, and unlike any other card on the site. Bronze on ivory is
-     4.9:1, AA for the small caps label. */
-  --color-member-ivory: #faf7f2;
-  --color-member-line: #e6dfd2;
-  --color-member-bronze: #8a6d3b;
+  /* Page ground (user decision 2026-09-09): a faint cream behind white
+     content cards, like paper on a desk. Cards, dialogs, and menus stay
+     white so the coral, yellow, and party colors keep their true hue. */
+  --color-page: #fdfbf7;
+  /* Honorary-member card (/me/membership): navy with ivory text and a gold
+     mark — the one dark card on the site, so the paid tier reads as a
+     different tier at a glance. Gold on navy is 7.4:1, ivory 12:1. */
+  --color-member-gold: #d9b56b;
+  --color-member-paper: #f4efe6;
+}
+
+body {
+  background-color: var(--color-page);
 }
 
 /* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)

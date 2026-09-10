@@ -217,22 +217,22 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
 
   return (
     <>
-      <section className="rounded-xl border border-member-line bg-member-ivory px-6 py-5">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-member-bronze">Honorary member</p>
+      <section className="rounded-xl bg-navy px-6 py-5 text-member-paper">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-member-gold">Honorary member</p>
         {status === "active" ? (
           // What the money funds (things the site does today) — never member
           // perks, which the Terms limit to the newsletter.
           <>
-            <p className="mt-2 text-lg font-medium text-ink">Thank you.</p>
-            <p className="mt-1 text-sm text-ink">Your membership is bringing:</p>
-            <ul className="mt-2 divide-y divide-member-line text-sm text-ink">
+            <p className="mt-2 text-lg font-medium">Thank you.</p>
+            <p className="mt-1 text-sm">Your membership is bringing:</p>
+            <ul className="mt-2 divide-y divide-white/20 text-sm">
               <li className="py-1.5">Deeper investigation of candidates&apos; actions</li>
               <li className="py-1.5">In-depth analysis of the effects of ballot measures</li>
               <li className="py-1.5">Ongoing research on the issues that could affect you</li>
             </ul>
           </>
         ) : null}
-        <p className="mt-4 inline-block rounded-full border border-member-line bg-white px-3 py-1 text-sm font-medium text-ink">
+        <p className="mt-4 inline-block rounded-full border border-white/30 bg-white/10 px-3 py-1 text-sm font-medium">
           {planLine(membership)}
         </p>
         {status === "incomplete" ? (
@@ -240,14 +240,14 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
           // completes, so `incomplete` is the seconds-wide gap between the
           // subscription.created poke and the activation poke. Refreshing is
           // the whole remedy.
-          <p className="mt-2 text-sm text-ink-soft">
+          <p className="mt-2 text-sm text-member-paper/80">
             Your first payment is still being confirmed. This usually takes a moment; refresh this page to
             check again.
           </p>
         ) : null}
         {/* Always-mounted live region: confirmations appear inside an
             existing region, the reliably-announced case. */}
-        <p role="status" className="mt-2 min-h-5 text-sm font-medium text-green-900">
+        <p role="status" className="mt-2 min-h-5 text-sm font-medium text-member-gold">
           {notice ?? ""}
         </p>
         {canceling ? (
