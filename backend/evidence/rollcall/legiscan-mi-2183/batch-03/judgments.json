@@ -1,0 +1,297 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1601423,
+   "measure_id": "HB 4024",
+   "vote_date": "2025-09-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4024, the student restroom privacy act. It would make an educational institution require every restroom or changing area built for more than one student at a time to be used by sex. Sex would mean what is listed on a person's original birth certificate. The House passed it 58-46. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4024, the student restroom privacy act. It would make an educational institution require every restroom or changing area built for more than one student at a time to be used by sex. Sex would mean what is listed on a person's original birth certificate. The House passed it 58-46. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1581057,
+   "measure_id": "HB 4469",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4469. It would let a school covering any of grades K to 12 decide who may play school sports by a student's biological sex as listed on their original birth certificate. Michigan's civil rights law would not stand in the way. The House passed it 59-45. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4469. It would let a school covering any of grades K to 12 decide who may play school sports by a student's biological sex as listed on their original birth certificate. Michigan's civil rights law would not stand in the way. The House passed it 59-45. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1602847,
+   "measure_id": "HB 4664",
+   "vote_date": "2025-09-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4664. Blocking traffic on a public street is already against the law and is normally a civil infraction. The bill would make it a crime, punishable by up to 93 days in jail and a fine of up to 5,000 dollars, when the person is taking part in an assembly on a highway. The House passed it 61-42. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4664. Blocking traffic on a public street is already against the law and is normally a civil infraction. The bill would make it a crime, punishable by up to 93 days in jail and a fine of up to 5,000 dollars, when the person is taking part in an assembly on a highway. The House passed it 61-42. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1683988,
+   "measure_id": "HB 4765",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4765. It would make the Secretary of State check the citizenship of everyone who applies to register to vote, using state and federal databases. A person whose citizenship could not be checked would be marked a federal-only voter and could not vote in state or local elections until they hand in proof, such as a birth certificate or passport. The House passed it 58-46. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4765. It would make the Secretary of State check the citizenship of everyone who applies to register to vote, using state and federal databases. A person whose citizenship could not be checked would be marked a federal-only voter and could not vote in state or local elections until they hand in proof, such as a birth certificate or passport. The House passed it 58-46. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1683989,
+   "measure_id": "HB 4720",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4720. It would bar any electronic voting system bought from January 2026 on from containing parts made or supplied by a company on the Federal Communications Commission's list of security threats. The Board of State Canvassers could not approve such a system. The House passed it 63-41. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 4720. It would bar any electronic voting system bought from January 2026 on from containing parts made or supplied by a company on the Federal Communications Commission's list of security threats. The Board of State Canvassers could not approve such a system. The House passed it 63-41. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1710358,
+   "measure_id": "HB 5845",
+   "vote_date": "2026-06-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5845. It would require the data on an electronic poll book flash drive used at an election to be kept for 22 months. Only after that could the data be erased and the drive used again. The House passed it 62-45. The Senate has not voted on it, so it is not law.",
+   "nay_description": "Voted against House Bill 5845. It would require the data on an electronic poll book flash drive used at an election to be kept for 22 months. Only after that could the data be erased and the drive used again. The House passed it 62-45. The Senate has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1595545,
+   "measure_id": "SB 224",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 224. It would add bump stocks and multiburst trigger activators to the list of devices that may not be made, sold, offered for sale or held in Michigan. A bump stock lets a semi-automatic gun fire more than one shot with a single pull. Breaking the rule would be a felony. The Senate passed it 22-14. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 224. It would add bump stocks and multiburst trigger activators to the list of devices that may not be made, sold, offered for sale or held in Michigan. A bump stock lets a semi-automatic gun fire more than one shot with a single pull. Breaking the rule would be a felony. The Senate passed it 22-14. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1595359,
+   "measure_id": "SB 225",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 225. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not carry a concealed pistol. Lawmakers with a concealed-pistol license could still carry while serving. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 225. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not carry a concealed pistol. Lawmakers with a concealed-pistol license could still carry while serving. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1595529,
+   "measure_id": "SB 226",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 226. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not have a gun, whether hidden or not. Police, building security and lawmakers with a concealed-pistol license could still carry. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 226. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not have a gun, whether hidden or not. Police, building security and lawmakers with a concealed-pistol license could still carry. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1595428,
+   "measure_id": "SB 331",
+   "vote_date": "2025-06-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 331. It would bar making, buying, selling or passing on a gun, frame or receiver that has no valid serial number, and 18 months later bar knowingly holding one. It would also bar using a 3D printer or milling machine to make guns without a license, cap an unlicensed person at five guns a year, and require them to tell the State Police within 10 days. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 331. It would bar making, buying, selling or passing on a gun, frame or receiver that has no valid serial number, and 18 months later bar knowingly holding one. It would also bar using a 3D printer or milling machine to make guns without a license, cap an unlicensed person at five guns a year, and require them to tell the State Police within 10 days. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1709961,
+   "measure_id": "SB 961",
+   "vote_date": "2026-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 961, the State Voting Rights Act. It would bar a local government or state agency from any rule or method of election that leaves a protected class taking part less than other voters or that holds them back from the political process. Someone who wanted to sue would usually first have to write to the local government setting out the problem and a way to fix it, though not when asking a court for quick relief before an upcoming election. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 961, the State Voting Rights Act. It would bar a local government or state agency from any rule or method of election that leaves a protected class taking part less than other voters or that holds them back from the political process. Someone who wanted to sue would usually first have to write to the local government setting out the problem and a way to fix it, though not when asking a court for quick relief before an upcoming election. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1709991,
+   "measure_id": "SB 963",
+   "vote_date": "2026-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 963, the Language Assistance for Elections Act. It would make a local government give help in another language at its elections when enough of its people share that language and have limited English. The Secretary of State would list which places and which languages every two years, and would pay back the extra cost of testing ballot-counting machines. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 963, the Language Assistance for Elections Act. It would make a local government give help in another language at its elections when enough of its people share that language and have limited English. The Secretary of State would list which places and which languages every two years, and would pay back the extra cost of testing ballot-counting machines. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1710228,
+   "measure_id": "SB 964",
+   "vote_date": "2026-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 964. From 2028 it would make a local government tell the Secretary of State when it changes how it runs elections, when a voter asks to view voting equipment, and which groups may appoint election challengers, with each notice posted within five days. It would also let a voter who cannot get into the polling place vote from outside, let a voter choose who helps them in another language, and let people hand out food, warmth or other necessities to voters waiting in line. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 964. From 2028 it would make a local government tell the Secretary of State when it changes how it runs elections, when a voter asks to view voting equipment, and which groups may appoint election challengers, with each notice posted within five days. It would also let a voter who cannot get into the polling place vote from outside, let a voter choose who helps them in another language, and let people hand out food, warmth or other necessities to voters waiting in line. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1603069,
+   "measure_id": "SB 533",
+   "vote_date": "2025-09-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 533. It would set a civil fine of up to 1,000 dollars for knowingly telling someone a lie about when, where or how an election is held, who may vote, the penalties for voting, or that person's own registration, meaning to stop them voting. An employer that put such a person to work on an election could be fined up to 10,000 dollars. The Senate passed it 19-14. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 533. It would set a civil fine of up to 1,000 dollars for knowingly telling someone a lie about when, where or how an election is held, who may vote, the penalties for voting, or that person's own registration, meaning to stop them voting. An employer that put such a person to work on an election could be fined up to 10,000 dollars. The Senate passed it 19-14. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1556621,
+   "measure_id": "SB 34",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 34. Michigan's civil rights law already treats pregnancy and childbirth as part of sex, so that discrimination on those grounds is barred. The bill would add lactating status to that list. The Senate passed it 22-14. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 34. Michigan's civil rights law already treats pregnancy and childbirth as part of sex, so that discrimination on those grounds is barred. The bill would add lactating status to that list. The Senate passed it 22-14. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1556539,
+   "measure_id": "SB 30",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 30, the biased and unjust care reporting act. It would make the state health department collect reports from pregnant and postpartum patients whose care was not unbiased, dignified, safe or properly consented to. The department would use those reports to find cases of obstetric racism and obstetric violence and report the totals, with no names in them, to the Governor and to legislative committees. The Senate passed it 22-14. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 30, the biased and unjust care reporting act. It would make the state health department collect reports from pregnant and postpartum patients whose care was not unbiased, dignified, safe or properly consented to. The department would use those reports to find cases of obstetric racism and obstetric violence and report the totals, with no names in them, to the Governor and to legislative committees. The Senate passed it 22-14. The House has not voted on it, so it is not law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
