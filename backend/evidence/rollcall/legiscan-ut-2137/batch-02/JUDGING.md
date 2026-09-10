@@ -66,8 +66,15 @@ overstate the act. The statute counts a home as owner-occupied only where the
 owner lives there as a primary residence for at least five years. And the caps
 reach only a "specified municipality" — cities of the first through fourth
 class, and fifth-class cities of 5,000 or more in a larger county — not every
-city in Utah. That definition was read from HB 37's enrolled text, which
-amends and therefore reprints the section that carries it.
+city in Utah — and, in the county section, only a "specified county" (first
+through third class). That definition was read from HB 37's enrolled text,
+which amends and therefore reprints the section that carries it.
+
+The garage ban is scoped differently and the description says so. Subsection
+(5) reads "a municipality may not require a garage" for owner-occupied
+affordable housing, with no "specified" qualifier, so it reaches every city and
+county. Review caught the first draft applying the specified-municipality limit
+to the whole act.
 
 `nay` null: as with HB 37, the objection is local control, which sits inside
 the same area.

@@ -20,8 +20,10 @@ school year. The scope words matter and are in the description: the ban is tied
 to school grounds and the school day, not to the food generally.
 
 The exceptions are stated rather than summarized away, because they are large:
-a parent may still bring those foods to their own child, a teacher may hand
-them out with written parental permission each semester, concession stands at
+a parent may still bring those foods in for students (the act says "students",
+not the parent's own child), a teacher may hand them out with parental
+permission at the start of each semester (permission, not written permission;
+review corrected both readings), concession stands at
 school events and vending machines are untouched, and the section does not
 apply at a charter school or district with 5,500 students or fewer.
 

@@ -88,3 +88,7 @@ ones.
 - `CODE-FINDINGS.md` — defects found and not fixed
 - `batch-01/` — the first batch: plan, judging notes, judgments, ledgers,
   and the roll evidence files
+
+`import-rerun-report.json` in each batch directory is the second real run,
+after review corrected the HB 402 and SB 181 descriptions. It rewrote the 66
+HB 402 records and the 56 SB 181 records in place and left the rest unchanged.
