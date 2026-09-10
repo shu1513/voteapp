@@ -1,0 +1,348 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1553690,
+   "measure_id": "AB 73",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 73, which would have written two kinds of specialized court docket into state law. A treatment court docket handles criminal cases where addiction, mental illness or military service lies behind the offense, and puts the case before a judge trained in that subject. A commercial court docket handles business disputes and has run in Wisconsin as a pilot for more than seven years. The bill set out how cases reach each docket, which cases may not go to the commercial docket, and how a case moves between counties. The Legislature's stated finding was that trained judges reach better decisions faster. The Assembly passed it 53-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 73, which would have written two kinds of specialized court docket into state law. A treatment court docket handles criminal cases where addiction, mental illness or military service lies behind the offense, and puts the case before a judge trained in that subject. A commercial court docket handles business disputes and has run in Wisconsin as a pilot for more than seven years. The bill set out how cases reach each docket, which cases may not go to the commercial docket, and how a case moves between counties. The Legislature's stated finding was that trained judges reach better decisions faster. The Assembly passed it 53-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1572138,
+   "measure_id": "AB 73",
+   "vote_date": "2025-05-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 73, which would have written two kinds of specialized court docket into state law. A treatment court docket handles criminal cases where addiction, mental illness or military service lies behind the offense, and puts the case before a judge trained in that subject. A commercial court docket handles business disputes and has run in Wisconsin as a pilot for more than seven years. The bill set out how cases reach each docket, which cases may not go to the commercial docket, and how a case moves between counties. The Legislature's stated finding was that trained judges reach better decisions faster. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 73, which would have written two kinds of specialized court docket into state law. A treatment court docket handles criminal cases where addiction, mental illness or military service lies behind the offense, and puts the case before a judge trained in that subject. A commercial court docket handles business disputes and has run in Wisconsin as a pilot for more than seven years. The bill set out how cases reach each docket, which cases may not go to the commercial docket, and how a case moves between counties. The Legislature's stated finding was that trained judges reach better decisions faster. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1517055,
+   "measure_id": "AB 85",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 85, which would have required the state corrections department to recommend revoking a person's extended supervision, parole or probation whenever that person is charged with a crime. A charge is an accusation, not a conviction. The hearing process that decides whether to actually revoke would have stayed as it is, so the change is to what the department must ask for, not to who decides. It would have applied to charges filed on or after the day the law took effect. The Assembly passed it 53-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 85, which would have required the state corrections department to recommend revoking a person's extended supervision, parole or probation whenever that person is charged with a crime. A charge is an accusation, not a conviction. The hearing process that decides whether to actually revoke would have stayed as it is, so the change is to what the department must ask for, not to who decides. It would have applied to charges filed on or after the day the law took effect. The Assembly passed it 53-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1592343,
+   "measure_id": "AB 85",
+   "vote_date": "2025-06-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 85, which would have required the state corrections department to recommend revoking a person's extended supervision, parole or probation whenever that person is charged with a crime. A charge is an accusation, not a conviction. The hearing process that decides whether to actually revoke would have stayed as it is, so the change is to what the department must ask for, not to who decides. It would have applied to charges filed on or after the day the law took effect. The Senate agreed to it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 85, which would have required the state corrections department to recommend revoking a person's extended supervision, parole or probation whenever that person is charged with a crime. A charge is an accusation, not a conviction. The hearing process that decides whether to actually revoke would have stayed as it is, so the change is to what the department must ask for, not to who decides. It would have applied to charges filed on or after the day the law took effect. The Senate agreed to it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1516987,
+   "measure_id": "AB 87",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 87, which would have done two things. A person convicted of human trafficking, including trafficking of a child, would have had to pay restitution to the victim immediately. A court that was not paid would have had to go after the offender's property the way it collects an ordinary civil judgment. Separately, a person barred from voting by a felony conviction would have got their vote back only after finishing their sentence and paying every fine, cost, fee, surcharge and restitution order and finishing any court-ordered community service. Under the law as it stands, finishing the sentence is enough. The Assembly passed it 53-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 87, which would have done two things. A person convicted of human trafficking, including trafficking of a child, would have had to pay restitution to the victim immediately. A court that was not paid would have had to go after the offender's property the way it collects an ordinary civil judgment. Separately, a person barred from voting by a felony conviction would have got their vote back only after finishing their sentence and paying every fine, cost, fee, surcharge and restitution order and finishing any court-ordered community service. Under the law as it stands, finishing the sentence is enough. The Assembly passed it 53-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1592450,
+   "measure_id": "AB 87",
+   "vote_date": "2025-06-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 87, which would have done two things. A person convicted of human trafficking, including trafficking of a child, would have had to pay restitution to the victim immediately. A court that was not paid would have had to go after the offender's property the way it collects an ordinary civil judgment. Separately, a person barred from voting by a felony conviction would have got their vote back only after finishing their sentence and paying every fine, cost, fee, surcharge and restitution order and finishing any court-ordered community service. Under the law as it stands, finishing the sentence is enough. The Senate agreed to it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 87, which would have done two things. A person convicted of human trafficking, including trafficking of a child, would have had to pay restitution to the victim immediately. A court that was not paid would have had to go after the offender's property the way it collects an ordinary civil judgment. Separately, a person barred from voting by a felony conviction would have got their vote back only after finishing their sentence and paying every fine, cost, fee, surcharge and restitution order and finishing any court-ordered community service. Under the law as it stands, finishing the sentence is enough. The Senate agreed to it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1635573,
+   "measure_id": "AB 629",
+   "vote_date": "2026-02-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 629, which would have let a police officer act against a drone that poses a credible threat to people, to a large public event, to critical infrastructure or to a prison. The officer could have tracked the drone, including by intercepting the signal controlling it, warned the operator, taken control of the drone, seized it, or used reasonable force to disable or destroy it. That power would have applied only to an agency acting under the federal law that authorizes it, including its training and reporting rules. Flying a drone carrying a weapon over a prison would have become a felony. The Assembly passed it 57-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 629, which would have let a police officer act against a drone that poses a credible threat to people, to a large public event, to critical infrastructure or to a prison. The officer could have tracked the drone, including by intercepting the signal controlling it, warned the operator, taken control of the drone, seized it, or used reasonable force to disable or destroy it. That power would have applied only to an agency acting under the federal law that authorizes it, including its training and reporting rules. Flying a drone carrying a weapon over a prison would have become a felony. The Assembly passed it 57-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1616267,
+   "measure_id": "AB 672",
+   "vote_date": "2026-01-22",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 672, which would have addressed what it called transnational repression. That means a person acting for a foreign government or a foreign terrorist group who harasses, intimidates or punishes a dissident, exile, journalist, political opponent or member of a minority group over their politics. Committing any crime that way would have raised the offense one classification. Enforcing a foreign government's law here without federal or state approval would have become a felony carrying at least three years in prison and a $10,000 fine. The state justice department would have had to train police, keep a list of the countries and groups that do this, run a public reporting portal, and report to the Legislature every year. The Assembly passed it 53-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 672, which would have addressed what it called transnational repression. That means a person acting for a foreign government or a foreign terrorist group who harasses, intimidates or punishes a dissident, exile, journalist, political opponent or member of a minority group over their politics. Committing any crime that way would have raised the offense one classification. Enforcing a foreign government's law here without federal or state approval would have become a felony carrying at least three years in prison and a $10,000 fine. The state justice department would have had to train police, keep a list of the countries and groups that do this, run a public reporting portal, and report to the Legislature every year. The Assembly passed it 53-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1637263,
+   "measure_id": "AB 672",
+   "vote_date": "2026-02-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 672, which would have addressed what it called transnational repression. That means a person acting for a foreign government or a foreign terrorist group who harasses, intimidates or punishes a dissident, exile, journalist, political opponent or member of a minority group over their politics. Committing any crime that way would have raised the offense one classification. Enforcing a foreign government's law here without federal or state approval would have become a felony carrying at least three years in prison and a $10,000 fine. The state justice department would have had to train police, keep a list of the countries and groups that do this, run a public reporting portal, and report to the Legislature every year. The Senate agreed to it 19-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 672, which would have addressed what it called transnational repression. That means a person acting for a foreign government or a foreign terrorist group who harasses, intimidates or punishes a dissident, exile, journalist, political opponent or member of a minority group over their politics. Committing any crime that way would have raised the offense one classification. Enforcing a foreign government's law here without federal or state approval would have become a felony carrying at least three years in prison and a $10,000 fine. The state justice department would have had to train police, keep a list of the countries and groups that do this, run a public reporting portal, and report to the Legislature every year. The Senate agreed to it 19-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1519897,
+   "measure_id": "SB 25",
+   "vote_date": "2025-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 25, which would have stopped a judge from allowing a criminal complaint against a police officer over a death the officer was involved in, once the district attorney has decided there is no basis to prosecute. The only way past that bar would have been new or previously unused evidence. Wisconsin law now lets a citizen ask a judge to issue a complaint when a prosecutor declines, and that route would have been closed for these cases. The Senate passed it 19-13, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 25, which would have stopped a judge from allowing a criminal complaint against a police officer over a death the officer was involved in, once the district attorney has decided there is no basis to prosecute. The only way past that bar would have been new or previously unused evidence. Wisconsin law now lets a citizen ask a judge to issue a complaint when a prosecutor declines, and that route would have been closed for these cases. The Senate passed it 19-13, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1553496,
+   "measure_id": "SB 76",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 76, which would have limited what a prosecutor can do with a set of charges the bill calls covered crimes. Those are domestic abuse offenses, taking a vehicle without consent, physical abuse of an elder or at-risk adult, sexual assault, crimes against children, gun possession by someone with a violent felony record, and reckless driving that causes great bodily harm. A prosecutor could not have dismissed or reduced such a charge without a judge's approval, and the judge could approve only after finding it serves the public interest in deterring those crimes. A court that approved any such request would have had to report every one of them to the Legislature each year. Deferred prosecution, which sets a case aside while the defendant completes conditions, would have been barred outright for these crimes. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 76, which would have limited what a prosecutor can do with a set of charges the bill calls covered crimes. Those are domestic abuse offenses, taking a vehicle without consent, physical abuse of an elder or at-risk adult, sexual assault, crimes against children, gun possession by someone with a violent felony record, and reckless driving that causes great bodily harm. A prosecutor could not have dismissed or reduced such a charge without a judge's approval, and the judge could approve only after finding it serves the public interest in deterring those crimes. A court that approved any such request would have had to report every one of them to the Legislature each year. Deferred prosecution, which sets a case aside while the defendant completes conditions, would have been barred outright for these crimes. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1603897,
+   "measure_id": "SB 76",
+   "vote_date": "2025-10-14",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 76, which would have limited what a prosecutor can do with a set of charges the bill calls covered crimes. Those are domestic abuse offenses, taking a vehicle without consent, physical abuse of an elder or at-risk adult, sexual assault, crimes against children, gun possession by someone with a violent felony record, and reckless driving that causes great bodily harm. A prosecutor could not have dismissed or reduced such a charge without a judge's approval, and the judge could approve only after finding it serves the public interest in deterring those crimes. A court that approved any such request would have had to report every one of them to the Legislature each year. Deferred prosecution, which sets a case aside while the defendant completes conditions, would have been barred outright for these crimes. The Assembly agreed to it 53-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 76, which would have limited what a prosecutor can do with a set of charges the bill calls covered crimes. Those are domestic abuse offenses, taking a vehicle without consent, physical abuse of an elder or at-risk adult, sexual assault, crimes against children, gun possession by someone with a violent felony record, and reckless driving that causes great bodily harm. A prosecutor could not have dismissed or reduced such a charge without a judge's approval, and the judge could approve only after finding it serves the public interest in deterring those crimes. A court that approved any such request would have had to report every one of them to the Legislature each year. Deferred prosecution, which sets a case aside while the defendant completes conditions, would have been barred outright for these crimes. The Assembly agreed to it 53-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1572104,
+   "measure_id": "SB 146",
+   "vote_date": "2025-05-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 146, which would have barred anyone convicted of a violent felony from ever changing their name, and made trying to do so a felony in itself. The ban would have reached every route to a new name: a court petition, an amendment to a birth record, a change of the name and sex on a birth record after surgery, and resuming a former surname after a divorce. It had no end date and no exceptions. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 146, which would have barred anyone convicted of a violent felony from ever changing their name, and made trying to do so a felony in itself. The ban would have reached every route to a new name: a court petition, an amendment to a birth record, a change of the name and sex on a birth record after surgery, and resuming a former surname after a divorce. It had no end date and no exceptions. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1613595,
+   "measure_id": "SB 146",
+   "vote_date": "2026-01-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 146, which would have barred anyone convicted of a violent felony from ever changing their name, and made trying to do so a felony in itself. The ban would have reached every route to a new name: a court petition, an amendment to a birth record, a change of the name and sex on a birth record after surgery, and resuming a former surname after a divorce. It had no end date and no exceptions. The Assembly agreed to it 54-45, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 146, which would have barred anyone convicted of a violent felony from ever changing their name, and made trying to do so a felony in itself. The ban would have reached every route to a new name: a court petition, an amendment to a birth record, a change of the name and sex on a birth record after surgery, and resuming a former surname after a divorce. It had no end date and no exceptions. The Assembly agreed to it 54-45, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1609458,
+   "measure_id": "SB 432",
+   "vote_date": "2025-11-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 432, which would have widened who must report child abuse and what must go to the police. Any employee of an agency whose job involves working directly with children or handling child welfare cases would have joined the list of mandatory reporters. County agencies would have had to refer to the sheriff or police, within 12 hours, every reported case of suspected or threatened abuse of any kind. Under the law as it stands, that 12-hour duty covers only some kinds of abuse and each agency writes its own policy for the rest. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 432, which would have widened who must report child abuse and what must go to the police. Any employee of an agency whose job involves working directly with children or handling child welfare cases would have joined the list of mandatory reporters. County agencies would have had to refer to the sheriff or police, within 12 hours, every reported case of suspected or threatened abuse of any kind. Under the law as it stands, that 12-hour duty covers only some kinds of abuse and each agency writes its own policy for the rest. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1632467,
+   "measure_id": "SB 432",
+   "vote_date": "2026-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 432, which would have widened who must report child abuse and what must go to the police. Any employee of an agency whose job involves working directly with children or handling child welfare cases would have joined the list of mandatory reporters. County agencies would have had to refer to the sheriff or police, within 12 hours, every reported case of suspected or threatened abuse of any kind. Under the law as it stands, that 12-hour duty covers only some kinds of abuse and each agency writes its own policy for the rest. The Assembly agreed to it 61-37, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 432, which would have widened who must report child abuse and what must go to the police. Any employee of an agency whose job involves working directly with children or handling child welfare cases would have joined the list of mandatory reporters. County agencies would have had to refer to the sheriff or police, within 12 hours, every reported case of suspected or threatened abuse of any kind. Under the law as it stands, that 12-hour duty covers only some kinds of abuse and each agency writes its own policy for the rest. The Assembly agreed to it 61-37, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1615064,
+   "measure_id": "SB 610",
+   "vote_date": "2026-01-21",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 610, which would have added homeless shelters to the places where dealing drugs carries an extra penalty. Wisconsin already adds up to five years in prison when someone delivers a controlled substance, or holds it with intent to deliver, in or within 1,000 feet of a school, a park, a public housing project or a treatment center. That covers drugs such as cocaine, heroin, fentanyl, methamphetamine and marijuana. The bill would have covered a person inside a shelter, or within 1,000 feet of one, who knew or should have known where they were, or where the shelter is plainly recognizable as one. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 610, which would have added homeless shelters to the places where dealing drugs carries an extra penalty. Wisconsin already adds up to five years in prison when someone delivers a controlled substance, or holds it with intent to deliver, in or within 1,000 feet of a school, a park, a public housing project or a treatment center. That covers drugs such as cocaine, heroin, fentanyl, methamphetamine and marijuana. The bill would have covered a person inside a shelter, or within 1,000 feet of one, who knew or should have known where they were, or where the shelter is plainly recognizable as one. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1632556,
+   "measure_id": "SB 610",
+   "vote_date": "2026-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 610, which would have added homeless shelters to the places where dealing drugs carries an extra penalty. Wisconsin already adds up to five years in prison when someone delivers a controlled substance, or holds it with intent to deliver, in or within 1,000 feet of a school, a park, a public housing project or a treatment center. That covers drugs such as cocaine, heroin, fentanyl, methamphetamine and marijuana. The bill would have covered a person inside a shelter, or within 1,000 feet of one, who knew or should have known where they were, or where the shelter is plainly recognizable as one. The Assembly agreed to it 56-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 610, which would have added homeless shelters to the places where dealing drugs carries an extra penalty. Wisconsin already adds up to five years in prison when someone delivers a controlled substance, or holds it with intent to deliver, in or within 1,000 feet of a school, a park, a public housing project or a treatment center. That covers drugs such as cocaine, heroin, fentanyl, methamphetamine and marijuana. The bill would have covered a person inside a shelter, or within 1,000 feet of one, who knew or should have known where they were, or where the shelter is plainly recognizable as one. The Assembly agreed to it 56-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

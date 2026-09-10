@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1601825,
+   "measure_id": "AB 211",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 211, which would have exempted some cigar and pipe bars from Wisconsin's indoor smoking ban. A bar would have qualified only if it opened on or after June 4, 2009, allowed only cigars and pipes, and was not a retail food establishment. It would also have had to bar anyone under 21, post a notice, have every employee sign an acknowledgment of exposure to secondhand smoke, and show the state building plans with enough air filtration and exhaust. The Assembly passed it 57-37, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 211, which would have exempted some cigar and pipe bars from Wisconsin's indoor smoking ban. A bar would have qualified only if it opened on or after June 4, 2009, allowed only cigars and pipes, and was not a retail food establishment. It would also have had to bar anyone under 21, post a notice, have every employee sign an acknowledgment of exposure to secondhand smoke, and show the state building plans with enough air filtration and exhaust. The Assembly passed it 57-37, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1609469,
+   "measure_id": "AB 211",
+   "vote_date": "2025-11-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 211, which would have exempted some cigar and pipe bars from Wisconsin's indoor smoking ban. A bar would have qualified only if it opened on or after June 4, 2009, allowed only cigars and pipes, and was not a retail food establishment. It would also have had to bar anyone under 21, post a notice, have every employee sign an acknowledgment of exposure to secondhand smoke, and show the state building plans with enough air filtration and exhaust. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 211, which would have exempted some cigar and pipe bars from Wisconsin's indoor smoking ban. A bar would have qualified only if it opened on or after June 4, 2009, allowed only cigars and pipes, and was not a retail food establishment. It would also have had to bar anyone under 21, post a notice, have every employee sign an acknowledgment of exposure to secondhand smoke, and show the state building plans with enough air filtration and exhaust. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1609705,
+   "measure_id": "AB 385",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 385, which would have required any online platform that collects credit or debit card payments to pass on to political committees to verify the card's security code and confirm a United States billing address at the time of the payment. A United States citizen living abroad with a foreign billing address could still have given, if the platform recorded the address the person uses to register to vote. A platform that skipped these checks would have forfeited an amount equal to all the contributions it took without them. The Assembly passed it 55-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 385, which would have required any online platform that collects credit or debit card payments to pass on to political committees to verify the card's security code and confirm a United States billing address at the time of the payment. A United States citizen living abroad with a foreign billing address could still have given, if the platform recorded the address the person uses to register to vote. A platform that skipped these checks would have forfeited an amount equal to all the contributions it took without them. The Assembly passed it 55-42, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1636038,
+   "measure_id": "AB 793",
+   "vote_date": "2026-02-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 793, which would have created an Office of Internal Audit at the Department of Employee Trust Funds, which runs the pension system for Wisconsin public employees. The internal auditor would have been appointed by, and reported directly to, the Employee Trust Funds Board rather than the department's managers. The office would have checked that the fund's assets are safeguarded, could have reviewed any record relating to the fund, and would have monitored the department's compliance with the law and its contracts. The Assembly passed it 56-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 793, which would have created an Office of Internal Audit at the Department of Employee Trust Funds, which runs the pension system for Wisconsin public employees. The internal auditor would have been appointed by, and reported directly to, the Employee Trust Funds Board rather than the department's managers. The office would have checked that the fund's assets are safeguarded, could have reviewed any record relating to the fund, and would have monitored the department's compliance with the law and its contracts. The Assembly passed it 56-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1609438,
+   "measure_id": "SB 16",
+   "vote_date": "2025-11-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 16, which would have barred a Wisconsin school district from belonging to a high school athletic association unless that association agreed to follow the state's open records and open meetings laws. The association governing high school sports in Wisconsin is a private nonprofit, so those laws do not reach it now. Records about individual referees and individual pupils would have stayed private. The Senate passed it 22-11, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 16, which would have barred a Wisconsin school district from belonging to a high school athletic association unless that association agreed to follow the state's open records and open meetings laws. The association governing high school sports in Wisconsin is a private nonprofit, so those laws do not reach it now. Records about individual referees and individual pupils would have stayed private. The Senate passed it 22-11, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1592633,
+   "measure_id": "SB 184",
+   "vote_date": "2025-06-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 184, which would have barred every state agency and local government in Wisconsin from restricting the use or sale of a motor vehicle, or of any other device, because of the energy source that powers it. That would have ruled out, for example, a local ban on new gas-powered cars or gas stoves. A government could still have set its own rules for the vehicles it buys. The Senate passed it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 184, which would have barred every state agency and local government in Wisconsin from restricting the use or sale of a motor vehicle, or of any other device, because of the energy source that powers it. That would have ruled out, for example, a local ban on new gas-powered cars or gas stoves. A government could still have set its own rules for the vehicles it buys. The Senate passed it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1630282,
+   "measure_id": "SB 420",
+   "vote_date": "2026-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 420, which would have barred any Wisconsin city, village, town or county from passing a rights of nature ordinance. The bill defined that as an ordinance giving a natural resource a legal right to exist, to be protected from pollution, or to keep a healthy ecosystem. The Senate passed it 19-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 420, which would have barred any Wisconsin city, village, town or county from passing a rights of nature ordinance. The bill defined that as an ordinance giving a natural resource a legal right to exist, to be protected from pollution, or to keep a healthy ecosystem. The Senate passed it 19-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1639558,
+   "measure_id": "SB 420",
+   "vote_date": "2026-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 420, which would have barred any Wisconsin city, village, town or county from passing a rights of nature ordinance. The bill defined that as an ordinance giving a natural resource a legal right to exist, to be protected from pollution, or to keep a healthy ecosystem. The Assembly agreed to it 54-41, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 420, which would have barred any Wisconsin city, village, town or county from passing a rights of nature ordinance. The bill defined that as an ordinance giving a natural resource a legal right to exist, to be protected from pollution, or to keep a healthy ecosystem. The Assembly agreed to it 54-41, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+[
+ {
+  "recordId": "7d48b016-235f-44a0-9c77-4b0e40c2a1fa",
+  "reason": "Duplicate of the canonical roll-call record imported by the Wisconsin 2197 session batch-06 run: this hand-written record describes the same vote as AB 165 roll 1554274 on 2025-04-22, the Assembly's only vote on the bill, which it passed 53-42. The imported record 601d368a-5a5f-431d-99cf-7f21397bb867 cites the roll call as its source and states that the governor vetoed the bill; this one does neither. See backend/evidence/rollcall/legiscan-wi-2197/batch-06/JUDGING.md."
+ }
+]
