@@ -274,7 +274,7 @@ export function SupportHistory({ payments }: { payments: MembershipPayment[] }) 
     return null;
   }
   return (
-    <details className="rounded-xl border border-line bg-white p-4">
+    <details className="rounded-xl border border-line bg-surface p-4">
       <summary className="cursor-pointer text-heading font-semibold">Support history</summary>
       <ul className="mt-2 divide-y divide-line text-sm">
         {payments.map((payment, index) => (
@@ -348,7 +348,7 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
   const busy = outcome === "success" || checkout.isPending || checkout.isSuccess;
 
   return (
-    <section className="rounded-xl border border-line bg-white p-4">
+    <section className="rounded-xl border border-line bg-surface p-4">
       <OutcomeBanners outcome={outcome} kind={kind} />
       {status.isError ? (
         <div className="mt-2">
@@ -449,7 +449,7 @@ export function MembershipThanks() {
   }
 
   return (
-    <div className="rounded-xl border border-line bg-white p-4 text-sm">
+    <div className="rounded-xl border border-line bg-surface p-4 text-sm">
       <p className="font-medium text-ink">You are a supporting member. Thank you!</p>
       <Link to="/me/membership" className={`${secondaryButtonClass} mt-2 inline-block`}>
         Manage membership

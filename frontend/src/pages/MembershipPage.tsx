@@ -264,7 +264,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
         ) : null}
       </section>
 
-      <section className="space-y-3 rounded-xl border border-line bg-white p-4">
+      <section className="space-y-3 rounded-xl border border-line bg-surface p-4">
         {paymentFailed ? (
           <p className="rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">
             Your last payment didn&apos;t go through.
@@ -339,7 +339,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
       </section>
       {/* Opting out of the emails never touches the subscription (the flag
           lives on users, not billing) — the same switch as in Settings. */}
-      <section className="rounded-xl border border-line bg-white p-4">
+      <section className="rounded-xl border border-line bg-surface p-4">
         <EmailPreferenceToggles only={["email_member_newsletter"]} />
       </section>
     </>
@@ -387,7 +387,7 @@ function MembershipManager() {
       {membership ? (
         <MemberPanel membership={membership} />
       ) : (
-        <section className="rounded-xl border border-line bg-white p-4">
+        <section className="rounded-xl border border-line bg-surface p-4">
           <p className="text-sm text-ink">You don&apos;t have a monthly membership right now.</p>
           <div className="mt-3">
             <SupportLinks />

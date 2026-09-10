@@ -19,7 +19,7 @@ import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-xl border border-line bg-white p-4">
+    <section className="rounded-xl border border-line bg-surface p-4">
       <h2 className="text-heading font-semibold">{title}</h2>
       {children}
     </section>
