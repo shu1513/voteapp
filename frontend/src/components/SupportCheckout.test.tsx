@@ -58,7 +58,7 @@ describe("SupportCheckout", () => {
     renderCheckout("monthly");
 
     expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue("10.00");
-    expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
+    expect(screen.getByText(/isn't a political contribution, isn't tax-deductible/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeEnabled();
     expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
     expect(screen.getByRole("link", { name: "Support once" })).toHaveAttribute("href", "/support/once");
@@ -180,12 +180,12 @@ describe("SupportCheckout", () => {
     await user.type(input, "30");
     expect(presets.getByRole("button", { name: "$25" })).toHaveAttribute("aria-pressed", "false");
 
-    await user.click(presets.getByRole("button", { name: "$50" }));
+    await user.click(presets.getByRole("button", { name: "$100" }));
     await user.click(screen.getByRole("button", { name: "Support once" }));
     await waitFor(() =>
       expect(navigateExternal).toHaveBeenCalledWith("https://checkout.stripe.com/c/pay/cs_test_789")
     );
-    expect(checkoutBody).toEqual({ kind: "one_time", amount_cents: 5000 });
+    expect(checkoutBody).toEqual({ kind: "one_time", amount_cents: 10_000 });
   });
 
   it("posts the amount in cents and redirects to the Checkout URL", async () => {
@@ -268,7 +268,7 @@ describe("SupportCheckout", () => {
     expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "/me/membership");
     expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
     // History and the portal moved to the membership page.
-    expect(screen.queryByText("Payment history")).not.toBeInTheDocument();
+    expect(screen.queryByText("Support history")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Manage membership" })).not.toBeInTheDocument();
   });
 
@@ -294,25 +294,41 @@ describe("SupportCheckout", () => {
     expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
-  it("thanks the user returning from Checkout, links the membership page, and strips the query param", async () => {
+  it("welcomes a new member returning from Checkout, links Settings, and strips the query param", async () => {
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
     const { router } = renderCheckout("monthly", "?membership=success");
 
-    expect(await screen.findByText(/Thank you for your support!/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "membership page" })).toHaveAttribute("href", "/me/membership");
+    expect(await screen.findByText(/You're now an honorary member/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
+    // Nothing competes with the welcome: no form, no "already a member" line.
+    expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/already an honorary member/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Choose your monthly amount/)).not.toBeInTheDocument();
     await waitFor(() => expect(router.state.location.search).toBe(""));
     // The banner survives the param removal (read once into state).
     expect(screen.getByText(/Thank you for your support!/)).toBeInTheDocument();
   });
 
-  it("keeps the form locked after a successful Checkout until the webhook has landed", async () => {
+  it("thanks a one-time contributor without linking the membership page", async () => {
+    stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
+    renderCheckout("one_time", "?membership=success");
+
+    expect(
+      await screen.findByText(
+        "Thank you for your support! Because of you, we can keep bringing you quality content and keep improving it."
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "membership page" })).not.toBeInTheDocument();
+  });
+
+  it("keeps the one-time form locked after a successful Checkout until the webhook has landed", async () => {
     // The status endpoint can still say "not a member" for a moment after
     // the redirect back; a second click here would be a second charge.
     stubApiRoutes({ "/api/me/membership": { body: NOT_MEMBER } });
-    renderCheckout("monthly", "?membership=success");
+    renderCheckout("one_time", "?membership=success");
 
     expect(await screen.findByText(/Thank you for your support!/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Support once" })).toBeDisabled();
   });
 
   it("notes a canceled Checkout without alarm", async () => {

@@ -1,0 +1,561 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "HI",
+ "session_id": 2175,
+ "note": "LegiScan people_id to VoteApp candidate id for Hawaii. One file covers BOTH sessions in scope, the 2025 Regular Session (LegiScan 2175) and the 2026 Regular Session (2245): people_ids are stable across sessions, the two resolve runs proposed the same candidate for every person they both matched, and the union is 79 people (76 in 2025; Gedeon, Hartsfield and Ratcliffe arrived for 2026). Three entries were added by hand where the proposer's exact-name rule could not reach a nickname, a hyphen, or a middle name; each is corroborated by the district. Entries with a null candidate_id are deliberate: the local roster holds no November 2026 state-legislative candidacy for that member (the Senate seat is not up, or the member is not running, or the roster has not reached the race yet). Hawaii's own vote text names members by surname only; the mapping from surname to people_id happens in the fetcher, and this file maps people_id to candidate.",
+ "entries": [
+  {
+   "people_id": 8342,
+   "legiscan_name": "Henry Aquino",
+   "district": "SD-019",
+   "candidate_id": null,
+   "note": "Henry Aquino, SD-019; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8346,
+   "legiscan_name": "Karl Rhoads",
+   "district": "SD-013",
+   "candidate_id": null,
+   "note": "Karl Rhoads, SD-013; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8350,
+   "legiscan_name": "Angus McKelvey",
+   "district": "SD-006",
+   "candidate_id": null,
+   "note": "Angus McKelvey, SD-006; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8365,
+   "legiscan_name": "Kyle Yamashita",
+   "district": "HD-012",
+   "candidate_id": "80a9c6dc-c183-440e-8d2f-1a2d105b7bbd",
+   "note": "Kyle Yamashita, HD-012; proposed first_and_last, seat agrees (state_lower: State House District 12 (2024); Hawaii)"
+  },
+  {
+   "people_id": 8370,
+   "legiscan_name": "Glenn Wakai",
+   "district": "SD-015",
+   "candidate_id": null,
+   "note": "Glenn Wakai, SD-015; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8383,
+   "legiscan_name": "Chris Lee",
+   "district": "SD-025",
+   "candidate_id": null,
+   "note": "Chris Lee, SD-025; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8388,
+   "legiscan_name": "Gene Ward",
+   "district": "HD-018",
+   "candidate_id": null,
+   "note": "Gene Ward, HD-018; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8389,
+   "legiscan_name": "Della au Belatti",
+   "district": "HD-026",
+   "candidate_id": null,
+   "note": "Della au Belatti, HD-026; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8429,
+   "legiscan_name": "Carol Fukunaga",
+   "district": "SD-011",
+   "candidate_id": null,
+   "note": "Carol Fukunaga, SD-011; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8435,
+   "legiscan_name": "Les Ihara",
+   "district": "SD-010",
+   "candidate_id": null,
+   "note": "Les Ihara, SD-010; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8440,
+   "legiscan_name": "Michelle Kidani",
+   "district": "SD-018",
+   "candidate_id": null,
+   "note": "Michelle Kidani, SD-018; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8445,
+   "legiscan_name": "Mike Gabbard",
+   "district": "SD-021",
+   "candidate_id": null,
+   "note": "Mike Gabbard, SD-021; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 8447,
+   "legiscan_name": "Donna Kim",
+   "district": "SD-014",
+   "candidate_id": null,
+   "note": "Donna Kim, SD-014; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 11380,
+   "legiscan_name": "Donovan Cruz",
+   "district": "SD-017",
+   "candidate_id": null,
+   "note": "Donovan Cruz, SD-017; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 11381,
+   "legiscan_name": "Ronald Kouchi",
+   "district": "SD-008",
+   "candidate_id": null,
+   "note": "Ronald Kouchi, SD-008; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 11513,
+   "legiscan_name": "Mark Hashem",
+   "district": "HD-019",
+   "candidate_id": null,
+   "note": "Mark Hashem, HD-019; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 11514,
+   "legiscan_name": "Linda Ichiyama",
+   "district": "HD-031",
+   "candidate_id": "9b1b687f-f5bd-4cf1-8f12-ac8d4a49fc3d",
+   "note": "Linda Ichiyama, HD-031; proposed first_and_last, seat agrees (state_lower: State House District 31 (2024); Hawaii)"
+  },
+  {
+   "people_id": 11516,
+   "legiscan_name": "Daynette Morikawa",
+   "district": "HD-017",
+   "candidate_id": "fda61197-b198-4f8c-bf93-aa496e9d5aa6",
+   "note": "Daynette Morikawa, HD-017; proposed first_and_last, seat agrees (state_lower: State House District 17 (2024); Hawaii)"
+  },
+  {
+   "people_id": 15002,
+   "legiscan_name": "Nicole Lowen",
+   "district": "HD-007",
+   "candidate_id": null,
+   "note": "Nicole Lowen, HD-007; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 15005,
+   "legiscan_name": "Gregg Takayama",
+   "district": "HD-034",
+   "candidate_id": "3e36c426-30ac-4d22-a0b4-eca59e462652",
+   "note": "Gregg Takayama, HD-034; proposed first_and_last, seat agrees (state_lower: State House District 34 (2024); Hawaii)"
+  },
+  {
+   "people_id": 15164,
+   "legiscan_name": "Justin Woodson",
+   "district": "HD-009",
+   "candidate_id": null,
+   "note": "Justin Woodson, HD-009; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 16119,
+   "legiscan_name": "Lauren Matsumoto",
+   "district": "HD-038",
+   "candidate_id": null,
+   "note": "Lauren Matsumoto, HD-038; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 17291,
+   "legiscan_name": "Lorraine Inouye",
+   "district": "SD-001",
+   "candidate_id": null,
+   "note": "Lorraine Inouye, SD-001; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 17296,
+   "legiscan_name": "Jarrett Keohokalole",
+   "district": "SD-024",
+   "candidate_id": null,
+   "note": "Jarrett Keohokalole, SD-024; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 17297,
+   "legiscan_name": "Sam Kong",
+   "district": "HD-033",
+   "candidate_id": null,
+   "note": "Sam Kong, HD-033; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 17299,
+   "legiscan_name": "Joy San Buenaventura",
+   "district": "SD-002",
+   "candidate_id": "cdac66ea-ef4c-473a-9042-49dcad33e579",
+   "note": "Joy San Buenaventura, SD-002; proposed first_and_last, seat agrees (state_upper: State Senate District 2 (2024); Hawaii)"
+  },
+  {
+   "people_id": 17614,
+   "legiscan_name": "Lynn Decoite",
+   "district": "SD-007",
+   "candidate_id": null,
+   "note": "Lynn Decoite, SD-007; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 19023,
+   "legiscan_name": "Daniel Holt",
+   "district": "HD-028",
+   "candidate_id": null,
+   "note": "Daniel Holt, HD-028; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 19024,
+   "legiscan_name": "Sean Quinlan",
+   "district": "HD-047",
+   "candidate_id": "462ef629-4457-46f4-9d16-abb10e0cf97b",
+   "note": "Sean Quinlan, HD-047; proposed first_and_last, seat agrees (state_lower: State House District 47 (2024); Hawaii)"
+  },
+  {
+   "people_id": 19025,
+   "legiscan_name": "Stanley Chang",
+   "district": "SD-009",
+   "candidate_id": "e3adbe96-275e-448a-99ab-fcad98ce378d",
+   "note": "Stanley Chang, SD-009; proposed first_and_last, seat agrees (state_upper: State Senate District 9 (2024); Hawaii)"
+  },
+  {
+   "people_id": 19050,
+   "legiscan_name": "Chris Todd",
+   "district": "HD-003",
+   "candidate_id": "c1820ff0-fde5-41df-b808-86e54b6539fa",
+   "note": "Chris Todd, HD-003; proposed first_prefix, seat agrees (state_lower: State House District 3 (2024); Hawaii)"
+  },
+  {
+   "people_id": 19089,
+   "legiscan_name": "Nadine Nakamura",
+   "district": "HD-015",
+   "candidate_id": null,
+   "note": "Nadine Nakamura, HD-015; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 20761,
+   "legiscan_name": "Kurt Fevella",
+   "district": "SD-020",
+   "candidate_id": null,
+   "note": "Kurt Fevella, SD-020; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 20828,
+   "legiscan_name": "Troy Hashimoto",
+   "district": "SD-005",
+   "candidate_id": null,
+   "note": "Troy Hashimoto, SD-005; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 20847,
+   "legiscan_name": "Dru Kanuha",
+   "district": "SD-003",
+   "candidate_id": null,
+   "note": "Dru Kanuha, SD-003; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 20848,
+   "legiscan_name": "Lisa Kitagawa",
+   "district": "HD-048",
+   "candidate_id": null,
+   "note": "Lisa Kitagawa, HD-048; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 20849,
+   "legiscan_name": "Scot Matayoshi",
+   "district": "HD-049",
+   "candidate_id": "f4bc9af6-fcf0-47b4-be3b-369dd6f91747",
+   "note": "Scot Matayoshi, HD-049; proposed first_and_last, seat agrees (state_lower: State House District 49 (2024); Hawaii)"
+  },
+  {
+   "people_id": 20850,
+   "legiscan_name": "Sharon Moriwaki",
+   "district": "SD-012",
+   "candidate_id": null,
+   "note": "Sharon Moriwaki, SD-012; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 20851,
+   "legiscan_name": "Amy Perruso",
+   "district": "HD-046",
+   "candidate_id": "b208cb32-35dc-49e8-ad9d-9b41a4831791",
+   "note": "Amy Perruso, HD-046; proposed first_and_last, seat agrees (state_lower: State House District 46 (2024); Hawaii)"
+  },
+  {
+   "people_id": 20852,
+   "legiscan_name": "David Tarnas",
+   "district": "HD-008",
+   "candidate_id": "af04e7bf-8235-40cf-8086-1312fd28523e",
+   "note": "David Tarnas, HD-008; proposed first_and_last, seat agrees (state_lower: State House District 8 (2024); Hawaii)"
+  },
+  {
+   "people_id": 22564,
+   "legiscan_name": "Greggor Ilagan",
+   "district": "HD-004",
+   "candidate_id": "e81ef7de-46ee-4244-b325-91cdb962d057",
+   "note": "Greggor Ilagan, HD-004; proposed first_and_last, seat agrees (state_lower: State House District 4 (2024); Hawaii)"
+  },
+  {
+   "people_id": 22565,
+   "legiscan_name": "Jeanne Kapela",
+   "district": "HD-005",
+   "candidate_id": "320ad3c8-80f5-4906-b979-532942a7df58",
+   "note": "Jeanne Kapela, HD-005; proposed first_and_last, seat agrees (state_lower: State House District 5 (2024); Hawaii)"
+  },
+  {
+   "people_id": 22566,
+   "legiscan_name": "Lisa Marten",
+   "district": "HD-051",
+   "candidate_id": null,
+   "note": "Lisa Marten, HD-051; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 22568,
+   "legiscan_name": "Jackson Sayama",
+   "district": "HD-021",
+   "candidate_id": null,
+   "note": "Jackson Sayama, HD-021; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 22569,
+   "legiscan_name": "Adrian Tam",
+   "district": "HD-024",
+   "candidate_id": null,
+   "note": "Adrian Tam, HD-024; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24396,
+   "legiscan_name": "Brenton Awa",
+   "district": "SD-023",
+   "candidate_id": null,
+   "note": "Brenton Awa, SD-023; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24410,
+   "legiscan_name": "Cory Chun",
+   "district": "HD-035",
+   "candidate_id": null,
+   "note": "Cory Chun, HD-035; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24411,
+   "legiscan_name": "Elle Cochran",
+   "district": "HD-014",
+   "candidate_id": "227cde99-1885-42f0-88d5-154c727ae336",
+   "note": "Elle Cochran, HD-014; proposed first_and_last, seat agrees (state_lower: State House District 14 (2024); Hawaii)"
+  },
+  {
+   "people_id": 24412,
+   "legiscan_name": "Diamond Garcia",
+   "district": "HD-042",
+   "candidate_id": "8f5db057-f205-4185-b868-32dc8c094faa",
+   "note": "Diamond Garcia, HD-042; proposed first_and_last, seat agrees (state_lower: State House District 42 (2024); Hawaii)"
+  },
+  {
+   "people_id": 24414,
+   "legiscan_name": "Kirstin Kahaloa",
+   "district": "HD-006",
+   "candidate_id": null,
+   "note": "Kirstin Kahaloa, HD-006; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24415,
+   "legiscan_name": "Rachele Fernandez Lamosao",
+   "district": "SD-019",
+   "candidate_id": "7997c660-4257-4522-b9f8-89291a824395",
+   "note": "Rachele Fernandez Lamosao, SD-019; matched by hand to Rachele F. Lamosao: roster surname is Fernandez Lamosao, ballot Rachele F. Lamosao; sat HD-036 in 2025, appointed to SD-019 for 2026, and the candidacy is State Senate District 19"
+  },
+  {
+   "people_id": 24416,
+   "legiscan_name": "Mahina Poepoe",
+   "district": "HD-013",
+   "candidate_id": "ca962bc5-33de-485f-93b7-59c3b07cb250",
+   "note": "Mahina Poepoe, HD-013; proposed first_and_last, seat agrees (state_lower: State House District 13 (2024); Hawaii)"
+  },
+  {
+   "people_id": 24417,
+   "legiscan_name": "Jenna Takenouchi",
+   "district": "HD-027",
+   "candidate_id": null,
+   "note": "Jenna Takenouchi, HD-027; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24418,
+   "legiscan_name": "Brandon Elefante",
+   "district": "SD-016",
+   "candidate_id": null,
+   "note": "Brandon Elefante, SD-016; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24511,
+   "legiscan_name": "Andrew Garrett",
+   "district": "HD-022",
+   "candidate_id": null,
+   "note": "Andrew Garrett, HD-022; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24512,
+   "legiscan_name": "Darius Kila",
+   "district": "HD-044",
+   "candidate_id": "6ead1a9d-8905-4ca1-8aa2-4d89980da2e6",
+   "note": "Darius Kila, HD-044; proposed first_and_last, seat agrees (state_lower: State House District 44 (2024); Hawaii)"
+  },
+  {
+   "people_id": 24518,
+   "legiscan_name": "Terez Amato",
+   "district": "HD-011",
+   "candidate_id": "4ba39ed8-505d-4a61-abc8-89a286cb48b4",
+   "note": "Terez Amato, HD-011; proposed first_and_last, seat agrees (state_lower: State House District 11 (2024); Hawaii)"
+  },
+  {
+   "people_id": 24519,
+   "legiscan_name": "Tim Richards",
+   "district": "SD-004",
+   "candidate_id": null,
+   "note": "Tim Richards, SD-004; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24618,
+   "legiscan_name": "David Alcos",
+   "district": "HD-041",
+   "candidate_id": null,
+   "note": "David Alcos, HD-041; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24619,
+   "legiscan_name": "Kanani Souza",
+   "district": "HD-043",
+   "candidate_id": null,
+   "note": "Kanani Souza, HD-043; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24788,
+   "legiscan_name": "Elijah Pierick",
+   "district": "HD-039",
+   "candidate_id": "2bfb7533-ebd1-4f74-bdd5-1a1d69d5b831",
+   "note": "Elijah Pierick, HD-039; proposed first_and_last, seat DIFFERS: sitting representative running for the Senate seat named in the candidacy; accepted because no other candidate carries his name and HD-039 shows two other candidates (state_upper: State Senate District 19 (2024); Hawaii)"
+  },
+  {
+   "people_id": 24907,
+   "legiscan_name": "Trish La Chica",
+   "district": "HD-037",
+   "candidate_id": null,
+   "note": "Trish La Chica, HD-037; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 24910,
+   "legiscan_name": "Luke Evslin",
+   "district": "HD-016",
+   "candidate_id": "03f5d7a2-1939-4714-ad6b-e0b4a59135f8",
+   "note": "Luke Evslin, HD-016; proposed first_and_last, seat agrees (state_lower: State House District 16 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25051,
+   "legiscan_name": "Tyson Miyake",
+   "district": "HD-010",
+   "candidate_id": "8ba5d255-66bd-49b0-8bb3-bb4ed12ca7ff",
+   "note": "Tyson Miyake, HD-010; proposed first_and_last, seat agrees (state_lower: State House District 10 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25668,
+   "legiscan_name": "Tina Grandinetti",
+   "district": "HD-020",
+   "candidate_id": "a632f30d-0edd-48c2-86e0-431df2c51ed3",
+   "note": "Tina Grandinetti, HD-020; proposed first_and_last, seat agrees (state_lower: State House District 20 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25669,
+   "legiscan_name": "Ikaika Hussey",
+   "district": "HD-029",
+   "candidate_id": "33b14577-850b-40ef-9389-66f67b3b3324",
+   "note": "Ikaika Hussey, HD-029; proposed first_and_last, seat agrees (state_lower: State House District 29 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25670,
+   "legiscan_name": "Kim Iwamoto",
+   "district": "HD-025",
+   "candidate_id": null,
+   "note": "Kim Iwamoto, HD-025; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 25671,
+   "legiscan_name": "Sue Keohokapu-Lee Loy",
+   "district": "HD-002",
+   "candidate_id": "73056680-83bd-408a-bfe2-9a5a516fda62",
+   "note": "Sue Keohokapu-Lee Loy, HD-002; matched by hand to Sue Keohokapu Lee Loy: roster spells the surname Keohokapu-Lee Loy with a hyphen, the ballot without; HD-002 matches State House District 2"
+  },
+  {
+   "people_id": 25672,
+   "legiscan_name": "Matthias Kusch",
+   "district": "HD-001",
+   "candidate_id": null,
+   "note": "Matthias Kusch, HD-001; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 25673,
+   "legiscan_name": "Mike Lee",
+   "district": "HD-050",
+   "candidate_id": "6ff9f6cc-fa84-4a52-8953-e8c8a163a64d",
+   "note": "Mike Lee, HD-050; matched by hand to Mike Lee: legal first name Michael, nickname Mike (dataset nickname field); HD-050 matches State House District 50"
+  },
+  {
+   "people_id": 25674,
+   "legiscan_name": "Chris Muraoka",
+   "district": "HD-045",
+   "candidate_id": "058a2485-56f7-4f19-ad1b-216b0aff13c0",
+   "note": "Chris Muraoka, HD-045; proposed first_prefix, seat agrees (state_lower: State House District 45 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25675,
+   "legiscan_name": "Ikaika Olds",
+   "district": "HD-023",
+   "candidate_id": "d907355f-a1e5-409d-9d3a-3fc3db93d799",
+   "note": "Ikaika Olds, HD-023; proposed first_and_last, seat agrees (state_lower: State House District 23 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25676,
+   "legiscan_name": "Julie Reyes Oda",
+   "district": "HD-040",
+   "candidate_id": "6bcfcc88-1f3a-4638-9461-4433787afd8e",
+   "note": "Julie Reyes Oda, HD-040; proposed first_and_last, seat agrees (state_lower: State House District 40 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25677,
+   "legiscan_name": "Garner Shimizu",
+   "district": "HD-032",
+   "candidate_id": "571b9fe0-96db-4fb7-b6c1-4bb4908d6f51",
+   "note": "Garner Shimizu, HD-032; proposed first_and_last, seat agrees (state_lower: State House District 32 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25678,
+   "legiscan_name": "Shirley Ann Templo",
+   "district": "HD-030",
+   "candidate_id": "b24ead91-aa63-40e4-ad57-b0fdd6e41ada",
+   "note": "Shirley Ann Templo, HD-030; proposed first_and_last, seat agrees (state_lower: State House District 30 (2024); Hawaii)"
+  },
+  {
+   "people_id": 25679,
+   "legiscan_name": "Samantha DeCorte",
+   "district": "SD-022",
+   "candidate_id": null,
+   "note": "Samantha DeCorte, SD-022; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 26474,
+   "legiscan_name": "Joe Gedeon",
+   "district": "HD-018",
+   "candidate_id": "bfe6d7e7-e2b1-49a7-be49-c69f4ba79a95",
+   "note": "Joe Gedeon, HD-018; proposed first_and_last, seat agrees (state_lower: State House District 18 (2024); Hawaii)"
+  },
+  {
+   "people_id": 26609,
+   "legiscan_name": "Daisy Hartsfield",
+   "district": "HD-036",
+   "candidate_id": null,
+   "note": "Daisy Hartsfield, HD-036; no Nov-2026 state-legislative candidacy in the local roster"
+  },
+  {
+   "people_id": 26667,
+   "legiscan_name": "Michael Ratcliffe",
+   "district": "HD-028",
+   "candidate_id": null,
+   "note": "Michael Ratcliffe, HD-028; no Nov-2026 state-legislative candidacy in the local roster"
+  }
+ ]
+}

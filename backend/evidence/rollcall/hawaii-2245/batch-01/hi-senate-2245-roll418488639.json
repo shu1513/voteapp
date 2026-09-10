@@ -1,0 +1,65 @@
+{
+  "jurisdiction": "HI",
+  "sessionId": 2245,
+  "chamber": "senate",
+  "rollNumber": 418488639,
+  "billId": 2092443,
+  "bill": "SB2697",
+  "measureId": "SB 2697",
+  "historyIndex": 39,
+  "machineUrl": "https://www.capitol.hawaii.gov/session/measure_indiv.aspx?billtype=SB&billnumber=2697&year=2026",
+  "fetchedAt": "2026-09-09T23:46:22.853Z",
+  "reading": "final_reading",
+  "draft": "CD 1",
+  "history": {
+    "date": "2026-05-06",
+    "action": "Passed Final Reading, as amended (CD 1). Ayes, 20; Aye(s) with reservations: none. Noes, 5 (Senator(s) Awa, DeCorte, Fevella, Keohokalole, San Buenaventura). Excused, 0 (none).",
+    "chamber": "S",
+    "chamber_id": 32,
+    "importance": 0
+  },
+  "named": {
+    "reservations": [],
+    "noes": [
+      "Awa",
+      "DeCorte",
+      "Fevella",
+      "Keohokalole",
+      "San Buenaventura"
+    ],
+    "excused": []
+  },
+  "members": {
+    "yeas": [
+      8346,
+      8350,
+      8370,
+      8383,
+      8429,
+      8435,
+      8440,
+      8445,
+      8447,
+      11380,
+      11381,
+      17291,
+      17614,
+      19025,
+      20828,
+      20847,
+      20850,
+      24415,
+      24418,
+      24519
+    ],
+    "nays": [
+      17296,
+      17299,
+      20761,
+      24396,
+      25679
+    ],
+    "excused": [],
+    "reservations": []
+  }
+}

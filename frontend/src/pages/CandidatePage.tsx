@@ -227,7 +227,7 @@ function OngoingElectionFinance({
             · {election.official_ballot_title} · {formatElectionDate(election.election_date)}
           </span>
         </summary>
-        <div className="mt-2 rounded-xl border border-line bg-white p-4">
+        <div className="mt-2 rounded-xl border border-line bg-surface p-4">
           <FinanceSummaryCard summary={summary} />
         </div>
       </details>
@@ -408,7 +408,7 @@ function RecordItem({
 }) {
   const stanceTag = stanceAreaId != null ? recordStanceTag(record, stanceAreaId) : null;
   return (
-    <li className="rounded-xl border border-line bg-white p-3">
+    <li className="rounded-xl border border-line bg-surface p-3">
       <p className="text-body text-ink">{record.description}</p>
       <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-ink-soft">
         <span>{formatElectionDate(record.event_date)}</span>
@@ -483,7 +483,7 @@ function ElectionHistorySection({
   return (
     <section className="mt-6">
       <h2 className="text-heading font-semibold">{heading}</h2>
-      <ul className="mt-2 divide-y divide-line rounded-xl border border-line bg-white">
+      <ul className="mt-2 divide-y divide-line rounded-xl border border-line bg-surface">
         {elections.map((election) => (
           <li key={election.candidate_election_id} className="px-3 py-2 text-sm">
             <Link
@@ -1210,7 +1210,7 @@ export function CandidatePage() {
           // the launcher would cover the button's right end on phones).
           <div
             data-sticky-pick-cta=""
-            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
+            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-surface p-3 shadow-lg"
           >
             {isJudicialRetentionTitle(primaryPickElection.official_ballot_title) ? (
               // Retention race: the sticky card asks Yes/No on keeping the

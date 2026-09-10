@@ -1,0 +1,70 @@
+{
+  "jurisdiction": "HI",
+  "sessionId": 2175,
+  "chamber": "senate",
+  "rollNumber": 383625417,
+  "billId": 1918127,
+  "bill": "HB137",
+  "measureId": "HB 137",
+  "historyIndex": 17,
+  "machineUrl": "https://www.capitol.hawaii.gov/session/measure_indiv.aspx?billtype=HB&billnumber=137&year=2025",
+  "fetchedAt": "2026-09-09T23:46:18.083Z",
+  "reading": "third_reading",
+  "draft": null,
+  "history": {
+    "date": "2025-03-31",
+    "action": "Passed Third Reading. Ayes, 15; Aye(s) with reservations: none. Noes, 10 (Senator(s) Awa, DeCoite, DeCorte, Fevella, Gabbard, Ihara, Kidani, McKelvey, Richards, San Buenaventura). Excused, 0 (none). Transmitted to House.",
+    "chamber": "S",
+    "chamber_id": 32,
+    "importance": 0
+  },
+  "named": {
+    "reservations": [],
+    "noes": [
+      "Awa",
+      "DeCoite",
+      "DeCorte",
+      "Fevella",
+      "Gabbard",
+      "Ihara",
+      "Kidani",
+      "McKelvey",
+      "Richards",
+      "San Buenaventura"
+    ],
+    "excused": []
+  },
+  "members": {
+    "yeas": [
+      8342,
+      8346,
+      8370,
+      8383,
+      8429,
+      8447,
+      11380,
+      11381,
+      17291,
+      17296,
+      19025,
+      20828,
+      20847,
+      20850,
+      24418
+    ],
+    "nays": [
+      8350,
+      8435,
+      8440,
+      8445,
+      17299,
+      17614,
+      20761,
+      24396,
+      24519,
+      25679
+    ],
+    "excused": [],
+    "reservations": []
+  }
+}
