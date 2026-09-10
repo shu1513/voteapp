@@ -82,10 +82,11 @@ ab167 = (
     'or credit card, or destroying its records, would have counted as misconduct that '
     'disqualifies a worker from benefits. A worker fired for breaking a written '
     'attendance policy could also have been denied benefits. Claimants would have had '
-    'to take part in any required re-employment workshops, and the state would have had '
-    'to audit at least half of all reported job search actions. Any new federal '
-    'unemployment benefit would have needed approval from the Legislature\'s budget '
-    'committee before the state could pay it. {t}')
+    'to register on their local job center website, and the state would have had to '
+    'check that they did and audit at least half of all reported job search actions. '
+    'If federal money were offered to raise unemployment benefits, the governor would '
+    'have had to notify the Legislature\'s budget committee, and the increase could '
+    'take effect only if that committee could cancel it. {t}')
 add('AB 167', 1553662, 'house', '2025-04-22', ab167.format(t=passed('house', 53, 42)),
     L((SP, 'against', None)))
 add('AB 167', 1615131, 'senate', '2026-01-21', ab167.format(t=agreed('senate', 18, 14)),

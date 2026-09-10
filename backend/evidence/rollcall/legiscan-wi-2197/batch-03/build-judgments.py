@@ -81,7 +81,7 @@ add('AB 85', 1592343, 'senate', '2025-06-18', ab85.format(t=agreed('senate', 18,
 # ---------------------------------------------------------------- AB 87
 ab87 = (
     'Assembly Bill 87, which would have done two things. A person convicted of human '
-    'trafficking or of sexually exploiting a child would have had to pay restitution '
+    'trafficking, including trafficking of a child, would have had to pay restitution '
     'to the victim immediately. A court that was not paid would have had to go after '
     'the offender\'s property the way it collects an ordinary civil judgment. '
     'Separately, a person barred from voting by a felony conviction would have got '

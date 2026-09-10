@@ -161,3 +161,27 @@ The hand-written one does neither. It carried one area tag, which leaves with it
 - kept: `601d368a-5a5f-431d-99cf-7f21397bb867`
 - the reason is in `duplicate-retirements.json`, in the same shape Alabama used,
   so the same file can be applied at production promotion.
+
+## ⚠ Correction: AB 167 was described wrongly in two places
+
+After the batch-03 review caught descriptions written from memory of what a
+statute section says, AB 167 was re-read against its own enrolled text. Two
+sentences were wrong.
+
+1. It said claimants "would have had to take part in any required re-employment
+   workshops". The struck-and-underlined text shows that requirement already
+   existed; the act only split it into lettered items. **The new requirement is
+   subdivision 4. c.: a claimant must register on the local job center website,
+   and the department must verify that each claimant did.**
+2. It said any new federal unemployment benefit "would have needed approval from
+   the Legislature's budget committee before the state could pay it". The act
+   does not require approval. **It requires the governor to notify the budget
+   committee of any federally funded increase in benefit rates or weeks, and
+   bars the increase unless the committee can cancel it.** That is a power to
+   cancel, not a power to approve.
+
+Re-judged `updated 2` (both AB 167 slots), re-imported with **95 records
+rewritten** and 745 unchanged. A database check found 95 records with the new
+wording and none with the old. The label is unchanged: both corrected points
+still narrow the program or its funding, so `social_programs_and_welfare` yes =
+against stands.

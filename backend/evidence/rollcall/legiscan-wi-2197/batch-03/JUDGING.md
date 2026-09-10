@@ -175,3 +175,28 @@ at `2026-09-10T06:44:55.044Z` did exactly that (85 + 11 records on SB 76, 87 +
 11 on SB 610), 0 errors, 0 notified (`import-rerun-report.json`). Convergence
 dry run afterwards: 878 unchanged (`import-dry-run-rerun-report.json`). No
 record with the old wording remains.
+
+## ⚠ Correction after the review fixes: AB 87 misnamed one crime
+
+The review of this batch caught two descriptions that named statute sections
+from memory rather than from the text (SB 76 and SB 610, fixed in commit
+`4d6b20905`). A sweep of the other descriptions for the same mistake found a
+third.
+
+AB 87's description said the immediate-restitution rule covered a person
+convicted of human trafficking "or of sexually exploiting a child". The act
+cites s. 940.302 (2) and s. 948.051. Section 948.051 is **trafficking of a
+child**, not sexual exploitation of a child, which is a different section. The
+Legislative Reference Bureau's analysis printed on the introduced bill confirms
+it: the rule applies to "human trafficking".
+
+The description now reads "human trafficking, including trafficking of a
+child". Re-judged `updated 2` (both AB 87 slots), re-imported with **98 records
+rewritten** and 780 unchanged; a database check found 98 records with the new
+wording and none with the old. The review session's own re-run reports were set
+aside before this run and restored byte-identical afterwards; this run's reports
+are `import-dry-run-rerun-2-report.json` and `import-rerun-2-report.json`.
+
+**The lesson, stated plainly: never describe what a cross-referenced statute
+section covers without reading it or an official summary of it.** Three
+descriptions in this batch broke that rule.
