@@ -1,8 +1,8 @@
 {
  "HB1003": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-02",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-02."
  },
  "HB1017": {
   "class": "sunset or agency housekeeping",
@@ -55,9 +55,9 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "HB1393": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-02",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-02."
  },
  "HB1409": {
   "class": "sunset or agency housekeeping",
@@ -80,14 +80,14 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB1576": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-02",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-02."
  },
  "HB1601": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-02",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-02."
  },
  "HB1646": {
   "class": "sunset or agency housekeeping",
@@ -145,9 +145,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB2036": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "no area fits",
+  "disposition": "dropped",
+  "reason": "Eminent domain. The act widens when a property owner can recover attorney, appraisal and engineering fees from the body condemning the land, and extends the rule to pipeline takings. It is a clean single-subject measure and its direction is clear enough, but no research area covers property rights against a condemning authority, and filing it under the nearest slug would misdescribe why members voted. Dropped on the read, not on the description."
  },
  "HB2049": {
   "class": "read the act",
@@ -200,9 +200,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "HB2263": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-01",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "HB2268": {
   "class": "appropriation",
@@ -410,14 +410,14 @@
   "reason": "A pilot programme or study at a single institution. Too narrow to be a subject a voter would recognise."
  },
  "HB3127": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-02",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-02."
  },
  "HB3151": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-02",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-02."
  },
  "HB3320": {
   "class": "sunset or agency housekeeping",
@@ -715,9 +715,9 @@
   "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
  },
  "SB109": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-01",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB111": {
   "class": "sunset or agency housekeeping",
@@ -860,9 +860,9 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "SB1344": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-01",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB1365": {
   "class": "read the act",
@@ -875,9 +875,9 @@
   "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
  },
  "SB139": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-01",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB140": {
   "class": "appropriation",
@@ -895,9 +895,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB1443": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-03",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-03."
  },
  "SB1451": {
   "class": "read the act",
@@ -965,9 +965,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB176": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-03",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-03."
  },
  "SB1826": {
   "class": "economic-development incentive",
@@ -980,9 +980,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB1833": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-03",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-03."
  },
  "SB1847": {
   "class": "read the act",
@@ -1090,9 +1090,9 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "SB364": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-01",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB44": {
   "class": "appropriation",
@@ -1115,9 +1115,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB504": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-01",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB54": {
   "class": "read the act",
@@ -1160,9 +1160,9 @@
   "reason": "This is an appropriation or a fund transfer. The campaign excludes money bills by standing rule: a vote to fund state government for the year is not a position on a subject a voter can recognise."
  },
  "SB631": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-03",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-03."
  },
  "SB641": {
   "class": "read the act",
@@ -1235,9 +1235,9 @@
   "reason": "This extends a sunset date, renames a body, or moves a duty between agencies. There is no subject a voter would recognise and no direction to take."
  },
  "SB889": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-01",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB906": {
   "class": "read the act",
