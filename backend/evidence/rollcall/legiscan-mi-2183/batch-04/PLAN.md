@@ -13,14 +13,14 @@ the not-enacted pool.
 
 | measure | date | tally | research area | a yes vote is |
 | --- | --- | --- | --- | --- |
-| HB 4066, school sports teams labelled by sex | 2025-05-22 | 58-46 | civil_rights | against |
-| HB 4159, K-6 reading standards based on the science of reading | 2025-04-17 | 65-40 | public_education_quality | for |
+| HB 4066, school sports teams labelled by sex and male students barred from female-only teams | 2025-05-22 | 58-46 | civil_rights | against |
+| HB 4159, K-6 reading standards based on the science of reading, binding on districts from 2026-2027 | 2025-04-17 | 65-40 | public_education_quality | for |
 | HB 4222, school crisis teams and private school emergency plans | 2025-05-14 | 80-26 | public_safety_and_crime_control | for |
 | HB 4315, State Police school safety training for all school staff | 2025-05-14 | 82-24 | public_safety_and_crime_control | for |
 | HB 4369, certain additives and dyes barred from school food | 2025-07-01 | 58-47 | environment_and_public_health | for |
 | HB 5081, a dyslexia-trained teacher in every district | 2026-06-18 | 66-40 | public_education_quality | for |
 | HB 5819, literacy materials deadline brought forward to 2026 | 2026-06-10 | 56-50 | public_education_quality | for |
-| HB 5820, teacher training literacy deadline brought forward to 2026 | 2026-06-10 | 56-50 | public_education_quality | for |
+| HB 5820, science-of-reading training required from July 2026; approval deadline stays 2027 | 2026-06-10 | 56-50 | public_education_quality | for |
 
 No label carries a direction for a no vote.
 

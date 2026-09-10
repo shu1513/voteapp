@@ -22,7 +22,12 @@ provision printed unmarked.
 ### HB 4066 — civil_rights, a yes vote is against
 Requires a district, intermediate district or charter school taking part in
 school sports to label each team as for females, for males, or mixed, with sex
-meaning what appears on a student's original birth certificate.
+meaning what appears on a student's original birth certificate. Section 1290(2)
+then bars a school from knowingly letting a male student, by that definition,
+play on a female-only team, and subsections (5) to (7) give a harmed student, or
+a school punished for keeping female-only teams, a private right to sue. The
+description names the participation bar and the lawsuit, because the labelling
+alone would understate what the bill does.
 
 **This is not the same bill as HB 4469**, which batch-03 covered. HB 4469 provides
 that the civil rights act does not stop a school from setting eligibility that
@@ -35,15 +40,24 @@ so records were not swapped between them.
 HB 4159 requires the State Board's model K-6 reading and writing standards to
 rest on the science of reading and to use a code emphasis approach covering
 decoding, phonics, vocabulary, fluency, spoken language, comprehension and word
-recognition, with methods grounded in structured literacy.
+recognition, with methods grounded in structured literacy. It also binds
+districts: new text in section 1278(3)(a) says that from the 2026-2027 school
+year a district's K-6 reading and writing curriculum must adhere to those
+standards, where today a district may vary from the state's model. The
+description states that, because a model standard a district may ignore and one
+it must follow are different policies.
 
 HB 5819 and HB 5820 are deadline bills from the same package. HB 5819 moves the
 date by which schools must use compliant literacy materials forward from the
-2027-2028 school year to July 2026. HB 5820 moves the date by which teacher
-preparation programs must include literacy training forward from September 2027
-to July 2026, after which the Department of Education could not approve a
-program that did not meet it. Each description names its own deadline so the
-two records do not read as the same thing.
+2027-2028 school year to July 2026. HB 5820 splits section 1531e in two: the
+science-of-reading instruction for programs that train reading, language arts,
+special education and school psychology candidates becomes its own subsection
+(2) with a start date of July 1, 2026, while subsection (1) keeps September 30,
+2027 as the date the Department of Education must stop approving, and revoke
+approval of, programs missing the dyslexia instruction. The description keeps
+the two dates apart and does not say the department's approval bar moves,
+because it does not. Each description names its own deadline so the two records
+do not read as the same thing.
 
 HB 5081 requires every district, intermediate district and charter school to
 employ at least one teacher tasked with helping students with dyslexia, holding
@@ -107,6 +121,24 @@ The four HB 4066 records include the three that batch-03's sweep correctly
 than 59-45. They belong to HB 4066 and are retired here. The tally rule worked in
 both directions: it rejected them when they were offered as the wrong bill, and
 confirmed them when the right bill came along.
+
+## Review fixes
+
+Three descriptions were rewritten after review, each checked against the
+engrossed print again.
+
+- **HB 4066** had described only the team labelling. It now also states the
+  section 1290(2) participation bar and the private right to sue.
+- **HB 5820** had said the department could not approve a noncompliant program
+  after July 2026. That was wrong: the bill keeps September 30, 2027 for the
+  approval and revocation bar in subsection (1) and moves only the
+  science-of-reading instruction in new subsection (2) to July 1, 2026.
+- **HB 4159** had described only the State Board's model standards. It now also
+  states the section 1278(3)(a) requirement that district K-6 reading and
+  writing curricula follow those standards from 2026-2027.
+
+The judgments were re-applied and the batch re-imported; the rerun report
+records the rewritten records.
 
 ## Production
 
