@@ -31,8 +31,8 @@ dropped with a written reason in one of the two plans.
 | SB 577, drinking water operator fees extended to 2029 | Senate | 2025-10-03 | 23-13 | environment_and_public_health | for |
 | SB 578, the Neighborhood Roads Fund created | Senate | 2025-10-03 | 21-15 | public_infrastructure | for |
 | SB 579, environmental fee sunsets extended to 2029 | Senate | 2025-10-03 | 21-15 | environment_and_public_health | for |
-| SB 723, transformational brownfield captures doubled | House | 2026-07-03 | 82-26 | corporate_accountability | against |
-| SB 723 | Senate | 2026-07-03 | 24-12 | corporate_accountability | against |
+| SB 723, transformational brownfield captures doubled | House | 2026-07-03 | 82-26 | government_spending_reduction | against |
+| SB 723 | Senate | 2026-07-03 | 24-12 | government_spending_reduction | against |
 | SB 903, conditions on weighted school funding | Senate | 2026-07-03 | 24-12 | public_education_quality | for |
 | SB 966, the housing credit program at the housing authority | Senate | 2026-07-03 | 22-14 | housing_affordability | for |
 

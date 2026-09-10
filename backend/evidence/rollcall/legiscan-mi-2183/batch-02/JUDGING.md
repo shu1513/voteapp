@@ -45,11 +45,18 @@ would overstate it.
 
 ### HB 5055 — public_safety_and_crime_control, a yes vote is for
 The act lets a House or Senate sergeant at arms holding a police commission
-enforce state law anywhere in Michigan, but only to guard a lawmaker, their
-family or staff, to guard an event a lawmaker attends, or to investigate threats
-or crimes against a lawmaker, and only when the Senate majority leader or the
-House speaker asks. Investigations must coordinate with other agencies as far as
-practicable.
+enforce state law anywhere in Michigan, but only for three uses under new
+section 2(2)(f): guarding a lawmaker, their family or staff where the need is
+tied to threats or crimes connected to the lawmaker's official duties; guarding
+an event the lawmaker attends in the course of official duties; and
+investigating threats or crimes against a lawmaker. Section 2(4) gates every
+use behind a request submitted by the lawmaker and approved by the Senate
+majority leader or the House speaker. Investigations must coordinate with other
+agencies as far as practicable.
+
+Review fix (2026-09-10): the first description dropped the official-duties
+limits and said leadership "asks for it"; the act has the lawmaker ask and
+leadership approve. Both descriptions now carry the limits as written.
 
 **The other reading was considered and rejected.** A police force answerable to
 legislative leaders rather than to the executive is a real accountability
@@ -94,18 +101,32 @@ oversight they fund, so keeping them is for environment and public health. The
 descriptions name the fees rather than calling them "environmental fees", so the
 reader can see what is covered.
 
-### SB 723 — corporate_accountability, a yes vote is against
+### SB 723 — government_spending_reduction, a yes vote is against
 The act removes the December 2027 expiry on approving new transformational
 brownfield plans, permits a further $80.0 million a year of tax capture on top of
 the $80.0 million already allowed, and raises the lifetime cap on captured
 withholding, income and sales and use tax from $1.6 billion to $3.2 billion.
 
-A transformational brownfield plan lets the developer of a large project keep
-state taxes generated on the site. Doubling both the annual and lifetime caps and
-removing the expiry enlarges that transfer, so on corporate accountability a yes
-vote is against. This is the Illinois practice of using
-`corporate_accountability` where a measure changes what is required of, or given
-to, private business.
+It also adds guardrails that 2023 PA 90 did not have: new section 16a, a public
+program webpage carrying board packets, the underwriting and fiscal analyses,
+audit reports, each project's milestone status and actual capital investment;
+section 14a(6), an independent third-party analysis of a plan's anticipated
+fiscal benefit to the state; section 14a(25), a $300.0 million cap per new plan
+that the treasurer enforces by corrective action including repayment; and
+section 14a(8), where the remedies for a developer who misses the minimum
+investment change from "may take 1" to "shall take 1 or more" and add ceasing
+all reimbursement for bad faith.
+
+Review fix (2026-09-10): the first judgment filed this under
+`corporate_accountability` with a yes vote against, on the reasoning that a
+bigger subsidy is less accountability. That is not what the act does: on the
+accountability axis it tightens reporting and remedies, while its headline is
+doubling the tax capture. The direction on `corporate_accountability` is mixed
+either way, so the measure moves to `government_spending_reduction`, where a
+yes vote is cleanly against: tax capture is state revenue handed to the
+developer, and the act doubles how much may be handed over and removes the end
+date. This is the Montana SB 326 practice (film tax credit extension, batch-15).
+Both descriptions now name the guardrails.
 
 Both chambers are recorded: the House passed it 82-26 and the Senate agreed to
 the House version 24-12. This is the only House slot in the batch.
@@ -114,9 +135,10 @@ the House version 24-12. This is the only House slot in the batch.
 No Fiscal Agency analysis exists for this bill, so it was judged from Public Act
 22 of 2026 directly. New section 1280h requires a district receiving a weighted
 foundation payment to work on literacy and mathematics achievement, give direct
-English language development instruction to English learners, teach at-risk
-pupils under the existing at-risk section, administer the WIDA ACCESS assessment,
-meet a minimum weekly number of instruction minutes, and run a multi-tiered
+English language development instruction to English learners for at least the
+weekly minimum number of minutes the department sets by proficiency level, teach
+at-risk pupils under the existing at-risk section, administer the WIDA ACCESS
+assessment, and run a multi-tiered
 system of supports across every grade it operates. No more than 2% of the
 weighted money may go to administrative costs.
 
