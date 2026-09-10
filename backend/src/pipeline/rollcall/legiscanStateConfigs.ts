@@ -1236,6 +1236,82 @@ const WYOMING_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^[a-z]{2}\d{4}vt\d{3} (?:line item veto override|did not override line item veto)/,
 ];
 
+// Utah's floor-question vocabulary, shared by the 2025 General Session (2137)
+// and the 2026 General Session (2214). Both were surveyed separately on
+// 2026-09-09 and print the same families (29 in 2025, 31 in 2026), so they
+// share one definition.
+//
+// Utah's captions are the cleanest of any state surveyed. Every floor caption
+// starts with the chamber and a slash (`House/ passed 3rd reading`), and every
+// committee caption contains ` Comm - ` (`Senate Comm - Favorable
+// Recommendation`). The tally check agrees on its own: a floor roll's total is
+// always exactly the chamber size (75 or 29), and a committee roll's total
+// never exceeds 16 in the House or 9 in the Senate, which is under the 50
+// percent committee cut in both chambers. So committee rolls are rejected by
+// tally and no pattern needs to name them. No caption carries a per-roll
+// suffix, so every pattern below is anchored at both ends; a caption this
+// state has not printed before will surface for a human instead of matching.
+//
+// One caption looks like a committee vote and is not: `House Conference
+// Committee - Final Passage` (and its Senate twin) is a floor vote with a
+// full-chamber total. It is safe only because committee captions spell
+// `Comm - ` and never `Committee - `, which is a thin margin, so the pattern
+// names the conference caption in full rather than relying on that.
+const UTAH_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Third reading is passage in both chambers. This was derived from Utah's
+  // own action trail, not copied from another state: each Utah history
+  // action names its destination, and a Senate `passed 2nd reading` is
+  // followed by a `Senate/ 3rd reading` action on 350 of the 359 bills that
+  // print it (the other 9 go to the third-reading table or are circled),
+  // while `passed 3rd reading` sends the bill to the other chamber. So second
+  // reading advances a bill inside the Senate and third reading passes it out.
+  // The House records no second-reading vote at all: no House caption in
+  // either session contains `2nd`.
+  { pattern: /^(?:house|senate)\/ passed 3rd reading$/, questionClass: "passage" },
+  // The Senate passing a bill on second and third reading at once under a
+  // suspension of the rules. This is the passage vote, and it needs two
+  // thirds of the chamber. The same caption WITHOUT `passed` appears once
+  // (HB 388, 2025, 10-17) and is the same question failing, so both spellings
+  // are kept and the outcome is read from the bill history, never from the
+  // caption or from LegiScan's `passed` flag. That flag is a bare-majority
+  // check and marks HB 212 (2026) passed at 17-12 where Utah's own history
+  // records `Senate/ failed`. Only the Senate prints this caption.
+  { pattern: /^senate\/ (?:passed )?2nd & 3rd readings\/ suspension$/, questionClass: "passage" },
+  { pattern: /^(?:house|senate)\/ concurs with (?:senate|house) amendment$/, questionClass: "concurrence" },
+  { pattern: /^(?:house|senate) conference committee - final passage$/, questionClass: "conference_report" },
+  // A failed floor vote. Kept rather than dropped so a rejection is
+  // dispositioned in the worklist instead of disappearing (the West Virginia
+  // precedent). The caption does not say WHICH question failed: in the trail
+  // it follows a third reading, a second reading (HB 190, 2025, 13-5 short of
+  // the 15-vote constitutional majority), a substitute, a floor amendment or
+  // an uncircling, so selection must read the bill history before treating
+  // one as a failed passage vote. The enacted gate is NOT what keeps these
+  // out of a batch: HB 190 became law. What does is the judge's
+  // superseded-stage gate: on an enacted bill the chamber's successful
+  // passage roll always comes after its failed one, so a `failed` roll can
+  // only be approved by naming that later roll in acknowledge_later_rolls on
+  // purpose.
+  { pattern: /^(?:house|senate)\/ failed$/, questionClass: "passage" },
+];
+
+// Checked BEFORE the kept list. Every family in both surveys that is a floor
+// vote but not a vote on the measure.
+const UTAH_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // The Senate's second reading, the intermediate stage explained above.
+  /^senate\/ passed 2nd reading$/,
+  // Circling a bill sets it aside on the calendar; it is not a vote on it.
+  /^(?:house|senate)\/ circled$/,
+  /^(?:house|senate)\/ motion to reconsider$/,
+  // Adopting a substitute, and a substitute adoption that failed. Utah numbers
+  // its substitutes (1st Substitute, 2nd Substitute) and a chamber often votes
+  // a different substitute from the one enrolled, so which text a passage
+  // roll was cast on is settled at selection time, never here.
+  /^(?:house|senate)\/ substituted$/,
+  /^(?:house|senate)\/ substitute adoption failed$/,
+  // Floor amendments, adopted or failed.
+  /^(?:house|senate)\/ floor amendment(?: failed)?$/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -5189,6 +5265,84 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "SB 641 Senate 2025-03-27 third reading: LegiScan reports 32-7; Oklahoma reports 32-8",
       1605440:
         "SB 915 Senate 2025-05-20 fourth reading: LegiScan reports 40-5; Oklahoma reports `Measure and Emergency passed: Ayes: 40 Nays: 0`",
+    },
+  },
+  // Utah, both sessions in scope. Utah meets in an annual General Session, so
+  // the 2025 General Session (2137) and the 2026 General Session (2214) are
+  // separate LegiScan datasets and get separate entries sharing one measured
+  // vocabulary. The 2025 special sessions (2228, 2238) are not registered.
+  //
+  // Pool as measured on 2026-09-09, after the divided gate, the enacted gate
+  // and the one-roll-per-chamber rule: 118 rolls on 94 measures in 2025 and
+  // 124 rolls on 94 measures in 2026, every one on an ordinary bill. Utah
+  // divides on 15.0 percent of 2025 floor rolls and 17.1 percent of 2026
+  // floor rolls, close to Ohio's 14 percent; the Republican supermajority does
+  // NOT make the pool small here, because the majority divides among itself.
+  // Of the 155 divided-and-enacted rolls in 2025, the no side is purely
+  // Democratic on 3 of 65 House rolls and 21 of 90 Senate rolls.
+  //
+  // Gate calibration, checked because the Senate contributes more divided
+  // rolls than the House despite 29 seats to 75: the House is 61-14, so a
+  // party-line House vote is 14/61 = 0.23 and falls just under the quarter
+  // gate; the Senate is 23-6, so a party-line Senate vote is 6/23 = 0.26 and
+  // just clears it. The gate is well calibrated in the House and marginally
+  // loose in the Senate.
+  //
+  // Roster reach: all 75 House seats are on the Nov-2026 ballot and 15 of the
+  // 29 Senate seats, so a House roll can reach up to 75 candidates and a
+  // Senate roll at most 15. The default --scope-from of 2026-11-01 is correct
+  // for Utah: every office election in scope is dated 2026-11-03.
+  //
+  // Utah proposes constitutional amendments as JOINT RESOLUTIONS titled
+  // `Proposal to Amend Utah Constitution - ...` (HJR 10 and SJR 2 in 2025,
+  // HJR 25 in 2026). Type JR is a kept bill type, so their floor rolls are
+  // stored, and SJR 2 (2025, statewide initiatives) drew a divided House
+  // roll. They go to the Lieutenant Governor for the ballot and never reach
+  // status 4, so the enacted gate keeps them out of a batch by design; they
+  // are dispositioned in the worklist, never imported as law.
+  //
+  // Two enacted bills sit at status 3, not 4, because they became law WITHOUT
+  // the Governor's signature (HB 77 in 2025, HB 195 in 2026; the history line
+  // reads `Became Law w/o Governor Signature`). The enacted gate misses them,
+  // so selection reads each bill's history for a governor action rather than
+  // trusting `status`, and their tail says how they became law.
+  //
+  // Every roll's `state_link` is EMPTY in both Utah datasets, so the tally
+  // audit against Utah's own vote record cannot follow a per-roll link and
+  // has not yet been run. `heldRollCallIds` is empty for that reason, not
+  // because the feed was proven clean. The audit is owed before any batch is
+  // selected, and it must cover every floor roll on an enacted bill, not only
+  // the ones the divided gate selects.
+  UT: {
+    jurisdiction: "UT",
+    sessionId: 2137,
+    chamberSizes: { house: 75, senate: 29 },
+    keptQuestions: UTAH_KEPT_QUESTIONS,
+    excludedQuestions: UTAH_EXCLUDED_QUESTIONS,
+  },
+  // TALLY AUDIT, run 2026-09-09 over every floor roll on a kept bill type in
+  // both sessions (1,916 in 2025 and 1,840 in 2026, not only the divided
+  // ones), against the tally Utah prints on each action in its own per-bill
+  // JSON and then against the state's per-roll vote sheet, which names every
+  // member. 2025: 1,914 exact and 0 wrong. 2026: 1,831 exact and FOUR rolls
+  // whose member list contradicts the sheet, held below. The two 28-0 twins
+  // (HB 205, HB 236) are a reconsider-and-revote pair with identical lists
+  // and are not defects.
+  "UT-2214": {
+    jurisdiction: "UT",
+    sessionId: 2214,
+    chamberSizes: { house: 75, senate: 29 },
+    keptQuestions: UTAH_KEPT_QUESTIONS,
+    excludedQuestions: UTAH_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1653739:
+        "HB 502 Senate 2026-03-04, suspension passage: LegiScan reports 21-8 and lists Karen Kwan as a yes; Utah's own record and vote sheet (voteid 1778) report 20-9 with Kwan a no. One member on the wrong side; it would put a false vote in her record",
+      1656396:
+        "SB 62 Senate 2026-03-06, concurrence: LegiScan reports 21-7 with seven no votes; Utah's own record and vote sheet (voteid 2089) report 28-0 with no member voting no. The member list belongs to a different vote",
+      1654810:
+        "HB 270 Senate 2026-03-05, suspension passage: LegiScan reports 19-1 and lists Todd Weiler as a yes; Utah's own record and vote sheet (voteid 1863) report 18-2 with Weiler a no. Not divided either way, held because the member list is wrong",
+      1652433:
+        "SB 152 House 2026-03-04, third reading: LegiScan reports 65-7; Utah's own record and vote sheet (voteid 1181) report 70-1 with Leah Hansen the only no. LegiScan's member list does not even match the sheet's attendance, so it is a different vote's list. Not divided either way",
     },
   },
 };
