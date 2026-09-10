@@ -49,7 +49,11 @@ whether a worker keeps a job protection, and that direction is readable from the
 hours option let a district run as few as 166 days provided it reached 1,086 hours; from the
 2027-2028 school year that floor rises to 173 days, with the hours figure unchanged. The act
 also requires an in-person option where parent-teacher conferences are counted as instruction
-time. `public_education_quality`, yes = for.
+time. Section 2 makes the whole act conditional: it takes effect on July 1, 2027 only if the
+FY2028 appropriation to the State Department of Education is at least $175 million above
+FY2026, and otherwise never becomes law. The first version of the description presented the
+173-day floor as definite; a review caught the omission and both chambers' descriptions were
+corrected and the records rewritten. `public_education_quality`, yes = for.
 
 **HB 1576, Medicaid gene testing.** Rapid whole genome sequencing must be covered as a
 separately payable service, subject to federal approval, for patients under twenty-one who
