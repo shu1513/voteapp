@@ -181,8 +181,8 @@ slots reach roughly 650.
 
 ## Held roll calls
 
-Seventeen rolls are held: one doubled filing, and sixteen last-day rolls whose
-member lists disagree with the journal.
+Twenty rolls are held: one doubled filing, three bare-caption nonconcurrences,
+and sixteen last-day rolls whose member lists disagree with the journal.
 
 LegiScan stored a single House action as two roll calls:
 HB 4002's House vote of 2025-02-20, 81-29. Roll 1497863 is described
@@ -194,6 +194,11 @@ collapse them. Roll 1497863 is the one to use.
 The doubled `Roll Call Roll Call` caption is deliberately left unmatched by the
 kept patterns, so any future double filing surfaces for a person to look at
 instead of being queued as a vote.
+
+Three rolls carry the bare `Roll Call #n` caption while their preceding
+history line reads `Nonconcurred In` (HB 4706 2-107, SB 878 2-32, HB 5630
+1-105). The caption rule would label them concurrences, so they are held by
+id. CODE-FINDINGS.md §3 has the rule for any later roll in that family.
 
 The other sixteen are House rolls of 2026-07-03, the session's last sitting
 day. Every Michigan roll in the dataset lists only the yea and nay voters, so

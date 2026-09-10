@@ -958,9 +958,12 @@ const MICHIGAN_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // text that became law, which is the only text a record may describe.
   //
   // It is classified `concurrence` because that is what all but a handful
-  // are. ⚠ THE CAPTION CANNOT TELL A CONCURRENCE FROM A NONCONCURRENCE, so
-  // read the preceding history line for every roll selected out of this
-  // family. Recorded in the session's CODE-FINDINGS.md.
+  // are. ⚠ THE CAPTION CANNOT TELL A CONCURRENCE FROM A NONCONCURRENCE. The
+  // three nonconcurrences in the dataset were found by reading the preceding
+  // history line and are held by id below, so none of them can be queued as a
+  // concurrence. A roll fetched later in this family has no such check, so
+  // read the preceding history line for every roll selected out of it.
+  // Recorded in the session's CODE-FINDINGS.md.
   //
   // A fourth shape exists, `House Third Reading: Roll Call Roll Call #12`,
   // and this pattern deliberately does NOT match it. It is not a question
@@ -4482,6 +4485,14 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     excludedQuestions: MICHIGAN_EXCLUDED_QUESTIONS,
     heldRollCallIds: {
       ...MICHIGAN_LAST_DAY_TALLY_HOLDS,
+      // The three bare-caption rolls whose preceding history line reads
+      // `Nonconcurred In`. The caption alone would queue them as concurrences.
+      1603577:
+        "HB 4706 House 2025-10-01, 2-107: caption is only `Roll Call #237`; the preceding history line is `Senate Substitute (s-1) Nonconcurred In`. A nonconcurrence, not a concurrence",
+      1714401:
+        "SB 878 Senate 2026-07-01, 2-32: caption is only `Roll Call # 168`; the preceding history line is `House Substitute (h-1) Nonconcurred In`. A nonconcurrence, not a concurrence",
+      1713884:
+        "HB 5630 House 2026-07-01, 1-105: caption is only `Roll Call #287`; the preceding history line is `Senate Substitute (s-1) Nonconcurred In`. A nonconcurrence, not a concurrence",
       1550992:
         "HB 4002 House 2025-02-20, 81-29: LegiScan stored one House action as two roll calls. Roll 1497863 is described `House Third Reading: Roll Call #12` and this one `House Third Reading: Roll Call Roll Call #12`, and both point at the single history line `Roll Call Roll Call #12 Yeas 81 Nays 29`. The descriptions differ, so the fetcher's identity key cannot collapse them. Roll 1497863 is the one to use",
     },

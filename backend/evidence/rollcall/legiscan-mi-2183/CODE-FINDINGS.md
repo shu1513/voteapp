@@ -1,8 +1,8 @@
 # Michigan code findings — LegiScan session 2183
 
 Things about the pipeline that Michigan exposed. Findings 1 and 2 are fixed in
-the config pull request. Finding 3 is recorded and not fixed. Findings 4 and 5
-are handled by held entries.
+the config pull request. Findings 3, 4 and 5 are handled by held
+entries.
 
 ## 1. The measure-id parser rejected lettered joint resolutions — FIXED
 
@@ -43,7 +43,7 @@ would have discarded 644 of the House's 717 floor votes.
 
 Verified by matching all 1,218 floor votes to their own bill-history lines.
 
-## 3. The bare caption cannot distinguish a concurrence from a nonconcurrence — NOT FIXED
+## 3. The bare caption cannot distinguish a concurrence from a nonconcurrence — KNOWN ROLLS HELD
 
 81 Michigan floor votes carry a description that is only a roll number, such as
 `House Third Reading: Roll Call #12`. The question sits in the bill-history
@@ -59,10 +59,16 @@ Not fixed, because the fix is not a pattern. It would mean giving the
 classifier the bill history and having it read the action before the roll-call
 action, which is a change to what the classifier is allowed to see.
 
-**The selection-time rule instead:** for every roll picked out of this family,
-read the preceding history line and confirm the question before writing a word
-of description. This is already required by filter 4, which asks which text the
-chamber actually voted.
+The three nonconcurrences in the dataset (HB 4706 2-107, SB 878 2-32,
+HB 5630 1-105) were found by reading each bare-caption roll's preceding
+history line and are held by id, so the caption rule cannot queue them as
+concurrences. All three are lopsided rejections of the other chamber's
+substitute and would never have been selected anyway.
+
+**The selection-time rule still stands** for any roll fetched later in this
+family: read the preceding history line and confirm the question before
+writing a word of description. This is already required by filter 4, which
+asks which text the chamber actually voted.
 
 ## 4. One House action stored as two roll calls — HANDLED BY A HELD ENTRY
 

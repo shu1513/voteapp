@@ -1161,7 +1161,17 @@ describe("Michigan's measured desc vocabulary", () => {
       isFloorVote: null,
       reason: expect.stringContaining("HB 6130 House 2026-07-03, 60-45 against 60-48"),
     });
-    expect(Object.keys(config.heldRollCallIds ?? {})).toHaveLength(17);
+    expect(Object.keys(config.heldRollCallIds ?? {})).toHaveLength(20);
+  });
+
+  it("holds the bare-caption rolls that are nonconcurrences, not concurrences", () => {
+    // The caption `Roll Call #237` says nothing; the preceding history line
+    // reads `Nonconcurred In`. Held by id so the caption rule cannot queue
+    // a rejection as a concurrence.
+    expect(mi("House Third Reading: Roll Call #237", "house", 109, 1603577)).toMatchObject({
+      isFloorVote: null,
+      reason: expect.stringContaining("nonconcurrence, not a concurrence"),
+    });
   });
 });
 
