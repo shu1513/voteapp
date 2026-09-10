@@ -4231,11 +4231,19 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // Senate roll at most 15. The default --scope-from of 2026-11-01 is correct
   // for Utah: every office election in scope is dated 2026-11-03.
   //
-  // No joint resolution reaches status 4 in either session, which is expected
-  // (a constitutional amendment goes to the voters, not the Governor), and no
-  // bill in either session names a constitutional amendment in its title or
-  // description. How Utah words them is not yet known and costs nothing
-  // today; it must be settled before the state is called complete.
+  // Utah proposes constitutional amendments as JOINT RESOLUTIONS titled
+  // `Proposal to Amend Utah Constitution - ...` (HJR 10 and SJR 2 in 2025,
+  // HJR 25 in 2026). Type JR is a kept bill type, so their floor rolls are
+  // stored, and SJR 2 (2025, statewide initiatives) drew a divided House
+  // roll. They go to the Lieutenant Governor for the ballot and never reach
+  // status 4, so the enacted gate keeps them out of a batch by design; they
+  // are dispositioned in the worklist, never imported as law.
+  //
+  // Two enacted bills sit at status 3, not 4, because they became law WITHOUT
+  // the Governor's signature (HB 77 in 2025, HB 195 in 2026; the history line
+  // reads `Became Law w/o Governor Signature`). The enacted gate misses them,
+  // so selection reads each bill's history for a governor action rather than
+  // trusting `status`, and their tail says how they became law.
   //
   // Every roll's `state_link` is EMPTY in both Utah datasets, so the tally
   // audit against Utah's own vote record cannot follow a per-roll link and
