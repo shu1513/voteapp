@@ -1396,8 +1396,8 @@
    }
   ],
   "title": "Modify requirements regarding the use of a mobile electronic device while operating a motor vehicle.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "public_safety_and_crime_control (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1414,10 +1414,8 @@
    }
   ],
   "title": "Create a pilot program in the Unified Judicial System to develop a pretrial release program.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "public_safety_and_crime_control (yea for)",
-  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+  "disposition": "dropped",
+  "reason": "A pilot program that reports back to the Legislature. Like a study, a pilot takes no settled position on the policy it tests."
  },
  {
   "session": 2231,
@@ -1455,8 +1453,8 @@
    }
   ],
   "title": "Authorize the dispensing of ivermectin and hydroxychloroquine under a written protocol developed by a health care provider, and to provide liability protection therefor.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "environment_and_public_health (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1560,8 +1558,8 @@
    }
   ],
   "title": "Require that annual withdrawal of groundwater from any groundwater source may not exceed the annual recharge of water to the groundwater source.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "environment_and_public_health (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1578,8 +1576,8 @@
    }
   ],
   "title": "Restrict contracts and declarations that prohibit the use of commercial or residential property for any healthcare service in medically underserved areas or communities, or in areas with a medically underserved population under federal law.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "healthcare_affordability (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1612,8 +1610,8 @@
    }
   ],
   "title": "Establish a manufactured housing downpayment assistance program.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "housing_affordability (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1685,9 +1683,9 @@
    }
   ],
   "title": "Require the licensure of non-medical home care agencies, and to provide a penalty therefor.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "environment_and_public_health (yea for)",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "corporate_accountability (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
  {
@@ -1703,8 +1701,8 @@
    }
   ],
   "title": "Ban kratom and kratom products and to provide a penalty therefor.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "environment_and_public_health (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1721,8 +1719,8 @@
    }
   ],
   "title": "Protect certain rights of healthcare providers.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "civil_rights (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1762,8 +1760,8 @@
    }
   ],
   "title": "Prohibit certain persons from requiring genetic-based vaccinations.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "environment_and_public_health (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1796,8 +1794,8 @@
    }
   ],
   "title": "Establish provisions related to the disclosure of COVID-19 and mRNA vaccination status and blood donations.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "environment_and_public_health (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1814,8 +1812,8 @@
    }
   ],
   "title": "Require certain applicants that seek a permit from the Public Utilities Commission of the State of South Dakota to prepare and pay for an environmental impact statement.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
   "labels": "environment_and_public_health (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1848,9 +1846,9 @@
    }
   ],
   "title": "Establish a data collection system pertaining to assisted reproductive technology and to provide a penalty therefor.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "data_privacy (yea against)",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "womens_reproductive_rights (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
  {
@@ -1914,9 +1912,9 @@
    }
   ],
   "title": "Require employment verification eligibility through the e-verify program and to provide a penalty therefor.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "immigration (yea for)",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "immigration (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
  {
@@ -1932,8 +1930,8 @@
    }
   ],
   "title": "Prohibit COVID-19 vaccination requirements and to provide a penalty therefor.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "environment_and_public_health (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -1966,8 +1964,8 @@
    }
   ],
   "title": "Prohibit members of the Board of Economic Development from having any interest in moneys from or approved by the Board of Economic Development.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "anti_corruption (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2032,8 +2030,8 @@
    }
   ],
   "title": "Prohibit nondisclosure of certain agreements related to data centers.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "anti_corruption (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2057,10 +2055,8 @@
    }
   ],
   "title": "Adjust the assessment methodology for owner-occupied single-family dwellings and nonagricultural property.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "cost_of_living_reduction (yea for)",
-  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+  "disposition": "dropped",
+  "reason": "Read the text: it replaces a year's market value with an eight-year trimmed average. That lowers assessments while values rise and raises them while values fall, so the text alone gives no direction."
  },
  {
   "session": 2231,
@@ -2091,9 +2087,9 @@
    }
   ],
   "title": "Create requirements for age verification and parental consent for application stores and to provide a penalty therefor.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "data_privacy (yea against)",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "data_privacy (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
  {
@@ -2109,8 +2105,8 @@
    }
   ],
   "title": "Prohibit certain political committees from accepting contributions by certain officers or employees of this state.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "anti_corruption (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2182,10 +2178,8 @@
    }
   ],
   "title": "Modify the requirements to refer an ordinance or resolution to the voters of a political subdivision.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "civil_rights (yea for)",
-  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+  "disposition": "dropped",
+  "reason": "Read the text: it changes the filing window and effective dates for referring a county ordinance to voters. Ballot-access mechanics, dropped on the same ground as HB 1169 and HB 1087."
  },
  {
   "session": 2231,
@@ -2200,8 +2194,8 @@
    }
   ],
   "title": "Proposing and submitting to the voters at the next general election an amendment to the Constitution of the State of South Dakota, requiring a declaration of necessity and clarifying public use of private property taken or damaged by eminent domain.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "civil_rights (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2218,8 +2212,8 @@
    }
   ],
   "title": "Proposing and submitting to the voters at the next general election an amendment to the Constitution of the State of South Dakota, repealing the requirement to provide expanded medicaid.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "healthcare_affordability (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2252,8 +2246,8 @@
    }
   ],
   "title": "Deposit certain tax revenues into a homeowner tax reduction fund.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "cost_of_living_reduction (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2286,8 +2280,8 @@
    }
   ],
   "title": "Increase the amount of value exempt from property taxes under a tax relief program for disabled veterans and surviving spouses.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
   "labels": "social_programs_and_welfare (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2304,8 +2298,8 @@
    }
   ],
   "title": "Exempt one motor vehicle of a debtor from being taken by legal process.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
   "labels": "reduce_wealth_gap (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2361,10 +2355,8 @@
    }
   ],
   "title": "Codify the rights of a parent.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "civil_rights (yea against)",
-  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+  "disposition": "dropped",
+  "reason": "A parental-rights act puts parents' rights against children's own, and each side calls itself the rights side. No single direction holds."
  },
  {
   "session": 2231,
@@ -2395,8 +2387,8 @@
    }
   ],
   "title": "Repeal the expiration of a reduction in certain gross receipts and use tax rates.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
   "labels": "cost_of_living_reduction (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2413,8 +2405,8 @@
    }
   ],
   "title": "Increase the income limits for a property tax assessment freeze.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
   "labels": "cost_of_living_reduction (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2438,8 +2430,8 @@
    }
   ],
   "title": "Restrict the use of a cell phone by a student during the school day.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
   "labels": "public_education_quality (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2488,8 +2480,8 @@
    }
   ],
   "title": "Prohibit certain billing practices by ambulance service providers and establish reimbursement standards for out-of-network emergency medical services.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
   "labels": "healthcare_affordability (yea for)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2655,8 +2647,8 @@
    }
   ],
   "title": "Require an election for an excess tax levy of a school district.",
-  "disposition": "open",
-  "evidence_dir": "",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
   "labels": "public_education_quality (yea against)",
   "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
  },
@@ -2673,10 +2665,8 @@
    }
   ],
   "title": "Adjust a limit on the percentage increase in revenue payable from property taxes.",
-  "disposition": "open",
-  "evidence_dir": "",
-  "labels": "cost_of_living_reduction (yea for)",
-  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+  "disposition": "dropped",
+  "reason": "Read the amendment the Senate voted: it replaces the new-growth allowance with a formula keeping three percent of growth plus sixty percent of any excess. Whether a district may collect more or less than now depends on its own growth, so no single direction holds."
  },
  {
   "session": 2231,

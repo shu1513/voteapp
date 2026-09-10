@@ -1,0 +1,184 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1632086,
+      "measure_id": "HB 1209",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1209, which would have required every employer to check new hires through E-Verify. E-Verify is the federal Department of Homeland Security's online check of whether a worker may legally be employed in the United States. In the version the House passed, every employer would have had to run each new hire through it and keep the record for as long as the person worked there. The attorney general could have collected a civil penalty of two thousand dollars per violation, and giving an employer false documents to evade the check would have been a Class 1 misdemeanor. The South Dakota House passed it, 49-13. The two chambers never agreed on a final text, so the bill did not become law.",
+      "nay_description": "Voted against House Bill 1209, which would have required every employer to check new hires through E-Verify. E-Verify is the federal Department of Homeland Security's online check of whether a worker may legally be employed in the United States. In the version the House passed, every employer would have had to run each new hire through it and keep the record for as long as the person worked there. The attorney general could have collected a civil penalty of two thousand dollars per violation, and giving an employer false documents to evade the check would have been a Class 1 misdemeanor. The South Dakota House passed it, 49-13. The two chambers never agreed on a final text, so the bill did not become law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1639992,
+      "measure_id": "HB 1210",
+      "vote_date": "2026-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1210, which would have banned COVID-19 vaccine requirements. No employer, school or college, state agency, local government or anyone else could have required a person to receive a COVID-19 vaccination as a condition of a job, of enrollment, or of receiving a benefit or service. A violation would have been a Class 2 misdemeanor. The South Dakota House rejected it, 32-35. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1210, which would have banned COVID-19 vaccine requirements. No employer, school or college, state agency, local government or anyone else could have required a person to receive a COVID-19 vaccination as a condition of a job, of enrollment, or of receiving a benefit or service. A violation would have been a Class 2 misdemeanor. The South Dakota House rejected it, 32-35. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1639290,
+      "measure_id": "HB 1222",
+      "vote_date": "2026-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1222, which would have barred economic development board members from owning companies the board funds. The Board of Economic Development awards state grants and loans to businesses. As the House amended the bill before voting, a board member could not have held a direct ownership stake in, or a seat on the board of, any company receiving money from or approved by the board. Stock bought on the open market and held as a passive investment would not have counted. The South Dakota House rejected it, 29-36. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1222, which would have barred economic development board members from owning companies the board funds. The Board of Economic Development awards state grants and loans to businesses. As the House amended the bill before voting, a board member could not have held a direct ownership stake in, or a seat on the board of, any company receiving money from or approved by the board. Stock bought on the open market and held as a passive investment would not have counted. The South Dakota House rejected it, 29-36. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1640299,
+      "measure_id": "HB 1246",
+      "vote_date": "2026-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1246, which would have banned secrecy agreements between governments and data center developers. A state agency, county or city could not have signed an agreement with a private company about building or locating a data center that required confidentiality or nondisclosure. Every such agreement would have been a public record open to inspection. The South Dakota House rejected it, 30-37. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1246, which would have banned secrecy agreements between governments and data center developers. A state agency, county or city could not have signed an agreement with a private company about building or locating a data center that required confidentiality or nondisclosure. Every such agreement would have been a public record open to inspection. The South Dakota House rejected it, 30-37. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1640182,
+      "measure_id": "HB 1275",
+      "vote_date": "2026-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1275, which would have required app stores to verify users' ages and get a parent's consent for minors. An app store would have had to ask every South Dakota account holder's age and verify it by a commercially reasonable method. A minor's account would have been linked to a parent account, and the parent would have had to consent before the minor downloaded or bought an app, after seeing its age rating and what personal data it collects and shares. Age data could have been used only for this purpose, and a harmed family could have sued. The South Dakota House passed it, 50-17. A South Dakota Senate committee killed it, so the full Senate never voted on it and the bill did not become law.",
+      "nay_description": "Voted against House Bill 1275, which would have required app stores to verify users' ages and get a parent's consent for minors. An app store would have had to ask every South Dakota account holder's age and verify it by a commercially reasonable method. A minor's account would have been linked to a parent account, and the parent would have had to consent before the minor downloaded or bought an app, after seeing its age rating and what personal data it collects and shares. Age data could have been used only for this purpose, and a harmed family could have sued. The South Dakota House passed it, 50-17. A South Dakota Senate committee killed it, so the full Senate never voted on it and the bill did not become law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1641401,
+      "measure_id": "HB 1278",
+      "vote_date": "2026-02-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1278, which would have stopped statewide officials and legislators taking campaign money from their own top staff. The rule would have covered the Governor, the other statewide elected officials and legislators. Neither the official's campaign committee nor a political action committee tied to the official could have accepted money from certain state employees the official hired or appointed. Those were anyone who ran a department or agency, was its highest paid employee after the head, or reported directly to the official. The South Dakota House rejected it, 20-47. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1278, which would have stopped statewide officials and legislators taking campaign money from their own top staff. The rule would have covered the Governor, the other statewide elected officials and legislators. Neither the official's campaign committee nor a political action committee tied to the official could have accepted money from certain state employees the official hired or appointed. Those were anyone who ran a department or agency, was its highest paid employee after the head, or reported directly to the official. The South Dakota House rejected it, 20-47. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1649610,
+      "measure_id": "HJR 5001",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Joint Resolution 5001, which would have asked voters to narrow when private land may be taken for public use. The resolution proposed a constitutional amendment for the next general election ballot. A government or company taking or damaging private property would first have had to issue a public declaration establishing why the taking was necessary. The amendment would also have said that public use does not include raising the tax base, tax revenue, jobs or general economic health. The South Dakota Senate rejected it, 14-19. The bill did not become law.",
+      "nay_description": "Voted against House Joint Resolution 5001, which would have asked voters to narrow when private land may be taken for public use. The resolution proposed a constitutional amendment for the next general election ballot. A government or company taking or damaging private property would first have had to issue a public declaration establishing why the taking was necessary. The amendment would also have said that public use does not include raising the tax base, tax revenue, jobs or general economic health. The South Dakota Senate rejected it, 14-19. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1619542,
+      "measure_id": "HJR 5002",
+      "vote_date": "2026-01-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Joint Resolution 5002, which would have asked voters to remove Medicaid expansion from the state constitution. The state constitution has required South Dakota, since July 1, 2023, to provide Medicaid to adults over eighteen and under sixty-five with income at or below 133 percent of the federal poverty level plus a five percent allowance. The resolution proposed an amendment for the next general election ballot repealing that section, which would have removed the constitutional requirement to provide the coverage. The South Dakota House rejected it, 27-39. The bill did not become law.",
+      "nay_description": "Voted against House Joint Resolution 5002, which would have asked voters to remove Medicaid expansion from the state constitution. The state constitution has required South Dakota, since July 1, 2023, to provide Medicaid to adults over eighteen and under sixty-five with income at or below 133 percent of the federal poverty level plus a five percent allowance. The resolution proposed an amendment for the next general election ballot repealing that section, which would have removed the constitutional requirement to provide the coverage. The South Dakota House rejected it, 27-39. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1643664,
+      "measure_id": "SB 118",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 118, which would have put at least a hundred million dollars a year into a fund to cut homeowners' property taxes. Each January the state treasurer would have had to deposit into the homeowner tax reduction fund the greater of one hundred million dollars or a set percentage of the previous year's sales tax, use tax, contractor's excise tax and a related tax. The fund exists to lower property taxes on owner-occupied homes. The South Dakota Senate rejected it, 16-17. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 118, which would have put at least a hundred million dollars a year into a fund to cut homeowners' property taxes. Each January the state treasurer would have had to deposit into the homeowner tax reduction fund the greater of one hundred million dollars or a set percentage of the previous year's sales tax, use tax, contractor's excise tax and a related tax. The fund exists to lower property taxes on owner-occupied homes. The South Dakota Senate rejected it, 16-17. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1640138,
+      "measure_id": "SB 126",
+      "vote_date": "2026-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 126, which would have raised the property tax exemption for totally disabled veterans. A veteran rated permanently and totally disabled from a service-connected disability does not pay property tax on the first two hundred thousand dollars of the full value of the home they own and live in. The bill would have raised that exemption to three hundred thousand dollars. The South Dakota Senate rejected it, 14-20. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 126, which would have raised the property tax exemption for totally disabled veterans. A veteran rated permanently and totally disabled from a service-connected disability does not pay property tax on the first two hundred thousand dollars of the full value of the home they own and live in. The bill would have raised that exemption to three hundred thousand dollars. The South Dakota Senate rejected it, 14-20. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
