@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1667402,
+      "measure_id": "HF 571",
+      "vote_date": "2026-03-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 571, which creates the Medical Ethics Defense Act. A doctor, nurse, hospital or other provider may refuse to take part in a health care service that goes against their conscience, meaning their ethical, moral or religious beliefs. For an institution, conscience is read from its own governing documents. Hospitals must still provide emergency care required by federal law. A provider who refuses in good faith is immune from civil liability, criminal penalty and licensing discipline. The act also shields providers who report unsafe conditions, adds free speech protections, and lets a provider sue anyone who interferes with these rights. The Iowa House passed it 63-27, and it became law.",
+      "nay_description": "Voted against House File 571, which creates the Medical Ethics Defense Act. A doctor, nurse, hospital or other provider may refuse to take part in a health care service that goes against their conscience, meaning their ethical, moral or religious beliefs. For an institution, conscience is read from its own governing documents. Hospitals must still provide emergency care required by federal law. A provider who refuses in good faith is immune from civil liability, criminal penalty and licensing discipline. The act also shields providers who report unsafe conditions, adds free speech protections, and lets a provider sue anyone who interferes with these rights. The Iowa House passed it 63-27, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1657715,
+      "measure_id": "HF 571",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 571, which creates the Medical Ethics Defense Act. A doctor, nurse, hospital or other provider may refuse to take part in a health care service that goes against their conscience, meaning their ethical, moral or religious beliefs. For an institution, conscience is read from its own governing documents. Hospitals must still provide emergency care required by federal law. A provider who refuses in good faith is immune from civil liability, criminal penalty and licensing discipline. The act also shields providers who report unsafe conditions, adds free speech protections, and lets a provider sue anyone who interferes with these rights. The Iowa Senate passed it 30-16, and it became law.",
+      "nay_description": "Voted against House File 571, which creates the Medical Ethics Defense Act. A doctor, nurse, hospital or other provider may refuse to take part in a health care service that goes against their conscience, meaning their ethical, moral or religious beliefs. For an institution, conscience is read from its own governing documents. Hospitals must still provide emergency care required by federal law. A provider who refuses in good faith is immune from civil liability, criminal penalty and licensing discipline. The act also shields providers who report unsafe conditions, adds free speech protections, and lets a provider sue anyone who interferes with these rights. The Iowa Senate passed it 30-16, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1553649,
+      "measure_id": "HF 516",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 516, which tries to keep more doctors in Iowa. The Board of Regents must require that at least eighty percent of the students admitted to the University of Iowa's medical and dental schools be Iowa residents or come from an Iowa college. University of Iowa Hospitals and Clinics must give priority for residency and fellowship places to applicants who live in Iowa, earned an Iowa undergraduate degree, or earned a medical degree in Iowa. Primary care residents must also be offered a rural rotation. The Iowa House passed it 61-30, and it became law.",
+      "nay_description": "Voted against House File 516, which tries to keep more doctors in Iowa. The Board of Regents must require that at least eighty percent of the students admitted to the University of Iowa's medical and dental schools be Iowa residents or come from an Iowa college. University of Iowa Hospitals and Clinics must give priority for residency and fellowship places to applicants who live in Iowa, earned an Iowa undergraduate degree, or earned a medical degree in Iowa. Primary care residents must also be offered a rural rotation. The Iowa House passed it 61-30, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1547671,
+      "measure_id": "HF 516",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 516, which tries to keep more doctors in Iowa. The Board of Regents must require that at least eighty percent of the students admitted to the University of Iowa's medical and dental schools be Iowa residents or come from an Iowa college. University of Iowa Hospitals and Clinics must give priority for residency and fellowship places to applicants who live in Iowa, earned an Iowa undergraduate degree, or earned a medical degree in Iowa. Primary care residents must also be offered a rural rotation. The Iowa Senate passed it 34-11, and it became law.",
+      "nay_description": "Voted against House File 516, which tries to keep more doctors in Iowa. The Board of Regents must require that at least eighty percent of the students admitted to the University of Iowa's medical and dental schools be Iowa residents or come from an Iowa college. University of Iowa Hospitals and Clinics must give priority for residency and fellowship places to applicants who live in Iowa, earned an Iowa undergraduate degree, or earned a medical degree in Iowa. Primary care residents must also be offered a rural rotation. The Iowa Senate passed it 34-11, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1513469,
+      "measure_id": "HF 398",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 398, which shifts power over Iowa's prisons from the Board of Corrections to the department's director. The director once needed the board's approval to set the department budget, adopt rules for running the institutions, appoint superintendents, or start an inmate furlough program. The director now needs only the board's advice and recommendations. The act also removes a superintendent's right to be heard before the board and the director on written charges before removal. The Iowa House passed it 62-29, and it became law.",
+      "nay_description": "Voted against House File 398, which shifts power over Iowa's prisons from the Board of Corrections to the department's director. The director once needed the board's approval to set the department budget, adopt rules for running the institutions, appoint superintendents, or start an inmate furlough program. The director now needs only the board's advice and recommendations. The act also removes a superintendent's right to be heard before the board and the director on written charges before removal. The Iowa House passed it 62-29, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1551283,
+      "measure_id": "HF 398",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 398, which shifts power over Iowa's prisons from the Board of Corrections to the department's director. The director once needed the board's approval to set the department budget, adopt rules for running the institutions, appoint superintendents, or start an inmate furlough program. The director now needs only the board's advice and recommendations. The act also removes a superintendent's right to be heard before the board and the director on written charges before removal. The Iowa Senate passed it 32-15, and it became law.",
+      "nay_description": "Voted against House File 398, which shifts power over Iowa's prisons from the Board of Corrections to the department's director. The director once needed the board's approval to set the department budget, adopt rules for running the institutions, appoint superintendents, or start an inmate furlough program. The director now needs only the board's advice and recommendations. The act also removes a superintendent's right to be heard before the board and the director on written charges before removal. The Iowa Senate passed it 32-15, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1694200,
+      "measure_id": "HF 2724",
+      "vote_date": "2026-04-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2724, which requires the Board of Educational Examiners to create new teaching endorsements in three subjects Iowa schools struggle to staff: fine arts, mathematics and science. The endorsements cover prekindergarten through grade twelve. An applicant must hold a bachelor's degree from an accredited college to receive one. The Iowa Senate passed it 30-16, and it became law.",
+      "nay_description": "Voted against House File 2724, which requires the Board of Educational Examiners to create new teaching endorsements in three subjects Iowa schools struggle to staff: fine arts, mathematics and science. The endorsements cover prekindergarten through grade twelve. An applicant must hold a bachelor's degree from an accredited college to receive one. The Iowa Senate passed it 30-16, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1694102,
+      "measure_id": "SF 2218",
+      "vote_date": "2026-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2218, which bans employing anyone the employer knows has given a Social Security number that is not their own. The workforce development department enforces the ban with a ten thousand dollar civil penalty for each violation. On a fourth violation the employer must stop operating at that location until its majority owner and the site's managers finish state training. The act also tightens identity and work eligibility checks for teacher licensing and adds United States citizenship requirements for certain state posts. The Iowa House passed it 71-20, and it became law.",
+      "nay_description": "Voted against Senate File 2218, which bans employing anyone the employer knows has given a Social Security number that is not their own. The workforce development department enforces the ban with a ten thousand dollar civil penalty for each violation. On a fourth violation the employer must stop operating at that location until its majority owner and the site's managers finish state training. The act also tightens identity and work eligibility checks for teacher licensing and adds United States citizenship requirements for certain state posts. The Iowa House passed it 71-20, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

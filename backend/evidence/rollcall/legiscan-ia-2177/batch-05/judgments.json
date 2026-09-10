@@ -1,0 +1,95 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1693525,
+      "measure_id": "SF 469",
+      "vote_date": "2026-05-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 469, which creates an emeritus medical license in Iowa. The board of medicine must grant one to a physician or osteopathic physician who is at least sixty years old and who mainly supervises and trains resident doctors. The emeritus licensee keeps the same scope of practice held before, so senior doctors can stay in teaching hospitals without holding a full active license. The Iowa House passed it 58-27, and it became law.",
+      "nay_description": "Voted against Senate File 469, which creates an emeritus medical license in Iowa. The board of medicine must grant one to a physician or osteopathic physician who is at least sixty years old and who mainly supervises and trains resident doctors. The emeritus licensee keeps the same scope of practice held before, so senior doctors can stay in teaching hospitals without holding a full active license. The Iowa House passed it 58-27, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1693364,
+      "measure_id": "HF 2694",
+      "vote_date": "2026-05-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2694, which bars the governor from closing or placing any requirement on a place or practice of worship, for any reason. The ban applies even during a declared disaster emergency or a public health disaster. It also rewrites the disaster emergency section of the code around that limit. The Iowa Senate passed it 31-14, and it became law.",
+      "nay_description": "Voted against House File 2694, which bars the governor from closing or placing any requirement on a place or practice of worship, for any reason. The ban applies even during a declared disaster emergency or a public health disaster. It also rewrites the disaster emergency section of the code around that limit. The Iowa Senate passed it 31-14, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "official_vote_date": "2026-05-03"
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1693482,
+      "measure_id": "SF 2480",
+      "vote_date": "2026-05-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2480, which taxes and regulates electronic cigarettes and other nicotine products that contain no tobacco. A new tax of five cents applies to each container of up to twenty units of an alternative nicotine product, and five cents to each milliliter of vaping solution containing nicotine. The money goes to the state health care trust fund. The act also tightens who must hold a license to sell these products and what licensees must do. The Iowa House passed it 67-18, and it became law.",
+      "nay_description": "Voted against Senate File 2480, which taxes and regulates electronic cigarettes and other nicotine products that contain no tobacco. A new tax of five cents applies to each container of up to twenty units of an alternative nicotine product, and five cents to each milliliter of vaping solution containing nicotine. The money goes to the state health care trust fund. The act also tightens who must hold a license to sell these products and what licensees must do. The Iowa House passed it 67-18, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1651914,
+      "measure_id": "HF 2539",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2539, which repeals several higher education programs. Gone are the regents' minority and women educators enhancement program and the vouchers it awarded, the college bound program, and the chapter governing the state laboratory school. The act also strikes a set of Board of Regents duties and reporting requirements tied to those programs. The state grant program for minority students remains, without its reference to the repealed vouchers. The Iowa House passed it 66-30, and it became law.",
+      "nay_description": "Voted against House File 2539, which repeals several higher education programs. Gone are the regents' minority and women educators enhancement program and the vouchers it awarded, the college bound program, and the chapter governing the state laboratory school. The act also strikes a set of Board of Regents duties and reporting requirements tied to those programs. The state grant program for minority students remains, without its reference to the repealed vouchers. The Iowa House passed it 66-30, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1682518,
+      "measure_id": "HF 2539",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2539, which repeals several higher education programs. Gone are the regents' minority and women educators enhancement program and the vouchers it awarded, the college bound program, and the chapter governing the state laboratory school. The act also strikes a set of Board of Regents duties and reporting requirements tied to those programs. The state grant program for minority students remains, without its reference to the repealed vouchers. The Iowa Senate passed it 30-17, and it became law.",
+      "nay_description": "Voted against House File 2539, which repeals several higher education programs. Gone are the regents' minority and women educators enhancement program and the vouchers it awarded, the college bound program, and the chapter governing the state laboratory school. The act also strikes a set of Board of Regents duties and reporting requirements tied to those programs. The state grant program for minority students remains, without its reference to the repealed vouchers. The Iowa Senate passed it 30-17, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

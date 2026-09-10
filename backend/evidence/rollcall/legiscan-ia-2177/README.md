@@ -37,11 +37,56 @@ county races that the ballot holds for them. Fan-out: about 78 candidates per Ho
 about 17 per Senate roll.
 
 ## Pool
-205 divided and enacted rolls on 101 measures; 150 stored rolls on final text; **145 slots on
-92 measures** after one roll per measure per chamber. Dispositions are in
-`survey/divided-enacted-worklist.tsv`.
+205 divided and enacted rolls on 101 measures; 150 stored rolls on final text; **144 slots on
+91 measures** after one roll per measure per chamber. The filter 4 correction below removed
+HF 1003, whose final roll in each chamber was unanimous (Senate 43-0, House 85-0).
+Dispositions are in `survey/divided-enacted-worklist.tsv`.
 
 ## Batches
+
 | batch | measures | rolls | records | run stamp |
 |---|---|---|---|---|
 | 01 | 10 | 18 | 769 | 2026-09-09T23:47:36.357Z |
+| 02 | 10 | 17 | 777 | 2026-09-10T04:35:37.176Z |
+| 03 | 8 | 12 | 634 | 2026-09-10T04:40:03.722Z |
+| 04 | 5 | 8 | 374 | 2026-09-10T04:45:48.520Z |
+| 05 | 4 | 5 | 263 | 2026-09-10T04:47:41.463Z |
+
+Review fixes re-ran the importer in place; rewritten rows carry the re-run stamp instead:
+batch 02 `2026-09-10T05:44:42.259Z` (112 rows), batch 03 `2026-09-10T05:44:47.601Z` (176),
+batch 04 `2026-09-10T05:44:51.277Z` (92), batch 05 `2026-09-10T04:48:47.712Z` (15).
+
+**Local total: 2,817 candidate records, 102 candidates, 60 approved roll calls over 37
+measures. Production holds zero Iowa roll-call records.**
+
+## Every slot is dispositioned
+
+`survey/divided-enacted-worklist.tsv` accounts for all 144 measure-chamber slots on 91
+measures:
+
+| disposition | slots |
+|---|---|
+| imported in batches 01 to 05 | 60 |
+| appropriations, set aside under filter 3 | 30 |
+| dropped under filter 5 or filter 3, each with a written reason | 31 |
+| deferred, the act is too long to judge responsibly in one sitting | 23 |
+
+The 23 deferred slots are 15 measures, listed by name with a reason in the worklist. Seven of
+them are omnibus acts between 11,000 and 91,000 characters. They are the only Iowa work left
+at the measure level.
+
+## Two corrections worth carrying forward
+
+**Filter 4 must take the chamber's FINAL roll, not its final DIVIDED roll.** The first
+worklist builder kept the last divided roll in each chamber. On HF 1003 the House adopted the
+Senate amendment 57-28 and then passed the bill 85-0 the same day, so the divided roll was not
+the vote on the text that became law. The judge's supersession gate refused the batch, which is
+what it is for. The rule was corrected and re-run over the whole session: exactly one slot
+changed and every roll already imported stayed valid.
+
+**The date skew is real and the audit must be a hard gate.** Six Senate rolls are stamped
+2026-05-02 by LegiScan and recorded on 2026-05-03 in Iowa's journal, out of 28 Senate rolls
+carrying that date. One of them, HF 2694, reached batch-05 and was imported before the audit
+warning was acted on. It was re-judged with an `official_vote_date` override and re-imported
+for real; the ledger is `batch-05/import-date-override-report.json`. The audit script now
+stops the run instead of printing a warning.
