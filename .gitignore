@@ -26,3 +26,17 @@ scratch/idaho-campaign-finance/
 # __pycache__ beside it — and a directory-wide `git add` then commits the .pyc.
 __pycache__/
 *.pyc
+
+# Database dumps and ad-hoc backups. A 9 MB pg_dump
+# (tmp_voteapp_backup_before_live_ai_20260511.sql) was tracked from
+# 2026-05-12 to 2026-09-10; dumps carry request payloads and, once users
+# exist, account rows. Never commit one.
+tmp_*.sql
+*.dump
+*.pgdump
+
+# Saved third-party web pages from the records-verification sessions
+# (governor + major-city mayor, 2026-09-05). They embed other sites' API
+# keys and tracking tokens and trip every secrets scanner. Keep the notes,
+# never the raw HTML.
+scratch/records-verify-*/
