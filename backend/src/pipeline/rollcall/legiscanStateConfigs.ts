@@ -5235,6 +5235,15 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     //    North Carolina, Indiana, Kansas and Oregon. HB 3383 is worse than a
     //    tally: Oklahoma records the measure as FAILED.
     //
+    //    ⚠ The audit that produced this list matched a roll against history
+    //    lines of the SAME DAY, and that is one day too narrow. Oklahoma can
+    //    date a journal line a day after the vote: HB 1576's House veto
+    //    override is roll-dated 2025-05-29 and the history prints
+    //    `Veto overridden: Ayes: 76 Nays: 12` on 2025-05-30. The tallies agree
+    //    exactly, so that roll was a false positive and has been removed from
+    //    this list. Re-running the audit over a one-day window cleared it and
+    //    left the other nineteen standing. Use a one-day window.
+    //
     // 2. Nothing here covers the four `Senate:  Committee: DO PASS` rolls,
     //    which carry an empty committee name and a whole-chamber tally.
     //    Three are genuine Senate passage votes the feed mis-captioned
@@ -5257,8 +5266,6 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "SB 585 Senate 2025-03-25 third reading: LegiScan reports 25-15, and neither of Oklahoma's two lines for that day matches it — the measure failed 24-22 and the motion to reconsider carried 30-16",
       1604598:
         "SB 701 Senate 2025-05-21 fourth reading: LegiScan reports 29-15; Oklahoma reports `Measure passed: Ayes: 29 Nays: 16`",
-      1605044:
-        "HB 1576 House 2025-05-29 veto override: LegiScan reports 76-12 and no history line of that day carries it; the only tally Oklahoma prints is the Senate's `Veto overridden: Ayes: 36 Nays: 9`. Not divided, but unproven",
       1688975:
         "HB 2979 Senate 2026-04-23 third reading: LegiScan reports 41-0; Oklahoma reports 41-1",
       1692912:
