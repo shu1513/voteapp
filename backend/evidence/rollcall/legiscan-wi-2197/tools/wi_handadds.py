@@ -7,14 +7,14 @@ retries every unmatched member on the `name` and `nickname` fields, and only
 inside the seat the member actually holds.
 """
 import json
+import os
 import re
 import subprocess
 
-BASE = ('/Users/shu/voteApp/.claude/worktrees/competent-mestorf-430d9d/backend/'
-        'evidence/rollcall/legiscan-wi-2197/')
+BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '')
 DB = 'postgresql://localhost:5432/voteapp'
 
-report = json.load(open(BASE + 'resolve-report.json'))
+report = json.load(open(BASE + 'crosswalk-proposal-report.json'))
 people = {p['people_id']: p for p in json.load(open(BASE + 'legiscan-people-wi-2197.json'))['people']}
 
 sql = """

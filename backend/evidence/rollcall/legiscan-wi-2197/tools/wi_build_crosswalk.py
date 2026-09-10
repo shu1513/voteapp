@@ -5,14 +5,14 @@ Every member in the people snapshot gets a row. A null is a decision, not a gap,
 and each null carries the reason.
 """
 import json
+import os
 import re
 import subprocess
 
-BASE = ('/Users/shu/voteApp/.claude/worktrees/competent-mestorf-430d9d/backend/'
-        'evidence/rollcall/legiscan-wi-2197/')
+BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '')
 DB = 'postgresql://localhost:5432/voteapp'
 
-report = json.load(open(BASE + 'resolve-report.json'))
+report = json.load(open(BASE + 'crosswalk-proposal-report.json'))
 people = {p['people_id']: p for p in json.load(open(BASE + 'legiscan-people-wi-2197.json'))['people']}
 
 # Members whose `name` field is byte-identical (or near) to our candidate but
@@ -38,8 +38,10 @@ select d.name
 from elections e join districts d on d.id=e.district_id join offices o on o.id=e.office_id
 where d.state='WI' and e.election_date='2026-11-03' and o.canonical_name='State Senator';
 """
-raw = subprocess.run(['psql', DB, '-tA', '-c', sql], capture_output=True, text=True).stdout
+raw = subprocess.run(['psql', DB, '-tA', '-c', sql], capture_output=True, text=True, check=True).stdout
 senate_up = {int(m.group(1)) for m in re.finditer(r'District\s+(\d+)', raw)}
+if not senate_up:
+    raise SystemExit('no Senate districts on the 2026 ballot in the database; refusing to write a crosswalk that would call every senator structural')
 
 entries = []
 counts = {'proposed': 0, 'hand': 0, 'null_structural': 0, 'null_not_running': 0}
