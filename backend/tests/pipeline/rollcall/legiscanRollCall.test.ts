@@ -82,7 +82,19 @@ describe("formatLegiscanMeasureId", () => {
     expect(formatLegiscanMeasureId("LB48A")).toBe("LB 48A");
     expect(formatLegiscanMeasureId("LR19CA")).toBe("LR 19CA");
     expect(formatLegiscanMeasureId("lb0048a")).toBe("LB 48A");
-    expect(() => formatLegiscanMeasureId("RV#105")).toThrow("not <letters><digits><letters>");
+    expect(() => formatLegiscanMeasureId("RV#105")).toThrow("lettered joint resolution");
+  });
+
+  it("accepts the lettered joint resolutions Michigan uses in place of numbers", () => {
+    // Michigan's proposed constitutional amendments are HJR A through HJR AA
+    // and SJR A through SJR N. Michigan cites them exactly this way.
+    expect(formatLegiscanMeasureId("HJRB")).toBe("HJR B");
+    expect(formatLegiscanMeasureId("HJRAA")).toBe("HJR AA");
+    expect(formatLegiscanMeasureId("sjrn")).toBe("SJR N");
+    // A numbered joint resolution is still read as a number, not as letters.
+    expect(formatLegiscanMeasureId("SJR10")).toBe("SJR 10");
+    // The prefix alone is not a measure.
+    expect(() => formatLegiscanMeasureId("HJR")).toThrow("lettered joint resolution");
   });
 });
 
@@ -1046,6 +1058,123 @@ describe("West Virginia's measured desc vocabulary", () => {
   });
 });
 
+describe("Michigan's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.MI!;
+  const mi = (desc: string, chamber: "house" | "senate" = "house", total?: number, rollCallId?: number) =>
+    classifyLegiscanRollCall({
+      desc,
+      total: total ?? (chamber === "house" ? 110 : 38),
+      chamber,
+      billType: "B",
+      config,
+      rollCallId,
+    });
+
+  it("keeps `Given Immediate Effect` as PASSAGE, because in Michigan it is the passage vote", () => {
+    // This is the rule that inverts West Virginia's. Michigan's journal prints
+    // one line, `Passed; Given Immediate Effect Roll Call #5 Yeas 67 Nays 38`,
+    // and LegiScan drops the word `Passed;`. Reading this family the West
+    // Virginia way would discard 644 of the House's 717 floor votes.
+    expect(mi("House Third Reading: Given Immediate Effect Roll Call #5")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(mi("Senate Third Reading: Given Immediate Effect Roll Call # 10", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("keeps plain passage, supermajority passage, and the failed spellings", () => {
+    expect(mi("Senate Third Reading: Passed Roll Call # 44", "senate")).toMatchObject({ questionClass: "passage" });
+    expect(mi("Senate Third Reading: Passed By 3/4 Vote Roll Call # 90", "senate")).toMatchObject({
+      questionClass: "passage",
+    });
+    // Failures are kept so a rejection is dispositioned rather than lost.
+    // HB 4141 became law and still carries a 53-45 `Defeated` House roll.
+    expect(mi("House Third Reading: Defeated Roll Call #171")).toMatchObject({ questionClass: "passage" });
+    expect(mi("House Third Reading: Not Adopted By 2/3 Vote Roll Call #170")).toMatchObject({
+      questionClass: "passage",
+    });
+  });
+
+  it("keeps concurrence and conference reports in both chambers' spellings", () => {
+    expect(mi("House Third Reading: Senate Amendment(s) Concurred In Roll Call #12")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    expect(mi("House Third Reading: Conference Report Adopted Roll Call #330")).toMatchObject({
+      questionClass: "conference_report",
+    });
+    expect(
+      mi("Senate Third Reading: Senate Adopted Conference Report With Immediate Effect Roll Call # 55", "senate"),
+    ).toMatchObject({ questionClass: "conference_report" });
+  });
+
+  it("keeps the concurrence votes that state no question at all", () => {
+    // 86 rolls wear a caption that is only a roll number. Ten of them are
+    // closely divided votes on measures that became law, and they are the
+    // votes on the text that became law, so the family cannot be dropped.
+    // The preceding bill-history line is what names the question.
+    for (const [desc, chamber] of [
+      ["House Third Reading: Roll Call #12", "house"],
+      ["Senate Third Reading: Roll Call: Roll Call # 44", "senate"],
+    ] as const) {
+      expect(mi(desc, chamber)).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    }
+  });
+
+  it("excludes every committee report, which is the state's whole exclusion list", () => {
+    for (const [desc, chamber, total] of [
+      ["Reported With Recommendation Without Amendment 6/5/2025", "house", 15],
+      ["Reported With Recommendation With Substitute H-1 3/18/2025", "house", 15],
+      ["Reported With Recommendation For Referral To Committee On Rules 4/2/2025", "house", 12],
+      ["Reported Favorably Without Amendment 11/13/2025", "senate", 9],
+      ["REPORTED FAVORABLY WITH SUBSTITUTE (S-1) 5/20/2026", "senate", 7],
+      ["Reported Without Recommendation 6/5/2025", "house", 14],
+    ] as const) {
+      expect(mi(desc, chamber, total)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+  });
+
+  it("never queues the doubled caption LegiScan writes when it files one action twice", () => {
+    // `Roll Call Roll Call #12` is not a question Michigan asks. It is what
+    // LegiScan writes when it stores a single House action as two roll calls.
+    // The pattern is deliberately NOT widened to match it, so any future
+    // double filing surfaces for a human instead of being queued as a vote.
+    expect(mi("House Third Reading: Roll Call Roll Call #12", "house", 110, 1)).toMatchObject({
+      isFloorVote: null,
+      reason: "unknown_question",
+    });
+    // The one such roll in this session is held by id as well, so the run
+    // report carries the reason and names the roll to use instead.
+    expect(mi("House Third Reading: Roll Call Roll Call #12", "house", 110, 1550992)).toMatchObject({
+      isFloorVote: null,
+      reason: expect.stringContaining("Roll 1497863"),
+    });
+  });
+
+  it("holds the last-day rolls whose member list disagrees with the journal line", () => {
+    // 16 of the 55 House rolls of 2026-07-03 list fewer, or different,
+    // members than the journal tally. Which members is unknowable from the
+    // dataset, so each is held by id rather than corrected.
+    expect(mi("House Third Reading: Given Immediate Effect Roll Call #315", "house", 105, 1715887)).toMatchObject({
+      isFloorVote: null,
+      reason: expect.stringContaining("HB 6130 House 2026-07-03, 60-45 against 60-48"),
+    });
+    expect(Object.keys(config.heldRollCallIds ?? {})).toHaveLength(20);
+  });
+
+  it("holds the bare-caption rolls that are nonconcurrences, not concurrences", () => {
+    // The caption `Roll Call #237` says nothing; the preceding history line
+    // reads `Nonconcurred In`. Held by id so the caption rule cannot queue
+    // a rejection as a concurrence.
+    expect(mi("House Third Reading: Roll Call #237", "house", 109, 1603577)).toMatchObject({
+      isFloorVote: null,
+      reason: expect.stringContaining("nonconcurrence, not a concurrence"),
+    });
+  });
+});
+
 describe("Washington's measured desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS.WA!;
   const wa = (desc: string, chamber: "house" | "senate" = "house", total?: number) =>
@@ -1809,6 +1938,7 @@ describe("getLegiscanStateConfig", () => {
       "ID-2246",
       "WV",
       "WV-2254",
+      "MI",
       "WI",
       "NE",
       "SD",
@@ -1854,6 +1984,7 @@ describe("getLegiscanStateConfig", () => {
       "ND",
       "ID",
       "WV",
+      "MI",
       "WI",
       "NE",
       "SD",

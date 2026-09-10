@@ -91,11 +91,29 @@ export function classifyLegiscanDatasetFile(raw: unknown): LegiscanDatasetPayloa
  */
 export function formatLegiscanMeasureId(billNumber: string): string {
   const compact = billNumber.replace(/\s+/g, "");
-  const match = /^([A-Za-z]+)0*(\d+)([A-Za-z]*)$/.exec(compact);
-  if (!match) {
-    throw new Error(`LegiScan bill_number is not <letters><digits><letters>: ${billNumber}`);
+  const numbered = /^([A-Za-z]+)0*(\d+)([A-Za-z]*)$/.exec(compact);
+  if (numbered) {
+    // Nebraska numbers a bill's appropriation after the bill (`LB 48A`) and a
+    // proposed constitutional amendment with a trailing CA (`LR 19CA`). The
+    // trailing letters are part of the measure's identity and are kept.
+    return `${numbered[1]!.toUpperCase()} ${numbered[2]}${numbered[3]!.toUpperCase()}`;
   }
-  return `${match[1]!.toUpperCase()} ${match[2]}${match[3]!.toUpperCase()}`;
+  // Michigan LETTERS its joint resolutions instead of numbering them, and its
+  // joint resolutions are its proposed constitutional amendments. The 2025-2026
+  // session runs `HJRA` through `HJRAA` and `SJRA` through `SJRN`, which
+  // Michigan itself cites as `HJR A` and `SJR N`. Without this the whole bill
+  // file fails to parse, the fetch reports a file error and exits, and 40
+  // measures are unreachable.
+  //
+  // The rule is deliberately narrow: an instrument prefix ending in `JR`,
+  // followed by a one or two letter designator. It cannot swallow a numbered
+  // measure, because the numbered form is matched first and this form has no
+  // digits at all.
+  const lettered = /^([A-Za-z]*JR)([A-Za-z]{1,2})$/i.exec(compact);
+  if (lettered) {
+    return `${lettered[1]!.toUpperCase()} ${lettered[2]!.toUpperCase()}`;
+  }
+  throw new Error(`LegiScan bill_number is neither <letters><digits><letters> nor a lettered joint resolution: ${billNumber}`);
 }
 
 /** The public per-roll page; the fallback when the bill feed carries no vote url. */

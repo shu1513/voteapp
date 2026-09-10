@@ -23,6 +23,9 @@ describe("parseLegiscanBillList", () => {
   it("normalizes to the stored measure spelling and rejects junk", () => {
     expect([...parseLegiscanBillList("hb1,SB0544, sb 544")]).toEqual(["HB 1", "SB 544"]);
     expect([...parseLegiscanBillList("lb48a,LR19CA,lb48")]).toEqual(["LB 48A", "LR 19CA", "LB 48"]);
+    // Michigan letters its joint resolutions; the flag reads them the way
+    // the bill feed does.
+    expect([...parseLegiscanBillList("HJRB,hjr b,SJR10")]).toEqual(["HJR B", "SJR 10"]);
     expect(() => parseLegiscanBillList("hb1,RV#105")).toThrow("not a bill number");
     expect(() => parseLegiscanBillList(" , ")).toThrow("names no bills");
   });

@@ -902,6 +902,137 @@ const WEST_VIRGINIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"]
   /\brefused to concur\b/,
 ];
 
+// Michigan's floor-question vocabulary, session 2183 (103rd Legislature,
+// 2025-2026). Written from the `--survey` description histogram, which folds
+// 1,041 raw descriptions into 45 families once two suffixes are set aside:
+// floor votes end ` Roll Call #<n>`, committee votes end with a date.
+//
+// Sixteen distinct floor descriptions exist in the whole session, and the
+// eleven rules below classify all 2,600 roll calls with nothing left over.
+const MICHIGAN_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // ⚠ `Given Immediate Effect` IS THE PASSAGE VOTE IN MICHIGAN. Do not read
+  // it as West Virginia's separate effective-date vote, which must be
+  // excluded. Michigan's journal prints ONE line for both,
+  // `Passed; Given Immediate Effect Roll Call #5 Yeas 67 Nays 38`, and
+  // LegiScan stores the description with the word `Passed;` dropped. Every
+  // floor vote was matched to its own bill-history line to confirm this: 643
+  // of the 644 House rolls in this family sit on a history line reading
+  // `Passed; Given Immediate Effect`. Excluding the family would discard 644
+  // of the House's 717 floor votes.
+  //
+  // The same rule also covers `Passed`, `Passed By 2/3 Vote`,
+  // `Passed By 3/4 Vote`, and the failed spellings `Defeated` and
+  // `Not Adopted` / `Not Adopted By 2/3 Vote`. Failures are kept rather than
+  // dropped so a rejection is dispositioned in the worklist instead of
+  // disappearing, following the Illinois precedent that a failed motion's
+  // tally reads exactly like a passing one. HB 4141 shows why it matters
+  // here: it became law, and one of its House rolls is a 53-45 `Defeated`.
+  {
+    pattern: /^(?:house|senate) third reading: (?:passed|given immediate effect|defeated|not adopted)\b/,
+    questionClass: "passage",
+  },
+  // Concurrence in the other chamber's amendments, the only concurrence
+  // spelling Michigan states in words.
+  {
+    pattern: /^(?:house|senate) third reading: (?:house|senate) amendment\(s\) concurred in\b/,
+    questionClass: "concurrence",
+  },
+  // Conference reports, in both chambers' spellings
+  // (`Conference Report Adopted` and
+  // `Senate Adopted Conference Report With Immediate Effect`).
+  {
+    pattern: /^(?:house|senate) third reading: (?:senate adopted )?conference report/,
+    questionClass: "conference_report",
+  },
+  // ⚠ MICHIGAN'S MOST COMMON CONCURRENCE VOTE STATES NO QUESTION AT ALL.
+  // 81 rolls read only `House Third Reading: Roll Call #12` (53) or
+  // `Senate Third Reading: Roll Call: Roll Call # 44` (28). The bill history
+  // is no more helpful on its own line, which reads
+  // `Roll Call Roll Call #12 Yeas 81 Nays 29`. The question sits in the
+  // history line BEFORE it: 37 are `Senate Substitute (h-1) Concurred In`,
+  // 23 are `House Substitute Concurred In`, 15 are a resolution `Adopted`,
+  // four are amendment concurrences, and three are nonconcurrences.
+  //
+  // The family cannot be dropped: ten of the 76 closely divided rolls on
+  // measures that became law wear this caption, and they are the votes on the
+  // text that became law, which is the only text a record may describe.
+  //
+  // It is classified `concurrence` because that is what all but a handful
+  // are. ⚠ THE CAPTION CANNOT TELL A CONCURRENCE FROM A NONCONCURRENCE. The
+  // three nonconcurrences in the dataset were found by reading the preceding
+  // history line and are held by id below, so none of them can be queued as a
+  // concurrence. A roll fetched later in this family has no such check, so
+  // read the preceding history line for every roll selected out of it.
+  // Recorded in the session's CODE-FINDINGS.md.
+  //
+  // A fourth shape exists, `House Third Reading: Roll Call Roll Call #12`,
+  // and this pattern deliberately does NOT match it. It is not a question
+  // Michigan asks: it is what LegiScan writes when it files one House action
+  // as two roll calls. Five rolls wear it, only one of them on a kept bill
+  // type, and that one is held by id below. Leaving it unmatched means any
+  // future double filing surfaces for a human instead of being queued.
+  {
+    pattern: /^(?:house|senate) third reading:(?: roll call:)? roll call ?# ?\d+$/,
+    questionClass: "concurrence",
+  },
+];
+
+// Checked BEFORE the kept list. Michigan needs exactly one exclusion: every
+// committee vote in the session opens with `Reported`, in four families
+// (`Reported With Recommendation ...` in the House, `Reported Favorably ...`
+// in the Senate, plus referral and no-recommendation spellings). That is
+// 1,372 of the 2,600 roll calls.
+//
+// The tally check would catch most of them on its own — House committees run
+// 3 to 29 members against 110 seats — but the Senate's largest committee vote
+// is 18 of 38 seats, which is 47%, close enough to the 50% committee ceiling
+// that one larger committee of the whole would slip through as an unknown
+// question. The explicit rule removes that risk.
+const MICHIGAN_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [/^reported\b/];
+
+// ⚠ ON THE SESSION'S LAST SITTING DAY, 2026-07-03, LEGISCAN'S MEMBER LISTS
+// ARE SHORT. Every Michigan roll in the dataset lists only the members who
+// voted yea or nay (`nv` and `absent` are always 0), so the member list IS
+// the tally. On 2026-07-03 the House took 55 floor votes and on 16 of them
+// LegiScan's list disagrees with the journal line the bill history carries
+// for the same date and roll number: usually one to three members missing,
+// twice a yea recorded where the journal has a nay. HB 6130 is the closely
+// divided case, 60-45 in LegiScan against 60-48 in the journal.
+//
+// Which members are missing or flipped cannot be read from the dataset, so
+// the counts cannot simply be corrected. Each roll is held until its member
+// list is checked against the House Journal for 2026-07-03. The other 39
+// rolls of that day match their journal lines exactly and are not held.
+// Outside that day the whole session has one such disagreement, HR 19 of
+// 2025-02-11, which is a simple resolution and already out of scope by type.
+const MICHIGAN_LAST_DAY_TALLY_HOLD =
+  "LegiScan's member list disagrees with the journal line for this roll. Hold until checked against the House Journal for 2026-07-03";
+const MICHIGAN_LAST_DAY_TALLY_HOLDS: Record<number, string> = Object.fromEntries(
+  (
+    [
+      [1716679, "HB 4062", "89-17 against 89-18"],
+      [1715910, "HB 4103", "105-1 against 104-2"],
+      [1715909, "HB 4104", "103-2 against 104-2"],
+      [1715889, "HB 4187", "105-0 against 107-0"],
+      [1715956, "HB 4396", "105-1 against 104-2"],
+      [1715948, "HB 4518", "108-0 against 107-1"],
+      [1715947, "HB 4808", "100-5 against 100-8"],
+      [1715897, "HB 5630", "99-5 against 99-8"],
+      [1715903, "HB 5697", "103-0 against 103-3"],
+      [1715902, "HB 6074", "105-1 against 104-2"],
+      [1715898, "HB 6126", "105-0 against 105-3"],
+      [1715887, "HB 6130", "60-45 against 60-48"],
+      [1715901, "SB 52", "104-0 against 104-4"],
+      [1715891, "SB 71", "96-9 against 96-12"],
+      [1715896, "SB 604", "100-5 against 100-8"],
+      [1715888, "SB 989", "105-0 against 108-0"],
+    ] as const
+  ).map(([rollCallId, bill, tallies]) => [
+    rollCallId,
+    `${bill} House 2026-07-03, ${tallies}: ${MICHIGAN_LAST_DAY_TALLY_HOLD}`,
+  ]),
+);
+
 // South Dakota's floor vocabulary, measured on all three sessions in scope
 // (2170 = 2025 Regular, 2231 = 2026 Regular, 2222 = 2025 First Special) and
 // shared by all three, because the three surveys print the same families.
@@ -4335,6 +4466,35 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "HB 5458 House roll 268, 2026-03-03: LegiScan reports 92-0; West Virginia's own vote sheet reports 93-0, so one yes vote is missing. Not divided either way",
       1660050:
         "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
+    },
+  },
+  // Michigan, 103rd Legislature (2025-2026), LegiScan session 2183. The state
+  // runs one two-year session, so this single entry covers both years.
+  //
+  // The dataset holds 148 people, which is exactly the 110 House seats plus
+  // the 38 Senate seats, and both chambers are on the November 2026 ballot.
+  //
+  // Michigan has divided government: a Democratic Governor and Senate and a
+  // Republican House. The measured effect on this campaign is large. Of the
+  // 415 measures carrying a closely divided floor vote, only 59 became law.
+  "MI": {
+    jurisdiction: "MI",
+    sessionId: 2183,
+    chamberSizes: { house: 110, senate: 38 },
+    keptQuestions: MICHIGAN_KEPT_QUESTIONS,
+    excludedQuestions: MICHIGAN_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      ...MICHIGAN_LAST_DAY_TALLY_HOLDS,
+      // The three bare-caption rolls whose preceding history line reads
+      // `Nonconcurred In`. The caption alone would queue them as concurrences.
+      1603577:
+        "HB 4706 House 2025-10-01, 2-107: caption is only `Roll Call #237`; the preceding history line is `Senate Substitute (s-1) Nonconcurred In`. A nonconcurrence, not a concurrence",
+      1714401:
+        "SB 878 Senate 2026-07-01, 2-32: caption is only `Roll Call # 168`; the preceding history line is `House Substitute (h-1) Nonconcurred In`. A nonconcurrence, not a concurrence",
+      1713884:
+        "HB 5630 House 2026-07-01, 1-105: caption is only `Roll Call #287`; the preceding history line is `Senate Substitute (s-1) Nonconcurred In`. A nonconcurrence, not a concurrence",
+      1550992:
+        "HB 4002 House 2025-02-20, 81-29: LegiScan stored one House action as two roll calls. Roll 1497863 is described `House Third Reading: Roll Call #12` and this one `House Third Reading: Roll Call Roll Call #12`, and both point at the single history line `Roll Call Roll Call #12 Yeas 81 Nays 29`. The descriptions differ, so the fetcher's identity key cannot collapse them. Roll 1497863 is the one to use",
     },
   },
   // Wisconsin Legislature, 2025-2026 Regular Session. Wisconsin files both
