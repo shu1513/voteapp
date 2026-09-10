@@ -1,0 +1,130 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1485161,
+      "measure_id": "HB 1130",
+      "vote_date": "2025-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1130, which moved city and school elections onto the June and November dates. A city used to hold its annual election on the second Tuesday of April. The act allows only two dates: the first Tuesday after the first Monday in June, or the same day in November, which are the days South Dakota holds its primary and general elections. The city must set which one it will use by January 14 of the election year. In odd-numbered years a city may still combine its election with a school district election. The South Dakota House vote was 52-16. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1130, which moved city and school elections onto the June and November dates. A city used to hold its annual election on the second Tuesday of April. The act allows only two dates: the first Tuesday after the first Monday in June, or the same day in November, which are the days South Dakota holds its primary and general elections. The city must set which one it will use by January 14 of the election year. In odd-numbered years a city may still combine its election with a school district election. The South Dakota House vote was 52-16. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1511838,
+      "measure_id": "HB 1130",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1130, which moved city and school elections onto the June and November dates. A city used to hold its annual election on the second Tuesday of April. The act allows only two dates: the first Tuesday after the first Monday in June, or the same day in November, which are the days South Dakota holds its primary and general elections. The city must set which one it will use by January 14 of the election year. In odd-numbered years a city may still combine its election with a school district election. The South Dakota Senate vote was 23-11. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against House Bill 1130, which moved city and school elections onto the June and November dates. A city used to hold its annual election on the second Tuesday of April. The act allows only two dates: the first Tuesday after the first Monday in June, or the same day in November, which are the days South Dakota holds its primary and general elections. The city must set which one it will use by January 14 of the election year. In odd-numbered years a city may still combine its election with a school district election. The South Dakota Senate vote was 23-11. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1501839,
+      "measure_id": "SB 116",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 116, which wrote street racing and stunt driving into criminal law. The act replaces the old street racing ban with a set of defined offenses. It defines a burnout as spinning the wheels until the tires smoke, a doughnut as swinging one end of the vehicle around the other, and a drag race as two or more vehicles accelerating side by side from a standing start. Each carries its own penalty. The South Dakota House vote was 48-22. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 116, which wrote street racing and stunt driving into criminal law. The act replaces the old street racing ban with a set of defined offenses. It defines a burnout as spinning the wheels until the tires smoke, a doughnut as swinging one end of the vehicle around the other, and a drag race as two or more vehicles accelerating side by side from a standing start. Each carries its own penalty. The South Dakota House vote was 48-22. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2170",
+      "roll": 1495406,
+      "measure_id": "SB 54",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 54, which cut the share of cigarette tax money going to tobacco prevention. Cigarette tax money is split by a set of thresholds. The first $30 million a year goes to the general fund. The next slice went to the tobacco prevention and reduction trust fund, which pays for programs to stop people smoking. The act cuts that slice from $5 million to $2 million a year, and everything above $32 million now goes to the general fund instead of $35 million. The South Dakota Senate vote was 21-14. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against Senate Bill 54, which cut the share of cigarette tax money going to tobacco prevention. Cigarette tax money is split by a set of thresholds. The first $30 million a year goes to the general fund. The next slice went to the tobacco prevention and reduction trust fund, which pays for programs to stop people smoking. The act cuts that slice from $5 million to $2 million a year, and everything above $32 million now goes to the general fund instead of $35 million. The South Dakota Senate vote was 21-14. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1505036,
+      "measure_id": "SB 59",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 59, which rewrote the penalties for banned items in state prisons. The act sets out a schedule of felonies for an inmate found with an article the Department of Corrections did not issue. Alcohol or marijuana is a Class 6 felony. A cell phone or other banned electronic device is a Class 4 felony. Prescription and nonprescription drugs and controlled substances carry their own grade, unless a doctor or physician assistant ordered them for a set period. The South Dakota House vote was 47-23. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 59, which rewrote the penalties for banned items in state prisons. The act sets out a schedule of felonies for an inmate found with an article the Department of Corrections did not issue. Alcohol or marijuana is a Class 6 felony. A cell phone or other banned electronic device is a Class 4 felony. Prescription and nonprescription drugs and controlled substances carry their own grade, unless a doctor or physician assistant ordered them for a set period. The South Dakota House vote was 47-23. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1508185,
+      "measure_id": "SB 6",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 6, which let the housing infrastructure fund lend money to build a school. The South Dakota housing infrastructure fund exists to pay for public works that support housing projects, such as water and sewer lines, streets and sidewalks. The act lets the housing authority lend from that fund to a school district next to a federal military installation, to build or expand a school building. The authority must write rules for how such a loan is applied for and paid out. The South Dakota House vote was 41-28. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against Senate Bill 6, which let the housing infrastructure fund lend money to build a school. The South Dakota housing infrastructure fund exists to pay for public works that support housing projects, such as water and sewer lines, streets and sidewalks. The act lets the housing authority lend from that fund to a school district next to a federal military installation, to build or expand a school building. The authority must write rules for how such a loan is applied for and paid out. The South Dakota House vote was 41-28. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2170",
+      "roll": 1502080,
+      "measure_id": "SB 8",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 8, which created the crime of watercraft homicide. A person who operates a boat while under the influence of alcohol or drugs, and who negligently causes another person's death without intending it, commits watercraft homicide, a Class 3 felony. The act names an unborn child among those whose death counts. A parallel offense covers causing serious bodily injury the same way. The South Dakota House vote was 52-18. The Governor signed it on March 13, 2025.",
+      "nay_description": "Voted against Senate Bill 8, which created the crime of watercraft homicide. A person who operates a boat while under the influence of alcohol or drugs, and who negligently causes another person's death without intending it, commits watercraft homicide, a Class 3 felony. The act names an unborn child among those whose death counts. A parallel offense covers causing serious bodily injury the same way. The South Dakota House vote was 52-18. The Governor signed it on March 13, 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
