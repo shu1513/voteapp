@@ -72,8 +72,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0036	H		1511802	2025-01-23	71	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Provo Canyon Resource Management Plan Amendments
 2137	HB0036	S		1511805	2025-02-06	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Provo Canyon Resource Management Plan Amendments
 2137	HB0037	H		1515020	2025-02-20	58	9	1	4	signed	screened	not-divided	House/ passed 3rd reading	Utah Housing Amendments
-2137	HB0037	H		1515024	2025-03-07	39	30	1	4	signed	candidate	batch-02: 18 code sections and 4,013 words of change, needs its own read	House/ concurs with Senate amendment	Utah Housing Amendments
-2137	HB0037	S		1515023	2025-03-07	22	6	1	4	signed	candidate	batch-02: 18 code sections and 4,013 words of change, needs its own read	Senate/ passed 2nd & 3rd readings/ suspension	Utah Housing Amendments
+2137	HB0037	H		1515024	2025-03-07	39	30	1	4	signed	batch-02	imported	House/ concurs with Senate amendment	Utah Housing Amendments
+2137	HB0037	S		1515023	2025-03-07	22	6	1	4	signed	batch-02	imported	Senate/ passed 2nd & 3rd readings/ suspension	Utah Housing Amendments
 2137	HB0038	H		1512749	2025-02-12	69	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Criminal Offenses Modifications
 2137	HB0038	H		1512753	2025-03-05	68	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Criminal Offenses Modifications
 2137	HB0038	S		1512752	2025-03-05	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Offenses Modifications
@@ -100,8 +100,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0048	H		1509878	2025-02-10	75	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Wildland Urban Interface Modifications
 2137	HB0048	H		1509883	2025-03-05	73	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Wildland Urban Interface Modifications
 2137	HB0048	S		1509882	2025-03-05	24	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Wildland Urban Interface Modifications
-2137	HB0049	H		1509868	2025-02-04	45	25	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Juror Eligibility Amendments
-2137	HB0049	S		1509871	2025-02-20	16	5	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Juror Eligibility Amendments
+2137	HB0049	H		1509868	2025-02-04	45	25	1	4	signed	batch-02	imported	House/ passed 3rd reading	Juror Eligibility Amendments
+2137	HB0049	S		1509871	2025-02-20	16	5	1	4	signed	batch-02	imported	Senate/ passed 3rd reading	Juror Eligibility Amendments
 2137	HB0050	H		1509835	2025-01-27	73	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Occupational Safety and Health Amendments
 2137	HB0050	S		1509838	2025-02-07	27	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Occupational Safety and Health Amendments
 2137	HB0051	H		1509977	2025-01-23	74	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Higher Education Reporting Amendments
@@ -435,7 +435,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0249	S		1513125	2025-03-05	22	6	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 2nd & 3rd readings/ suspension	Nuclear Power Amendments
 2137	HB0249	S		1513126	2025-03-06	22	4	1	4	signed	screened	not-divided	Senate Conference Committee - Final Passage	Nuclear Power Amendments
 2137	HB0250	H		1512232	2025-02-21	51	13	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Public Employee Gender-specific Language Requirements
-2137	HB0251	H		1511363	2025-02-11	52	21	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Pollinator Program Amendments
+2137	HB0251	H		1511363	2025-02-11	52	21	1	4	signed	batch-02	imported	House/ passed 3rd reading	Pollinator Program Amendments
 2137	HB0251	S		1511366	2025-03-05	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Pollinator Program Amendments
 2137	HB0252	H		1510619	2025-02-03	60	14	1	4	signed	screened	not-divided	House/ passed 3rd reading	State Custody Amendments
 2137	HB0252	S		1510622	2025-02-20	19	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	State Custody Amendments
@@ -823,7 +823,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0479	H		1511632	2025-02-25	50	14	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Student Athlete Revisions
 2137	HB0479	H		1511636	2025-03-07	50	15	1	4	signed	candidate	divided-enacted-final	House/ concurs with Senate amendment	Student Athlete Revisions
 2137	HB0479	S		1511635	2025-03-07	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Student Athlete Revisions
-2137	HB0480	H		1511650	2025-02-25	53	15	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Landlord Communication Amendments
+2137	HB0480	H		1511650	2025-02-25	53	15	1	4	signed	dropped	filter-5-two-directions and area-fit: an eviction procedure act, which the Maryland HB 767 line puts outside housing_affordability; it eases some tenant steps but also requires a bad-faith finding before an owner pays a tenant's fees and speeds removal	House/ passed 3rd reading	Landlord Communication Amendments
 2137	HB0480	S		1511652	2025-03-07	23	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Landlord Communication Amendments
 2137	HB0481	H		1514606	2025-02-26	70	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Ballot Proposition Requirements
 2137	HB0481	S		1514608	2025-03-07	28	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Ballot Proposition Requirements
@@ -1120,7 +1120,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	SB0090	H		1512356	2025-03-06	64	2	1	4	signed	screened	not-divided	House/ passed 3rd reading	Mandatory Jail Sentence Amendments
 2137	SB0090	S		1512353	2025-02-24	22	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Mandatory Jail Sentence Amendments
 2137	SB0090	S		1512357	2025-03-07	23	1	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Mandatory Jail Sentence Amendments
-2137	SB0091	H		1512554	2025-03-07	41	30	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Restaurant Tax Revisions
+2137	SB0091	H		1512554	2025-03-07	41	30	1	4	signed	dropped	no-area-fits: authorizes counties to extend the 1% prepared-food tax to convenience stores, gas stations and grocery stores; cost_of_living_reduction is defined as price stability, competition and trade, and no other area reaches a local tax	House/ passed 3rd reading	Restaurant Tax Revisions
 2137	SB0091	S		1512552	2025-02-12	28	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Restaurant Tax Revisions
 2137	SB0092	S		1512739	2025-02-05	22	4	1	6	none	screened	not-divided	Senate/ passed 3rd reading	Golf Course Amendments
 2137	SB0093	S		1512827	2025-02-19	23	0	1	6	none	screened	not-divided	Senate/ passed 3rd reading	Juvenile Justice Career Training Amendments
@@ -1265,7 +1265,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	SB0179	S		1514395	2025-02-24	23	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Local Regulation of Business Entities Amendments
 2137	SB0180	H		1510911	2025-02-26	66	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Law Enforcement Usage of Artificial Intelligence
 2137	SB0180	S		1510909	2025-02-19	23	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Law Enforcement Usage of Artificial Intelligence
-2137	SB0181	H		1514908	2025-03-06	50	20	1	4	signed	candidate	batch-02: scope term specified municipality could not be verified from Utah's code site, so the reach of the parking caps is unconfirmed	House/ passed 3rd reading	Housing Affordability Amendments
+2137	SB0181	H		1514908	2025-03-06	50	20	1	4	signed	batch-02	imported	House/ passed 3rd reading	Housing Affordability Amendments
 2137	SB0181	S		1514906	2025-02-24	22	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Housing Affordability Amendments
 2137	SB0182	H		1514982	2025-03-05	21	49	0	6	none	screened	not-enacted-status-6	House/ failed	Homeless Services Modifications
 2137	SB0182	S		1514979	2025-02-11	27	0	1	6	none	screened	not-divided	Senate/ passed 3rd reading	Homeless Services Modifications
