@@ -1139,6 +1139,17 @@ describe("Michigan's measured desc vocabulary", () => {
       reason: expect.stringContaining("Roll 1497863"),
     });
   });
+
+  it("holds the last-day rolls whose member list disagrees with the journal line", () => {
+    // 16 of the 55 House rolls of 2026-07-03 list fewer, or different,
+    // members than the journal tally. Which members is unknowable from the
+    // dataset, so each is held by id rather than corrected.
+    expect(mi("House Third Reading: Given Immediate Effect Roll Call #315", "house", 105, 1715887)).toMatchObject({
+      isFloorVote: null,
+      reason: expect.stringContaining("HB 6130 House 2026-07-03, 60-45 against 60-48"),
+    });
+    expect(Object.keys(config.heldRollCallIds ?? {})).toHaveLength(17);
+  });
 });
 
 describe("Alabama's 2023 desc vocabulary", () => {

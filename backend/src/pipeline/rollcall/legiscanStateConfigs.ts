@@ -987,6 +987,49 @@ const MICHIGAN_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
 // question. The explicit rule removes that risk.
 const MICHIGAN_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [/^reported\b/];
 
+// ⚠ ON THE SESSION'S LAST SITTING DAY, 2026-07-03, LEGISCAN'S MEMBER LISTS
+// ARE SHORT. Every Michigan roll in the dataset lists only the members who
+// voted yea or nay (`nv` and `absent` are always 0), so the member list IS
+// the tally. On 2026-07-03 the House took 55 floor votes and on 16 of them
+// LegiScan's list disagrees with the journal line the bill history carries
+// for the same date and roll number: usually one to three members missing,
+// twice a yea recorded where the journal has a nay. HB 6130 is the closely
+// divided case, 60-45 in LegiScan against 60-48 in the journal.
+//
+// Which members are missing or flipped cannot be read from the dataset, so
+// the counts cannot simply be corrected. Each roll is held until its member
+// list is checked against the House Journal for 2026-07-03. The other 39
+// rolls of that day match their journal lines exactly and are not held.
+// Outside that day the whole session has one such disagreement, HR 19 of
+// 2025-02-11, which is a simple resolution and already out of scope by type.
+const MICHIGAN_LAST_DAY_TALLY_HOLD =
+  "LegiScan's member list disagrees with the journal line for this roll. Hold until checked against the House Journal for 2026-07-03";
+const MICHIGAN_LAST_DAY_TALLY_HOLDS: Record<number, string> = Object.fromEntries(
+  (
+    [
+      [1716679, "HB 4062", "89-17 against 89-18"],
+      [1715910, "HB 4103", "105-1 against 104-2"],
+      [1715909, "HB 4104", "103-2 against 104-2"],
+      [1715889, "HB 4187", "105-0 against 107-0"],
+      [1715956, "HB 4396", "105-1 against 104-2"],
+      [1715948, "HB 4518", "108-0 against 107-1"],
+      [1715947, "HB 4808", "100-5 against 100-8"],
+      [1715897, "HB 5630", "99-5 against 99-8"],
+      [1715903, "HB 5697", "103-0 against 103-3"],
+      [1715902, "HB 6074", "105-1 against 104-2"],
+      [1715898, "HB 6126", "105-0 against 105-3"],
+      [1715887, "HB 6130", "60-45 against 60-48"],
+      [1715901, "SB 52", "104-0 against 104-4"],
+      [1715891, "SB 71", "96-9 against 96-12"],
+      [1715896, "SB 604", "100-5 against 100-8"],
+      [1715888, "SB 989", "105-0 against 108-0"],
+    ] as const
+  ).map(([rollCallId, bill, tallies]) => [
+    rollCallId,
+    `${bill} House 2026-07-03, ${tallies}: ${MICHIGAN_LAST_DAY_TALLY_HOLD}`,
+  ]),
+);
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -4235,6 +4278,7 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: MICHIGAN_KEPT_QUESTIONS,
     excludedQuestions: MICHIGAN_EXCLUDED_QUESTIONS,
     heldRollCallIds: {
+      ...MICHIGAN_LAST_DAY_TALLY_HOLDS,
       1550992:
         "HB 4002 House 2025-02-20, 81-29: LegiScan stored one House action as two roll calls. Roll 1497863 is described `House Third Reading: Roll Call #12` and this one `House Third Reading: Roll Call Roll Call #12`, and both point at the single history line `Roll Call Roll Call #12 Yeas 81 Nays 29`. The descriptions differ, so the fetcher's identity key cannot collapse them. Roll 1497863 is the one to use",
     },

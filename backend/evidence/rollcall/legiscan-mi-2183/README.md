@@ -47,7 +47,7 @@ Classification of this session, confirmed by a dry-run fetch:
 - 26 roll calls on excluded measure types (simple and concurrent resolutions)
 - 2 roll calls collapsed as duplicate identities
 - 1 committee-sized roll call rejected on its tally
-- 1 roll call surfaced and never queued, the roll held below
+- 1 roll call surfaced and never queued, the doubled roll held below
 
 Those add up to the dataset's 2,600 roll calls. There were no parse errors, no
 file errors, no unrecorded votes, and nothing left with an unknown question.
@@ -181,7 +181,10 @@ slots reach roughly 650.
 
 ## Held roll calls
 
-One roll is held. LegiScan stored a single House action as two roll calls:
+Seventeen rolls are held: one doubled filing, and sixteen last-day rolls whose
+member lists disagree with the journal.
+
+LegiScan stored a single House action as two roll calls:
 HB 4002's House vote of 2025-02-20, 81-29. Roll 1497863 is described
 `House Third Reading: Roll Call #12` and roll 1550992
 `House Third Reading: Roll Call Roll Call #12`, and both point at the one
@@ -191,6 +194,18 @@ collapse them. Roll 1497863 is the one to use.
 The doubled `Roll Call Roll Call` caption is deliberately left unmatched by the
 kept patterns, so any future double filing surfaces for a person to look at
 instead of being queued as a vote.
+
+The other sixteen are House rolls of 2026-07-03, the session's last sitting
+day. Every Michigan roll in the dataset lists only the yea and nay voters, so
+the member list is the tally. On 16 of that day's 55 House floor votes the
+list disagrees with the journal line the bill history carries for the same
+date and roll number — usually one to three members missing, twice a yea where
+the journal has a nay. HB 6130 is the closely divided one, 60-45 in LegiScan
+against 60-48 in the journal. Which members are missing cannot be read from
+the dataset, so the counts are not corrected; each roll stays held until its
+list is checked against the House Journal. The day's other 39 rolls match
+their journal lines exactly. The ids are in `legiscanStateConfigs.ts` under
+`MICHIGAN_LAST_DAY_TALLY_HOLDS`, and CODE-FINDINGS.md §5 has the method.
 
 ## Scope
 

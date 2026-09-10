@@ -1,7 +1,8 @@
 # Michigan code findings — LegiScan session 2183
 
 Things about the pipeline that Michigan exposed. Findings 1 and 2 are fixed in
-the config pull request. Finding 3 is recorded and not fixed.
+the config pull request. Finding 3 is recorded and not fixed. Findings 4 and 5
+are handled by held entries.
 
 ## 1. The measure-id parser rejected lettered joint resolutions — FIXED
 
@@ -84,3 +85,27 @@ Measured across the whole session: 49 groups share a chamber, bill, date and
 tally while carrying more than one roll call. All but about eight are committee
 reports, which are excluded anyway, and only this one is on a kept measure type
 with a floor caption.
+
+## 5. Last-day member lists disagree with the journal — HANDLED BY HELD ENTRIES
+
+Every Michigan roll in the dataset lists only the members who voted yea or nay;
+`nv` and `absent` are always 0. So the member list is the tally, and a tally
+that disagrees with the state's record means members are missing from the
+list, not that a count is off.
+
+Checked by matching every floor roll to the bill-history line carrying the
+same date, chamber and roll number (`... Roll Call #315 Yeas 60 Nays 48 ...`).
+1,214 of the 1,218 floor rolls have such a line; 17 disagree. Sixteen are
+House rolls of 2026-07-03, the session's last sitting day, out of 55 that day:
+usually one to three members short, twice a yea where the journal has a nay
+(HB 4103, HB 4396). HB 6130 is the closely divided case, 60-45 against 60-48.
+The seventeenth is HR 19 of 2025-02-11, a simple resolution, out of scope by
+type and not held.
+
+The sixteen are held by id. Correcting the counts alone would leave the
+missing members without records and could leave a flipped member with a
+wrong one, so the hold stays until each list is checked against the House
+Journal for 2026-07-03. The check is a one-off script against the dataset;
+it is not built into the fetch. A general fetch-time comparison of each roll
+against its history line would have caught West Virginia's 91-2 / 92-2 roll
+too, and is the natural follow-up if a third state shows the same thing.

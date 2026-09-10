@@ -13,6 +13,7 @@ import type { LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVot
 import {
   classifyLegiscanDatasetFile,
   classifyLegiscanRollCall,
+  formatLegiscanMeasureId,
   isLegiscanCommitteeChamberRollCall,
   legiscanEvidenceFileName,
   legiscanRollCallPageUrl,
@@ -209,7 +210,7 @@ export function surveyLegiscanDataset(dataset: LegiscanDataset): {
   };
 }
 
-/** `--bills hb1,SB0544` → the measure_id spellings to keep (`HB 1`, `SB 544`). */
+/** `--bills hb1,SB0544,HJRB` → the measure_id spellings to keep (`HB 1`, `SB 544`, `HJR B`). */
 export function parseLegiscanBillList(raw: string): Set<string> {
   const measures = new Set<string>();
   for (const part of raw.split(",")) {
@@ -217,11 +218,15 @@ export function parseLegiscanBillList(raw: string): Set<string> {
     if (token.length === 0) {
       continue;
     }
-    const match = /^([A-Za-z]+)\s*0*(\d+)$/.exec(token);
-    if (!match) {
+    // Same reader as the bill feed, so a spelling the fetch accepts from
+    // LegiScan (Michigan's lettered `HJRB`) is also accepted on the flag.
+    let measure: string;
+    try {
+      measure = formatLegiscanMeasureId(token);
+    } catch {
       throw new Error(`--bills entry is not a bill number: ${token}`);
     }
-    measures.add(`${match[1]!.toUpperCase()} ${match[2]}`);
+    measures.add(measure);
   }
   if (measures.size === 0) {
     throw new Error("--bills names no bills");
