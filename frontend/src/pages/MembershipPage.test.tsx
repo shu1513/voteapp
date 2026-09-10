@@ -127,7 +127,7 @@ describe("MembershipPage", () => {
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Keep membership" })).not.toBeInTheDocument();
     // The reports opt-out lives here too, and stays separate from the plan.
-    expect(await screen.findByRole("checkbox", { name: /Members-only reports/ })).toBeChecked();
+    expect(await screen.findByRole("checkbox", { name: /Send me the members-only reports/ })).toBeChecked();
 
     // History is there but folded away, and carries no running total.
     const details = screen.getByText("Support history").closest("details");
