@@ -22,6 +22,7 @@ const RESEARCH_AREA_PRIORITY: readonly string[] = [
   "personal_income_tax_reduction",
   "foreign_trade",
   "data_privacy",
+  "ai_regulation",
   "civil_rights",
   "corporate_accountability",
   "public_infrastructure",
