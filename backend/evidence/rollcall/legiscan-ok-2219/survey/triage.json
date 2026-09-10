@@ -865,9 +865,9 @@
   "reason": "Read in full from the enrolled act and imported in batch-01."
  },
  "SB1365": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act exempts Tourism Department gift shop stock from state purchasing rules up to $75,000. The subject is too narrow for a voter to recognise and less bidding reads both ways. Its House roll also carries a reconsideration the next day."
  },
  "SB137": {
   "class": "read the act",
@@ -1025,9 +1025,9 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "SB2084": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-04",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-04."
  },
  "SB209": {
   "class": "economic-development incentive",
@@ -1065,9 +1065,9 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "SB250": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-04",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-04."
  },
  "SB259": {
   "class": "read the act",
@@ -1165,14 +1165,14 @@
   "reason": "Read in full from the enrolled act and imported in batch-03."
  },
  "SB641": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act caps what a body shop may bill and makes insurers reimburse the capped rates. One clause protects the payer and the next protects the shop, so the measure runs both ways."
  },
  "SB658": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-04",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-04."
  },
  "SB662": {
   "class": "economic-development incentive",
@@ -1195,9 +1195,9 @@
   "reason": "This is school-choice financing. The campaign has dropped that class since Texas SB 2: no research area carries an honest direction for it, because the act does not cut a public-school appropriation by its own terms."
  },
  "SB680": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "read and dropped",
+  "disposition": "dropped",
+  "reason": "Read in full. The act taxes heated tobacco as a cigarette and then forgives half of that tax. Taxing a product that escaped the tax and writing a discount for it are both fair readings, so no direction is defensible."
  },
  "SB684": {
   "class": "school-choice financing",
@@ -1245,9 +1245,9 @@
   "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
  },
  "SB942": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-04",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-04."
  },
  "SB987": {
   "class": "economic-development incentive",
@@ -1255,13 +1255,13 @@
   "reason": "This is an industry tax credit, rebate or incentive cap. The direction is a contested value judgement about whether the incentive is worth its cost, not something the act's own text settles."
  },
  "SB991": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-04",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-04."
  },
  "SB998": {
-  "class": "read the act",
-  "disposition": "screened-in",
-  "reason": "The description names a subject a voter would recognise and a plausible research area. The enacted text decides."
+  "class": "batch-04",
+  "disposition": "imported",
+  "reason": "Read in full from the enrolled act and imported in batch-04."
  }
 }
