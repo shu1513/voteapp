@@ -20,7 +20,7 @@ where a stale comment hid a session nobody had worked.
 - `crosswalk.json` — LegiScan people_id to VoteApp candidate id, 50 entries
 - `legiscan-people-ne-2185.json` — the people snapshot the crosswalk is checked against
 - `survey/divided-enacted-worklist.tsv` — every roll in the pool, with its disposition
-- `batch-01/`, `batch-02/` — measures that became law
+- `batch-01/`, `batch-02/`, `batch-04/` — measures that became law
 - `batch-03/` — measures the Governor vetoed, which never became law
 
 Each batch directory holds its plan, judging notes, judgments, roll evidence
@@ -55,14 +55,15 @@ no equivalent of the one-chamber scope other states opened.
 - of those 49, **5 measures were vetoed and never became law** (see below), so
   the real enacted pool is 44
 
-**Every one of the 49 now carries a final disposition** in the worklist: 13
-imported over three batches, 25 dropped with a written reason, 5 excluded as
-appropriations, 1 held, 2 vetoed measures dropped on the merits, and 2 left as
-candidates for a later pass because each needs a full read of a long,
-multi-subject act (LB 415 on paid sick leave, LB 530 on motor vehicle
-homicide). Nothing needs triaging twice.
+**Every one of the 49 now carries a final disposition** in the worklist, and
+the pool is closed: 17 imported over four batches, 26 dropped with a written
+reason, 5 excluded as appropriations, and 1 held. Nothing is left to triage.
 
-**Local totals: 191 records, 12 candidates, 137 tags, 16 approved rolls.**
+The last two measures were read in full in batch-04. LB 415 was kept and LB 530
+was dropped, because eight bills were folded into LB 530 and they cut both ways
+inside criminal justice.
+
+**Local totals: 203 records, 12 candidates, 146 tags, 17 approved rolls.**
 Production holds none of them.
 
 ## Three things about this feed to keep
