@@ -139,6 +139,11 @@ VALUES
     'ai_regulation',
     'AI Regulation',
     'Set and enforce safety, transparency, and accountability rules for AI systems, including automated decisions and deepfakes.'
+  ),
+  (
+    'labor_rights',
+    'Labor Rights',
+    'Protect workers through fair wages, paid leave, safe workplaces, and the right to organize and bargain collectively.'
   )
 ON CONFLICT (slug)
 DO UPDATE SET

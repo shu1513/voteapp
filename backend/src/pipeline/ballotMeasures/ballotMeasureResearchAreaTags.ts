@@ -22,6 +22,7 @@ export const BALLOT_MEASURE_RESEARCH_AREA_SLUGS = [
   "public_education_quality",
   "gun_control",
   "ai_regulation",
+  "labor_rights",
 ] as const;
 
 export type BallotMeasureResearchAreaSlug = (typeof BALLOT_MEASURE_RESEARCH_AREA_SLUGS)[number];
