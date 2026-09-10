@@ -1,0 +1,238 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1603641,
+   "measure_id": "HB 4183",
+   "vote_date": "2025-10-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4183. It raises Michigan's tax on motor fuel from 31 cents a gallon to at least 51 cents, starting January 1, 2026. The money pays for road work. The bill is one part of the 2025 road funding package. The Senate passed it 24-12 and it became law.",
+   "nay_description": "Voted against House Bill 4183. It raises Michigan's tax on motor fuel from 31 cents a gallon to at least 51 cents, starting January 1, 2026. The money pays for road work. The bill is one part of the 2025 road funding package. The Senate passed it 24-12 and it became law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713920,
+   "measure_id": "HB 4187",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4187. It cuts the yearly income tax money set aside for the Renew Michigan Fund from 69 million dollars to 52 million for one year and 56 million for the two years after that, then puts it back to 69 million. That fund pays for cleaning up polluted sites, waste management and recycling. The act also shifts the shares between those three uses. The Senate passed it 26-10 and it became law.",
+   "nay_description": "Voted against House Bill 4187. It cuts the yearly income tax money set aside for the Renew Michigan Fund from 69 million dollars to 52 million for one year and 56 million for the two years after that, then puts it back to 69 million. That fund pays for cleaning up polluted sites, waste management and recycling. The act also shifts the shares between those three uses. The Senate passed it 26-10 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1610113,
+   "measure_id": "HB 5055",
+   "vote_date": "2025-11-13",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5055. It lets a House or Senate sergeant at arms who holds a police commission enforce state law anywhere in Michigan. That power is limited to three uses: guarding a lawmaker, their family or their staff when the danger comes from threats or crimes tied to the lawmaker's official duties; guarding an event the lawmaker attends as part of those duties; and looking into threats or crimes against a lawmaker. The lawmaker must submit a request, and the Senate majority leader or the House speaker must approve it. The Senate passed it 20-16 and it became law.",
+   "nay_description": "Voted against House Bill 5055. It lets a House or Senate sergeant at arms who holds a police commission enforce state law anywhere in Michigan. That power is limited to three uses: guarding a lawmaker, their family or their staff when the danger comes from threats or crimes tied to the lawmaker's official duties; guarding an event the lawmaker attends as part of those duties; and looking into threats or crimes against a lawmaker. The lawmaker must submit a request, and the Senate majority leader or the House speaker must approve it. The Senate passed it 20-16 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713931,
+   "measure_id": "HB 5806",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5806. It creates a state housing opportunity tax credit that the owner of a low-income housing project can claim against the income tax, for tax years starting in 2027. The credit sits alongside the federal low-income housing credit. Total credits are capped at 42 million dollars for the first award cycle. The Senate passed it 21-15 and it became law.",
+   "nay_description": "Voted against House Bill 5806. It creates a state housing opportunity tax credit that the owner of a low-income housing project can claim against the income tax, for tax years starting in 2027. The credit sits alongside the federal low-income housing credit. Total credits are capped at 42 million dollars for the first award cycle. The Senate passed it 21-15 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713910,
+   "measure_id": "HB 5807",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5807. It lets an out-of-state insurer that qualifies use the new housing opportunity tax credit against the extra tax Michigan charges insurers from states that tax Michigan insurers. It is one of three bills that together create the credit for low-income housing projects. The Senate passed it 21-15 and it became law.",
+   "nay_description": "Voted against House Bill 5807. It lets an out-of-state insurer that qualifies use the new housing opportunity tax credit against the extra tax Michigan charges insurers from states that tax Michigan insurers. It is one of three bills that together create the credit for low-income housing projects. The Senate passed it 21-15 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713935,
+   "measure_id": "HB 6043",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 6043. It writes the Tri-Share child care program into law. Until now the program ran on budget money alone, starting as a pilot in 2020. Under Tri-Share an employer, the worker and the state each pay about a third of that worker's child care costs, and an employer joins by covering at least a third. The bill also writes the related CareShare arrangement into law. The Senate passed it 23-13 and it became law.",
+   "nay_description": "Voted against House Bill 6043. It writes the Tri-Share child care program into law. Until now the program ran on budget money alone, starting as a pilot in 2020. Under Tri-Share an employer, the worker and the state each pay about a third of that worker's child care costs, and an employer joins by covering at least a third. The bill also writes the related CareShare arrangement into law. The Senate passed it 23-13 and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1603871,
+   "measure_id": "SB 577",
+   "vote_date": "2025-10-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 577. It pushes back the end date for the fees the state charges to train and certify public water supply operators, from October 2025 to October 2029. The money goes to the fund that pays for that training. The Senate agreed to the House version 23-13 and it became law.",
+   "nay_description": "Voted against Senate Bill 577. It pushes back the end date for the fees the state charges to train and certify public water supply operators, from October 2025 to October 2029. The money goes to the fund that pays for that training. The Senate agreed to the House version 23-13 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1603881,
+   "measure_id": "SB 578",
+   "vote_date": "2025-10-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 578. It creates the Neighborhood Roads Fund and the Infrastructure Projects Authority Fund and sets out how the money in each is shared. Those funds are where the 2025 road funding package sends its money. The Senate agreed to the House version 21-15 and it became law.",
+   "nay_description": "Voted against Senate Bill 578. It creates the Neighborhood Roads Fund and the Infrastructure Projects Authority Fund and sets out how the money in each is shared. Those funds are where the 2025 road funding package sends its money. The Senate agreed to the House version 21-15 and it became law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1603627,
+   "measure_id": "SB 579",
+   "vote_date": "2025-10-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 579. It pushes back to October 2029 the end dates for a set of environmental fees the state charges. The fees cover floodplain permits and land and water permits. They also cover training and certifying wastewater and stormwater operators, discharges to storm and surface water, and handling hazardous waste. The Senate agreed to the House version 21-15 and it became law.",
+   "nay_description": "Voted against Senate Bill 579. It pushes back to October 2029 the end dates for a set of environmental fees the state charges. The fees cover floodplain permits and land and water permits. They also cover training and certifying wastewater and stormwater operators, discharges to storm and surface water, and handling hazardous waste. The Senate agreed to the House version 21-15 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1715721,
+   "measure_id": "SB 723",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 723. It widens Michigan's transformational brownfield program, which lets the developer of a large project keep some of the state taxes raised on that site. It drops the 2027 end date for approving new plans, allows another 80 million dollars a year of tax capture on top of the 80 million already allowed, and lifts the lifetime cap from 1.6 billion dollars to 3.2 billion. In return it adds guardrails: a public webpage showing each project's analyses, audits and investment milestones, an independent review of each plan's fiscal benefit to the state, a 300 million dollar cap per new plan that the treasurer can enforce by taking back payments, and required penalties for developers who fall short of promised investment. The House passed it 82-26 and it became law.",
+   "nay_description": "Voted against Senate Bill 723. It widens Michigan's transformational brownfield program, which lets the developer of a large project keep some of the state taxes raised on that site. It drops the 2027 end date for approving new plans, allows another 80 million dollars a year of tax capture on top of the 80 million already allowed, and lifts the lifetime cap from 1.6 billion dollars to 3.2 billion. In return it adds guardrails: a public webpage showing each project's analyses, audits and investment milestones, an independent review of each plan's fiscal benefit to the state, a 300 million dollar cap per new plan that the treasurer can enforce by taking back payments, and required penalties for developers who fall short of promised investment. The House passed it 82-26 and it became law.",
+   "labels": [
+    {
+     "slug": "government_spending_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713940,
+   "measure_id": "SB 723",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 723. It widens Michigan's transformational brownfield program, which lets the developer of a large project keep some of the state taxes raised on that site. It drops the 2027 end date for approving new plans, allows another 80 million dollars a year of tax capture on top of the 80 million already allowed, and lifts the lifetime cap from 1.6 billion dollars to 3.2 billion. In return it adds guardrails: a public webpage showing each project's analyses, audits and investment milestones, an independent review of each plan's fiscal benefit to the state, a 300 million dollar cap per new plan that the treasurer can enforce by taking back payments, and required penalties for developers who fall short of promised investment. The Senate agreed to the House version 24-12 and it became law.",
+   "nay_description": "Voted against Senate Bill 723. It widens Michigan's transformational brownfield program, which lets the developer of a large project keep some of the state taxes raised on that site. It drops the 2027 end date for approving new plans, allows another 80 million dollars a year of tax capture on top of the 80 million already allowed, and lifts the lifetime cap from 1.6 billion dollars to 3.2 billion. In return it adds guardrails: a public webpage showing each project's analyses, audits and investment milestones, an independent review of each plan's fiscal benefit to the state, a 300 million dollar cap per new plan that the treasurer can enforce by taking back payments, and required penalties for developers who fall short of promised investment. The Senate agreed to the House version 24-12 and it became law.",
+   "labels": [
+    {
+     "slug": "government_spending_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713958,
+   "measure_id": "SB 903",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 903. It sets conditions a school district must meet to keep the extra funding it gets for students who need more help. The district must work on reading and math achievement, teach English directly to English learners for at least a state-set number of minutes a week based on each pupil's level, test them with the WIDA assessment, and run a tiered support system in every grade it operates. No more than 2 percent of that money may go to administration. The Senate agreed to the House version 24-12 and it became law.",
+   "nay_description": "Voted against Senate Bill 903. It sets conditions a school district must meet to keep the extra funding it gets for students who need more help. The district must work on reading and math achievement, teach English directly to English learners for at least a state-set number of minutes a week based on each pupil's level, test them with the WIDA assessment, and run a tiered support system in every grade it operates. No more than 2 percent of that money may go to administration. The Senate agreed to the House version 24-12 and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713967,
+   "measure_id": "SB 966",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 966. It tells the Michigan State Housing Development Authority to set up and run a housing opportunity tax credit program. The credit is for low-income housing projects. Applications open with the 2027 award cycle. They are taken at the same time as applications for the federal low-income housing credit. The Senate agreed to the House version 22-14 and it became law.",
+   "nay_description": "Voted against Senate Bill 966. It tells the Michigan State Housing Development Authority to set up and run a housing opportunity tax credit program. The credit is for low-income housing projects. Applications open with the 2027 award cycle. They are taken at the same time as applications for the federal low-income housing credit. The Senate agreed to the House version 22-14 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

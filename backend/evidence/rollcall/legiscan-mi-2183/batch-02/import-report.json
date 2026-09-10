@@ -1,0 +1,4158 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-10T04:35:55.517Z",
+  "finishedAt": "2026-09-10T04:35:58.275Z",
+  "jurisdiction": "MI",
+  "sessionId": 2183,
+  "evidenceDir": "evidence/rollcall/legiscan-mi-2183/batch-02",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-mi-2183/crosswalk.json",
+  "crosswalkEntries": 148,
+  "peopleFile": "evidence/rollcall/legiscan-mi-2183/legiscan-people-mi-2183.json",
+  "peopleMembers": 148,
+  "files": 13,
+  "outcomes": {
+    "imported": 13
+  },
+  "actions": {
+    "insert": 294
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-mi-house-2183-roll1715721.json",
+      "state": "MI",
+      "chamber": "house",
+      "sessionId": 2183,
+      "roll": 1715721,
+      "outcome": "imported",
+      "legislativeVoteId": "b774da29-0154-4407-8baa-9d22a2875e79",
+      "reviewStatus": "approved",
+      "bill": "SB0723",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "SB 723",
+      "question": "House Third Reading: Given Immediate Effect Roll Call #289",
+      "originRunId": "rollcall:MI:house:2183:1715721:2026-09-10T04:35:55.517Z",
+      "members": 108,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 95,
+        "unmatched_reviewed": 13
+      },
+      "actions": {
+        "insert": 95
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "2b5a3f94-826c-4a44-ab33-9c398ee49f68",
+          "candidateName": "Nancy Jenkins-Arno",
+          "peopleId": 11180,
+          "memberName": "Nancy Jenkins-Arno",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b1711f9a-357c-46e0-9804-e2b78a3094f1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7c46213d-e60d-4ecb-a1f3-7e24ffb187f2",
+          "candidateName": "Tim Kelly",
+          "peopleId": 14523,
+          "memberName": "Tim Kelly",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "53768731-aa4a-401a-ae47-a476fe1564ff",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0f964722-6671-41ff-bef7-f38802ea4efa",
+          "candidateName": "Curt Vanderwall",
+          "peopleId": 18767,
+          "memberName": "Curtis VanderWall",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "14241e31-0267-4cad-932d-8c97323ab66c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "29577202-e88e-409c-9e8b-ca38dac34b4b",
+          "candidateName": "Gregory Markkanen",
+          "peopleId": 20419,
+          "memberName": "Gregory Markkanen",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0db28111-68b3-42dd-ba8d-c7cfd5419a4c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a9797e03-bbee-4750-bd22-3273cfa6cc00",
+          "candidateName": "Ann M. Bollin",
+          "peopleId": 20643,
+          "memberName": "Ann Bollin",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4951a687-c19d-49de-829c-a7be01dbdd49",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8ac9f9af-cb83-415e-8d48-b527bd449e02",
+          "candidateName": "Julie Brixie",
+          "peopleId": 20644,
+          "memberName": "Julie Brixie",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5886411e-a59a-4da1-a382-43ba238eec4f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7574e02e-6318-4f77-b2c5-15fbacea7ec5",
+          "candidateName": "Brenda Carter",
+          "peopleId": 20645,
+          "memberName": "Brenda Carter",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "57dd4111-e8d8-40f8-b3de-fbfbf8ac0e64",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "511f4731-3ba1-41f9-9f89-077b7977175f",
+          "candidateName": "Tyrone Carter",
+          "peopleId": 20646,
+          "memberName": "Tyrone Carter",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a0e60c21-75de-41df-8c39-2f0891086a8f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "dc5e8e0a-3210-407f-b75f-df040e942c37"
+          ]
+        },
+        {
+          "candidateId": "96cf7617-e69c-4a8f-88b0-d674a097bbb1",
+          "candidateName": "Matt Hall",
+          "peopleId": 20652,
+          "memberName": "Matthew Hall",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e587629c-985b-4004-b47e-086664b543f8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "694ff44e-f471-4eab-baa3-1bfd6ff0ec8a",
+          "candidateName": "Sarah Lightner",
+          "peopleId": 20659,
+          "memberName": "Sarah Lightner",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "51f666ce-b348-4f24-97f7-725a1cef0846",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "2e5890a9-dcf5-4419-9e10-e43fb5734021",
+          "candidateName": "Mike Mueller",
+          "peopleId": 20663,
+          "memberName": "Mike Mueller",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "27272737-6f82-4f47-a4cc-d73da5c54c51",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1d9b0e6d-2bc1-4384-9dd6-6c7125fd07cd",
+          "candidateName": "Laurie Pohutsky",
+          "peopleId": 20666,
+          "memberName": "Laurie Pohutsky",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a0e16d05-aec8-40f1-a8e0-f39f0352e5a3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "dcc43ef0-8a13-4337-829d-f0646e33de6b",
+          "candidateName": "Bradley Slagh",
+          "peopleId": 20668,
+          "memberName": "Bradley Slagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fd587a88-8301-4ba5-9afd-d739a9a53552",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "183244bd-db8f-4a54-a8b3-b8e82a3f10f9",
+          "candidateName": "Greg VanWoerkom",
+          "peopleId": 20671,
+          "memberName": "Greg VanWoerkom",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3af057d4-c064-41e0-8e06-30d76b59a36b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "74f07695-2f6a-41e2-86f6-29974ced9625",
+          "candidateName": "Angela Witwer",
+          "peopleId": 20675,
+          "memberName": "Angela Witwer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5eeaf492-8ccd-4d2a-a4e4-2d5ef05b29e1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "2d681d7f-08a2-42c0-91a2-6e945c9ae248",
+          "candidateName": "Douglas Chester Wozniak",
+          "peopleId": 20676,
+          "memberName": "Douglas Wozniak",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b46125dd-cd8f-43c9-a488-e221d39f828f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "5a17a19b-bebe-4712-905f-6a3eaaf07a3d",
+          "candidateName": "Phil Green",
+          "peopleId": 21281,
+          "memberName": "Phil Green",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "317d41c2-5901-4ed6-99fc-dd9aaed3911b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "fc3b1091-a4c1-41fb-8911-63199ce8d9e0",
+          "candidateName": "Cynthia R. Neeley",
+          "peopleId": 21624,
+          "memberName": "Cynthia Neeley",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "23f59948-2fa2-4f9e-b18a-f9d6201fbb1d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b67ff6bf-a8c7-4cc8-9e50-c9e5120f966b",
+          "candidateName": "Timothy Beson",
+          "peopleId": 22460,
+          "memberName": "Timothy Beson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "85e41351-a440-4577-82d8-ea0a5db462da",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c0e4c9ac-19b0-4493-bae6-2e71b61ac0a8",
+          "candidateName": "Ken Borton",
+          "peopleId": 22462,
+          "memberName": "Ken Borton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "82881389-bbd6-4bbe-af8c-be358affd13f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1458d910-3a74-4799-8ad8-451983983ce7",
+          "candidateName": "Kelly Breen",
+          "peopleId": 22464,
+          "memberName": "Kelly Breen",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a8dbcaf4-7613-42c7-bdb1-9d40432fb0da",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "3286e9cc-875e-45a8-9542-940894b3b402",
+          "candidateName": "David W. Martin",
+          "peopleId": 22469,
+          "memberName": "David Martin",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5edcd92a-e700-44d7-9d83-b39e0b1e2579",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8f2fb09f-691e-459e-9bbd-5e8ed2fd2c22",
+          "candidateName": "Amos O'Neal",
+          "peopleId": 22471,
+          "memberName": "Amos O'Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "7d55804b-f741-4849-b886-c4af713d27cd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "42aea154-57f1-4ac4-9a81-e76ab0f9ca58",
+          "candidateName": "Ranjeev Puri",
+          "peopleId": 22473,
+          "memberName": "Ranjeev Puri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "60094c8e-2423-4214-a502-07ae61b1bfe3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4f1292cf-0333-4c9e-b5bf-fbd030262995",
+          "candidateName": "Julie M. Rogers",
+          "peopleId": 22474,
+          "memberName": "Julie Rogers",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4e10256e-68a1-4d72-a3f7-2f3e7b9b2f90",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "256c1526-a4ef-4eff-8e12-8897ca3b9d04",
+          "candidateName": "John R. Roth",
+          "peopleId": 22475,
+          "memberName": "John Roth",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "39dec7a6-6c09-4f9a-86de-ab2803af4085",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4b222401-f2c6-4d7d-97f7-12f57da45909",
+          "candidateName": "Samantha Steckloff",
+          "peopleId": 22477,
+          "memberName": "Samantha Steckloff",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "723c0847-eb1a-4aff-8993-54e7c7e5aca8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1ed91b1-0aea-48b5-b051-60acfb0ec83d",
+          "candidateName": "Mark Tisdel",
+          "peopleId": 22480,
+          "memberName": "Mark Tisdel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bc3ea2f1-9f7e-4696-8adb-44dac6396877",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "225c2a9e-01a2-4e03-84d5-53261a033658",
+          "candidateName": "Stephanie A. Young",
+          "peopleId": 22482,
+          "memberName": "Stephanie Young",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ce1e87e7-55f5-4955-a7d2-3f3c69bdde1c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "30197bfe-7dfe-48cb-8d66-88e187404a09",
+          "candidateName": "Carol Glanville",
+          "peopleId": 23142,
+          "memberName": "Carol Glanville",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3de0fa63-0a9c-4fc3-9bc5-04a8811dbb84",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d69202be-9704-40c8-9d2e-5f91018bc6e0",
+          "candidateName": "Mike Harris",
+          "peopleId": 23143,
+          "memberName": "Mike Harris",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "94c949a2-c834-49e3-9256-7c33ce322057",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "e201a2ee-e713-47ae-94ac-8fbb66c2c4b5"
+          ]
+        },
+        {
+          "candidateId": "88e41f0a-7847-4e1d-8ed3-1598760780b1",
+          "candidateName": "David Prestin",
+          "peopleId": 24269,
+          "memberName": "David Prestin",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "89f40f17-980f-4e12-ae7a-472e5e7ca574",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a5e02fb2-4284-4eb7-985e-3281f204b2b9",
+          "candidateName": "Joey Andrews",
+          "peopleId": 24313,
+          "memberName": "Joey Andrews",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2099b064-1b57-4b47-9d9e-295485a2e16b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "06a87b36-b131-4050-a952-e56acdb80a5b",
+          "candidateName": "Noah Arbit",
+          "peopleId": 24314,
+          "memberName": "Noah Arbit",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8a371478-8b38-462e-8fd7-ca8c62a6aab0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "994029e5-6ef9-420f-b91c-691a1f60dcee",
+          "candidateName": "Jennifer A. Conlin",
+          "peopleId": 24318,
+          "memberName": "Jennifer Conlin",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0bf467c2-d6d8-48c0-aa58-cc287dcb7d1b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "fe098d55-283d-42a2-aa4c-fd7e27115451",
+          "candidateName": "Alabas Farhat",
+          "peopleId": 24321,
+          "memberName": "Alabas Farhat",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "726637ef-1867-45a8-8d18-8016be16c84d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "38afe9f9-443e-4178-bd18-f03bc03b9757",
+          "candidateName": "John Fitzgerald",
+          "peopleId": 24322,
+          "memberName": "John Fitzgerald",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "f3cec071-88d0-4c29-8d38-5c40a5140145",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "ccf14aad-c293-4e27-bcd2-e4802d6ea07b"
+          ]
+        },
+        {
+          "candidateId": "0ed13980-7bdb-431a-9f81-24444d9736cb",
+          "candidateName": "Kristian C. Grant",
+          "peopleId": 24323,
+          "memberName": "Kristian Grant",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "93907034-4977-4a96-9ff6-a992d6b49ae4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "28cd2ae3-e0b0-45f7-8e87-69119642738d"
+          ]
+        },
+        {
+          "candidateId": "f0b6d115-cebf-43ad-a890-266c96187bf8",
+          "candidateName": "Jason Hoskins",
+          "peopleId": 24325,
+          "memberName": "Jason Hoskins",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "22fd45a1-0023-4534-81a9-8a174a91f679",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "9be5568d-2939-4608-91d9-3c94c74660e2",
+          "candidateName": "Sharon MacDonell",
+          "peopleId": 24326,
+          "memberName": "Sharon MacDonell",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "95e1120f-ab09-44d0-94b6-ff5b56c34110",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1b215ebd-8dc6-4bf3-921d-53321e55390f",
+          "candidateName": "Jasper Ryan Martus",
+          "peopleId": 24327,
+          "memberName": "Jasper Martus",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e2550db0-36b8-4577-a171-f19f0b310323",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "45c4d55b-db42-4a4c-a2ad-9006cca97dc4"
+          ]
+        },
+        {
+          "candidateId": "6a4fd037-78a9-4d2b-a6ea-b16563858c42",
+          "candidateName": "Mike McFall",
+          "peopleId": 24328,
+          "memberName": "Mike McFall",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e3b50d09-2b72-496b-b9c5-5ebce68833f8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "2f05e9f8-849b-4f49-9c20-63a5aa0c80be",
+          "candidateName": "Denise Mentzer",
+          "peopleId": 24330,
+          "memberName": "Denise Mentzer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e33d29b2-4d1e-4b8f-b095-824d1fdfa82b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "058c264d-9f09-4c1c-8955-9952c005aec7",
+          "candidateName": "Jason Morgan",
+          "peopleId": 24332,
+          "memberName": "Jason Morgan",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "18aba970-a0d0-4cb5-b7ce-e7debcfd845a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4b71bd78-96ba-4076-81ad-ea2ba43740f6",
+          "candidateName": "Jerry Neyer",
+          "peopleId": 24333,
+          "memberName": "Jerry Neyer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9847cd2c-4dc3-4441-9b82-2965ac7fc580",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "e3072544-332d-4476-9f61-244d6c61cd96"
+          ]
+        },
+        {
+          "candidateId": "52ebf661-e1f2-4607-a35a-cc51ce79d1c8",
+          "candidateName": "Natalie Price",
+          "peopleId": 24335,
+          "memberName": "Natalie Price",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4f6a9914-7750-498d-b46e-14a0e4ba7a07",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "880e6566-0e4a-4043-9fe9-4f9f7cf3adfc",
+          "candidateName": "Bill G. Schuette",
+          "peopleId": 24337,
+          "memberName": "Bill Schuette",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d84317f7-43c9-4506-bcd8-7678016e8113",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "27eaa82c-955d-47ca-bcd2-5eb7f744d7be",
+          "candidateName": "Will Snyder",
+          "peopleId": 24339,
+          "memberName": "Will Snyder",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2dc50369-35f7-40e9-b609-38e99fdd82bd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "b307d383-ef71-417e-970c-dcdc9528c986"
+          ]
+        },
+        {
+          "candidateId": "7d99f1a8-deef-481c-b276-698870442c3c",
+          "candidateName": "Penelope Tsernoglou",
+          "peopleId": 24340,
+          "memberName": "Penelope Tsernoglou",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ac3c6ab6-1adc-4820-97fc-3472360116e1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a2b4c3e1-642b-44ae-88d8-e85aa4427073",
+          "candidateName": "Gregory L. Alexander",
+          "peopleId": 24347,
+          "memberName": "Gregory Alexander",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8b049a72-e4cc-4293-8b45-96cc822c790f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "5e8e570e-2220-4c2c-92ad-e1df6f4aadce",
+          "candidateName": "Joseph Aragona",
+          "peopleId": 24348,
+          "memberName": "Joseph Aragona",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c558fab1-f35d-490c-a270-9130055cfafa",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "338af6a5-aece-4145-b039-0ce9278572d1",
+          "candidateName": "Brian BeGole",
+          "peopleId": 24349,
+          "memberName": "Brian BeGole",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9a1e5af9-f3d9-4e1b-b0c7-4aeca243b090",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "fe60b3c1-fbf2-47a7-ae63-40b9e767384e"
+          ]
+        },
+        {
+          "candidateId": "689d8982-f161-46ea-95f0-170fe277403a",
+          "candidateName": "Matthew Bierlein",
+          "peopleId": 24350,
+          "memberName": "Matthew Bierlein",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b1262247-51af-476d-bd11-77001521a951",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8f447677-06bd-436b-b88b-9841c9f8f363",
+          "candidateName": "Cam Cavitt",
+          "peopleId": 24351,
+          "memberName": "Cam Cavitt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "95911dea-be4d-423c-81f4-fcf631b47006",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35903cfa-bcd3-499c-af8a-6f727d565710"
+          ]
+        },
+        {
+          "candidateId": "cf6f5875-1d1d-4226-8e67-8e816841d990",
+          "candidateName": "Nancy DeBoer",
+          "peopleId": 24352,
+          "memberName": "Nancy DeBoer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b6312c64-ece7-47d8-862e-3c9922ac24e3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94744249-3f11-4d15-9a85-3929609b68c5",
+          "candidateName": "Jaime Greene",
+          "peopleId": 24355,
+          "memberName": "Jaime Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "61222a85-6873-44d3-9af6-05789c0f1986",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d1032fe4-a2f2-44f4-ba73-0714130d0a03",
+          "candidateName": "Mike Hoadley",
+          "peopleId": 24356,
+          "memberName": "Mike Hoadley",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "90559649-45a8-4058-93e4-3ef4fa588880",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "22241c2a-302e-4fa3-9e43-0861fb05627e"
+          ]
+        },
+        {
+          "candidateId": "373cbb2b-9a6b-4ab8-b725-d9a982a3f7a1",
+          "candidateName": "Thomas E. Kuhn",
+          "peopleId": 24358,
+          "memberName": "Tom Kuhn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b3eb1677-be8e-4c04-9a2b-007303a69a75",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "db0c70b4-5818-4815-8017-bd71e9e74e90",
+          "candidateName": "Tom Kunse",
+          "peopleId": 24359,
+          "memberName": "Tom Kunse",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "91b56740-bebc-4afe-a312-51e428e09c6c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "132ceea7-28ab-4873-93e8-3181c3f4eb48",
+          "candidateName": "Kathy Schmaltz",
+          "peopleId": 24360,
+          "memberName": "Kathy Schmaltz",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8e895715-33dc-4d09-86fe-f4ec2ce30355",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "285a7cef-0656-4f2f-9819-d78bf7d574cb"
+          ]
+        },
+        {
+          "candidateId": "22fd2407-254c-423a-b1e4-335f53a41fce",
+          "candidateName": "Jamie Thompson",
+          "peopleId": 24363,
+          "memberName": "Jamie Thompson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "57826ae8-9ea7-471b-a629-e5e31fe6112b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "6ad8c662-2006-405d-8862-1a45530cffa6",
+          "candidateName": "Angela Rigas",
+          "peopleId": 24364,
+          "memberName": "Angela Rigas",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "35693f5b-9485-4ab5-a8aa-a4ae347d0712",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "2265f0a2-da7d-4854-a0f5-9d0fc5bfc449",
+          "candidateName": "William Bruck",
+          "peopleId": 24365,
+          "memberName": "William Bruck",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "38b60ea8-cd09-4efd-b01a-5fbfbec27fff",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "29d12570-8eca-4063-9f58-dc6756060b7f",
+          "candidateName": "Peter Herzberg",
+          "peopleId": 25198,
+          "memberName": "Peter Herzberg",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6117fb4a-e182-441d-a01a-2446265c6980",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "df43cad3-fe28-4af8-aca6-be366d552125",
+          "candidateName": "Mai Xiong",
+          "peopleId": 25199,
+          "memberName": "Mai Xiong",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "87473169-6ae9-4ad7-9cdb-709736a2b05d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "12d46fad-7139-45ba-99f1-0f3a298fb742",
+          "candidateName": "Karl Bohnak",
+          "peopleId": 25807,
+          "memberName": "Karl Bohnak",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "acb4e486-f3f2-4d98-92d7-53f85915b4fd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "046cced8-3aad-4787-9fea-a481577c9446",
+          "candidateName": "Parker Fairbairn",
+          "peopleId": 25808,
+          "memberName": "Parker Fairbairn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "72fd1859-92c1-48b7-a0c8-3e1d19b21f27",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "34c76888-3d77-49b8-9aca-9b1bf4da64dd",
+          "candidateName": "Morgan Foreman",
+          "peopleId": 25809,
+          "memberName": "Morgan Foreman",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6acb115f-20a1-41fa-a026-1376c43ac8aa",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "33da8b46-bd8c-41ea-a815-aecfa0cc9a0a",
+          "candidateName": "Steve Frisbie",
+          "peopleId": 25810,
+          "memberName": "Steve Frisbie",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fe724b43-6edb-498f-82e1-16a93bfc7a23",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "2d7d059b-2e9c-4021-924a-387d3e4f1567",
+          "candidateName": "Rylee Linting",
+          "peopleId": 25811,
+          "memberName": "Rylee Linting",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "97f78eae-e499-4ce3-8f0b-38dd5a7d04ad",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "369a5003-16b4-495a-b3e2-77cb7962cd7d",
+          "candidateName": "Matt Longjohn",
+          "peopleId": 25812,
+          "memberName": "Matt Longjohn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c9dd704c-ff57-489d-830f-c8b22218aff1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c61980a9-bbb5-4e98-8938-323dcd1d9b98",
+          "candidateName": "Joseph G. Pavlov",
+          "peopleId": 25813,
+          "memberName": "Joseph Pavlov",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "668bf22c-4108-4bea-8caa-133843ac457a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "92dc58d7-1137-4941-b0c6-ddf74495bc55",
+          "candidateName": "Ron Robinson",
+          "peopleId": 25815,
+          "memberName": "Ron Robinson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "cc80a268-0950-42a9-b845-7f15551dd56b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b7a6e3c6-14b1-460c-a28a-f8ac139c21e1",
+          "candidateName": "Stephen Wooden",
+          "peopleId": 25816,
+          "memberName": "Stephen Wooden",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "7333fde1-33ca-4e9e-9c5d-e335d217376d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "f582e420-2c46-45c7-aee3-17830cb4ca87",
+          "candidateName": "Jason Woolford",
+          "peopleId": 25817,
+          "memberName": "Jason Woolford",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "7b7d8e47-3345-42ff-aebf-30f1c69d6854",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "84a46de0-21d9-4bb7-8a7f-9040d8e4f279"
+          ]
+        },
+        {
+          "candidateId": "0339c5b1-7cdc-482e-b5bf-ae0d1f79ecff",
+          "candidateName": "Jennifer Wortz",
+          "peopleId": 25818,
+          "memberName": "Jennifer Wortz",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e320f1fb-3e6f-4809-ade7-6342af8676f9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "72688634-c8b2-41b9-a2c1-905d939f242a"
+          ]
+        },
+        {
+          "candidateId": "1a0e30a9-1927-41fd-acc1-accd1b5e118f",
+          "candidateName": "Matt Koleszar",
+          "peopleId": 20657,
+          "memberName": "Matt Koleszar",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "d79d3568-b694-4bfc-a780-5b30359d8130",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "9d759e46-376b-470e-beb1-4fdd0c7220db",
+          "candidateName": "Matt Maddock",
+          "peopleId": 20660,
+          "memberName": "Matthew Maddock",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "7104c681-9651-4a0a-b258-e447e8031d7a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "943c3726-501c-4893-bb2d-7819174c772b",
+          "candidateName": "Brad Paquette",
+          "peopleId": 20665,
+          "memberName": "Brad Paquette",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9b6910e7-b5f5-484f-a45c-40cd8ebab182",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a206da0d-bc75-47fe-8e80-2b2fc9245bfe",
+          "candidateName": "Pauline Wendzel",
+          "peopleId": 20673,
+          "memberName": "Pauline Wendzel",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "6a03c92b-d9c1-469f-951d-1f953d999f20",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "6a7cf85d-5bef-4764-a174-27bf4ba2f19f",
+          "candidateName": "Steve Carra",
+          "peopleId": 22465,
+          "memberName": "Steve Carra",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "3588130f-68b1-4516-8901-93d769b9d7c4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "628b0fe2-a414-41ff-9bb5-7af6bcff80c1",
+          "candidateName": "Pat Outman",
+          "peopleId": 22747,
+          "memberName": "Pat Outman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "997ab8df-3b38-4cc0-92c0-3bb8a496ae9a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "84f4436a-871c-40b2-a00f-6638b9249bb9",
+          "candidateName": "Donni Steele",
+          "peopleId": 24270,
+          "memberName": "Donni Steele",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "844bee9a-88a4-463b-b487-7399019629f6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "58aa5b58-f381-4ad1-b317-c17d1206675a",
+          "candidateName": "Betsy Coffia",
+          "peopleId": 24317,
+          "memberName": "Betsy Coffia",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "f94f0d35-a20b-44d2-a463-d24691e51700",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "9c0215a6-778c-4699-8ba2-e049879abf2d",
+          "candidateName": "Emily Dievendorf",
+          "peopleId": 24319,
+          "memberName": "Emily Dievendorf",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "b5ddaa3d-d995-4c76-b22f-9a3bca600947",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4311384a-9982-481f-97b6-b4507a3bd1f6",
+          "candidateName": "Kimberly L. Edwards",
+          "peopleId": 24320,
+          "memberName": "Kimberly Edwards",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "815a8276-d4c0-41d0-a667-3eacd0458d74",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7eac887a-0a69-4bb0-9009-fe21ee139725",
+          "candidateName": "Veronica Paiz",
+          "peopleId": 24334,
+          "memberName": "Veronica Paiz",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "d9010827-2cf3-4b80-a549-536da1889e64",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "93c1235c-61d7-499f-b92e-092149d1b6b2",
+            "af108c2f-8e5c-4a27-bd1b-c25ba4dae18a"
+          ]
+        },
+        {
+          "candidateId": "c0f8af9e-f633-4c16-be98-11f234542445",
+          "candidateName": "Carrie A. Rheingans",
+          "peopleId": 24336,
+          "memberName": "Carrie Rheingans",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "83909a40-cd78-499a-95f2-7b45a7a44286",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1abaae63-2ab0-45b2-b62b-bf287a18c0fa",
+          "candidateName": "Dylan Wegela",
+          "peopleId": 24341,
+          "memberName": "Dylan Wegela",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "99b21188-1e93-4d84-96e9-c0ad75c556bc",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b921bcee-ecb1-41fa-908b-8a1176d7dd8a",
+          "candidateName": "Jimmie Wilson Jr.",
+          "peopleId": 24342,
+          "memberName": "Jimmie Wilson",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "72e96129-20c6-4aed-b3ce-bd86b8d35331",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "49f935ea-b104-4cda-b3de-8076cff8fb20",
+          "candidateName": "Gina Johnsen",
+          "peopleId": 24357,
+          "memberName": "Gina Johnsen",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "bc48ee20-1edb-470f-9e11-b13b458627e0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8cd8a8f2-c068-422c-983a-df23f287b77c",
+          "candidateName": "Josh Schriver",
+          "peopleId": 24361,
+          "memberName": "Josh Schriver",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "e2667947-f6ca-49bb-a140-e0d14a7a7e83",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a45b91d2-6ebc-4647-b49c-2d032ba5b392",
+          "candidateName": "James DeSana",
+          "peopleId": 24366,
+          "memberName": "James DeSana",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "b0cd4c91-0196-4c23-8ef6-e5a2e792f9ec",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8b887cab-d6ae-42d1-9c7c-946a1e7a79fc",
+          "candidateName": "Alicia St. Germaine",
+          "peopleId": 24369,
+          "memberName": "Alicia St. Germaine",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "6f6f7ce1-35c2-443e-8a0e-f6ddfc4a140a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "78ab35c7-3eab-447e-9dc7-cac4044013e4",
+          "candidateName": "Tonya Myers Phillips",
+          "peopleId": 25814,
+          "memberName": "Tonya Myers Phillips",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "7447fff4-0f9a-4a2a-8b53-cc32b6c52e51",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1603627.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1603627,
+      "outcome": "imported",
+      "legislativeVoteId": "999afcda-6eb9-433a-b51e-6b9b5e88f235",
+      "reviewStatus": "approved",
+      "bill": "SB0579",
+      "voteDate": "2025-10-03",
+      "officialVoteDate": null,
+      "measureId": "SB 579",
+      "question": "Senate Third Reading: Roll Call: Roll Call # 268",
+      "originRunId": "rollcall:MI:senate:2183:1603627:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 16
+      },
+      "actions": {
+        "insert": 16
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3f18ed50-950c-42cd-a436-2c89f41d0a13",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "49627a7c-f565-42f0-84a4-c507fe9d4c5b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "85798c63-8856-41d8-a74c-38034dcfa6e2"
+          ]
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3bc3c0a8-44cc-409d-8971-30db7301d77c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "538599f1-9fd8-4f3d-8c12-74a367f6d285"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "99244195-8ea2-4acf-a873-748c3acec823",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "62f4517e-b557-434d-ba88-3e9fed212048",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "cc64e30e-131b-4908-b869-f296976f94c5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "7516feb7-579c-4092-aa5c-f2537ff5e073",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "43f3a07c-2242-4a38-9d3e-05bacd21181d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "3a294062-4474-4d2d-bc66-df8707539566",
+            "e099bde3-0b7f-4e6f-bb22-62a683e1df70"
+          ]
+        },
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "39d8d1ae-66af-4eeb-8e29-3a12a2d7ac76",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "5acc2791-d86b-48b6-89d3-13de299d309d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "0dfddd68-8285-4a01-9197-cfc7fc68d54a"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "cf21f045-78f0-4672-b578-b94523003ff5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "cb7fec33-4d5e-475e-b359-7651a2a3ccf6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "b8cdd5e0-55b1-4396-9d7e-725cb59d3cc8"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "23e2a1a6-58dd-458d-a941-f26f978fd057",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "6736e887-1228-43fd-b0b3-d366e74aaba4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "20d5e414-e02e-46ba-b515-ac3f844c46c6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "f1c1b126-5677-4f1f-a9bf-c8eac668340c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1603641.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1603641,
+      "outcome": "imported",
+      "legislativeVoteId": "10082e39-5a75-4d12-9bea-17b559ce667c",
+      "reviewStatus": "approved",
+      "bill": "HB4183",
+      "voteDate": "2025-10-03",
+      "officialVoteDate": null,
+      "measureId": "HB 4183",
+      "question": "Senate Third Reading: Given Immediate Effect Roll Call # 272",
+      "originRunId": "rollcall:MI:senate:2183:1603641:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 16
+      },
+      "actions": {
+        "insert": 16
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "351fab66-0b3b-490a-b8ef-495efbfa6963",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "09f6341d-6195-42ae-975f-5e9a7c740ac9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "419aacba-af68-40be-b42e-b54e133c8bab",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "538599f1-9fd8-4f3d-8c12-74a367f6d285"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "7868fb17-c864-4185-b35e-5495a6a50f70",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c71631d1-c4c3-4825-b00d-4c04f9f90fe2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "697ecc7e-9249-4675-8113-decddd9dbc73",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "561eecc0-5dc1-4425-80c7-1ee9e19176be",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0d994ba6-73ed-48fa-8635-bb3613fff9b4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "3cde8ac3-73df-4ff2-ae97-ceca199310c0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "0dfddd68-8285-4a01-9197-cfc7fc68d54a"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "dadaa673-d2d8-4d32-aa60-df9191f92138",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "aa119de6-78d1-4f14-9e55-c236a9e4106c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "b8cdd5e0-55b1-4396-9d7e-725cb59d3cc8"
+          ]
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "1c1fd3cd-224d-41b9-8792-ae4c102bffc7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "85798c63-8856-41d8-a74c-38034dcfa6e2"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "5928981b-aad0-4798-85d0-fca82d5bf1f0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "f5ca7f24-1352-4cfe-a68b-023085d00315",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "28a0fd5a-ff71-4071-80c5-66672a97e7f6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "abc3cdc7-4f84-434e-a905-1f272d7a2852",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "3a294062-4474-4d2d-bc66-df8707539566",
+            "e099bde3-0b7f-4e6f-bb22-62a683e1df70"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1603871.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1603871,
+      "outcome": "imported",
+      "legislativeVoteId": "d6fb1e09-e668-4b10-91e0-e6a8eebbed35",
+      "reviewStatus": "approved",
+      "bill": "SB0577",
+      "voteDate": "2025-10-03",
+      "officialVoteDate": null,
+      "measureId": "SB 577",
+      "question": "Senate Third Reading: Roll Call: Roll Call # 266",
+      "originRunId": "rollcall:MI:senate:2183:1603871:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 16
+      },
+      "actions": {
+        "insert": 16
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "384ca480-eda7-468b-8788-028aff8f49d2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c9b69b9a-f4c8-49b8-ba75-1fa1852cdf01",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0f20d18b-5aa6-4dc1-b343-a4caa6f72f4d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "85798c63-8856-41d8-a74c-38034dcfa6e2"
+          ]
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2d0c24f6-b4ab-46a8-926e-d57c0f7cd98c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "538599f1-9fd8-4f3d-8c12-74a367f6d285"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3aef8b57-4b86-4c10-91b7-0977f7f6f5e0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1b03ee7f-c9b7-4f04-acc9-957979110413",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2981f0a4-efee-4a62-85ec-d231a301ee3e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "16230083-d9e9-43c0-9ff1-7de485e54edb",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d40701ac-7fd2-4ae9-a044-e47def0a96a4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ef23642b-e603-42e7-bdfd-739e782a0878",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "3a294062-4474-4d2d-bc66-df8707539566",
+            "e099bde3-0b7f-4e6f-bb22-62a683e1df70"
+          ]
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "fe45ef03-8886-4a0d-9673-67f567502b35",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "0dfddd68-8285-4a01-9197-cfc7fc68d54a"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "8dddc64f-f78f-47bb-a2ed-d4d8a0ff2a8d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "5a33d734-dc07-4317-a133-f463839ac210",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "b8cdd5e0-55b1-4396-9d7e-725cb59d3cc8"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "4984623e-f76c-4305-83bf-e1771a717842",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2b1eb440-9ec5-4634-ad7a-1617567c5a18",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "50ecf615-22d4-4fe9-b717-4d09e1c2d3a8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1603881.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1603881,
+      "outcome": "imported",
+      "legislativeVoteId": "492200f5-924e-4d0d-90a4-db7aafddc478",
+      "reviewStatus": "approved",
+      "bill": "SB0578",
+      "voteDate": "2025-10-03",
+      "officialVoteDate": null,
+      "measureId": "SB 578",
+      "question": "Senate Third Reading: Roll Call: Roll Call # 267",
+      "originRunId": "rollcall:MI:senate:2183:1603881:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 16
+      },
+      "actions": {
+        "insert": 16
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "f9c0fc9a-5e54-4ea1-9af8-2f297f83e287",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e0cfe0e6-7de1-42c5-a16d-c04d0be51f2e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "efb5bcd2-b3f6-4d48-a40f-e73b12733849",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "85798c63-8856-41d8-a74c-38034dcfa6e2"
+          ]
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "69e04ed4-b207-4a66-8707-5c6448de7d9c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "538599f1-9fd8-4f3d-8c12-74a367f6d285"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d6454522-93d3-4315-b6c3-3ded68c6d171",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "209b15e7-2427-4747-b380-c305afe5bcf4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b8bcfbb0-f633-42a5-9a75-11472b365ba9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0437937c-7c96-4bfe-8713-0201566d0df8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "12789d5c-67f3-4e8e-8c34-1f4eb4b1d0c5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "3a294062-4474-4d2d-bc66-df8707539566",
+            "e099bde3-0b7f-4e6f-bb22-62a683e1df70"
+          ]
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "c9964c4a-1f05-4143-8483-75a14326655a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "0dfddd68-8285-4a01-9197-cfc7fc68d54a"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "eaee11c1-425c-41ba-a2b3-dd8fe81b214b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2f0f3831-a81b-49c2-9855-e9bfc72a1c25",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "b8cdd5e0-55b1-4396-9d7e-725cb59d3cc8"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "36245698-a8dd-4607-9aba-f0cdc028ff6f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2998b319-7b50-4988-bc29-3bb068f56617",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "baae6690-2f98-41fe-9917-f126bd852ed5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "f2cdbac9-203b-4c62-8725-776e83b78069",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1610113.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1610113,
+      "outcome": "imported",
+      "legislativeVoteId": "9c9c33c9-b408-495e-b5f9-60a192a41474",
+      "reviewStatus": "approved",
+      "bill": "HB5055",
+      "voteDate": "2025-11-13",
+      "officialVoteDate": null,
+      "measureId": "HB 5055",
+      "question": "Senate Third Reading: Passed Roll Call # 303",
+      "originRunId": "rollcall:MI:senate:2183:1610113:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 20,
+        "matched": 16
+      },
+      "actions": {
+        "insert": 16
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d36989ef-5e26-4131-a7b7-7213888703cb",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "103b91a6-fa9f-438c-bd03-7271c2df2c3c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a54f530e-7a91-4129-bb76-be29e0ac0537",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "38d123c9-f428-4fac-b57c-143ef1e8375c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "10baad24-344a-456b-846d-4f05e0136018",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "445c4819-d5e4-4d3e-983d-5029f75d3bc6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "29714c98-2f18-4e19-9dab-87b386304c21",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0800328c-b2de-4036-ba7a-4aeb134a1c5f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fb757958-fa7c-4c23-9c03-ca072d8daa4f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d7c61b11-763c-4277-ac37-f164b2050cdf",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "db95dd65-5b91-4276-a2b5-764ec3190fe9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "54aca3a4-7553-4fcb-a999-3a7da9ee3612",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "d66a7f7e-6f44-49db-b161-79be4ce050ee",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9f4493a7-056e-467f-9e27-03cf44cfc22b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "fa8aa1ac-eb22-488e-abde-a12b8cb61a15",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "470fde49-6084-41d5-944f-08aa87033616",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f8597848-9a1a-40b0-9dd9-28ae289ff99f"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1713910.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1713910,
+      "outcome": "imported",
+      "legislativeVoteId": "2c28bd31-2b0b-4323-912d-ea3ee159ffdf",
+      "reviewStatus": "approved",
+      "bill": "HB5807",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "HB 5807",
+      "question": "Senate Third Reading: Passed Roll Call # 182",
+      "originRunId": "rollcall:MI:senate:2183:1713910:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "insert": 17
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e0067f4f-5cf3-4a34-9c69-2d017f4a92cf",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "83634c4a-eb6a-4cd4-96a8-87b3f8b05edb",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6fda2a26-5333-4790-b696-69cc3d8caf4a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6d08faf3-b623-4b02-a1f1-43ccf275b4c4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f7aa4053-d9a2-47d8-a41d-a462a2256791"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c1176d23-66fa-4f65-99a4-d3793a3ebb5f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35ef7775-e009-4aeb-bb63-472b4442bf2a"
+          ]
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ea6b684b-7bb1-4e7e-b3aa-95abf88aae3d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b60b3c42-1528-458c-8963-7dbef7801554",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a4cfce05-839c-4c41-b5e6-69aef8ce85ea",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "96a3fe7e-fd15-4e26-bc2c-7ff0c5ca9d91"
+          ]
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6c48b8a7-cb30-4c71-93c1-1eecf9b7ff99",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "53c9e0da-716b-4dc7-88e4-4d4a3bc77b67"
+          ]
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8e9874d4-a74f-4d9f-95a7-e10d5736751e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "d0312b42-6fdb-4572-b3f6-3c6e495c6868"
+          ]
+        },
+        {
+          "candidateId": "90bc65da-2c43-4146-b60f-53d7343adbda",
+          "candidateName": "Chedrick Greene",
+          "peopleId": 26671,
+          "memberName": "Chedrick Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "f63a0ec3-7087-4cca-92ed-d7e2832d1a0c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2c34c3fc-9884-4cfe-9595-7c8e521a1949",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "2a7fc520-fc68-4543-a569-f3ac03b876fb"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "64f29ad6-22ff-48c7-981c-f0688651228a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9f664f6a-05bd-4f75-a7d6-eff9eb068c1b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "cde396b4-69aa-413c-96c9-4cb73243e79e"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "d2aebd0f-bbdd-407f-95ac-18c49f5c8200",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "91240baa-7297-4fff-a435-8c833b434e9b"
+          ]
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "5dac6c58-9c1a-4c01-9acf-55f6010cbd5d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "1c66e32b-18b4-4f96-bc73-6192b2813c17"
+          ]
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "07db6e18-9bfb-4a1a-b464-64addd9c6da4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "c129ac17-8458-4a98-a585-58ac6cdd763b"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1713920.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1713920,
+      "outcome": "imported",
+      "legislativeVoteId": "f085e769-d282-4796-ab19-25d034081842",
+      "reviewStatus": "approved",
+      "bill": "HB4187",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "HB 4187",
+      "question": "Senate Third Reading: Given Immediate Effect Roll Call # 205",
+      "originRunId": "rollcall:MI:senate:2183:1713920:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "insert": 17
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "564d556c-5d1a-48a7-9f6a-64b10f5fb283",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3ac0d7ea-7687-46f5-8e1e-79793534e5f3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a2372298-b4db-4902-adfd-dd3e9f9b7d99",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "cde396b4-69aa-413c-96c9-4cb73243e79e"
+          ]
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "05e965c6-da94-4e79-bf83-2ceb776a8b5c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "717cb1a9-9541-40b2-be78-979732c3c411",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f7aa4053-d9a2-47d8-a41d-a462a2256791"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c46977a8-16fa-4ea9-a362-da548927267f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35ef7775-e009-4aeb-bb63-472b4442bf2a"
+          ]
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bcd2e5a4-1b08-4478-8802-1b1f908c8569",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8df09deb-d1d4-4f59-9045-a52fcc0350d8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "84f38649-dfc5-4918-aa8e-88a09a9bba6d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "96a3fe7e-fd15-4e26-bc2c-7ff0c5ca9d91"
+          ]
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1b69b330-33f2-4b98-8fdd-2abc80869eb5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "1c66e32b-18b4-4f96-bc73-6192b2813c17"
+          ]
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5ae530c8-7b1a-4de8-a51e-ffc1698aa424",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "d0312b42-6fdb-4572-b3f6-3c6e495c6868"
+          ]
+        },
+        {
+          "candidateId": "90bc65da-2c43-4146-b60f-53d7343adbda",
+          "candidateName": "Chedrick Greene",
+          "peopleId": 26671,
+          "memberName": "Chedrick Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "04165f7b-f0bb-44be-a506-7df05b0de188",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "8eae3bb7-88ea-4e9d-9a48-93df2ebc7a93",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "2a7fc520-fc68-4543-a569-f3ac03b876fb"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "88212f81-634c-43e8-9d43-60b2d5cf102e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "02d73e46-4bdb-49d7-8903-6ea7b15ca7f5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "91240baa-7297-4fff-a435-8c833b434e9b"
+          ]
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "54d20a28-36a3-46f7-a865-9e0fd6c1ac57",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "53c9e0da-716b-4dc7-88e4-4d4a3bc77b67"
+          ]
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "725c4eaa-63db-4fda-9202-cb779a25ad63",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "c129ac17-8458-4a98-a585-58ac6cdd763b"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1713931.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1713931,
+      "outcome": "imported",
+      "legislativeVoteId": "1187805b-2e51-40c3-9dc7-21d080071179",
+      "reviewStatus": "approved",
+      "bill": "HB5806",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "HB 5806",
+      "question": "Senate Third Reading: Passed Roll Call # 181",
+      "originRunId": "rollcall:MI:senate:2183:1713931:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "insert": 17
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ca0d03c0-721e-4ef8-b411-0b043930968f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8f615025-6d04-4dde-be22-36f5161f2182",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "18050b87-44e0-4644-8a03-6322aff6c492",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e3cbc8e4-6c10-4acf-8829-cde0d27d2a56",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f7aa4053-d9a2-47d8-a41d-a462a2256791"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "005407e5-fc15-47bc-840f-94fcd6cc085b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35ef7775-e009-4aeb-bb63-472b4442bf2a"
+          ]
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "55a6c110-e0f0-444c-8cce-2f4ac47b55f7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "109fdc96-1ad9-49b5-a0e5-248ca029209f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3f58187e-149c-437d-939b-6d1fa4f59705",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "96a3fe7e-fd15-4e26-bc2c-7ff0c5ca9d91"
+          ]
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "11464938-36b0-4fd5-a37a-f47d6507ea1e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "53c9e0da-716b-4dc7-88e4-4d4a3bc77b67"
+          ]
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1115f4db-f192-4a75-a2ba-aacbed01dd48",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "d0312b42-6fdb-4572-b3f6-3c6e495c6868"
+          ]
+        },
+        {
+          "candidateId": "90bc65da-2c43-4146-b60f-53d7343adbda",
+          "candidateName": "Chedrick Greene",
+          "peopleId": 26671,
+          "memberName": "Chedrick Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e49b6e93-a998-4914-b3de-e6b6e181341c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9d675882-65ce-40c3-a546-993c1a8dea82",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "2a7fc520-fc68-4543-a569-f3ac03b876fb"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "c6be5922-d5d8-4c37-9a23-c5b6b803274b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "e4e173b9-fa1a-4a45-8fcb-b838f6796ec0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "cde396b4-69aa-413c-96c9-4cb73243e79e"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "cd594562-f429-4c51-95b7-428ae114b80f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "91240baa-7297-4fff-a435-8c833b434e9b"
+          ]
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9585f4c5-74d5-4ceb-9ab4-a438240e1c41",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "1c66e32b-18b4-4f96-bc73-6192b2813c17"
+          ]
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "80301723-691d-4f7f-a47f-7dad67aaef1c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "c129ac17-8458-4a98-a585-58ac6cdd763b"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1713935.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1713935,
+      "outcome": "imported",
+      "legislativeVoteId": "6c8bd511-c05a-4a1e-abc6-2f6ce566e52d",
+      "reviewStatus": "approved",
+      "bill": "HB6043",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "HB 6043",
+      "question": "Senate Third Reading: Given Immediate Effect Roll Call # 184",
+      "originRunId": "rollcall:MI:senate:2183:1713935:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "insert": 17
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b70c8f4c-44f7-4d3c-8def-c1bb38faf300",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1aee41b0-2802-404a-8ea1-477f5c18b973",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2edba928-03df-4885-8690-064999fd16f7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8435e8a7-6117-4827-8e06-213ef794a44f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f7aa4053-d9a2-47d8-a41d-a462a2256791"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "42ee530f-db48-4f18-ae03-9e2621a04984",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35ef7775-e009-4aeb-bb63-472b4442bf2a"
+          ]
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "12cb5de0-761a-4eb5-b0d0-34efd99e43f2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4406a876-5f78-460e-be5c-1384ee2f0a10",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b8463151-2e39-4c7a-8b01-63ab897c1bf4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "96a3fe7e-fd15-4e26-bc2c-7ff0c5ca9d91"
+          ]
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e666ac2c-810a-4bb5-9de2-fe42f45baca5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "53c9e0da-716b-4dc7-88e4-4d4a3bc77b67"
+          ]
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "62a43d56-ef5d-44a7-874d-b0d647f9fe78",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "1c66e32b-18b4-4f96-bc73-6192b2813c17"
+          ]
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a3165876-3582-4b55-a5e8-e0dc5602e28e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "d0312b42-6fdb-4572-b3f6-3c6e495c6868"
+          ]
+        },
+        {
+          "candidateId": "90bc65da-2c43-4146-b60f-53d7343adbda",
+          "candidateName": "Chedrick Greene",
+          "peopleId": 26671,
+          "memberName": "Chedrick Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "cad183d6-b74f-4f1f-8c70-7a30834b9545",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "25945d46-34f8-4f2c-a85b-aebaeccd1bae",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "2a7fc520-fc68-4543-a569-f3ac03b876fb"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "1520bed4-0cc7-4897-84c8-e1c9e61a87da",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "d5c51616-0266-4ef5-b8b3-10c710751724",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "cde396b4-69aa-413c-96c9-4cb73243e79e"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "160f7bab-274e-4e37-a98a-975ef1f5d2ce",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "91240baa-7297-4fff-a435-8c833b434e9b"
+          ]
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9668d11e-cc0f-43f1-8b3d-d4157360a19a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "c129ac17-8458-4a98-a585-58ac6cdd763b"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1713940.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1713940,
+      "outcome": "imported",
+      "legislativeVoteId": "8f10051e-f19e-435d-9357-22e6aa237f93",
+      "reviewStatus": "approved",
+      "bill": "SB0723",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "SB 723",
+      "question": "Senate Third Reading: Roll Call: Roll Call # 221",
+      "originRunId": "rollcall:MI:senate:2183:1713940:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "insert": 17
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3fe51cdf-1bbd-4d32-b0f3-8dcee896f9e0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "dd8794b1-3e8f-4365-88ed-2031fa9dc6e5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9752270e-f474-4128-8e16-e2460d014f5d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "82d95b86-4125-4aa2-a201-fa4fc61ee33d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f7aa4053-d9a2-47d8-a41d-a462a2256791"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bc39ebfe-d82f-4c38-8e15-6d531d0f7545",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35ef7775-e009-4aeb-bb63-472b4442bf2a"
+          ]
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "dd12a1c7-797c-4af4-a622-fc794ce4827c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a4838948-77a0-4fa3-aeec-c0da94271870",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "717762c9-e077-442c-a56c-c026c15ebde8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "96a3fe7e-fd15-4e26-bc2c-7ff0c5ca9d91"
+          ]
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "42ec067b-04d7-4d07-b7e8-93a1494917a2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "53c9e0da-716b-4dc7-88e4-4d4a3bc77b67"
+          ]
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "612a56c5-0251-4fe3-bc27-fe1884d8c24e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "1c66e32b-18b4-4f96-bc73-6192b2813c17"
+          ]
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4349b81d-5e59-4e10-94ad-a06ff339520d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "d0312b42-6fdb-4572-b3f6-3c6e495c6868"
+          ]
+        },
+        {
+          "candidateId": "90bc65da-2c43-4146-b60f-53d7343adbda",
+          "candidateName": "Chedrick Greene",
+          "peopleId": 26671,
+          "memberName": "Chedrick Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9b6094e2-4515-4b37-bdfd-ced5f3afff99",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "b7bf53de-7c71-4cfe-879e-432eaa3ca362",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "2a7fc520-fc68-4543-a569-f3ac03b876fb"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "c5f93ed9-9e01-477d-a5e2-9dbed5c3adf9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2bf26ac3-5d5b-41ac-8ae6-f05b1dee96c6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "cde396b4-69aa-413c-96c9-4cb73243e79e"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "e739bfab-e9fd-4d9d-8d3d-82a8cfae9582",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "91240baa-7297-4fff-a435-8c833b434e9b"
+          ]
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "d4a0d955-0214-4835-9030-f4351454d97e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "c129ac17-8458-4a98-a585-58ac6cdd763b"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1713958.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1713958,
+      "outcome": "imported",
+      "legislativeVoteId": "0a423672-6706-404b-a314-8b934abdbfee",
+      "reviewStatus": "approved",
+      "bill": "SB0903",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "SB 903",
+      "question": "Senate Third Reading: Roll Call: Roll Call # 222",
+      "originRunId": "rollcall:MI:senate:2183:1713958:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "insert": 17
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0eb081e1-4673-4ed3-b404-4f39de0fe68e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "24a42a26-6be1-48b1-bf7b-014d94fdf239",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "acf7be6e-a8c4-4b0d-a0d4-9ace1c570e31",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3e35b899-eef5-4f12-9ccb-3c5a2dbb12f0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f7aa4053-d9a2-47d8-a41d-a462a2256791"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "27d148dd-e92f-474f-9224-fb6ea3251a34",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35ef7775-e009-4aeb-bb63-472b4442bf2a"
+          ]
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "91fddca0-1373-4b95-bf81-cc3d3d3299b1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b1af4b6c-81c8-4af2-b2af-2ce30c7607c4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "126c141e-5d5d-40dd-8ce3-032fcf9b2537",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "96a3fe7e-fd15-4e26-bc2c-7ff0c5ca9d91"
+          ]
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ff882107-b5d4-4369-b957-58e2c668a017",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "53c9e0da-716b-4dc7-88e4-4d4a3bc77b67"
+          ]
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8510b367-b454-4228-83de-30caab724251",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "1c66e32b-18b4-4f96-bc73-6192b2813c17"
+          ]
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "49817f6d-fb18-4676-a187-7b873ae57db2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "d0312b42-6fdb-4572-b3f6-3c6e495c6868"
+          ]
+        },
+        {
+          "candidateId": "90bc65da-2c43-4146-b60f-53d7343adbda",
+          "candidateName": "Chedrick Greene",
+          "peopleId": 26671,
+          "memberName": "Chedrick Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9ecdc44c-da85-4909-80b3-565271c50d51",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "96e973ed-62c8-4f87-bd90-315266593ec0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "2a7fc520-fc68-4543-a569-f3ac03b876fb"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "ab2f4697-0eae-4ba8-98da-5cd35f603fd7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9578389e-513c-41a9-846d-ec91e8fe61ae",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "cde396b4-69aa-413c-96c9-4cb73243e79e"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "041a2dd8-3884-4a58-a373-adf61c1dd18d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "91240baa-7297-4fff-a435-8c833b434e9b"
+          ]
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "3c8c4808-52bd-437e-8779-873c0286fdb9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "c129ac17-8458-4a98-a585-58ac6cdd763b"
+          ]
+        }
+      ],
+      "error": null
+    },
+    {
+      "file": "ls-mi-senate-2183-roll1713967.json",
+      "state": "MI",
+      "chamber": "senate",
+      "sessionId": 2183,
+      "roll": 1713967,
+      "outcome": "imported",
+      "legislativeVoteId": "267069e5-7467-4fd3-ad82-824b22c14def",
+      "reviewStatus": "approved",
+      "bill": "SB0966",
+      "voteDate": "2026-07-03",
+      "officialVoteDate": null,
+      "measureId": "SB 966",
+      "question": "Senate Third Reading: Roll Call: Roll Call # 223",
+      "originRunId": "rollcall:MI:senate:2183:1713967:2026-09-10T04:35:55.517Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 17
+      },
+      "actions": {
+        "insert": 17
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "083ad4df-5200-4366-95c4-515e16d4767e",
+          "candidateName": "Michael Webber",
+          "peopleId": 17096,
+          "memberName": "Michael Webber",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d6f33704-f5c2-4b7e-98d1-ef39a3090568",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+          "candidateName": "Darrin Camilleri",
+          "peopleId": 18742,
+          "memberName": "Darrin Camilleri",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6c019bb4-4f72-49fa-82b8-e5e3095fde8e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8d163f08-0218-4dde-9765-c6829f9228f9",
+          "candidateName": "Kevin Hertel",
+          "peopleId": 18749,
+          "memberName": "Kevin Hertel",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0b27a752-4e89-4e29-927d-6b0ef3803194",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "37950477-e661-44c5-8c75-0aab301db411",
+          "candidateName": "Sarah Anthony",
+          "peopleId": 19699,
+          "memberName": "Sarah Anthony",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9500fa70-ebed-429d-8dd5-31710e105757",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "f7aa4053-d9a2-47d8-a41d-a462a2256791"
+          ]
+        },
+        {
+          "candidateId": "31861860-1eac-4231-96b4-fc027bda0395",
+          "candidateName": "John D. Cherry",
+          "peopleId": 20647,
+          "memberName": "John Cherry",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fc396bb3-41bd-42d2-b1cb-297f22da8251",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "35ef7775-e009-4aeb-bb63-472b4442bf2a"
+          ]
+        },
+        {
+          "candidateId": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+          "candidateName": "Mark E. Huizenga",
+          "peopleId": 20654,
+          "memberName": "Mark Huizenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6a10b895-84f1-449f-b7a6-3b9cf8e72a42",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "1cd24d61-f17a-404a-9429-18619aa568a4",
+          "candidateName": "Dayna Polehanki",
+          "peopleId": 20798,
+          "memberName": "Dayna Polehanki",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3db3ea5c-58c6-49eb-b141-0d5e505d5f9f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+          "candidateName": "John Damoose",
+          "peopleId": 22414,
+          "memberName": "John Damoose",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a3788355-f4aa-4c47-991d-e4326c79a910",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "96a3fe7e-fd15-4e26-bc2c-7ff0c5ca9d91"
+          ]
+        },
+        {
+          "candidateId": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+          "candidateName": "Mary Cavanagh",
+          "peopleId": 22466,
+          "memberName": "Mary Cavanagh",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9820ec01-529a-4f66-969b-88f9ad1a3db9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "53c9e0da-716b-4dc7-88e4-4d4a3bc77b67"
+          ]
+        },
+        {
+          "candidateId": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+          "candidateName": "Veronica Klinefelt",
+          "peopleId": 24343,
+          "memberName": "Veronica Klinefelt",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e467a603-3a0b-4345-bfd2-822edb9dbff7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "1c66e32b-18b4-4f96-bc73-6192b2813c17"
+          ]
+        },
+        {
+          "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+          "candidateName": "Sue Shink",
+          "peopleId": 24346,
+          "memberName": "Sue Shink",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a2e85dab-db66-48d9-baa3-13f76633b4c8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "d0312b42-6fdb-4572-b3f6-3c6e495c6868"
+          ]
+        },
+        {
+          "candidateId": "90bc65da-2c43-4146-b60f-53d7343adbda",
+          "candidateName": "Chedrick Greene",
+          "peopleId": 26671,
+          "memberName": "Chedrick Greene",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c6c12d1f-14cd-46e1-95a9-3bcf83b937af",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+          "candidateName": "Thomas A. Albert",
+          "peopleId": 18737,
+          "memberName": "Thomas Albert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "e4134f2a-9528-434c-9bad-d11c54948d91",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "2a7fc520-fc68-4543-a569-f3ac03b876fb"
+          ]
+        },
+        {
+          "candidateId": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+          "candidateName": "Joseph Bellino Jr.",
+          "peopleId": 18740,
+          "memberName": "Joseph Bellino",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "1a9043fe-2120-4b6a-a781-2dd386ac97d7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+          "candidateName": "Roger Hauck",
+          "peopleId": 18747,
+          "memberName": "Roger Hauck",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "caf4c32e-9cf0-4971-a6c7-5e2f276643ff",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "cde396b4-69aa-413c-96c9-4cb73243e79e"
+          ]
+        },
+        {
+          "candidateId": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+          "candidateName": "Michele Hoitenga",
+          "peopleId": 18750,
+          "memberName": "Michele Hoitenga",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2df0036f-4471-43db-beb8-5f98c77dc480",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "91240baa-7297-4fff-a435-8c833b434e9b"
+          ]
+        },
+        {
+          "candidateId": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+          "candidateName": "Jonathan Lindsey",
+          "peopleId": 24344,
+          "memberName": "Jonathan Lindsey",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "ca7ef239-f9af-4e2c-8a84-eca65df76a17",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": [
+            "c129ac17-8458-4a98-a585-58ac6cdd763b"
+          ]
+        }
+      ],
+      "error": null
+    }
+  ]
+}
