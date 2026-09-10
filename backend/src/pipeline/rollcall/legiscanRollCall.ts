@@ -79,14 +79,23 @@ export function classifyLegiscanDatasetFile(raw: unknown): LegiscanDatasetPayloa
  * `HB 1` / `SB 544` — the Ohio pilot's spelling. State measures do not
  * parse as federal ones, so the judge's measure check falls back to an
  * exact string compare; both sides must use exactly this spelling.
+ *
+ * A number may end in letters as well as begin with them, and the trailing
+ * letters are part of the measure's identity, not decoration. Nebraska
+ * numbers the appropriation that pays for a bill after the bill itself
+ * (`LB48A` funds `LB48`) and numbers a proposed constitutional amendment
+ * `LR19CA`; there are 104 such bills in the 109th Legislature. Refusing
+ * them made the crosswalk step, which reads every bill file, fail outright.
+ * A number with no trailing letters is spelled exactly as before, so no
+ * measure id that already parses changes.
  */
 export function formatLegiscanMeasureId(billNumber: string): string {
   const compact = billNumber.replace(/\s+/g, "");
-  const match = /^([A-Za-z]+)0*(\d+)$/.exec(compact);
+  const match = /^([A-Za-z]+)0*(\d+)([A-Za-z]*)$/.exec(compact);
   if (!match) {
-    throw new Error(`LegiScan bill_number is not <letters><digits>: ${billNumber}`);
+    throw new Error(`LegiScan bill_number is not <letters><digits><letters>: ${billNumber}`);
   }
-  return `${match[1]!.toUpperCase()} ${match[2]}`;
+  return `${match[1]!.toUpperCase()} ${match[2]}${match[3]!.toUpperCase()}`;
 }
 
 /** The public per-roll page; the fallback when the bill feed carries no vote url. */
@@ -267,9 +276,16 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
   // Assembly (California, measured 2026-08-26: all 9,948 of CA 2172's lower
   // chamber rolls carry `A`; also NV/NJ/NY/WI). Both map to `house`, our
   // single lower-chamber key — the state's own name for the body is a
-  // display fact, never a data one. A third letter must still fail loudly.
-  if (chamberRaw !== "H" && chamberRaw !== "A" && chamberRaw !== "S") {
-    throw new Error(`${where}: chamber is not H, A or S: ${chamberRaw}`);
+  // display fact, never a data one.
+  //
+  // `L` is Nebraska, the one state with a single house. LegiScan prints `L`
+  // for its Legislature (measured 2026-09-09: all 1,774 rolls of NE 2185
+  // carry `L`, every one with chamber_id 64 and a full-chamber total of 48
+  // or 49). It maps to `senate` because Nebraska's members are State
+  // Senators and a Nebraska config names only `senate` in `chamberSizes`.
+  // A further letter must still fail loudly.
+  if (chamberRaw !== "H" && chamberRaw !== "A" && chamberRaw !== "S" && chamberRaw !== "L") {
+    throw new Error(`${where}: chamber is not H, A, L or S: ${chamberRaw}`);
   }
   if (raw.passed !== 0 && raw.passed !== 1 && raw.passed !== true && raw.passed !== false) {
     throw new Error(`${where}: passed is not a 0/1 flag`);
@@ -312,7 +328,7 @@ export function parseLegiscanRollCall(raw: Record<string, unknown>): LegiscanRol
     absent: readNonNegativeInt(raw, "absent", where),
     total: readNonNegativeInt(raw, "total", where),
     passed: raw.passed === 1 || raw.passed === true,
-    chamber: chamberRaw === "S" ? "senate" : "house",
+    chamber: chamberRaw === "S" || chamberRaw === "L" ? "senate" : "house",
     votes,
   };
   // An EMPTY member list beside non-zero tallies is a real publication
