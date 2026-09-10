@@ -109,8 +109,29 @@ because a no vote here reads as a vote about spending.
 - Reading level measured separately, because the lint only counts sentence
   length. A first draft measured grade 9.4 to 10.2 and was rewritten before
   anything was imported. The final text measures **grade median 7.5, worst
-  7.8**, longest sentence 24 words.
+  7.8**, longest sentence 24 words. The review round below added one clause
+  each to two descriptions; the longest sentence is now 30 words, and the lint
+  still reports 0 warnings.
 - Descriptions run 8 to 15 short sentences rather than the usual two to four.
   That is a deliberate trade: cutting further means dropping the limits and
   exceptions the acts actually contain, and dropping exactly those is what has
   caused most correction rounds in this campaign.
+
+## Review round
+
+The pull request review caught two places where a description was broader
+than its act.
+
+- LB 89. The text said no government body, licensing group or sports
+  association may look into or punish a school that keeps separate female
+  teams, which reads as blanket immunity. Section 5 shields a school only
+  "for maintaining" those teams. The sentence now ends "for keeping those
+  teams".
+- LB 966. The text said a school may apply if it does not already feed every
+  student for free. Section 3(5) excludes only a school that serves free meals
+  to all students under the federal community eligibility provision; a school
+  that funds universal free meals another way still qualifies. The sentence
+  now carries "under the federal community eligibility option".
+
+Re-judged and re-imported in place: 24 records rewritten (12 per measure), 24
+unchanged, 0 notifications. Ledger: `import-review-fixes-report.json`.
