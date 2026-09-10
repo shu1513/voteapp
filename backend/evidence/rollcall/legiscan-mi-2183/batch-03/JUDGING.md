@@ -83,14 +83,27 @@ than other voters or that impairs their access to the political process, and set
 up a pre-suit notification and remedy process. SB 963 requires language
 assistance where enough of a local population shares a language and has limited
 English, with the Secretary of State publishing the list each odd-numbered year
-and reimbursing some counting costs. Both are `civil_rights` with a yes for.
+and reimbursing the extra cost of tabulator logic-and-accuracy testing (section
+5(5)(d)), not the cost of counting translated ballots. Both are `civil_rights`
+with a yes for. SB 961's pre-suit letter is the general rule, but section 13(6)
+lists exceptions, including preliminary relief before an upcoming election, so
+the description says "usually".
 
 SB 964 is the reporting arm: from 2028 a local government must tell the Secretary
 of State when it reorganizes or changes its method of election, when a voter asks
 to view voting equipment, and which organizations may appoint election
-challengers, with each notice posted within five days. Its own text is a
-disclosure duty about how elections are run, so it goes to `election_integrity`
-with a yes for rather than to civil rights.
+challengers, with each notice posted within five days. That disclosure duty is
+`election_integrity`. But the engrossed text also changes who can vote and how:
+new section 726a has two inspectors bring a ballot out to a voter who cannot
+enter the polling place, section 751(3) lets a voter pick their own language
+helper, and new section 753a allows food, warmth and other necessities for
+voters in line. Those are access provisions of the same kind as SB 961 and SB
+963, to which the bill is tie-barred, so it carries `civil_rights` with a yes
+for as well.
+
+SB 225 and SB 226 both exempt sitting legislators who hold a concealed-pistol
+license (section 5o(4) and section 234d(9)(c)), so both descriptions say so; a
+reader should not be told lawmakers voted to disarm themselves.
 
 ### SB 533 — election_integrity, a yes vote is for
 A civil fine up to $1,000 for knowingly making a false statement about the time,

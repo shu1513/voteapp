@@ -56,7 +56,7 @@ containing "became law", "the act", "was enacted" or "it died", requires the wor
 | --- | --- | --- | --- |
 | SB 961, the State Voting Rights Act | 20-17 | civil_rights | for |
 | SB 963, the Language Assistance for Elections Act | 20-17 | civil_rights | for |
-| SB 964, local governments must report election changes to the state | 20-17 | election_integrity | for |
+| SB 964, local governments must report election changes to the state, plus curbside voting, chosen language helpers and food in line | 20-17 | election_integrity, civil_rights | for |
 | SB 533, civil fines for lies told to stop someone voting | 19-14 | election_integrity | for |
 
 ### Civil rights

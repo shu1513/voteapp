@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-09-10T04:48:12.353Z",
-  "finishedAt": "2026-09-10T04:48:17.052Z",
+  "startedAt": "2026-09-10T06:02:25.216Z",
+  "finishedAt": "2026-09-10T06:02:28.091Z",
   "jurisdiction": "MI",
   "sessionId": 2183,
   "evidenceDir": "evidence/rollcall/legiscan-mi-2183/batch-03",
@@ -17,7 +17,8 @@
     "imported": 16
   },
   "actions": {
-    "unchanged": 715
+    "unchanged": 632,
+    "rewrite": 83
   },
   "notified": 0,
   "rolls": [
@@ -35,7 +36,7 @@
       "officialVoteDate": null,
       "measureId": "HB 4469",
       "question": "House Third Reading: Given Immediate Effect Roll Call #132",
-      "originRunId": "rollcall:MI:house:2183:1581057:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:house:2183:1581057:2026-09-10T06:02:25.216Z",
       "members": 104,
       "notVoting": 0,
       "absent": 0,
@@ -202,9 +203,7 @@
           "recordId": "bd07becf-4cee-4de0-8139-2069ae39ba3b",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "2b2dc245-3b8f-4238-810c-ff93b72071f7"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "2d681d7f-08a2-42c0-91a2-6e945c9ae248",
@@ -228,9 +227,7 @@
           "recordId": "84125eb7-3053-4532-b3a2-2e39ca454d32",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "406f3798-d179-4537-9fa5-b53d56a61b6e"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "b67ff6bf-a8c7-4cc8-9e50-c9e5120f966b",
@@ -482,9 +479,7 @@
           "recordId": "abf8a60d-bdab-4e6a-93dd-fe13196eff3b",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "195da92a-aa18-44ff-b217-ce28c683db19"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "49f935ea-b104-4cda-b3de-8076cff8fb20",
@@ -556,9 +551,7 @@
           "recordId": "e4e7ae0f-41f6-43ae-9793-e840c2ccaf4f",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "e4089f3f-b6b8-4a14-bc4a-3c9bfa0a6d53"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "22fd2407-254c-423a-b1e4-335f53a41fce",
@@ -690,9 +683,7 @@
           "recordId": "531d25c5-77ad-4957-a7e6-32999ab4640d",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "14f3f071-163a-4225-a818-1bc79c7ae53e"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "f582e420-2c46-45c7-aee3-17830cb4ca87",
@@ -704,9 +695,7 @@
           "recordId": "732c7e95-57b9-4d79-8bf1-78007643b844",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "9786d32e-bc06-45c1-84b7-06bd7e892169"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "0339c5b1-7cdc-482e-b5bf-ae0d1f79ecff",
@@ -826,9 +815,7 @@
           "recordId": "80597316-f000-4dff-964c-1fe860eaf278",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "c12464e8-3b3b-4ce8-ae72-5696d8a9e64e"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "4f1292cf-0333-4c9e-b5bf-fbd030262995",
@@ -1008,9 +995,7 @@
           "recordId": "a3cc27cd-ac5d-4ef0-bb72-b1b15b31d46c",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "1bce3bba-d41b-4ae7-8d85-85943b14c01a"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "2f05e9f8-849b-4f49-9c20-63a5aa0c80be",
@@ -1094,9 +1079,7 @@
           "recordId": "bc21e642-5676-460b-a98a-69ae822e7ff2",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "68ee667e-f610-4dfe-9ef4-12fc6ad2e55d"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "1abaae63-2ab0-45b2-b62b-bf287a18c0fa",
@@ -1144,9 +1127,7 @@
           "recordId": "9494b69c-e816-42a0-83dc-4e7938a6af6c",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "59c79f90-b826-41ed-8832-fa63165bb6b9"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "369a5003-16b4-495a-b3e2-77cb7962cd7d",
@@ -1189,7 +1170,7 @@
       "officialVoteDate": null,
       "measureId": "HB 4024",
       "question": "House Third Reading: Given Immediate Effect Roll Call #190",
-      "originRunId": "rollcall:MI:house:2183:1601423:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:house:2183:1601423:2026-09-10T06:02:25.216Z",
       "members": 104,
       "notVoting": 0,
       "absent": 0,
@@ -1308,9 +1289,7 @@
           "recordId": "6292763f-9a65-44ae-8c1f-bd8082e01ef0",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "d9c89892-94e9-4e64-9bab-0d5c3f16ea2e"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "943c3726-501c-4893-bb2d-7819174c772b",
@@ -1622,9 +1601,7 @@
           "recordId": "0115af3e-947e-410f-ba5a-f6050faf9302",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "d15069c0-980e-456e-b06b-ccd83dbeb6cd"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "49f935ea-b104-4cda-b3de-8076cff8fb20",
@@ -1816,9 +1793,7 @@
           "recordId": "535982e2-c66d-4eda-ac67-e0d1f35b7118",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "12c023c2-5aa1-4232-a304-eb6394d95d1c"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "92dc58d7-1137-4941-b0c6-ddf74495bc55",
@@ -2034,9 +2009,7 @@
           "recordId": "167a2016-b4d8-4af6-a881-e2a8652a9ef6",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "6c346aa0-7f3e-471d-99ac-ee51248c7e55"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "994029e5-6ef9-420f-b91c-691a1f60dcee",
@@ -2096,9 +2069,7 @@
           "recordId": "24ae3119-d1ca-4f78-8a2b-7aeb8a2e557c",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "6bb8e750-bd5e-48a6-b699-c08c143bfddd"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "f0b6d115-cebf-43ad-a890-266c96187bf8",
@@ -2146,9 +2117,7 @@
           "recordId": "8876f65b-8570-4711-bb43-14997bd4d874",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "47d64e1f-81be-4b6c-a709-eb233723a14b"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "2f05e9f8-849b-4f49-9c20-63a5aa0c80be",
@@ -2232,9 +2201,7 @@
           "recordId": "8fed45d8-dbb6-442a-a0d4-17d736f41e02",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "98b39f62-a1b8-412f-bd77-50fb2a1328dd"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "1abaae63-2ab0-45b2-b62b-bf287a18c0fa",
@@ -2282,9 +2249,7 @@
           "recordId": "65c887ee-c2b5-4db0-9913-1ca083de08e2",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "530b4bc1-9c23-452f-bb5c-d495d2df0e13"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "369a5003-16b4-495a-b3e2-77cb7962cd7d",
@@ -2339,7 +2304,7 @@
       "officialVoteDate": null,
       "measureId": "HB 4664",
       "question": "House Third Reading: Given Immediate Effect Roll Call #205",
-      "originRunId": "rollcall:MI:house:2183:1602847:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:house:2183:1602847:2026-09-10T06:02:25.216Z",
       "members": 103,
       "notVoting": 0,
       "absent": 0,
@@ -2782,9 +2747,7 @@
           "recordId": "adf1c54d-0d55-40fa-982a-9052afefffdd",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "3709b096-dbc1-45bc-8f3c-1bfcd0113e96"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "49f935ea-b104-4cda-b3de-8076cff8fb20",
@@ -3396,9 +3359,7 @@
           "recordId": "e8c93958-a7a8-436c-a648-ca649a947197",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "4a7554dd-31c0-4045-8350-fd8a702fb637"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "369a5003-16b4-495a-b3e2-77cb7962cd7d",
@@ -3453,7 +3414,7 @@
       "officialVoteDate": null,
       "measureId": "HB 4765",
       "question": "House Third Reading: Given Immediate Effect Roll Call #107",
-      "originRunId": "rollcall:MI:house:2183:1683988:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:house:2183:1683988:2026-09-10T06:02:25.216Z",
       "members": 104,
       "notVoting": 0,
       "absent": 0,
@@ -3572,9 +3533,7 @@
           "recordId": "c7bc9a64-0f55-4509-8f4e-ba6cd614fffe",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "60b6d3c4-fffa-4efe-a239-f5fa0de8962a"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "943c3726-501c-4893-bb2d-7819174c772b",
@@ -3610,9 +3569,7 @@
           "recordId": "6f86cbf2-240d-4b1a-b06b-0558b3b8e076",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "3c12cd61-3ece-4f88-92b5-0a73ef51feca"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "a206da0d-bc75-47fe-8e80-2b2fc9245bfe",
@@ -3672,9 +3629,7 @@
           "recordId": "f141b275-107b-476e-8c85-fb864f7af0f5",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "5e94d052-614c-48f6-a827-b9b9ea710cdf"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6a7cf85d-5bef-4764-a174-27bf4ba2f19f",
@@ -3710,9 +3665,7 @@
           "recordId": "e81502e4-f13c-46b1-a07b-dee189ee1af0",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "0387bfb8-f9ef-4b9a-ba36-82e475f4ba9a"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "b1ed91b1-0aea-48b5-b051-60acfb0ec83d",
@@ -3808,9 +3761,7 @@
           "recordId": "8d3b5b6e-58cc-407e-94db-32d387ca6226",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "6ad428ac-525b-482d-8f58-142c5206040f"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "5e8e570e-2220-4c2c-92ad-e1df6f4aadce",
@@ -3894,9 +3845,7 @@
           "recordId": "ae7dacbc-7311-4e61-8e3f-35a4c1fcd8b2",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "d685d253-577f-4460-a36f-36e849447f5a"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "49f935ea-b104-4cda-b3de-8076cff8fb20",
@@ -3956,9 +3905,7 @@
           "recordId": "6a502cb4-3068-42cd-984b-98705e24956c",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "ac217368-df8f-4a8d-ba38-5e4bababd75c"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "5969d7ed-1902-40ce-a3e9-5e5dd0f0f4da",
@@ -3970,10 +3917,7 @@
           "recordId": "a56b2e1b-ab98-4d2f-859c-11d70707abf4",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "1b769b8e-9978-4b43-bae2-5b1e863c195e",
-            "33e75afa-7b19-444f-b400-e93f44cc58f2"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "22fd2407-254c-423a-b1e4-335f53a41fce",
@@ -4009,9 +3953,7 @@
           "recordId": "418a46e2-40dd-4eef-84ea-746d5a825b2c",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "b56bb1f7-3cca-4384-9a93-9a92d9c899d7"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "a45b91d2-6ebc-4647-b49c-2d032ba5b392",
@@ -4083,9 +4025,7 @@
           "recordId": "636eb5ad-1cda-4036-a473-4a5c82810ba6",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "68927ef4-c4e7-4307-86b9-1e19a8666a3b"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "c61980a9-bbb5-4e98-8938-323dcd1d9b98",
@@ -4097,9 +4037,7 @@
           "recordId": "b756e6ea-2c92-4113-8331-5f78a40c41b7",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "a6dbaa29-2214-40a2-84cb-b8bbc021e3b0"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "92dc58d7-1137-4941-b0c6-ddf74495bc55",
@@ -4111,9 +4049,7 @@
           "recordId": "6df017ec-e1bd-4a58-a3dd-b4e3231304a3",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "84c38445-cdb9-4bd7-ab4b-4e19c8c08eda"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "f582e420-2c46-45c7-aee3-17830cb4ca87",
@@ -4125,10 +4061,7 @@
           "recordId": "caa494f2-4d24-43ca-88cf-81b427155d90",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "3dffc28d-7389-485d-893d-b6aa2a961a14",
-            "b08644a3-b061-4d10-a214-7f8117105a18"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "0339c5b1-7cdc-482e-b5bf-ae0d1f79ecff",
@@ -4152,9 +4085,7 @@
           "recordId": "4090f869-4d26-4b85-901d-07dde15ace97",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "ffb11bf9-528a-4482-9a30-d29ebd015295"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "7574e02e-6318-4f77-b2c5-15fbacea7ec5",
@@ -4262,9 +4193,7 @@
           "recordId": "11de426d-cfe6-4aa5-9586-726e50b01b8e",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "0d2219e9-e7c3-470e-8a73-d42bd1f90081"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "4f1292cf-0333-4c9e-b5bf-fbd030262995",
@@ -4420,9 +4349,7 @@
           "recordId": "2be0b01f-bb9d-493d-ac9c-c66e73b7fb9b",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "6561a3e0-182b-4239-9111-89c32801e9e3"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6a4fd037-78a9-4d2b-a6ea-b16563858c42",
@@ -4434,9 +4361,7 @@
           "recordId": "798eb226-a29a-4021-82aa-f472e174c292",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "79900219-ca5d-4839-92f0-a2c07461267b"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "2f05e9f8-849b-4f49-9c20-63a5aa0c80be",
@@ -4520,9 +4445,7 @@
           "recordId": "fcf267ad-8a6d-4493-8063-63bbbcc79a09",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "2e88f3c2-5fa9-44e8-a530-502909bc9ded"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "1abaae63-2ab0-45b2-b62b-bf287a18c0fa",
@@ -4570,10 +4493,7 @@
           "recordId": "26aa6f30-94a9-4d20-94e5-731247bef961",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "059f728f-efb3-4963-8f20-7f532e0b1ba7",
-            "0a881094-8812-40b7-a252-9c5296d947a0"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "369a5003-16b4-495a-b3e2-77cb7962cd7d",
@@ -4628,7 +4548,7 @@
       "officialVoteDate": null,
       "measureId": "HB 4720",
       "question": "House Third Reading: Given Immediate Effect Roll Call #106",
-      "originRunId": "rollcall:MI:house:2183:1683989:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:house:2183:1683989:2026-09-10T06:02:25.216Z",
       "members": 104,
       "notVoting": 0,
       "absent": 0,
@@ -4747,9 +4667,7 @@
           "recordId": "34aeeb4f-144c-435d-a0de-3d71c0e6faa9",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "60b6d3c4-fffa-4efe-a239-f5fa0de8962a"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "943c3726-501c-4893-bb2d-7819174c772b",
@@ -4785,9 +4703,7 @@
           "recordId": "0da424a5-c14e-4612-825e-77c8f186d80d",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "3c12cd61-3ece-4f88-92b5-0a73ef51feca"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "a206da0d-bc75-47fe-8e80-2b2fc9245bfe",
@@ -4859,9 +4775,7 @@
           "recordId": "703ed522-c530-44bb-9477-40a8d7cfb47d",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "5e94d052-614c-48f6-a827-b9b9ea710cdf"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6a7cf85d-5bef-4764-a174-27bf4ba2f19f",
@@ -4897,9 +4811,7 @@
           "recordId": "c16f9b22-7bc3-4e1c-9d70-b97e5772e1a8",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "0387bfb8-f9ef-4b9a-ba36-82e475f4ba9a"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "b1ed91b1-0aea-48b5-b051-60acfb0ec83d",
@@ -5019,9 +4931,7 @@
           "recordId": "f5851dde-0065-4748-96ff-e4d90261cf10",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "6ad428ac-525b-482d-8f58-142c5206040f"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "5e8e570e-2220-4c2c-92ad-e1df6f4aadce",
@@ -5105,9 +5015,7 @@
           "recordId": "dcda3e8d-496b-4991-af5c-2081be98d70c",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "d685d253-577f-4460-a36f-36e849447f5a"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "49f935ea-b104-4cda-b3de-8076cff8fb20",
@@ -5167,9 +5075,7 @@
           "recordId": "95bd79c4-22e6-43dd-b6f1-10355043cc18",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "ac217368-df8f-4a8d-ba38-5e4bababd75c"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "5969d7ed-1902-40ce-a3e9-5e5dd0f0f4da",
@@ -5181,10 +5087,7 @@
           "recordId": "e3b9348f-e598-4963-aa44-363deff7e4c0",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "1b769b8e-9978-4b43-bae2-5b1e863c195e",
-            "33e75afa-7b19-444f-b400-e93f44cc58f2"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "22fd2407-254c-423a-b1e4-335f53a41fce",
@@ -5220,9 +5123,7 @@
           "recordId": "e4325c7b-e633-4a7f-b4cb-3ce3d8f3c42f",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "b56bb1f7-3cca-4384-9a93-9a92d9c899d7"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "a45b91d2-6ebc-4647-b49c-2d032ba5b392",
@@ -5306,9 +5207,7 @@
           "recordId": "c42dc490-1511-484e-bacd-26e03f65f507",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "68927ef4-c4e7-4307-86b9-1e19a8666a3b"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "c61980a9-bbb5-4e98-8938-323dcd1d9b98",
@@ -5320,9 +5219,7 @@
           "recordId": "6cb68597-5036-4233-903a-f0c4b3f82c6d",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "a6dbaa29-2214-40a2-84cb-b8bbc021e3b0"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "92dc58d7-1137-4941-b0c6-ddf74495bc55",
@@ -5334,9 +5231,7 @@
           "recordId": "e302886f-8210-4770-b8fb-becf7d58078e",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "84c38445-cdb9-4bd7-ab4b-4e19c8c08eda"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "f582e420-2c46-45c7-aee3-17830cb4ca87",
@@ -5348,10 +5243,7 @@
           "recordId": "2ef05f9a-cb99-450f-aca4-a0bb04df2811",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "3dffc28d-7389-485d-893d-b6aa2a961a14",
-            "b08644a3-b061-4d10-a214-7f8117105a18"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "0339c5b1-7cdc-482e-b5bf-ae0d1f79ecff",
@@ -5375,9 +5267,7 @@
           "recordId": "5e4cfadf-bf20-4932-b7df-74637aa5653f",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "ffb11bf9-528a-4482-9a30-d29ebd015295"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "7574e02e-6318-4f77-b2c5-15fbacea7ec5",
@@ -5473,9 +5363,7 @@
           "recordId": "55ca776f-80e3-429a-a8a3-1102109329ef",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "0d2219e9-e7c3-470e-8a73-d42bd1f90081"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "4f1292cf-0333-4c9e-b5bf-fbd030262995",
@@ -5619,9 +5507,7 @@
           "recordId": "49f4a06d-fe59-41c7-88de-b8b6ec92f5a3",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "6561a3e0-182b-4239-9111-89c32801e9e3"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "6a4fd037-78a9-4d2b-a6ea-b16563858c42",
@@ -5633,9 +5519,7 @@
           "recordId": "5061369d-cf80-4087-8d6b-a3eb8506eb9b",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "79900219-ca5d-4839-92f0-a2c07461267b"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "058c264d-9f09-4c1c-8955-9952c005aec7",
@@ -5707,9 +5591,7 @@
           "recordId": "8d8773c6-6182-4d44-9b04-36d0eca84bc0",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "2e88f3c2-5fa9-44e8-a530-502909bc9ded"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "1abaae63-2ab0-45b2-b62b-bf287a18c0fa",
@@ -5745,10 +5627,7 @@
           "recordId": "483f49c0-d41b-4298-ae3f-31bfd270a615",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "059f728f-efb3-4963-8f20-7f532e0b1ba7",
-            "0a881094-8812-40b7-a252-9c5296d947a0"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "369a5003-16b4-495a-b3e2-77cb7962cd7d",
@@ -5803,7 +5682,7 @@
       "officialVoteDate": null,
       "measureId": "HB 5845",
       "question": "House Third Reading: Given Immediate Effect Roll Call #216",
-      "originRunId": "rollcall:MI:house:2183:1710358:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:house:2183:1710358:2026-09-10T06:02:25.216Z",
       "members": 107,
       "notVoting": 0,
       "absent": 0,
@@ -6973,7 +6852,7 @@
       "officialVoteDate": null,
       "measureId": "SB 30",
       "question": "Senate Third Reading: Passed Roll Call # 52",
-      "originRunId": "rollcall:MI:senate:2183:1556539:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1556539:2026-09-10T06:02:25.216Z",
       "members": 36,
       "notVoting": 0,
       "absent": 1,
@@ -7195,7 +7074,7 @@
       "officialVoteDate": null,
       "measureId": "SB 34",
       "question": "Senate Third Reading: Passed Roll Call # 56",
-      "originRunId": "rollcall:MI:senate:2183:1556621:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1556621:2026-09-10T06:02:25.216Z",
       "members": 36,
       "notVoting": 0,
       "absent": 1,
@@ -7417,7 +7296,7 @@
       "officialVoteDate": null,
       "measureId": "SB 225",
       "question": "Senate Third Reading: Passed Roll Call # 173",
-      "originRunId": "rollcall:MI:senate:2183:1595359:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1595359:2026-09-10T06:02:25.216Z",
       "members": 36,
       "notVoting": 0,
       "absent": 1,
@@ -7426,7 +7305,7 @@
         "matched": 16
       },
       "actions": {
-        "unchanged": 16
+        "rewrite": 16
       },
       "notified": 0,
       "candidates": [
@@ -7436,7 +7315,7 @@
           "peopleId": 18742,
           "memberName": "Darrin Camilleri",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "0ba0f000-07a2-40a0-a26e-5bcc8cfbd4e1",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7448,7 +7327,7 @@
           "peopleId": 18749,
           "memberName": "Kevin Hertel",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "2597e80b-6988-40f7-a70b-57278b8a93a2",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7460,7 +7339,7 @@
           "peopleId": 19699,
           "memberName": "Sarah Anthony",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "ec4a84e2-5ba0-4d95-940b-68a60f32bcf0",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7472,7 +7351,7 @@
           "peopleId": 20647,
           "memberName": "John Cherry",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "35f6ff8b-8992-4b65-8c57-c0b747bc5421",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7484,7 +7363,7 @@
           "peopleId": 20798,
           "memberName": "Dayna Polehanki",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "4e528d4f-8f7a-4ca7-814c-fae513572cda",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7496,7 +7375,7 @@
           "peopleId": 22466,
           "memberName": "Mary Cavanagh",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "e44c3dd1-b2b5-4faa-8b07-931bb7ff1ca0",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7508,13 +7387,11 @@
           "peopleId": 24343,
           "memberName": "Veronica Klinefelt",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "31b554a4-2332-4fba-883e-678d03ba291c",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "c8f1b177-b188-406a-8031-b62866c3e0c8"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
@@ -7522,7 +7399,7 @@
           "peopleId": 24346,
           "memberName": "Sue Shink",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "31f8ff40-5400-4791-ab43-74253c318d1e",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7534,7 +7411,7 @@
           "peopleId": 17096,
           "memberName": "Michael Webber",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "0d96ee69-e221-4edf-a0b1-e243eb95fb31",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7546,7 +7423,7 @@
           "peopleId": 18737,
           "memberName": "Thomas Albert",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "7c98812f-eb89-4dd2-b414-c16bc4da7655",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7560,7 +7437,7 @@
           "peopleId": 18740,
           "memberName": "Joseph Bellino",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "6077ff9b-bfbb-468a-9199-9426de1411e1",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7572,7 +7449,7 @@
           "peopleId": 18747,
           "memberName": "Roger Hauck",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "451bca32-ce21-4967-bf9e-39ce1628c8dc",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7584,7 +7461,7 @@
           "peopleId": 18750,
           "memberName": "Michele Hoitenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "1acfca43-69a8-42be-a044-8c251fa6851c",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7596,7 +7473,7 @@
           "peopleId": 20654,
           "memberName": "Mark Huizenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "fe17584e-d92c-4209-92ba-3f687e362331",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7608,7 +7485,7 @@
           "peopleId": 22414,
           "memberName": "John Damoose",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "51f6deb6-1c1c-4fb3-b716-078cd0707a1a",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7620,7 +7497,7 @@
           "peopleId": 24344,
           "memberName": "Jonathan Lindsey",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "c57f1e40-616b-4e8d-9c2b-b6f5eb18df37",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7643,7 +7520,7 @@
       "officialVoteDate": null,
       "measureId": "SB 331",
       "question": "Senate Third Reading: Passed Roll Call # 175",
-      "originRunId": "rollcall:MI:senate:2183:1595428:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1595428:2026-09-10T06:02:25.216Z",
       "members": 36,
       "notVoting": 0,
       "absent": 1,
@@ -7738,9 +7615,7 @@
           "recordId": "40d3adba-455e-462c-88c8-00060424676a",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "c8f1b177-b188-406a-8031-b62866c3e0c8"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
@@ -7869,7 +7744,7 @@
       "officialVoteDate": null,
       "measureId": "SB 226",
       "question": "Senate Third Reading: Passed Roll Call # 174",
-      "originRunId": "rollcall:MI:senate:2183:1595529:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1595529:2026-09-10T06:02:25.216Z",
       "members": 36,
       "notVoting": 0,
       "absent": 1,
@@ -7878,7 +7753,7 @@
         "matched": 16
       },
       "actions": {
-        "unchanged": 16
+        "rewrite": 16
       },
       "notified": 0,
       "candidates": [
@@ -7888,7 +7763,7 @@
           "peopleId": 18742,
           "memberName": "Darrin Camilleri",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "11652ddb-0462-4441-873b-4d4a1578715b",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7900,7 +7775,7 @@
           "peopleId": 18749,
           "memberName": "Kevin Hertel",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "e4e2152f-57f5-4129-b507-2532f94615c7",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7912,7 +7787,7 @@
           "peopleId": 19699,
           "memberName": "Sarah Anthony",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "43bb7722-0c60-44ee-9046-1e19d8846575",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7924,7 +7799,7 @@
           "peopleId": 20647,
           "memberName": "John Cherry",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "29363dce-20ae-4c87-b23a-a4d9b346f2a8",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7936,7 +7811,7 @@
           "peopleId": 20798,
           "memberName": "Dayna Polehanki",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "d0430d20-7875-4cd6-a796-b1860e213043",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7948,7 +7823,7 @@
           "peopleId": 22466,
           "memberName": "Mary Cavanagh",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "8da068ee-c751-4380-8358-ba7cc9cffc50",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7960,13 +7835,11 @@
           "peopleId": 24343,
           "memberName": "Veronica Klinefelt",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "21d94daa-2a41-4b17-ad97-d26c4e70bdb5",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "c8f1b177-b188-406a-8031-b62866c3e0c8"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
@@ -7974,7 +7847,7 @@
           "peopleId": 24346,
           "memberName": "Sue Shink",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "99331f5e-e431-4734-894b-1f1fd3eff0f5",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7986,7 +7859,7 @@
           "peopleId": 17096,
           "memberName": "Michael Webber",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "036466de-c169-49fc-8e0d-e8a881f5f0a3",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -7998,7 +7871,7 @@
           "peopleId": 18737,
           "memberName": "Thomas Albert",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "98f1a17f-ce98-4339-a98b-bda4ae6dd0b9",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8012,7 +7885,7 @@
           "peopleId": 18740,
           "memberName": "Joseph Bellino",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "7c3596c7-3d19-4a20-b5f5-b89593003b74",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8024,7 +7897,7 @@
           "peopleId": 18747,
           "memberName": "Roger Hauck",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "9f0a3441-e282-4216-8ab7-8c9e29787f0f",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8036,7 +7909,7 @@
           "peopleId": 18750,
           "memberName": "Michele Hoitenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "3cbd5969-21f5-4345-a05c-b472efd2edcc",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8048,7 +7921,7 @@
           "peopleId": 20654,
           "memberName": "Mark Huizenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "3b7b8f89-2baf-49a3-a3fe-de02ff96d52d",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8060,7 +7933,7 @@
           "peopleId": 22414,
           "memberName": "John Damoose",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "7c396160-b3c7-4492-989a-ecf0040aeb8b",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8072,7 +7945,7 @@
           "peopleId": 24344,
           "memberName": "Jonathan Lindsey",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "4cd12168-b3b3-4a42-9e2c-ce6d1ddd3586",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8095,7 +7968,7 @@
       "officialVoteDate": null,
       "measureId": "SB 224",
       "question": "Senate Third Reading: Passed Roll Call # 172",
-      "originRunId": "rollcall:MI:senate:2183:1595545:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1595545:2026-09-10T06:02:25.216Z",
       "members": 36,
       "notVoting": 0,
       "absent": 1,
@@ -8228,9 +8101,7 @@
           "recordId": "8631383e-467e-4bfe-a634-b5c2d7900988",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "c8f1b177-b188-406a-8031-b62866c3e0c8"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
@@ -8321,7 +8192,7 @@
       "officialVoteDate": null,
       "measureId": "SB 533",
       "question": "Senate Third Reading: Passed Roll Call # 227",
-      "originRunId": "rollcall:MI:senate:2183:1603069:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1603069:2026-09-10T06:02:25.216Z",
       "members": 33,
       "notVoting": 0,
       "absent": 4,
@@ -8531,7 +8402,7 @@
       "officialVoteDate": null,
       "measureId": "SB 961",
       "question": "Senate Third Reading: Passed Roll Call # 121",
-      "originRunId": "rollcall:MI:senate:2183:1709961:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1709961:2026-09-10T06:02:25.216Z",
       "members": 37,
       "notVoting": 0,
       "absent": 1,
@@ -8540,7 +8411,7 @@
         "matched": 17
       },
       "actions": {
-        "unchanged": 17
+        "rewrite": 17
       },
       "notified": 0,
       "candidates": [
@@ -8550,7 +8421,7 @@
           "peopleId": 18742,
           "memberName": "Darrin Camilleri",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "5fd02b5d-a8b3-442f-947f-50e310f2b18f",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8562,7 +8433,7 @@
           "peopleId": 18749,
           "memberName": "Kevin Hertel",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "8663c934-100c-4178-8363-9ca45a1f0420",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8574,7 +8445,7 @@
           "peopleId": 19699,
           "memberName": "Sarah Anthony",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "42703d77-f50f-44dc-b419-559fd526c1de",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8586,7 +8457,7 @@
           "peopleId": 20647,
           "memberName": "John Cherry",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "707d86ee-5201-4453-ada9-f4d480203843",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8598,7 +8469,7 @@
           "peopleId": 20798,
           "memberName": "Dayna Polehanki",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "c8127cec-d82b-466e-b10e-45eed9af6e07",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8610,7 +8481,7 @@
           "peopleId": 22466,
           "memberName": "Mary Cavanagh",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "090d924b-ade9-4c5e-852e-ab449fe3b5a0",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8622,13 +8493,11 @@
           "peopleId": 24343,
           "memberName": "Veronica Klinefelt",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "a8daefd1-d850-4594-87a2-08adf7c84134",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "0f972d58-9a8c-43c1-b9d4-9e832157281d"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
@@ -8636,7 +8505,7 @@
           "peopleId": 24346,
           "memberName": "Sue Shink",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "67dea687-7472-4a47-b8ee-92e7ae06d164",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8648,7 +8517,7 @@
           "peopleId": 26671,
           "memberName": "Chedrick Greene",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "6d20fcda-2925-4dcb-9f27-03c6c93046da",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8660,7 +8529,7 @@
           "peopleId": 17096,
           "memberName": "Michael Webber",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "b25b33e8-0f60-40c0-81e4-c05bd94fc2c8",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8672,7 +8541,7 @@
           "peopleId": 18737,
           "memberName": "Thomas Albert",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "78cbfda2-a14a-4fe3-a8ba-32febe91ade7",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8684,7 +8553,7 @@
           "peopleId": 18740,
           "memberName": "Joseph Bellino",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "3a37ba7f-ed58-462f-b63a-960dbe326bd9",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8696,7 +8565,7 @@
           "peopleId": 18747,
           "memberName": "Roger Hauck",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "e9e94961-3312-4748-90e7-b2f11b2bdb53",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8708,7 +8577,7 @@
           "peopleId": 18750,
           "memberName": "Michele Hoitenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "fbe624ce-f183-4075-bf87-efab494a5887",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8720,7 +8589,7 @@
           "peopleId": 20654,
           "memberName": "Mark Huizenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "31e6bad3-43f9-4c82-af93-21e3591650a4",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8732,7 +8601,7 @@
           "peopleId": 22414,
           "memberName": "John Damoose",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "89978707-4a33-488a-84d0-bad50e2be1b8",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8744,7 +8613,7 @@
           "peopleId": 24344,
           "memberName": "Jonathan Lindsey",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "8c6e62fd-5b46-4cca-928b-8b304ddf305d",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8767,7 +8636,7 @@
       "officialVoteDate": null,
       "measureId": "SB 963",
       "question": "Senate Third Reading: Passed Roll Call # 123",
-      "originRunId": "rollcall:MI:senate:2183:1709991:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1709991:2026-09-10T06:02:25.216Z",
       "members": 37,
       "notVoting": 0,
       "absent": 1,
@@ -8776,7 +8645,7 @@
         "matched": 17
       },
       "actions": {
-        "unchanged": 17
+        "rewrite": 17
       },
       "notified": 0,
       "candidates": [
@@ -8786,7 +8655,7 @@
           "peopleId": 18742,
           "memberName": "Darrin Camilleri",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "466f1f29-767c-44dd-badb-cce4296d943a",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8798,7 +8667,7 @@
           "peopleId": 18749,
           "memberName": "Kevin Hertel",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "02eeb7bc-ad82-437c-a15e-533ec06fa09e",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8810,7 +8679,7 @@
           "peopleId": 19699,
           "memberName": "Sarah Anthony",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "22bff53f-34f3-481c-8617-99bbb32a054e",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8822,7 +8691,7 @@
           "peopleId": 20647,
           "memberName": "John Cherry",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "f273d01a-af17-461e-91d7-8a2e50bc06a2",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8834,7 +8703,7 @@
           "peopleId": 20798,
           "memberName": "Dayna Polehanki",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "bd73cf2e-bb68-4d60-8664-1d5495e632b1",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8846,7 +8715,7 @@
           "peopleId": 22466,
           "memberName": "Mary Cavanagh",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "38c93e6e-7ce9-4cda-a9c8-f38db900628b",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8858,13 +8727,11 @@
           "peopleId": 24343,
           "memberName": "Veronica Klinefelt",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "9daddbfe-5a79-4ccc-b192-4d4447711ae2",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "0f972d58-9a8c-43c1-b9d4-9e832157281d"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
@@ -8872,7 +8739,7 @@
           "peopleId": 24346,
           "memberName": "Sue Shink",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "65f42207-6164-41f1-aff2-b56d1c4e72c4",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8884,7 +8751,7 @@
           "peopleId": 26671,
           "memberName": "Chedrick Greene",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "f0baced2-3477-41ef-ae00-8cf6eecd34fb",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8896,7 +8763,7 @@
           "peopleId": 17096,
           "memberName": "Michael Webber",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "491d4208-066d-46b4-a63f-d07f30ddf260",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8908,7 +8775,7 @@
           "peopleId": 18737,
           "memberName": "Thomas Albert",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "cba8aab4-af1c-4c50-98ca-8d04c6e15b72",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8920,7 +8787,7 @@
           "peopleId": 18740,
           "memberName": "Joseph Bellino",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "8d6fc481-d15f-414d-b13a-f9979826dd5c",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8932,7 +8799,7 @@
           "peopleId": 18747,
           "memberName": "Roger Hauck",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "97f4aeca-d17b-4cbe-8adc-fe46685bd2c5",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8944,7 +8811,7 @@
           "peopleId": 18750,
           "memberName": "Michele Hoitenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "fe672170-5b86-4864-980a-5089d6569552",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8956,7 +8823,7 @@
           "peopleId": 20654,
           "memberName": "Mark Huizenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "518cca8d-f06a-4cb5-890b-fbfcc7d7697f",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8968,7 +8835,7 @@
           "peopleId": 22414,
           "memberName": "John Damoose",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "da046f71-3324-4432-8f83-7b45f8da551f",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -8980,7 +8847,7 @@
           "peopleId": 24344,
           "memberName": "Jonathan Lindsey",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "55ec8c3a-9975-4f4f-b23a-98b11aa00ac7",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9003,7 +8870,7 @@
       "officialVoteDate": null,
       "measureId": "SB 964",
       "question": "Senate Third Reading: Passed Roll Call # 126",
-      "originRunId": "rollcall:MI:senate:2183:1710228:2026-09-10T04:48:12.353Z",
+      "originRunId": "rollcall:MI:senate:2183:1710228:2026-09-10T06:02:25.216Z",
       "members": 37,
       "notVoting": 0,
       "absent": 1,
@@ -9012,7 +8879,7 @@
         "matched": 17
       },
       "actions": {
-        "unchanged": 17
+        "rewrite": 17
       },
       "notified": 0,
       "candidates": [
@@ -9022,7 +8889,7 @@
           "peopleId": 18742,
           "memberName": "Darrin Camilleri",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "f9e8c083-95ca-4409-a803-7ac2d5c45840",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9034,7 +8901,7 @@
           "peopleId": 18749,
           "memberName": "Kevin Hertel",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "bff994d2-039f-42d9-96b0-4d1c10a76985",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9046,7 +8913,7 @@
           "peopleId": 19699,
           "memberName": "Sarah Anthony",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "59bb38e4-411f-405f-b432-a962abeb35d8",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9058,7 +8925,7 @@
           "peopleId": 20647,
           "memberName": "John Cherry",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "b732689d-7ec7-43ae-a3ea-34ac622d1484",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9070,7 +8937,7 @@
           "peopleId": 20798,
           "memberName": "Dayna Polehanki",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "845afc63-d18f-4755-963d-a602b5151581",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9082,7 +8949,7 @@
           "peopleId": 22466,
           "memberName": "Mary Cavanagh",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "113bb5e0-339f-4aad-ab01-73b273fe2b00",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9094,13 +8961,11 @@
           "peopleId": 24343,
           "memberName": "Veronica Klinefelt",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "538e88ae-bc23-466f-9161-63f9c6ce2a17",
           "ambiguousRecordIds": [],
           "notified": false,
-          "relatedRecordIds": [
-            "0f972d58-9a8c-43c1-b9d4-9e832157281d"
-          ]
+          "relatedRecordIds": []
         },
         {
           "candidateId": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
@@ -9108,7 +8973,7 @@
           "peopleId": 24346,
           "memberName": "Sue Shink",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "99bd8f44-63a4-4f1b-b1b9-0723af048b51",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9120,7 +8985,7 @@
           "peopleId": 26671,
           "memberName": "Chedrick Greene",
           "side": "yea",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "50faff1e-b925-4ec7-b583-2a8c9f4678e4",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9132,7 +8997,7 @@
           "peopleId": 17096,
           "memberName": "Michael Webber",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "5f490416-650d-4bc9-96f8-010fd7da8f29",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9144,7 +9009,7 @@
           "peopleId": 18737,
           "memberName": "Thomas Albert",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "0263d588-9eab-4816-a381-4c2c4aa8457e",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9156,7 +9021,7 @@
           "peopleId": 18740,
           "memberName": "Joseph Bellino",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "671c2fd5-3164-4246-be9a-2e9c42558d22",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9168,7 +9033,7 @@
           "peopleId": 18747,
           "memberName": "Roger Hauck",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "9b549464-33ce-48da-9a79-38f81a851c3c",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9180,7 +9045,7 @@
           "peopleId": 18750,
           "memberName": "Michele Hoitenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "7359a129-d564-4da5-8318-2ed1338db4a7",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9192,7 +9057,7 @@
           "peopleId": 20654,
           "memberName": "Mark Huizenga",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "a7fdd20f-b202-4c53-98d9-1b669563ab05",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9204,7 +9069,7 @@
           "peopleId": 22414,
           "memberName": "John Damoose",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "7aa92ff0-59f5-4155-8e2b-b7cb56e7f536",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -9216,7 +9081,7 @@
           "peopleId": 24344,
           "memberName": "Jonathan Lindsey",
           "side": "nay",
-          "action": "unchanged",
+          "action": "rewrite",
           "recordId": "a6a5ace5-708b-4a36-8fef-01c45423e403",
           "ambiguousRecordIds": [],
           "notified": false,

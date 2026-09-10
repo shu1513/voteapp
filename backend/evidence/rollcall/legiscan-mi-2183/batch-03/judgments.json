@@ -134,8 +134,8 @@
    "measure_id": "SB 225",
    "vote_date": "2025-06-25",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 225. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not carry a concealed pistol. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
-   "nay_description": "Voted against Senate Bill 225. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not carry a concealed pistol. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "yea_description": "Voted for Senate Bill 225. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not carry a concealed pistol. Lawmakers with a concealed-pistol license could still carry while serving. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 225. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not carry a concealed pistol. Lawmakers with a concealed-pistol license could still carry while serving. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
    "labels": [
     {
      "slug": "gun_control",
@@ -152,8 +152,8 @@
    "measure_id": "SB 226",
    "vote_date": "2025-06-25",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 226. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not have a gun at all, whether hidden or not. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
-   "nay_description": "Voted against Senate Bill 226. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not have a gun at all, whether hidden or not. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "yea_description": "Voted for Senate Bill 226. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not have a gun, whether hidden or not. Police, building security and lawmakers with a concealed-pistol license could still carry. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 226. It would add the Michigan State Capitol Building, the Anderson House Office Building and the Binsfeld Senate Office Building to the places where a person may not have a gun, whether hidden or not. Police, building security and lawmakers with a concealed-pistol license could still carry. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
    "labels": [
     {
      "slug": "gun_control",
@@ -188,8 +188,8 @@
    "measure_id": "SB 961",
    "vote_date": "2026-06-16",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 961, the State Voting Rights Act. It would bar a local government or state agency from any rule or method of election that leaves a protected class taking part less than other voters or that holds them back from the political process. Someone who wanted to sue would first have to write to the local government setting out the problem and a way to fix it. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
-   "nay_description": "Voted against Senate Bill 961, the State Voting Rights Act. It would bar a local government or state agency from any rule or method of election that leaves a protected class taking part less than other voters or that holds them back from the political process. Someone who wanted to sue would first have to write to the local government setting out the problem and a way to fix it. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "yea_description": "Voted for Senate Bill 961, the State Voting Rights Act. It would bar a local government or state agency from any rule or method of election that leaves a protected class taking part less than other voters or that holds them back from the political process. Someone who wanted to sue would usually first have to write to the local government setting out the problem and a way to fix it, though not when asking a court for quick relief before an upcoming election. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 961, the State Voting Rights Act. It would bar a local government or state agency from any rule or method of election that leaves a protected class taking part less than other voters or that holds them back from the political process. Someone who wanted to sue would usually first have to write to the local government setting out the problem and a way to fix it, though not when asking a court for quick relief before an upcoming election. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
    "labels": [
     {
      "slug": "civil_rights",
@@ -206,8 +206,8 @@
    "measure_id": "SB 963",
    "vote_date": "2026-06-16",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 963, the Language Assistance for Elections Act. It would make a local government give help in another language at its elections when enough of its people share that language and have limited English. The Secretary of State would list which places and which languages each year, and would pay back some of the cost of counting translated ballots. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
-   "nay_description": "Voted against Senate Bill 963, the Language Assistance for Elections Act. It would make a local government give help in another language at its elections when enough of its people share that language and have limited English. The Secretary of State would list which places and which languages each year, and would pay back some of the cost of counting translated ballots. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "yea_description": "Voted for Senate Bill 963, the Language Assistance for Elections Act. It would make a local government give help in another language at its elections when enough of its people share that language and have limited English. The Secretary of State would list which places and which languages every two years, and would pay back the extra cost of testing ballot-counting machines. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 963, the Language Assistance for Elections Act. It would make a local government give help in another language at its elections when enough of its people share that language and have limited English. The Secretary of State would list which places and which languages every two years, and would pay back the extra cost of testing ballot-counting machines. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
    "labels": [
     {
      "slug": "civil_rights",
@@ -224,11 +224,16 @@
    "measure_id": "SB 964",
    "vote_date": "2026-06-16",
    "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 964. From 2028 it would make a local government tell the Secretary of State when it changes how it runs elections, such as reorganizing or changing its method of election, and when a voter asks to view voting equipment. It would also make the local government report which groups may appoint election challengers. The Secretary of State would post each notice within five days. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
-   "nay_description": "Voted against Senate Bill 964. From 2028 it would make a local government tell the Secretary of State when it changes how it runs elections, such as reorganizing or changing its method of election, and when a voter asks to view voting equipment. It would also make the local government report which groups may appoint election challengers. The Secretary of State would post each notice within five days. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "yea_description": "Voted for Senate Bill 964. From 2028 it would make a local government tell the Secretary of State when it changes how it runs elections, when a voter asks to view voting equipment, and which groups may appoint election challengers, with each notice posted within five days. It would also let a voter who cannot get into the polling place vote from outside, let a voter choose who helps them in another language, and let people hand out food, warmth or other necessities to voters waiting in line. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+   "nay_description": "Voted against Senate Bill 964. From 2028 it would make a local government tell the Secretary of State when it changes how it runs elections, when a voter asks to view voting equipment, and which groups may appoint election challengers, with each notice posted within five days. It would also let a voter who cannot get into the polling place vote from outside, let a voter choose who helps them in another language, and let people hand out food, warmth or other necessities to voters waiting in line. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
    "labels": [
     {
      "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
      "yea": "for",
      "nay": null
     }
