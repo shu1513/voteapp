@@ -1,0 +1,184 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1552240,
+      "measure_id": "HB 1052",
+      "vote_date": "2025-04-18",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1052. A hate crime in Washington is an assault, property damage, or a threat that targets someone because of a trait the law names. Before this law, that bias had to be the reason for the act. This law makes it enough that bias was part of the reason. The traits named are race, color, religion, ancestry, national origin, gender, sexual orientation, gender expression or identity, and mental, physical, or sensory disability. It became law as chapter 249 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1052. A hate crime in Washington is an assault, property damage, or a threat that targets someone because of a trait the law names. Before this law, that bias had to be the reason for the act. This law makes it enough that bias was part of the reason. The traits named are race, color, religion, ancestry, national origin, gender, sexual orientation, gender expression or identity, and mental, physical, or sensory disability. It became law as chapter 249 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1535722,
+      "measure_id": "HB 1052",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1052. A hate crime in Washington is an assault, property damage, or a threat that targets someone because of a trait the law names. Before this law, that bias had to be the reason for the act. This law makes it enough that bias was part of the reason. The traits named are race, color, religion, ancestry, national origin, gender, sexual orientation, gender expression or identity, and mental, physical, or sensory disability. It became law as chapter 249 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 1052. A hate crime in Washington is an assault, property damage, or a threat that targets someone because of a trait the law names. Before this law, that bias had to be the reason for the act. This law makes it enough that bias was part of the reason. The traits named are race, color, religion, ancestry, national origin, gender, sexual orientation, gender expression or identity, and mental, physical, or sensory disability. It became law as chapter 249 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1656971,
+      "measure_id": "HB 1155",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1155. This law makes every noncompete agreement in Washington void, including ones signed years earlier. A noncompete is a contract term that stops a worker taking a job with a competitor. An employer may not enforce one, threaten to enforce one, or tell a worker they are still bound by one. By October 1, 2027 employers must make a reasonable effort to tell current and former workers that their noncompete no longer binds them. A worker can sue for damages and legal fees. An agreement to repay out-of-pocket education costs does not count as a noncompete if it ends within 18 months of the worker's start date. It became law as chapter 149 of the 2026 session laws and takes effect on June 30, 2027. The Washington House approved it 62-33.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1155. This law makes every noncompete agreement in Washington void, including ones signed years earlier. A noncompete is a contract term that stops a worker taking a job with a competitor. An employer may not enforce one, threaten to enforce one, or tell a worker they are still bound by one. By October 1, 2027 employers must make a reasonable effort to tell current and former workers that their noncompete no longer binds them. A worker can sue for damages and legal fees. An agreement to repay out-of-pocket education costs does not count as a noncompete if it ends within 18 months of the worker's start date. It became law as chapter 149 of the 2026 session laws and takes effect on June 30, 2027. The Washington House approved it 62-33.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1655093,
+      "measure_id": "HB 1155",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1155. This law makes every noncompete agreement in Washington void, including ones signed years earlier. A noncompete is a contract term that stops a worker taking a job with a competitor. An employer may not enforce one, threaten to enforce one, or tell a worker they are still bound by one. By October 1, 2027 employers must make a reasonable effort to tell current and former workers that their noncompete no longer binds them. A worker can sue for damages and legal fees. An agreement to repay out-of-pocket education costs does not count as a noncompete if it ends within 18 months of the worker's start date. It became law as chapter 149 of the 2026 session laws and takes effect on June 30, 2027. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 1155. This law makes every noncompete agreement in Washington void, including ones signed years earlier. A noncompete is a contract term that stops a worker taking a job with a competitor. An employer may not enforce one, threaten to enforce one, or tell a worker they are still bound by one. By October 1, 2027 employers must make a reasonable effort to tell current and former workers that their noncompete no longer binds them. A worker can sue for damages and legal fees. An agreement to repay out-of-pocket education costs does not count as a noncompete if it ends within 18 months of the worker's start date. It became law as chapter 149 of the 2026 session laws and takes effect on June 30, 2027. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1554288,
+      "measure_id": "HB 1163",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1163. This law will require a permit to buy a firearm in Washington. A dealer may not hand over a firearm until the buyer shows a valid permit. To get one, a person applies to the State Patrol, gives a full set of fingerprints, and shows they finished a certified firearms safety course in the past five years or are exempt from that course. A permit lasts five years. The State Patrol must refuse a permit to someone barred from having a firearm, someone under a court order about firearms, or someone with an outstanding warrant for an offense that makes them ineligible. It became law as chapter 370 of the 2025 session laws and takes effect on May 1, 2027. The Washington House approved it 57-39.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1163. This law will require a permit to buy a firearm in Washington. A dealer may not hand over a firearm until the buyer shows a valid permit. To get one, a person applies to the State Patrol, gives a full set of fingerprints, and shows they finished a certified firearms safety course in the past five years or are exempt from that course. A permit lasts five years. The State Patrol must refuse a permit to someone barred from having a firearm, someone under a court order about firearms, or someone with an outstanding warrant for an offense that makes them ineligible. It became law as chapter 370 of the 2025 session laws and takes effect on May 1, 2027. The Washington House approved it 57-39.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1547807,
+      "measure_id": "HB 1163",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1163. This law will require a permit to buy a firearm in Washington. A dealer may not hand over a firearm until the buyer shows a valid permit. To get one, a person applies to the State Patrol, gives a full set of fingerprints, and shows they finished a certified firearms safety course in the past five years or are exempt from that course. A permit lasts five years. The State Patrol must refuse a permit to someone barred from having a firearm, someone under a court order about firearms, or someone with an outstanding warrant for an offense that makes them ineligible. It became law as chapter 370 of the 2025 session laws and takes effect on May 1, 2027. The Washington Senate approved it 29-19.",
+      "nay_description": "Voted against passing House Bill 1163. This law will require a permit to buy a firearm in Washington. A dealer may not hand over a firearm until the buyer shows a valid permit. To get one, a person applies to the State Patrol, gives a full set of fingerprints, and shows they finished a certified firearms safety course in the past five years or are exempt from that course. A permit lasts five years. The State Patrol must refuse a permit to someone barred from having a firearm, someone under a court order about firearms, or someone with an outstanding warrant for an offense that makes them ineligible. It became law as chapter 370 of the 2025 session laws and takes effect on May 1, 2027. The Washington Senate approved it 29-19.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1558685,
+      "measure_id": "HB 1217",
+      "vote_date": "2025-04-27",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the compromise version of House Bill 1217 worked out by negotiators from both chambers. This law limits how much a landlord may raise the rent in any 12-month period. For most rentals the limit is 7 percent plus inflation, or 10 percent, whichever is lower. For manufactured home lots the limit is 5 percent. No increase is allowed during the first year of a tenancy, and a landlord may set any rent once a tenant has moved out. The limit does not apply to buildings first occupied within the past 12 years, to public housing, or to some owner-occupied homes where the owner rents out no more than two units. The rent limit ends on July 1, 2040. It became law as chapter 209 of the 2025 session laws and took effect on May 7, 2025. The Washington House approved it 54-44.",
+      "nay_description": "Voted against the compromise version of House Bill 1217 worked out by negotiators from both chambers. This law limits how much a landlord may raise the rent in any 12-month period. For most rentals the limit is 7 percent plus inflation, or 10 percent, whichever is lower. For manufactured home lots the limit is 5 percent. No increase is allowed during the first year of a tenancy, and a landlord may set any rent once a tenant has moved out. The limit does not apply to buildings first occupied within the past 12 years, to public housing, or to some owner-occupied homes where the owner rents out no more than two units. The rent limit ends on July 1, 2040. It became law as chapter 209 of the 2025 session laws and took effect on May 7, 2025. The Washington House approved it 54-44.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1558684,
+      "measure_id": "HB 1217",
+      "vote_date": "2025-04-27",
+      "review_status": "approved",
+      "yea_description": "Voted to approve the compromise version of House Bill 1217 worked out by negotiators from both chambers. This law limits how much a landlord may raise the rent in any 12-month period. For most rentals the limit is 7 percent plus inflation, or 10 percent, whichever is lower. For manufactured home lots the limit is 5 percent. No increase is allowed during the first year of a tenancy, and a landlord may set any rent once a tenant has moved out. The limit does not apply to buildings first occupied within the past 12 years, to public housing, or to some owner-occupied homes where the owner rents out no more than two units. The rent limit ends on July 1, 2040. It became law as chapter 209 of the 2025 session laws and took effect on May 7, 2025. The Washington Senate approved it 27-20.",
+      "nay_description": "Voted against the compromise version of House Bill 1217 worked out by negotiators from both chambers. This law limits how much a landlord may raise the rent in any 12-month period. For most rentals the limit is 7 percent plus inflation, or 10 percent, whichever is lower. For manufactured home lots the limit is 5 percent. No increase is allowed during the first year of a tenancy, and a landlord may set any rent once a tenant has moved out. The limit does not apply to buildings first occupied within the past 12 years, to public housing, or to some owner-occupied homes where the owner rents out no more than two units. The rent limit ends on July 1, 2040. It became law as chapter 209 of the 2025 session laws and took effect on May 7, 2025. The Washington Senate approved it 27-20.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1623818,
+      "measure_id": "HB 1604",
+      "vote_date": "2026-02-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1604. This law sets rules for how local jails search people who are transgender or intersex. Jails must write policies that meet the federal Prison Rape Elimination Act and have them in place by September 1, 2026. A search may not be done for the sole purpose of finding out a person's genital status. Staff must be trained to carry out these searches in the least intrusive way that still meets security needs. A search by staff of a different gender is allowed only when an urgent threat to the jail's safety or order requires it, and being short of trained female staff does not count as urgent. It became law as chapter 17 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 56-39.",
+      "nay_description": "Voted against passing House Bill 1604. This law sets rules for how local jails search people who are transgender or intersex. Jails must write policies that meet the federal Prison Rape Elimination Act and have them in place by September 1, 2026. A search may not be done for the sole purpose of finding out a person's genital status. Staff must be trained to carry out these searches in the least intrusive way that still meets security needs. A search by staff of a different gender is allowed only when an urgent threat to the jail's safety or order requires it, and being short of trained female staff does not count as urgent. It became law as chapter 17 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 56-39.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1651766,
+      "measure_id": "HB 1604",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1604. This law sets rules for how local jails search people who are transgender or intersex. Jails must write policies that meet the federal Prison Rape Elimination Act and have them in place by September 1, 2026. A search may not be done for the sole purpose of finding out a person's genital status. Staff must be trained to carry out these searches in the least intrusive way that still meets security needs. A search by staff of a different gender is allowed only when an urgent threat to the jail's safety or order requires it, and being short of trained female staff does not count as urgent. It became law as chapter 17 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 1604. This law sets rules for how local jails search people who are transgender or intersex. Jails must write policies that meet the federal Prison Rape Elimination Act and have them in place by September 1, 2026. A search may not be done for the sole purpose of finding out a person's genital status. Staff must be trained to carry out these searches in the least intrusive way that still meets security needs. A search by staff of a different gender is allowed only when an urgent threat to the jail's safety or order requires it, and being short of trained female staff does not count as urgent. It became law as chapter 17 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
