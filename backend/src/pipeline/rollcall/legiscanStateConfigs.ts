@@ -4748,6 +4748,185 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: WYOMING_KEPT_QUESTIONS,
     excludedQuestions: WYOMING_EXCLUDED_QUESTIONS,
   },
+  // Oklahoma, 60th Legislature. ONE key for TWO calendar years, and that
+  // choice is the whole story of this state. LegiScan publishes a 2025
+  // dataset (session 2165) and a 2026 dataset (session 2219), and 2219 is
+  // NOT a second year of votes: it re-files the entire 60th Legislature,
+  // 2025 included, under FRESH roll-call ids and fresh bill ids. Measured
+  // 2026-09-09 over both extracted datasets: 2165 holds 4,517 votes, all
+  // dated 2025; 2219 holds 8,604 votes dated 2025-01-07 to 2026-05-14, of
+  // which 4,523 are in 2025. The two share ALL 3,253 bill numbers and ZERO
+  // roll-call ids.
+  //
+  // Registering both would import every 2025 vote twice. The fan-out
+  // deduplicates on the roll's own url key `ls:<roll call id>`, the ids
+  // differ, so nothing would recognize the second copy and every legislator
+  // would get two records making the same claim. 2219 also carries current
+  // outcomes (1,076 bills at status 4 against 562 in the 2025 cut), so a
+  // 2025 bill that became law in 2026 is visible as law only here.
+  //
+  // The 2025 dataset stays a read-only cross-check, and the two disagree:
+  // 57 roll identities appear only in 2165 and 64 of 2219's 2025-dated rolls
+  // appear only in 2165's absence, including floor votes (HB 1095 third
+  // reading reads 70-15 on 2025-03-17 in one and 66-13 on 2025-03-18 in the
+  // other). Audit an Oklahoma roll against Oklahoma's own record, never
+  // against the other dataset.
+  //
+  // The feed itself is the cleanest tier: 0 file errors, 0 parse errors, 0
+  // committee-chamber rolls and 0 rolls without a member list, in both
+  // sessions. Every description opens `House: ` or `Senate: `, and every
+  // committee roll names its committee, so the floor split is by rule.
+  // Constitutional amendments ride JOINT RESOLUTIONS, a type
+  // LEGISCAN_KEPT_BILL_TYPES already keeps, so the Georgia resolution gap
+  // does not recur here.
+  //
+  // Oklahoma also ships its own tally oracle at no cost: bill history action
+  // lines print the count (`Third Reading, Measure passed: Ayes: 83 Nays:
+  // 0`). Auditing ALL 3,242 kept floor rolls against it, not just the
+  // divided ones (the Oregon SB 1565 lesson), gave 3,209 exact, 20
+  // mismatched and 13 with no history line. The 20 are held below.
+  OK: {
+    jurisdiction: "OK",
+    sessionId: 2219,
+    chamberSizes: { house: 101, senate: 48 },
+    keptQuestions: [
+      // Passage in the chamber where the measure starts. 2,760 rolls, the
+      // dominant family. The optional comma tolerates the 2025 dataset's
+      // five stray-comma prints (`House: ,     THIRD READING`); the 2026
+      // dataset has cleaned every one of them, so the tolerance matches
+      // nothing today and only stops a reissued stray comma from silently
+      // surfacing a real passage vote.
+      { pattern: /^(?:house|senate): (?:, )?third reading$/, questionClass: "passage" },
+      // The originating chamber's FINAL vote, taken after the other chamber
+      // changed the measure. 371 rolls. Read against the bill history it is
+      // always one of two questions: taking the other chamber's amendments
+      // (`SA's read, adopted` / `HAs adopted`, then `Fourth Reading, Measure
+      // passed: Ayes: 86 Nays: 1`) or adopting a conference committee report
+      // (`CCR adopted`). Both land on the text that became law, which is why
+      // taking each chamber's LAST kept roll needs no per-chamber version
+      // split here (the Maryland shape). It is filed as concurrence because
+      // that is the larger half; the conference reports wear the same
+      // caption and cannot be separated from it by description alone.
+      { pattern: /^(?:house|senate): fourth reading$/, questionClass: "concurrence" },
+      // Overriding the Governor's veto: 111 rolls, 26 of them closely
+      // divided, across three spellings the two chambers do not share
+      // (`VETO OVERRIDE NO EMERGENCY` in the Senate, `VETO OVERRIDE WITHOUT
+      // EMERGENCY` in the House, `VETO OVERRIDE WITH EMERGENCY` in both).
+      // The `emer` short form and the bare `VETO OVERRIDE` appear in the
+      // 2025 dataset only and are tolerated for the same reason as the
+      // stray comma above.
+      //
+      // An override is not automatically a success: the history records
+      // `Veto overridden` or `Veto override failed`, and 3 of these failed.
+      // It is also not visible in the bill's status — 8 of the 111 sit on
+      // bills LegiScan still marks status 5, vetoed, although Oklahoma
+      // overrode them. Read the history's own outcome line, never `status`
+      // and never `passed`.
+      {
+        pattern: /^(?:house|senate): veto override(?: (?:no|with|without) emer(?:gency)?)?$/,
+        questionClass: "veto_override",
+      },
+    ],
+    excludedQuestions: [
+      // ⚠ ANCHORED ON PURPOSE, AND THIS IS THE STATE'S SHARPEST TRAP.
+      // Oklahoma votes a measure's emergency clause — whether it takes
+      // effect at once rather than 90 days after the session — as a SEPARATE
+      // question from the measure (`Third Reading, Measure passed and
+      // Emergency failed: Ayes: 59 Nays: 33; Ayes: 59 Nays: 33`), so it is
+      // not a vote on the bill and 41 of them are excluded here. But the
+      // word `emergency` also appears in EVERY veto-override caption, so an
+      // unanchored rule deletes all 111 override rolls, 26 of them divided,
+      // and does it silently. Measured both ways before this was written.
+      // Same shape as West Virginia's `^effective` rule.
+      /^(?:house|senate): emergency$/,
+      // Committee work. The tally check already rejects every House
+      // committee roll (all sit below half the chamber), but Oklahoma's
+      // Senate appropriations committee seats 21 to 26 of 48, which lands 90
+      // rolls in the band that is neither clearly floor nor clearly
+      // committee and would park them in the surfaced queue for a human who
+      // has nothing to decide (the Florida `Senate Rules` case). Both
+      // spellings the feed uses are named: a committee before the colon, and
+      // the 119 rolls that read `Committee on Appropriations and Budget: DO
+      // PASS AMENDED CS`, which carry no `committee:` token at all.
+      //
+      // Neither rule reaches the four rolls that wear a committee caption
+      // with an EMPTY committee name and a full-chamber tally
+      // (`Senate:  Committee: DO PASS`). That is deliberate — see the note
+      // under heldRollCallIds.
+      /^(?:house|senate): .+committee: /,
+      /^(?:house|senate): committee on .+: /,
+      // Procedural floor questions, none of them a vote on the measure.
+      /^(?:house|senate): reconsider/,
+      /^(?:house|senate): table/,
+      /^(?:house|senate): (?:adopt )?amendment$/,
+      /^(?:house|senate): adopt amendment$/,
+      /^(?:house|senate): suspend/,
+      /^(?:house|senate): advance from general order$/,
+      /^(?:house|senate): appeal of the decision of the chair$/,
+      /^(?:house|senate): adopt motion$/,
+      /^(?:house|senate): adopt resolution$/,
+    ],
+    // Two groups, both proven against Oklahoma's own bill history.
+    //
+    // 1. Twenty rolls whose LegiScan tally no line of that day's history
+    //    supports. Six are closely divided, so they would otherwise reach a
+    //    batch. The usual shape is one missing no vote (HB 4073 reads 47-0
+    //    where Oklahoma prints 47-1), the defect class already recorded in
+    //    North Carolina, Indiana, Kansas and Oregon. HB 3383 is worse than a
+    //    tally: Oklahoma records the measure as FAILED.
+    //
+    // 2. Nothing here covers the four `Senate:  Committee: DO PASS` rolls,
+    //    which carry an empty committee name and a whole-chamber tally.
+    //    Three are genuine Senate passage votes the feed mis-captioned
+    //    (HB 3147 46-0, HB 3882 33-9, HJR 1067 29-8) and the fourth,
+    //    HB 4440, is not a passage vote at all — its 30-9 matches the
+    //    history's `Special Election failed: Ayes: 30 Nays: 9`. Because the
+    //    caption is the feed's claim rather than Oklahoma's question, no
+    //    pattern can classify them; they are left unmatched so they surface
+    //    for a human, which is where a mixed bucket belongs.
+    heldRollCallIds: {
+      1607436:
+        "HB 1807 Senate 2025-05-07 third reading: LegiScan reports 31-14; Oklahoma's history for that day reports `Measure passed: Ayes: 31 Nays: 15`, so one no vote is missing. Closely divided either way",
+      1670674:
+        "HB 3383 House 2026-03-25 third reading: LegiScan reports 46-51 and Oklahoma reports `Third Reading, Measure failed: Ayes: 45 Nays: 51`. The tally is wrong AND the measure failed",
+      1668888:
+        "SB 1552 Senate 2026-03-24 third reading: LegiScan reports 26-18; Oklahoma reports `Measure passed: Ayes: 26 Nays: 19`",
+      1670209:
+        "SB 259 Senate 2026-03-25 third reading: LegiScan reports 36-10; Oklahoma reports `Measure passed: Ayes: 36 Nays: 11`",
+      1605362:
+        "SB 585 Senate 2025-03-25 third reading: LegiScan reports 25-15, and neither of Oklahoma's two lines for that day matches it — the measure failed 24-22 and the motion to reconsider carried 30-16",
+      1604598:
+        "SB 701 Senate 2025-05-21 fourth reading: LegiScan reports 29-15; Oklahoma reports `Measure passed: Ayes: 29 Nays: 16`",
+      1605044:
+        "HB 1576 House 2025-05-29 veto override: LegiScan reports 76-12 and no history line of that day carries it; the only tally Oklahoma prints is the Senate's `Veto overridden: Ayes: 36 Nays: 9`. Not divided, but unproven",
+      1688975:
+        "HB 2979 Senate 2026-04-23 third reading: LegiScan reports 41-0; Oklahoma reports 41-1",
+      1692912:
+        "HB 3673 Senate 2026-05-04 third reading: LegiScan reports 46-0; Oklahoma reports 47-0",
+      1689867:
+        "HB 4073 Senate 2026-04-27 third reading: LegiScan reports 47-0; Oklahoma reports 47-1",
+      1690385:
+        "HB 4428 Senate 2026-04-28 third reading: LegiScan reports 34-8; Oklahoma reports 35-8",
+      1605992:
+        "HJR 1035 Senate 2025-05-21 third reading: LegiScan reports 42-0; Oklahoma reports 42-1",
+      1606472:
+        "SB 1014 Senate 2025-03-25 third reading: LegiScan reports 38-7; Oklahoma reports 38-6",
+      1686819:
+        "SB 1132 Senate 2026-04-21 third reading: LegiScan reports 36-8; Oklahoma reports 36-9",
+      1682473:
+        "SB 1176 Senate 2026-04-14 third reading: LegiScan reports 39-5; Oklahoma reports 39-6",
+      1660828:
+        "SB 1555 Senate 2026-03-11 third reading: LegiScan reports 42-0; Oklahoma reports 42-1",
+      1663345:
+        "SB 1716 Senate 2026-03-16 third reading: LegiScan reports 45-0; Oklahoma reports 45-1",
+      1663342:
+        "SB 1976 Senate 2026-03-16 third reading: LegiScan reports 46-0; Oklahoma reports 46-1",
+      1608556:
+        "SB 641 Senate 2025-03-27 third reading: LegiScan reports 32-7; Oklahoma reports 32-8",
+      1605440:
+        "SB 915 Senate 2025-05-20 fourth reading: LegiScan reports 40-5; Oklahoma reports `Measure and Emergency passed: Ayes: 40 Nays: 0`",
+    },
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

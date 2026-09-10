@@ -1,0 +1,2987 @@
+{
+  "runId": "rollcall-legiscan-fetch-ok-20260909T224235Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "OK",
+  "startedAt": "2026-09-09T22:42:35.303Z",
+  "finishedAt": "2026-09-09T22:42:38.589Z",
+  "datasetDir": "~/legiscan-data/ok-2165",
+  "bills": 3253,
+  "votes": 4517,
+  "people": 149,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House: THIRD READING",
+      "count": 760,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 99,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1276",
+        "HB2728",
+        "HB1030"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: THIRD READING",
+      "count": 638,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 48,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB135",
+        "SB405",
+        "SB443"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: FOURTH READING",
+      "count": 118,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2036",
+        "HB2729",
+        "HB1086"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: FOURTH READING",
+      "count": 116,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 48,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1460",
+        "SB1024",
+        "SB1027"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Judiciary and Public Safety Oversight Committee: DO PASS",
+      "count": 108,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1591",
+        "HB1861",
+        "HB1731"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Judiciary Committee: DO PASS",
+      "count": 81,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1115",
+        "SB603",
+        "SB978"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Business & Insurance Committee: DO PASS",
+      "count": 75,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB24",
+        "SB335",
+        "SB125"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Committee: DO PASS AS AMENDED BY CS",
+      "count": 69,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2728",
+        "HB2741",
+        "HB1728"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Committee on Appropriations and Budget Committee: DO PASS AS AMENDED BY CS",
+      "count": 54,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2784",
+        "HB2779",
+        "HB2777"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Committee on Appropriations and Budget: DO PASS AMENDED CS",
+      "count": 54,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1136",
+        "SB1135",
+        "SB1137"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Health & Human Services Committee: DO PASS",
+      "count": 54,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB891",
+        "SB740",
+        "SB113"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Public Safety Committee: DO PASS",
+      "count": 54,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB550",
+        "SB780",
+        "SB23"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Health and Human Services Oversight Committee: DO PASS",
+      "count": 53,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1598",
+        "HB1185",
+        "HB1574"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Appropriations Committee: DO PASS AMENDED",
+      "count": 53,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB162",
+        "SB258",
+        "HB1422"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Committee: DO PASS",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 33,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2744",
+        "HB2087",
+        "HCR1004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Judiciary and Public Safety Oversight Committee: DO PASS AS AMENDED BY CS",
+      "count": 51,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1597",
+        "HB1095",
+        "HB1592"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Appropriations Committee: DO PASS",
+      "count": 51,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2087",
+        "HB2758",
+        "HB1124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Government Oversight Committee: DO PASS",
+      "count": 50,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1376",
+        "HB1199",
+        "HB1151"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Government Oversight Committee: DO PASS AS AMENDED BY CS",
+      "count": 50,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1216",
+        "HB1103",
+        "HB1221"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Criminal Judiciary Committee: DO PASS",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 3,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2705",
+        "HB1591",
+        "HB1066"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Health and Human Services Oversight Committee: DO PASS AS AMENDED BY CS",
+      "count": 48,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2803",
+        "HB1416",
+        "HB1480"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Commerce and Economic Development Oversight Committee: DO PASS",
+      "count": 45,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1160",
+        "HB1571",
+        "HB2802"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Civil Judiciary Committee: DO PASS",
+      "count": 43,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2207",
+        "HB1687",
+        "HB1001"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Education Committee: DO PASS",
+      "count": 42,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB6",
+        "SB331",
+        "SB706"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: VETO OVERRIDE NO EMERGENCY",
+      "count": 40,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 48,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1083",
+        "SB1014",
+        "SB837"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Commerce and Economic Development Oversight Committee: DO PASS AS AMENDED BY CS",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1256",
+        "HB2026",
+        "HB2736"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: VETO OVERRIDE WITHOUT EMERGENCY",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2769",
+        "HB1563",
+        "HB2167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Public Health Committee: DO PASS",
+      "count": 38,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1067",
+        "HB2834",
+        "HB1686"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Education Committee: DO PASS AMENDED",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB472",
+        "SB140",
+        "SB409"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Education Oversight Committee: DO PASS AS AMENDED BY CS",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1276",
+        "HB2154",
+        "HB2418"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Business & Insurance Committee: DO PASS AMENDED CS",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB112",
+        "SB585",
+        "SB157"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Finance Subcommittee: DO PASS",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1200",
+        "HB1267",
+        "HB1372"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Business Committee: DO PASS",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2426",
+        "HB2802",
+        "HB1365"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: EMERGENCY",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1422",
+        "HB1493",
+        "HB2584"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: General Government Committee: DO PASS",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1221",
+        "HB1219",
+        "HB2209"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Aeronautics & Transportation Committee: DO PASS",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB61",
+        "SB979",
+        "SB122"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Education Subcommittee: DO PASS",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2702",
+        "HB1096",
+        "HB1087"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Energy and Natural Resources Oversight Committee: DO PASS AS AMENDED BY CS",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1666",
+        "HB2155",
+        "HB1369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Public Safety Committee: DO PASS",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2297",
+        "HB1419",
+        "HB2892"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Judiciary Committee: DO PASS AMENDED CS",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB890",
+        "SB274",
+        "SB652"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Health & Human Services Committee: DO PASS AMENDED",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB423",
+        "SB207",
+        "SB202"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Revenue & Taxation Committee: DO PASS",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB283",
+        "SB474",
+        "SB582"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Common Education Committee: DO PASS AS AMENDED BY CS",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1276",
+        "HB2259",
+        "HB1159"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Civil Judiciary Committee: DO PASS AS AMENDED BY CS",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1835",
+        "HB1850",
+        "HB1129"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Common Education Committee: DO PASS",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2287",
+        "HB1982",
+        "HB1937"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Energy Committee: DO PASS",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB433",
+        "SB469",
+        "SB167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Energy and Natural Resources Oversight Committee: DO PASS",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1662",
+        "HB2043",
+        "HB1089"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Rules Committee: DO PASS AS AMENDED BY CS",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 11,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1565",
+        "HB2104",
+        "HB2299"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Economic Development, Workforce & Tourism Committee: DO PASS",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB248",
+        "SB294",
+        "SB662"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Committee: DO PASS AS AMENDED, STRIKE THE TITLE",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 27,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1378",
+        "HB2753",
+        "HB2745"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Criminal Judiciary Committee: DO PASS AS AMENDED BY CS",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1592",
+        "HB1764",
+        "HB2150"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Judiciary Committee: DO PASS AMENDED",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB398",
+        "SB831",
+        "SB228"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Aeronautics & Transportation Committee: DO PASS AMENDED",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB359",
+        "SB80",
+        "SB135"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Alcohol, Tobacco and Controlled Substances Committee: DO PASS",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1377",
+        "HB1381",
+        "HB2799"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: County and Municipal Government Committee: DO PASS",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2738",
+        "HB1392",
+        "HB2165"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Education Oversight Committee: DO PASS",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2287",
+        "HB1732",
+        "HB1088"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Public Health Committee: DO PASS AS AMENDED BY CS",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1389",
+        "HB1832",
+        "HB2050"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Business & Insurance Committee: DO PASS AMENDED",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1031",
+        "SB1099",
+        "SB161"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Committee: DO PASS AS AMENDED, STRIKE THE ENACTING CLAUSE",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB140",
+        "SB31",
+        "SB258"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Public Safety Committee: DO PASS AMENDED CS",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB418",
+        "SB786",
+        "SB54"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Finance Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1198",
+        "HB1201",
+        "HB1092"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Energy Committee: DO PASS AMENDED CS",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB130",
+        "SB131",
+        "SB480"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Administrative Rules Committee: DO PASS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 13,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB2731",
+        "SB396",
+        "SB393"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget General Government Subcommittee: DO PASS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1005",
+        "HB1138",
+        "HB1242"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Natural Resources Subcommittee: DO PASS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1540",
+        "HB2157",
+        "HB1378"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Banking, Financial Services and Pensions Committee: DO PASS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2072",
+        "HB1458",
+        "HB1064"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Energy Committee: DO PASS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1813",
+        "HB1370",
+        "HB1371"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: General Government Committee: DO PASS AS AMENDED BY CS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1216",
+        "HB1103",
+        "HB2265"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Insurance Committee: DO PASS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1187",
+        "HB1160",
+        "HB1516"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Agriculture & Wildlife Committee: DO PASS AMENDED CS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1073",
+        "SB939",
+        "SB96"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Education Committee: DO PASS AMENDED CS",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB139",
+        "SB942",
+        "SB212"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Business Committee: DO PASS AS AMENDED BY CS",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2736",
+        "HB1256",
+        "HB2160"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Economic Development, Workforce & Tourism Committee: DO PASS AMENDED",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB718",
+        "SB209",
+        "SB744"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Public Safety Committee: DO PASS AMENDED",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB748",
+        "SB743",
+        "SB887"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Retirement & Government Resources Committee: DO PASS AMENDED",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB171",
+        "SB717",
+        "SB434"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Revenue & Taxation Committee: DO PASS AMENDED",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1121",
+        "SB38",
+        "SB231"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Revenue & Taxation Committee: DO PASS AMENDED CS",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB957",
+        "SB1124",
+        "SB237"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Administrative Rules Committee: DO PASS AS AMENDED BY CS",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB2728",
+        "HB1029",
+        "HB1030"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Agriculture Committee: DO PASS",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2162",
+        "HB1189",
+        "HB1542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Transportation Committee: DO PASS",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2053",
+        "HB2832",
+        "HB2082"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Administrative Rules Committee: DO PASS",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB1024",
+        "SB392",
+        "SB995"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Health & Human Services Committee: DO PASS AMENDED CS",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB547",
+        "SB929",
+        "SB873"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Local & County Government Committee: DO PASS",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB483",
+        "SB404",
+        "SB537"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Retirement & Government Resources Committee: DO PASS",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1105",
+        "SB36",
+        "SB901"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Agriculture & Wildlife Committee: DO PASS",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB940",
+        "SB1082",
+        "SB1007"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Energy Committee: DO PASS AMENDED",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB92",
+        "SB91",
+        "HB1370"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Alcohol, Tobacco and Controlled Substances Committee: DO PASS AS AMENDED BY CS",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1062",
+        "HB1367",
+        "HB1933"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Education Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1184",
+        "HB1282",
+        "HB1760"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Elections and Ethics Committee: DO PASS AS AMENDED BY CS",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1120",
+        "HB1010",
+        "HB1865"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Appropriations Committee: DO PASS AMENDED CS",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1000",
+        "HB1200",
+        "HB1417"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Natural Resources Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2407",
+        "HB2011",
+        "HB2374"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Energy Committee: DO PASS AS AMENDED BY CS",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1817",
+        "HB1375",
+        "HB2037"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Postsecondary Education Committee: DO PASS",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2197",
+        "HB1017",
+        "HB1980"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: RECONSIDER MEASURE",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2033",
+        "HB1910",
+        "HB1095"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Finance Committee: DO PASS",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB689",
+        "SB287",
+        "SB577"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Technology & Telecommunications Committee: DO PASS AMENDED",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB546",
+        "SB931",
+        "SB932"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Veterans & Military Affairs Committee: DO PASS",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB930",
+        "SB450",
+        "HB1377"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Agriculture Committee: DO PASS AS AMENDED BY CS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1910",
+        "HB1098",
+        "HB1126"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Human Services Subcommittee: DO PASS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1863",
+        "HB1837",
+        "HB2013"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Banking, Financial Services and Pensions Committee: DO PASS AS AMENDED BY CS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1561",
+        "HB1541",
+        "HB2288"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Children, Youth and Family Services Committee: DO PASS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1574",
+        "HB1388",
+        "HB2895"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Insurance Committee: DO PASS AS AMENDED BY CS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1084",
+        "HB1498",
+        "HB1497"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Public Safety Committee: DO PASS AS AMENDED BY CS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1934",
+        "HB1095",
+        "HB2126"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Transportation Committee: DO PASS AS AMENDED BY CS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2026",
+        "HB1486",
+        "HB1957"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veterans and Military Affairs Committee: DO PASS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1185",
+        "HB2836",
+        "HB1598"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: VETO OVERRIDE WITH EMERGENCY",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1751",
+        "HB1576",
+        "HB2374"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Administrative Rules Committee: DO PASS AMENDED CS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB393",
+        "SB318",
+        "SB397"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Retirement & Government Resources Committee: DO PASS AMENDED CS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB158",
+        "SB1006",
+        "SB676"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Technology & Telecommunications Committee: DO PASS",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB626",
+        "SB552",
+        "SB1122"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: VETO OVERRIDE WITH EMERGENCY",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 48,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB770",
+        "SB443",
+        "SB915"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Health Subcommittee: DO PASS",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2268",
+        "HB2049",
+        "HB2248"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Transportation Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1411",
+        "HB1125",
+        "HB1961"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Elections and Ethics Committee: DO PASS",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2109",
+        "HB1151",
+        "HB1007"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Utilities Committee: DO PASS AS AMENDED BY CS",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2155",
+        "HB1666",
+        "HB2747"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: ADOPT RESOLUTION",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR1002",
+        "SCR1",
+        "HR1004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget General Government Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2170",
+        "HB1512",
+        "HB1243"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: ADOPT",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 48,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB1380",
+        "HB1728",
+        "SB333"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: General Government Committee: DO PASS",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB752",
+        "SB935",
+        "SB538"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: RECONSIDER",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 48,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1427",
+        "HB2157",
+        "HB2565"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: ,                 THIRD READING",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2185",
+        "HB2159",
+        "HB1126"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Transportation Subcommittee: DO PASS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2266",
+        "HB2260",
+        "HB2019"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Children, Youth and Family Services Committee: DO PASS AS AMENDED BY CS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2361",
+        "HB1480",
+        "HB2185"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: County and Municipal Government Committee: DO PASS AS AMENDED BY CS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1114",
+        "HB1664",
+        "HB1220"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Government Modernization and Technology Committee: DO PASS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1012",
+        "HB1275",
+        "HB1124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Rules Committee: DO PASS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2899",
+        "HB2387",
+        "HB1627"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Wildlife Committee: DO PASS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1668",
+        "SB1077",
+        "SB208"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Agriculture & Wildlife Committee: DO PASS AMENDED",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1070",
+        "SB1077",
+        "SB722"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: General Government Committee: DO PASS AMENDED",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB779",
+        "SB403",
+        "SB651"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Local & County Government Committee: DO PASS AMENDED",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB898",
+        "SB772",
+        "SB466"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Local & County Government Committee: DO PASS AMENDED CS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB694",
+        "SB484",
+        "SB647"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Retirement & Insurance Committee: DO PASS",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB997",
+        "SB660",
+        "SB479"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: ADOPT AMENDMENT",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2298",
+        "HB2751",
+        "HB1003"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Judiciary Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1460",
+        "HB2014",
+        "HB2235"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Public Safety Subcommittee: DO PASS",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2028",
+        "HB1155",
+        "SB146"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Rules Committee: DO PASS AS AMENDED, STRIKE THE TITLE",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1737",
+        "SB1067",
+        "SB1114"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Utilities Committee: DO PASS",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1374",
+        "HB1662",
+        "SB998"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Agriculture & Rural Affairs Committee: DO PASS",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB561",
+        "SB280",
+        "SB985"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Economic Development, Workforce & Tourism Committee: DO PASS AMENDED CS",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB333",
+        "SB987",
+        "SB1090"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Finance Committee: DO PASS AMENDED",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB289",
+        "SB300",
+        "SB820"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Retirement & Insurance Committee: DO PASS AMENDED",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB97",
+        "SB1028",
+        "SB168"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: ADVANCE FROM GENERAL ORDER",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1486",
+        "HB1491",
+        "SB135"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Select Agencies Subcommittee: DO PASS",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1101",
+        "HB1628",
+        "SB911"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Oklahoma House of Representatives: DO PASS",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB687",
+        "SB147",
+        "SB595"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Oklahoma House of Representatives: DO PASS AS AMENDED BY CS",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB687",
+        "SB147",
+        "SB595"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Postsecondary Education Committee: DO PASS AS AMENDED BY CS",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1305",
+        "HB2854",
+        "SB701"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Tourism Committee: DO PASS",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1571",
+        "SB249",
+        "SB996"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Administrative Rules Committee: DO PASS AMENDED",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB835",
+        "SB896",
+        "SJR21"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Aeronautics & Transportation Committee: DO PASS AMENDED CS",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB375",
+        "SB527",
+        "SB1108"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Finance Committee: DO PASS AMENDED CS",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB687",
+        "SB47",
+        "SB736"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: TABLE",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "HB1807",
+        "SB1027",
+        "SJR22"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Committee: DO PASS AS AMENDED, STRIKE THE T ITLE",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 28,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1201",
+        "HB1277"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Public Safety Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2710",
+        "HB1261"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Energy and Natural Resources Oversight Committee: DO PASS AS AMENDED, STRIKE THE TITLE",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2",
+        "SB915"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Judiciary and Public Safety Oversight Committee: DO PASS AS AMENDED, STRIKE THE TITLE",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB871",
+        "SB860"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Rules Committee: DO PASS AS AMENDED, STRIKE THE T ITLE",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2402",
+        "HB1603"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: State Powers Committee: DO PASS",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB447",
+        "SB500"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: SUSPEND HOUSE RULES",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1278",
+        "SB105"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: TABLE",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1205",
+        "SB1027"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Veterans and Military Affairs Committee: DO PASS AS AMENDED BY CS",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2118",
+        "HB2142"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: VETO OVERRIDE WITH EMER",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2785",
+        "SB687"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: VETO OVERRIDE WITHOUT EMER",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2778",
+        "SB687"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: AMENDMENT",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB105",
+        "SJR22"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Rules Committee: DO PASS AMENDED CS",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR6",
+        "HB2622"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Technology & Telecommunications Committee: DO PASS AMENDED CS",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB604",
+        "HB1388"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Veterans & Military Affairs Committee: DO PASS AMENDED",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB723",
+        "HB2118"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Veterans & Military Affairs Committee: DO PASS AMENDED CS",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB159",
+        "SB530"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: ,                    ADOPT RESOLUTION",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR1004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: ADOPT MOTION",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB224"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: APPEAL OF THE DECISION OF THE CHAIR",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Health Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2057"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Human Services Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1111"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Judiciary Subcommittee: DO PASS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB626"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Appropriations and Budget Select Agencies Subcommittee: DO PASS AS AMENDED BY CS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1047"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Government Oversight Committee: DO PASS AS AMENDED, STRIKE THE TITLE",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB647"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Health and Human Services Oversight Committee: DO PASS AS AMENDED, STRIKE THE ENACTING CLAUSE",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB207"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Oklahoma House of Representatives: DO PASS AS AMENDED, STRIKE THE E NACTING CLAUSE",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 28,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB109"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Oklahoma House of Representatives: DO PASS AS AMENDED, STRIKE THE T ITLE AND ENACTING",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 28,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB109"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Public Safety Committee: DO NOT PASS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB675"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: RECONSIDER EMERGENCY",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 98,
+      "maxTotal": 98,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB898"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: TABLE AMENDMENT",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1003"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Wildlife Committee: DO PASS AS AMENDED BY CS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2096"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Agriculture & Rural Affairs Committee: DO PASS AMENDED",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB777"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Agriculture & Rural Affairs Committee: DO PASS AMENDED CS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB448"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: House Bill 2728: DO PASS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2728"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Retirement & Insurance Committee: DO PASS AMENDED CS",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB179"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Rules Committee: DO PASS AMENDED",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2144"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: SUSPEND RULE",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 47,
+      "maxTotal": 47,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB529"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: VETO OVERRIDE",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 48,
+      "maxTotal": 48,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2778"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 3114,
+    "CR": 30,
+    "JR": 57,
+    "R": 52
+  },
+  "sessionIds": {
+    "2165": 3253
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
