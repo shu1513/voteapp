@@ -10,8 +10,9 @@ written from the resolved markup.
 ## HF 571 — Medical Ethics Defense Act (House 63-27, Senate 30-16) — healthcare_affordability, yea against
 A broad right for any practitioner or institution to refuse to take part in a health care
 service that conflicts with its conscience, which for an institution is read from its own
-governing documents, backed by immunity from civil, criminal and licensing consequences and a
-private action against anyone who interferes. The whistleblower and free speech sections run
+governing documents, backed by immunity for a good-faith refusal from civil, criminal and
+licensing consequences and a private action against anyone who interferes. The act keeps
+hospitals' federal emergency-treatment duty, and the descriptions say so. The whistleblower and free speech sections run
 the other way and are described, but they are not comparable in weight to the refusal right.
 
 ## HF 516 — medical residency and admissions (House 61-30, Senate 34-11) — healthcare_affordability, yea for

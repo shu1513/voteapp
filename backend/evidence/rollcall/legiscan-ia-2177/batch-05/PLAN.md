@@ -31,11 +31,11 @@ SF 469, HF 2694, SF 2480, HF 2539. The reasoning for each is in `JUDGING.md`.
   descriptions and these documents.
 
 ## Notes on this batch
-- **HF 2694's Senate roll carries the session-end date skew.** LegiScan stamps it 2026-05-02; Iowa's journal records the 31-14 vote on 2026-05-03. The batch was first imported without the override, the audit caught it, and the roll was re-judged with `official_vote_date` set to 2026-05-03 and re-imported for real. The re-run reports 15 rewrites and 248 unchanged, and the records now carry the journal's date. The audit script is now a hard gate that stops the run instead of printing a warning.
+- **HF 2694's Senate roll carries the session-end date skew.** LegiScan stamps it 2026-05-02; Iowa's journal records the 31-14 vote on 2026-05-03. The batch was first imported without the override, the audit caught it, and the roll was re-judged with `official_vote_date` set to 2026-05-03 and re-imported for real. The re-run, stamp `2026-09-10T04:48:47.712Z`, reports 15 rewrites and 248 unchanged; its ledger is `import-date-override-report.json` (a copy of `import-rerun-report.json`), and the 15 HF 2694 records now carry the journal's date and the re-run stamp. The audit script is now a hard gate that stops the run instead of printing a warning.
 
 ## Import and reconciliation
 - Judge dry run 5, real run 5. Import dry run 263 inserts, real run 263 inserts, zero errors.
-- Run stamp `2026-09-10T04:47:41.463Z`.
+- Run stamp `2026-09-10T04:47:41.463Z` for 248 records; the 15 HF 2694 records carry the re-run stamp `2026-09-10T04:48:47.712Z`.
 - Reconciled three ways: report total, rows matching the run stamp, and the table delta all agree.
 - Duplicate sweep: hand-written records sharing a candidate and a date were checked and every
   one is about a different measure. Nothing retired.

@@ -41,4 +41,4 @@ HF 295, HF 437, HF 440, HF 785, HF 2230, SF 369, SF 175, SF 2399. The reasoning 
   one is about a different measure. Nothing retired.
 
 ## Review fixes (2026-09-09)
-- SF 2399: the "significant weight" sentence came from the introduced bill, not the act; replaced with the enacted limit on personal-recognizance release to nonviolent, nondrug simple or serious misdemeanors (sections 1, 5 and 6). HF 437: the advisory council searches and submits finalists; the Board of Regents appoints the director (section 9). Re-judged and re-imported: 176 rewrites, 458 unchanged, ledger in `import-rerun-report.json`.
+- SF 2399: the "significant weight" sentence came from the introduced bill, not the act; replaced with the enacted limit on personal-recognizance release to nonviolent, nondrug simple or serious misdemeanors (sections 1, 5 and 6). HF 437: the advisory council searches and submits finalists; the Board of Regents appoints the director (section 9). Re-judged and re-imported (stamp `2026-09-10T05:44:47.601Z`): 176 rewrites, 458 unchanged, ledger in `import-rerun-report.json`.

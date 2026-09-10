@@ -41,4 +41,4 @@ SF 473, HF 2711, HF 928, HF 767, HF 2329, SF 304, SF 383, SF 2422, HF 2501, HF 2
   one is about a different measure. Nothing retired.
 
 ## Review fixes (2026-09-09)
-- HF 928: the fifteen-hundredths threshold applies only to statewide and federal offices; legislative races use one percent or fifty votes, whichever is smaller (enrolled act, section 8). SF 2422: the expenditure-neutrality rule is a default with legislative-approval and federal-compliance exceptions, not an absolute ban (section 13). Re-judged and re-imported: 112 rewrites, 665 unchanged, ledger in `import-rerun-report.json`.
+- HF 928: the fifteen-hundredths threshold applies only to statewide and federal offices; legislative races use one percent or fifty votes, whichever is smaller (enrolled act, section 8). SF 2422: the expenditure-neutrality rule is a default with legislative-approval and federal-compliance exceptions, not an absolute ban (section 13). Re-judged and re-imported (stamp `2026-09-10T05:44:42.259Z`): 112 rewrites, 665 unchanged, ledger in `import-rerun-report.json`.

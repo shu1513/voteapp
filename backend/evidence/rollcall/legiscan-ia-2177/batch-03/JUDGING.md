@@ -14,8 +14,9 @@ external check on a public college, and the act limits it, so the direction on a
 against. Whether the accreditor was overreaching is a question of worth, not direction.
 
 ## HF 437 — Center for Intellectual Freedom (House 60-37, Senate 32-15) — public_education_quality, yea for
-A single-purpose act creating an academic unit with its own tenure-track faculty, its own
-director chosen by a regents-appointed council, and an annual report to the legislature. The
+A single-purpose act creating an academic unit with its own tenure-track faculty, a director
+appointed by the regents from finalists a regents-named council submits, and an annual report
+to the legislature. The
 direction on teaching capacity is for. The dispute over whether the legislature should create an
 academic unit is about worth.
 
@@ -47,5 +48,7 @@ health unit and reach charter and innovation zone schools.
 
 ## SF 2399 — bail (House 72-21) — public_safety_and_crime_control, yea for
 A magistrate may not go below the uniform bond schedule or release without bail unless the
-reason is written down, and must give significant weight to the danger the defendant poses.
-The judicial council must revise the schedule.
+reason is written down, and release on personal recognizance is limited to nonviolent, nondrug
+simple or serious misdemeanors. The "significant weight" sentence in the introduced bill is
+not in the act and was removed from the descriptions in review. The judicial council must
+revise the schedule.

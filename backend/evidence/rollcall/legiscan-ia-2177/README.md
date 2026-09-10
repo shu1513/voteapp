@@ -37,9 +37,10 @@ county races that the ballot holds for them. Fan-out: about 78 candidates per Ho
 about 17 per Senate roll.
 
 ## Pool
-205 divided and enacted rolls on 101 measures; 150 stored rolls on final text; **145 slots on
-92 measures** after one roll per measure per chamber. Dispositions are in
-`survey/divided-enacted-worklist.tsv`.
+205 divided and enacted rolls on 101 measures; 150 stored rolls on final text; **144 slots on
+91 measures** after one roll per measure per chamber. The filter 4 correction below removed
+HF 1003, whose final roll in each chamber was unanimous (Senate 43-0, House 85-0).
+Dispositions are in `survey/divided-enacted-worklist.tsv`.
 
 ## Batches
 
@@ -50,6 +51,10 @@ about 17 per Senate roll.
 | 03 | 8 | 12 | 634 | 2026-09-10T04:40:03.722Z |
 | 04 | 5 | 8 | 374 | 2026-09-10T04:45:48.520Z |
 | 05 | 4 | 5 | 263 | 2026-09-10T04:47:41.463Z |
+
+Review fixes re-ran the importer in place; rewritten rows carry the re-run stamp instead:
+batch 02 `2026-09-10T05:44:42.259Z` (112 rows), batch 03 `2026-09-10T05:44:47.601Z` (176),
+batch 04 `2026-09-10T05:44:51.277Z` (92), batch 05 `2026-09-10T04:48:47.712Z` (15).
 
 **Local total: 2,817 candidate records, 102 candidates, 60 approved roll calls over 37
 measures. Production holds zero Iowa roll-call records.**
