@@ -1,0 +1,51 @@
+{
+  "runId": "rollcall-legiscan-fetch-sd-20260909T224245Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "SD",
+  "startedAt": "2026-09-09T22:42:45.148Z",
+  "finishedAt": "2026-09-09T22:42:45.190Z",
+  "datasetDir": "~/legiscan-data/sd-2222/SD/2025-2025_1st_Special_Session",
+  "bills": 2,
+  "votes": 4,
+  "people": 105,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Do Pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Do Pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 2
+  },
+  "sessionIds": {
+    "2222": 2
+  },
+  "committeeChamberVotes": 2,
+  "voteParseErrors": []
+}

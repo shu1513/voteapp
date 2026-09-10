@@ -1,0 +1,821 @@
+{
+  "importerVersion": "rollcall-hi-resolve-v1",
+  "startedAt": "2026-09-09T23:46:25.499Z",
+  "finishedAt": "2026-09-09T23:46:26.812Z",
+  "jurisdiction": "HI",
+  "sessionId": 2175,
+  "evidenceDir": "evidence/rollcall/hawaii-2175",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/hi-2175/HI/2025-2025_Regular_Session",
+  "peopleMembers": 76,
+  "candidatePool": 74,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 8365,
+      "rosterName": "Kyle Yamashita",
+      "rosterSeat": "house HD-012",
+      "candidateId": "80a9c6dc-c183-440e-8d2f-1a2d105b7bbd",
+      "candidateName": "Kyle T. Yamashita",
+      "candidacy": "state_lower: State House District 12 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11514,
+      "rosterName": "Linda Ichiyama",
+      "rosterSeat": "house HD-031",
+      "candidateId": "9b1b687f-f5bd-4cf1-8f12-ac8d4a49fc3d",
+      "candidateName": "Linda Ichiyama",
+      "candidacy": "state_lower: State House District 31 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 11516,
+      "rosterName": "Daynette Morikawa",
+      "rosterSeat": "house HD-017",
+      "candidateId": "fda61197-b198-4f8c-bf93-aa496e9d5aa6",
+      "candidateName": "Daynette (Dee) Morikawa",
+      "candidacy": "state_lower: State House District 17 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15005,
+      "rosterName": "Gregg Takayama",
+      "rosterSeat": "house HD-034",
+      "candidateId": "3e36c426-30ac-4d22-a0b4-eca59e462652",
+      "candidateName": "Gregg Takayama",
+      "candidacy": "state_lower: State House District 34 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17299,
+      "rosterName": "Joy San Buenaventura",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "cdac66ea-ef4c-473a-9042-49dcad33e579",
+      "candidateName": "Joy San Buenaventura",
+      "candidacy": "state_upper: State Senate District 2 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19024,
+      "rosterName": "Sean Quinlan",
+      "rosterSeat": "house HD-047",
+      "candidateId": "462ef629-4457-46f4-9d16-abb10e0cf97b",
+      "candidateName": "Sean Quinlan",
+      "candidacy": "state_lower: State House District 47 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19025,
+      "rosterName": "Stanley Chang",
+      "rosterSeat": "senate SD-009",
+      "candidateId": "e3adbe96-275e-448a-99ab-fcad98ce378d",
+      "candidateName": "Stanley P. Chang",
+      "candidacy": "state_upper: State Senate District 9 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19050,
+      "rosterName": "Chris Todd",
+      "rosterSeat": "house HD-003",
+      "candidateId": "c1820ff0-fde5-41df-b808-86e54b6539fa",
+      "candidateName": "Christopher L.T. Todd",
+      "candidacy": "state_lower: State House District 3 (2024); Hawaii",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20849,
+      "rosterName": "Scot Matayoshi",
+      "rosterSeat": "house HD-049",
+      "candidateId": "f4bc9af6-fcf0-47b4-be3b-369dd6f91747",
+      "candidateName": "Scot Matayoshi",
+      "candidacy": "state_lower: State House District 49 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20851,
+      "rosterName": "Amy Perruso",
+      "rosterSeat": "house HD-046",
+      "candidateId": "b208cb32-35dc-49e8-ad9d-9b41a4831791",
+      "candidateName": "Amy A. Perruso",
+      "candidacy": "state_lower: State House District 46 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20852,
+      "rosterName": "David Tarnas",
+      "rosterSeat": "house HD-008",
+      "candidateId": "af04e7bf-8235-40cf-8086-1312fd28523e",
+      "candidateName": "David A. Tarnas",
+      "candidacy": "state_lower: State House District 8 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22564,
+      "rosterName": "Greggor Ilagan",
+      "rosterSeat": "house HD-004",
+      "candidateId": "e81ef7de-46ee-4244-b325-91cdb962d057",
+      "candidateName": "Greggor Ilagan",
+      "candidacy": "state_lower: State House District 4 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22565,
+      "rosterName": "Jeanne Kapela",
+      "rosterSeat": "house HD-005",
+      "candidateId": "320ad3c8-80f5-4906-b979-532942a7df58",
+      "candidateName": "Jeanne Kapela",
+      "candidacy": "state_lower: State House District 5 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24411,
+      "rosterName": "Elle Cochran",
+      "rosterSeat": "house HD-014",
+      "candidateId": "227cde99-1885-42f0-88d5-154c727ae336",
+      "candidateName": "Elle Cochran",
+      "candidacy": "state_lower: State House District 14 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24412,
+      "rosterName": "Diamond Garcia",
+      "rosterSeat": "house HD-042",
+      "candidateId": "8f5db057-f205-4185-b868-32dc8c094faa",
+      "candidateName": "Diamond Garcia",
+      "candidacy": "state_lower: State House District 42 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24416,
+      "rosterName": "Mahina Poepoe",
+      "rosterSeat": "house HD-013",
+      "candidateId": "ca962bc5-33de-485f-93b7-59c3b07cb250",
+      "candidateName": "Mahina Poepoe",
+      "candidacy": "state_lower: State House District 13 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24512,
+      "rosterName": "Darius Kila",
+      "rosterSeat": "house HD-044",
+      "candidateId": "6ead1a9d-8905-4ca1-8aa2-4d89980da2e6",
+      "candidateName": "Darius K. Kila",
+      "candidacy": "state_lower: State House District 44 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24518,
+      "rosterName": "Terez Amato",
+      "rosterSeat": "house HD-011",
+      "candidateId": "4ba39ed8-505d-4a61-abc8-89a286cb48b4",
+      "candidateName": "Terez (T.Amato) Amato",
+      "candidacy": "state_lower: State House District 11 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24788,
+      "rosterName": "Elijah Pierick",
+      "rosterSeat": "house HD-039",
+      "candidateId": "2bfb7533-ebd1-4f74-bdd5-1a1d69d5b831",
+      "candidateName": "Elijah Pierick",
+      "candidacy": "state_upper: State Senate District 19 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24910,
+      "rosterName": "Luke Evslin",
+      "rosterSeat": "house HD-016",
+      "candidateId": "03f5d7a2-1939-4714-ad6b-e0b4a59135f8",
+      "candidateName": "Luke A. Evslin",
+      "candidacy": "state_lower: State House District 16 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25051,
+      "rosterName": "Tyson Miyake",
+      "rosterSeat": "house HD-010",
+      "candidateId": "8ba5d255-66bd-49b0-8bb3-bb4ed12ca7ff",
+      "candidateName": "Tyson K. Miyake",
+      "candidacy": "state_lower: State House District 10 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25668,
+      "rosterName": "Tina Grandinetti",
+      "rosterSeat": "house HD-020",
+      "candidateId": "a632f30d-0edd-48c2-86e0-431df2c51ed3",
+      "candidateName": "Tina Nakada Grandinetti",
+      "candidacy": "state_lower: State House District 20 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25669,
+      "rosterName": "Ikaika Hussey",
+      "rosterSeat": "house HD-029",
+      "candidateId": "33b14577-850b-40ef-9389-66f67b3b3324",
+      "candidateName": "Ikaika Hussey",
+      "candidacy": "state_lower: State House District 29 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25674,
+      "rosterName": "Chris Muraoka",
+      "rosterSeat": "house HD-045",
+      "candidateId": "058a2485-56f7-4f19-ad1b-216b0aff13c0",
+      "candidateName": "Chris Muraoka",
+      "candidacy": "state_lower: State House District 45 (2024); Hawaii",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25675,
+      "rosterName": "Ikaika Olds",
+      "rosterSeat": "house HD-023",
+      "candidateId": "d907355f-a1e5-409d-9d3a-3fc3db93d799",
+      "candidateName": "Ikaika M. Olds",
+      "candidacy": "state_lower: State House District 23 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25676,
+      "rosterName": "Julie Reyes Oda",
+      "rosterSeat": "house HD-040",
+      "candidateId": "6bcfcc88-1f3a-4638-9461-4433787afd8e",
+      "candidateName": "Julie Reyes Oda",
+      "candidacy": "state_lower: State House District 40 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25677,
+      "rosterName": "Garner Shimizu",
+      "rosterSeat": "house HD-032",
+      "candidateId": "571b9fe0-96db-4fb7-b6c1-4bb4908d6f51",
+      "candidateName": "Garner M. Shimizu",
+      "candidacy": "state_lower: State House District 32 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25678,
+      "rosterName": "Shirley Ann Templo",
+      "rosterSeat": "house HD-030",
+      "candidateId": "b24ead91-aa63-40e4-ad57-b0fdd6e41ada",
+      "candidateName": "Shirley Ann Templo",
+      "candidacy": "state_lower: State House District 30 (2024); Hawaii",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 11380,
+      "name": "Donovan Cruz",
+      "seat": "senate SD-017"
+    },
+    {
+      "peopleId": 11381,
+      "name": "Ronald Kouchi",
+      "seat": "senate SD-008"
+    },
+    {
+      "peopleId": 11513,
+      "name": "Mark Hashem",
+      "seat": "house HD-019"
+    },
+    {
+      "peopleId": 15002,
+      "name": "Nicole Lowen",
+      "seat": "house HD-007"
+    },
+    {
+      "peopleId": 15164,
+      "name": "Justin Woodson",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 16119,
+      "name": "Lauren Matsumoto",
+      "seat": "house HD-038"
+    },
+    {
+      "peopleId": 17291,
+      "name": "Lorraine Inouye",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 17296,
+      "name": "Jarrett Keohokalole",
+      "seat": "senate SD-024"
+    },
+    {
+      "peopleId": 17297,
+      "name": "Sam Kong",
+      "seat": "house HD-033"
+    },
+    {
+      "peopleId": 17614,
+      "name": "Lynn Decoite",
+      "seat": "senate SD-007"
+    },
+    {
+      "peopleId": 19023,
+      "name": "Daniel Holt",
+      "seat": "house HD-028"
+    },
+    {
+      "peopleId": 19089,
+      "name": "Nadine Nakamura",
+      "seat": "house HD-015"
+    },
+    {
+      "peopleId": 20761,
+      "name": "Kurt Fevella",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 20828,
+      "name": "Troy Hashimoto",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 20847,
+      "name": "Dru Kanuha",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 20848,
+      "name": "Lisa Kitagawa",
+      "seat": "house HD-048"
+    },
+    {
+      "peopleId": 20850,
+      "name": "Sharon Moriwaki",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 22566,
+      "name": "Lisa Marten",
+      "seat": "house HD-051"
+    },
+    {
+      "peopleId": 22568,
+      "name": "Jackson Sayama",
+      "seat": "house HD-021"
+    },
+    {
+      "peopleId": 22569,
+      "name": "Adrian Tam",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 24396,
+      "name": "Brenton Awa",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 24410,
+      "name": "Cory Chun",
+      "seat": "house HD-035"
+    },
+    {
+      "peopleId": 24414,
+      "name": "Kirstin Kahaloa",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 24415,
+      "name": "Rachele Fernandez Lamosao",
+      "seat": "house HD-036"
+    },
+    {
+      "peopleId": 24417,
+      "name": "Jenna Takenouchi",
+      "seat": "house HD-027"
+    },
+    {
+      "peopleId": 24418,
+      "name": "Brandon Elefante",
+      "seat": "senate SD-016"
+    },
+    {
+      "peopleId": 24511,
+      "name": "Andrew Garrett",
+      "seat": "house HD-022"
+    },
+    {
+      "peopleId": 24519,
+      "name": "Tim Richards",
+      "seat": "senate SD-004"
+    },
+    {
+      "peopleId": 24618,
+      "name": "David Alcos",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 24619,
+      "name": "Kanani Souza",
+      "seat": "house HD-043"
+    },
+    {
+      "peopleId": 24907,
+      "name": "Trish La Chica",
+      "seat": "house HD-037"
+    },
+    {
+      "peopleId": 25670,
+      "name": "Kim Iwamoto",
+      "seat": "house HD-025"
+    },
+    {
+      "peopleId": 25671,
+      "name": "Sue Keohokapu-Lee Loy",
+      "seat": "house HD-002"
+    },
+    {
+      "peopleId": 25672,
+      "name": "Matthias Kusch",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 25673,
+      "name": "Mike Lee",
+      "seat": "house HD-050"
+    },
+    {
+      "peopleId": 25679,
+      "name": "Samantha DeCorte",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 8342,
+      "name": "Henry Aquino",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 8346,
+      "name": "Karl Rhoads",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 8350,
+      "name": "Angus McKelvey",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 8370,
+      "name": "Glenn Wakai",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 8383,
+      "name": "Chris Lee",
+      "seat": "senate SD-025"
+    },
+    {
+      "peopleId": 8388,
+      "name": "Gene Ward",
+      "seat": "house HD-018"
+    },
+    {
+      "peopleId": 8389,
+      "name": "Della au Belatti",
+      "seat": "house HD-026"
+    },
+    {
+      "peopleId": 8429,
+      "name": "Carol Fukunaga",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 8435,
+      "name": "Les Ihara",
+      "seat": "senate SD-010"
+    },
+    {
+      "peopleId": 8440,
+      "name": "Michelle Kidani",
+      "seat": "senate SD-018"
+    },
+    {
+      "peopleId": 8445,
+      "name": "Mike Gabbard",
+      "seat": "senate SD-021"
+    },
+    {
+      "peopleId": 8447,
+      "name": "Donna Kim",
+      "seat": "senate SD-014"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "32af9ed3-26f0-43bb-954f-5f659844a272",
+      "name": "'Ale Rodas",
+      "scope": "state_lower",
+      "districtName": "State House District 49 (2024); Hawaii"
+    },
+    {
+      "candidateId": "8ac0d982-744c-4347-af2d-13feee194eba",
+      "name": "Amanda Ybanez",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Hawaii"
+    },
+    {
+      "candidateId": "aeac878c-e683-4c60-a3af-8b9bc8d3cd86",
+      "name": "Anthony Makana Paris",
+      "scope": "state_lower",
+      "districtName": "State House District 42 (2024); Hawaii"
+    },
+    {
+      "candidateId": "a1ed0332-9cac-4812-8e4c-4380f071d7d3",
+      "name": "Austin Martin",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Hawaii"
+    },
+    {
+      "candidateId": "95ba30bb-2d93-4fd4-bc2d-cba1bdbe23a1",
+      "name": "Bob McDermott",
+      "scope": "state_upper",
+      "districtName": "State Senate District 20 (2024); Hawaii"
+    },
+    {
+      "candidateId": "f18e072d-15af-4da3-be68-072f6424660f",
+      "name": "Charla (Kahealani) Weaver",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Hawaii"
+    },
+    {
+      "candidateId": "222faafb-2e00-4b93-89bd-5ebe1bca8fd7",
+      "name": "Corey Rosenlee",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); Hawaii"
+    },
+    {
+      "candidateId": "65ca418e-1d5a-4d70-8886-33062210e2bf",
+      "name": "Dalene McCormick",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Hawaii"
+    },
+    {
+      "candidateId": "4fddd39e-50b6-4d19-be41-02a05f533f68",
+      "name": "Dan Johnson",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Hawaii"
+    },
+    {
+      "candidateId": "fd47b780-0a2e-4db1-8f75-dbd2ac164e4e",
+      "name": "Daniel (Danny) Degracia",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); Hawaii"
+    },
+    {
+      "candidateId": "99d759d7-e870-4d76-835b-f89fbf801737",
+      "name": "Daniel Michael Gabriel",
+      "scope": "state_lower",
+      "districtName": "State House District 46 (2024); Hawaii"
+    },
+    {
+      "candidateId": "31ec0c46-e3cc-4b26-bfeb-7c172a655e50",
+      "name": "Danielle Maliekekai Bass",
+      "scope": "state_upper",
+      "districtName": "State Senate District 18 (2024); Hawaii"
+    },
+    {
+      "candidateId": "a0b7817c-a673-451b-9390-ed53a1c15df6",
+      "name": "David A. Croswell",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Hawaii"
+    },
+    {
+      "candidateId": "ff504a10-bd59-4165-a497-4044d8c24d3a",
+      "name": "David Asing",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Hawaii"
+    },
+    {
+      "candidateId": "586c18d3-884e-4c28-b124-392bf6ed8beb",
+      "name": "David Hazlebeck",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Hawaii"
+    },
+    {
+      "candidateId": "00e8b96f-e08b-4ecd-a10c-8fb656284728",
+      "name": "Frederick F. Fogel",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); Hawaii"
+    },
+    {
+      "candidateId": "c111ad0f-ccf4-4792-a4f7-a9fa21a47549",
+      "name": "Gaius II (Kipi) Dupio",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Hawaii"
+    },
+    {
+      "candidateId": "2f62489c-cdfb-44d5-a684-1597ecd39424",
+      "name": "Ian M.A. Ross",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Hawaii"
+    },
+    {
+      "candidateId": "93b42003-f8f3-4ee0-9b00-10a74a059e61",
+      "name": "James (Jamie) Wataru",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Hawaii"
+    },
+    {
+      "candidateId": "303b30e1-1b24-4e4f-98b8-2d2623f24a01",
+      "name": "Jesse W.M. Fitzgerald",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Hawaii"
+    },
+    {
+      "candidateId": "bfe6d7e7-e2b1-49a7-be49-c69f4ba79a95",
+      "name": "Joe Gedeon",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Hawaii"
+    },
+    {
+      "candidateId": "f675d8a7-f9de-48a0-932a-84d665b6f2e6",
+      "name": "Jonathan Kennealy",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); Hawaii"
+    },
+    {
+      "candidateId": "3117a5bb-03d0-4ef0-9faa-1f5c8740358c",
+      "name": "Kalehua Kaopua",
+      "scope": "state_lower",
+      "districtName": "State House District 45 (2024); Hawaii"
+    },
+    {
+      "candidateId": "7a9a71cc-90ce-4afd-b636-3656868bf595",
+      "name": "Kelly Puamailani Kitashima",
+      "scope": "state_upper",
+      "districtName": "State Senate District 18 (2024); Hawaii"
+    },
+    {
+      "candidateId": "54a61e4d-0178-4166-8cd5-d375180f0eaa",
+      "name": "Mark Talaeai",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); Hawaii"
+    },
+    {
+      "candidateId": "5ebad2bc-106f-4cfe-b3c2-0f999416bd70",
+      "name": "Markus Owens",
+      "scope": "state_upper",
+      "districtName": "State Senate District 20 (2024); Hawaii"
+    },
+    {
+      "candidateId": "cd73e862-bb8d-42af-b03e-88dff2a6cbda",
+      "name": "Max G. Hanna",
+      "scope": "state_upper",
+      "districtName": "State Senate District 18 (2024); Hawaii"
+    },
+    {
+      "candidateId": "0f70edf7-d8bb-4e90-b005-72395653d63d",
+      "name": "Micah Pookela Kim Aiu",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Hawaii"
+    },
+    {
+      "candidateId": "6ff9f6cc-fa84-4a52-8953-e8c8a163a64d",
+      "name": "Mike Lee",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Hawaii"
+    },
+    {
+      "candidateId": "c66d0817-1507-40e3-83dd-17028535e016",
+      "name": "Misty Cluett",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Hawaii"
+    },
+    {
+      "candidateId": "75766242-46fb-42a1-8ec1-7b5a72bd79b3",
+      "name": "Monique Perreira",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Hawaii"
+    },
+    {
+      "candidateId": "31ed05d8-7d96-47d2-931e-2e40aa44a327",
+      "name": "Nancy Valdez",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Hawaii"
+    },
+    {
+      "candidateId": "f19f2e9e-e792-4e20-b802-b2562bb1ebf6",
+      "name": "Pa'ele Kiakona",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Hawaii"
+    },
+    {
+      "candidateId": "7997c660-4257-4522-b9f8-89291a824395",
+      "name": "Rachele F. Lamosao",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Hawaii"
+    },
+    {
+      "candidateId": "1ffdaec5-6408-4c4a-8a3b-22810d551a00",
+      "name": "Robin D. Vanderpool",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Hawaii"
+    },
+    {
+      "candidateId": "bec73653-c1fe-42d8-8e0a-ac64b53a450d",
+      "name": "Rose Martinez",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); Hawaii"
+    },
+    {
+      "candidateId": "8b79b2cc-be4a-4480-b52d-1ea40406ced0",
+      "name": "Sheila Walker",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Hawaii"
+    },
+    {
+      "candidateId": "69e163d3-3d24-4a2f-abc9-4af2891a097b",
+      "name": "Sne Patel",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Hawaii"
+    },
+    {
+      "candidateId": "73056680-83bd-408a-bfe2-9a5a516fda62",
+      "name": "Sue Keohokapu Lee Loy",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); Hawaii"
+    },
+    {
+      "candidateId": "58ac9346-e4fd-415a-886b-19a97b183ba0",
+      "name": "Tess Abalos",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Hawaii"
+    },
+    {
+      "candidateId": "2e8929f3-58c0-4754-82ba-644023cf8d32",
+      "name": "Tony Silva",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Hawaii"
+    },
+    {
+      "candidateId": "15d44108-bf64-42b2-80df-2f6e96a82c6a",
+      "name": "Travis Bumanglag",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); Hawaii"
+    },
+    {
+      "candidateId": "cb05e565-27ea-472f-9b47-a43733166fc4",
+      "name": "Tricia Kwai Lin Nakamatsu",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Hawaii"
+    },
+    {
+      "candidateId": "68700305-b53f-4d39-bca0-a1b72f3cbf56",
+      "name": "Victor Muh",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Hawaii"
+    },
+    {
+      "candidateId": "5cca9adc-0525-497b-abf0-db24ad150c0a",
+      "name": "Wallyn Kanoelani Christian",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Hawaii"
+    },
+    {
+      "candidateId": "f53fa801-619d-4c9b-a28a-12ca1725e23e",
+      "name": "Zak Wittenhagen",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); Hawaii"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}

@@ -113,15 +113,16 @@ describe("SupportMemberPage", () => {
     expect(screen.queryByText(/honorary member — thank you/)).not.toBeInTheDocument();
   });
 
-  it("thanks the supporter returning from Checkout and locks the form", async () => {
+  it("welcomes the new member returning from Checkout and shows no form", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/membership": { body: NOT_MEMBER },
     });
     renderPage("?membership=success");
 
-    expect(await screen.findByText(/Thank you for your support!/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeDisabled();
+    expect(await screen.findByText(/You're now an honorary member/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Choose your monthly amount/)).not.toBeInTheDocument();
   });
 
   it("shows an unavailable notice instead of a dead form when Stripe is not configured", async () => {

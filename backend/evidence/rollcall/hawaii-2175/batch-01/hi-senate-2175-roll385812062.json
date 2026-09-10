@@ -1,0 +1,85 @@
+{
+  "jurisdiction": "HI",
+  "sessionId": 2175,
+  "chamber": "senate",
+  "rollNumber": 385812062,
+  "billId": 1929060,
+  "bill": "SB897",
+  "measureId": "SB 897",
+  "historyIndex": 62,
+  "machineUrl": "https://www.capitol.hawaii.gov/session/measure_indiv.aspx?billtype=SB&billnumber=897&year=2025",
+  "fetchedAt": "2026-09-09T23:46:18.678Z",
+  "reading": "final_reading",
+  "draft": "CD 1",
+  "history": {
+    "date": "2025-04-30",
+    "action": "Passed Final Reading, as amended (CD 1). Ayes, 20; Aye(s) with reservations: Senator(s) Chang, DeCoite, Fukunaga, Kim, Lee, C., McKelvey, Rhoads, San Buenaventura, Wakai. Noes, 5 (Senator(s) Awa, Elefante, Gabbard, Ihara, Keohokalole). Excused, 0 (none).",
+    "chamber": "S",
+    "chamber_id": 32,
+    "importance": 0
+  },
+  "named": {
+    "reservations": [
+      "Chang",
+      "DeCoite",
+      "Fukunaga",
+      "Kim",
+      "Lee, C.",
+      "McKelvey",
+      "Rhoads",
+      "San Buenaventura",
+      "Wakai"
+    ],
+    "noes": [
+      "Awa",
+      "Elefante",
+      "Gabbard",
+      "Ihara",
+      "Keohokalole"
+    ],
+    "excused": []
+  },
+  "members": {
+    "yeas": [
+      8342,
+      8346,
+      8350,
+      8370,
+      8383,
+      8429,
+      8440,
+      8447,
+      11380,
+      11381,
+      17291,
+      17299,
+      17614,
+      19025,
+      20761,
+      20828,
+      20847,
+      20850,
+      24519,
+      25679
+    ],
+    "nays": [
+      8435,
+      8445,
+      17296,
+      24396,
+      24418
+    ],
+    "excused": [],
+    "reservations": [
+      8346,
+      8350,
+      8370,
+      8383,
+      8429,
+      8447,
+      17299,
+      17614,
+      19025
+    ]
+  }
+}

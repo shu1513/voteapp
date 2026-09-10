@@ -1,0 +1,471 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "WY",
+  "entries": [
+    {
+      "people_id": 21911,
+      "candidate_id": null,
+      "note": "Chip Neiman (house HD-001) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22963,
+      "candidate_id": "f466c105-7d0a-45ae-ae80-c667fdd53d51",
+      "note": "J.D. Williams (house HD-002). Added by hand. LegiScan prints the legal first name `J.D.` with dots; the ballot name is `JD Williams`. Same House District 2 member."
+    },
+    {
+      "people_id": 23394,
+      "candidate_id": "c842c2e3-8b7f-4637-9f59-fba7a92adf34",
+      "note": "Abby Angelos (house HD-003) to Abby Angelos. Sitting representative for House District 3, running for Senate District 23 in November 2026, so the roster seat and the candidacy seat differ. Same person."
+    },
+    {
+      "people_id": 22012,
+      "candidate_id": "fcdfd0ba-1054-44de-967d-8db631582573",
+      "note": "Jeremy Haroldson (house HD-004) to Jeremy Haroldson. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 23399,
+      "candidate_id": null,
+      "note": "Scott Smith (house HD-005) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 23400,
+      "candidate_id": "e3acf246-13c3-42f2-96b3-b607a85f36e1",
+      "note": "Tomi Strock (house HD-006) to Tomi Strock. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 8713,
+      "candidate_id": "0cac8ebf-160c-4e49-8b34-99e68d8e3e1e",
+      "note": "Bob Nicholas (house HD-007) to Bob Nicholas. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25316,
+      "candidate_id": null,
+      "note": "Steve Johnson (house HD-008) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 19384,
+      "candidate_id": null,
+      "note": "Landon Brown (house HD-009) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 10612,
+      "candidate_id": null,
+      "note": "John Eklund (house HD-010) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25325,
+      "candidate_id": null,
+      "note": "Jacob Wasserburger (house HD-011) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 20375,
+      "candidate_id": "236764c0-2769-483b-8fa9-5fcb2a32c231",
+      "note": "Clarence Styvar (house HD-012) to Clarence Styvar. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 24161,
+      "candidate_id": "ddb9e5a1-567b-4aa9-8952-4f8e179ba524",
+      "note": "Kenneth Chestek (house HD-013) to Ken Chestek. Proposed by name and seat (first_prefix)."
+    },
+    {
+      "people_id": 22677,
+      "candidate_id": "10cd4dad-48c6-4ea4-b7f3-a3a5eea2f3da",
+      "note": "Trey Sherwood (house HD-014) to Trey Sherwood. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25324,
+      "candidate_id": "e3b5be53-e080-4c8d-9067-9c378352089b",
+      "note": "Pam Thayer (house HD-015) to Pamela Thayer. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 20193,
+      "candidate_id": "0f15692f-593d-43d6-bd09-4416355277e2",
+      "note": "Mike Yin (house HD-016). Added by hand. LegiScan first_name is `Michael` and the working name `Mike` sits in nickname, which the proposer does not read. Same House District 16 member."
+    },
+    {
+      "people_id": 24307,
+      "candidate_id": null,
+      "note": "Joshua Larson (house HD-017) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22077,
+      "candidate_id": null,
+      "note": "Scott Heiner (house HD-018) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25326,
+      "candidate_id": null,
+      "note": "Joe Webb (house HD-019) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25323,
+      "candidate_id": null,
+      "note": "Mike Schmid (house HD-020) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25311,
+      "candidate_id": "9e6edf14-d2b0-4e01-b84b-fba6de573a66",
+      "note": "McKay Erickson (house HD-021) to McKay L. Erickson. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 24160,
+      "candidate_id": "ec94e502-5304-4828-b9bc-041f8c5e7a30",
+      "note": "Andrew Byron (house HD-022) to Andrew Byron. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 24375,
+      "candidate_id": "c013c0c0-c39a-48d2-9b45-787812c9f4b3",
+      "note": "Liz Storer (house HD-023). Added by hand. LegiScan first_name is `Elizabeth` and the working name `Liz` sits in nickname. Same House District 23 member."
+    },
+    {
+      "people_id": 25327,
+      "candidate_id": null,
+      "note": "Nina Webber (house HD-024) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25314,
+      "candidate_id": null,
+      "note": "Paul Hoeft (house HD-025) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 24753,
+      "candidate_id": "a693f9af-3eb9-49bc-9453-8224c5884118",
+      "note": "Dalton Banks (house HD-026) to Dalton Banks. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 23644,
+      "candidate_id": "78b13766-219a-474e-aabf-bd77b6dcffe5",
+      "note": "Martha Lawley (house HD-027) to Martha Lawley. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 20171,
+      "candidate_id": null,
+      "note": "John Winter (house HD-028) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 23383,
+      "candidate_id": null,
+      "note": "Ken Pendergraft (house HD-029) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25317,
+      "candidate_id": null,
+      "note": "Tom Kelly (house HD-030) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22234,
+      "candidate_id": null,
+      "note": "John Bear (house HD-031) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 24162,
+      "candidate_id": "b94d5bcd-f2e0-4916-b0c4-d6ec584f43f6",
+      "note": "Kenneth Clouston (house HD-032) to Ken Clouston. Proposed by name and seat (first_prefix)."
+    },
+    {
+      "people_id": 25321,
+      "candidate_id": "b2e0dde3-5c23-46cc-b922-f5706bf64684",
+      "note": "Ivan Posey (house HD-033) to Ivan D. Posey. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 22013,
+      "candidate_id": "efeb04f0-d6cd-4957-b624-06acf9f52fb6",
+      "note": "Pepper Ottman (house HD-034) to Pepper L Ottman. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 23396,
+      "candidate_id": null,
+      "note": "Tony Locke (house HD-035) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 20377,
+      "candidate_id": "adb6a54b-9d89-431f-b047-39eec53be5c8",
+      "note": "Art Washut (house HD-036) to Art Washut. Proposed by name and seat (first_prefix)."
+    },
+    {
+      "people_id": 8725,
+      "candidate_id": null,
+      "note": "Steve Harshman (house HD-037) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25318,
+      "candidate_id": null,
+      "note": "Jayme Lien (house HD-038) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 23647,
+      "candidate_id": "a25b76aa-89aa-4506-8a1e-8ff68ba9c4d8",
+      "note": "Cody Wylie (house HD-039) to Cody Wylie. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25310,
+      "candidate_id": "a9e01433-65f4-4555-b108-4edfd63d1619",
+      "note": "Marilyn Connolly (house HD-040) to Marilyn Connolly. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25307,
+      "candidate_id": null,
+      "note": "Gary Brown (house HD-041) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25312,
+      "candidate_id": "e0df8d73-d27f-416b-bb16-cfb1a1efb89a",
+      "note": "Rob Geringer (house HD-042) to Rob Geringer. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25319,
+      "candidate_id": null,
+      "note": "Ann Lucas (house HD-043) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 14228,
+      "candidate_id": "d5256a6c-3977-4696-a95f-eda9272cfdd8",
+      "note": "Lee Filer (house HD-044) to Lee Filer. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 22676,
+      "candidate_id": "ec68376f-caed-4692-b330-90b991a8c7a1",
+      "note": "Karlee Provenza (house HD-045) to Karlee Provenza. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 22554,
+      "candidate_id": null,
+      "note": "Ocean Andrew (house HD-046) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 23879,
+      "candidate_id": "317da066-8f71-4aa0-a43f-0a4a4415e99b",
+      "note": "Robert Davis (house HD-047). Added by hand. Sitting representative for House District 47, running for Senate District 11 in November 2026, so the two seats do not agree. LegiScan first_name is `Robert` and the working name `Bob` sits in nickname. The candidate row's own office reads `Wyoming State Representative, District 47` and its sources include the Secretary of State's 2026 general election candidate list."
+    },
+    {
+      "people_id": 25320,
+      "candidate_id": null,
+      "note": "Darin McCann (house HD-048) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 21912,
+      "candidate_id": null,
+      "note": "Robert Wharff (house HD-049) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22014,
+      "candidate_id": null,
+      "note": "Rachel Rodriguez-Williams (house HD-050) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25306,
+      "candidate_id": "324bd46e-4622-4055-8679-8b4168d5a03d",
+      "note": "Laurie Bratten (house HD-051) to Laurie Bratten. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 24163,
+      "candidate_id": null,
+      "note": "Reuben Tarver (house HD-052) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22556,
+      "candidate_id": "bc808d8a-cc3c-46e9-9558-d580b2721bca",
+      "note": "Christopher Knapp (house HD-053) to Christopher R Knapp. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 14230,
+      "candidate_id": "2152b07b-d4fb-4552-932b-7efe0b6fc5cb",
+      "note": "Lloyd Larsen (house HD-054) to Lloyd Charles Larsen. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25313,
+      "candidate_id": null,
+      "note": "Joel Guggenmos (house HD-055) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25308,
+      "candidate_id": "e2eaea4c-ed32-4bef-8995-eb985dd814f3",
+      "note": "Elissa Campbell (house HD-056) to Elissa Campbell. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25315,
+      "candidate_id": "afec8c2d-14d6-41d5-afdb-301330d885bb",
+      "note": "Julie Jarvis (house HD-057) to Julie Jarvis. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 23393,
+      "candidate_id": "0bc34d67-1afb-494e-899c-2bc56a722ae6",
+      "note": "Bill Allemand (house HD-058) to Bill Allemand. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25322,
+      "candidate_id": "c2fa22fb-b720-42b2-a902-ef00773bd807",
+      "note": "J.R. Riggins (house HD-059). Added by hand. LegiScan first_name is `Justin` and the working name `J.R.` sits in nickname. Same House District 59 member."
+    },
+    {
+      "people_id": 25305,
+      "candidate_id": null,
+      "note": "Marlene Brady (house HD-060) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 23645,
+      "candidate_id": null,
+      "note": "Daniel Singh (house HD-061) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25309,
+      "candidate_id": "3be9a43d-2c63-4aa9-981f-070d5cf846d8",
+      "note": "Kevin Campbell (house HD-062) to Kevin J. Campbell. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 10604,
+      "candidate_id": "87bc1366-286d-4510-89f8-4b24a9010055",
+      "note": "Ogden Driskill (senate SD-001) to Ogden Driskill. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 17805,
+      "candidate_id": null,
+      "note": "Brian Boner (senate SD-002) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 16716,
+      "candidate_id": "38744693-1e49-40e0-9600-324ea7470fe0",
+      "note": "Cheri Steinmetz (senate SD-003) to Cheri E Steinmetz. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 18549,
+      "candidate_id": null,
+      "note": "Tara Nethercott (senate SD-004) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 14229,
+      "candidate_id": null,
+      "note": "Lynn Hutchings (senate SD-005) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 25328,
+      "candidate_id": null,
+      "note": "Darin Smith (senate SD-006) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 16712,
+      "candidate_id": null,
+      "note": "Stephan Pappas (senate SD-007) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 18469,
+      "candidate_id": null,
+      "note": "Jared Olsen (senate SD-008) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 10602,
+      "candidate_id": "cfa877d2-f929-4ede-8b62-fbbeb5fd63cf",
+      "note": "Chris Rothfuss (senate SD-009) to Chris Rothfuss. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25330,
+      "candidate_id": null,
+      "note": "Gary Crum (senate SD-010) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 10600,
+      "candidate_id": null,
+      "note": "Larry Hicks (senate SD-011) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22131,
+      "candidate_id": null,
+      "note": "John Kolb (senate SD-012) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 24311,
+      "candidate_id": "9c709d3f-9066-4719-99ce-2fc87fc6cdea",
+      "note": "Stacy Jones (senate SD-013) to Stacy Jones. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 25329,
+      "candidate_id": null,
+      "note": "Laura Pearson (senate SD-014) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 20157,
+      "candidate_id": "14d53d4a-2b62-44ed-b323-c9e7f0a3d22e",
+      "note": "Wendy Davis Schuler (senate SD-015) to Wendy Davis Schuler. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 8679,
+      "candidate_id": null,
+      "note": "Dan Dockstader (senate SD-016) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 18487,
+      "candidate_id": "c8314282-2fe6-4d43-b21a-c2f495a27d69",
+      "note": "Michael Gierau (senate SD-017). Added by hand. LegiScan first_name is `Michael` and the working name `Mike` sits in nickname. Same Senate District 17 member."
+    },
+    {
+      "people_id": 22235,
+      "candidate_id": null,
+      "note": "Tim French (senate SD-018) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 16559,
+      "candidate_id": null,
+      "note": "Dan Laursen (senate SD-019) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22286,
+      "candidate_id": null,
+      "note": "Edward Cooper (senate SD-020) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 18100,
+      "candidate_id": null,
+      "note": "Dennis Biteman (senate SD-021) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 22555,
+      "candidate_id": null,
+      "note": "Barry Crago (senate SD-022) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 14226,
+      "candidate_id": "6ba09c0e-02e4-4b64-b258-0533e8dbc310",
+      "note": "Eric Barlow (senate SD-023). Added by hand. Sitting senator for Senate District 23, running for Governor in November 2026. A statewide candidacy is outside the state-legislative pool the proposer draws from, so this pair can only be added by hand."
+    },
+    {
+      "people_id": 22502,
+      "candidate_id": null,
+      "note": "Troy McKeown (senate SD-024) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 8675,
+      "candidate_id": "70e0351f-9fe9-4edc-9ee9-0b7cb8518b60",
+      "note": "Cale Case (senate SD-025) to Cale Case. Proposed by name and seat (first_and_last)."
+    },
+    {
+      "people_id": 18213,
+      "candidate_id": null,
+      "note": "Tim Salazar (senate SD-026) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 8641,
+      "candidate_id": null,
+      "note": "Bill Landen (senate SD-027) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 14414,
+      "candidate_id": null,
+      "note": "James Anderson (senate SD-028) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 23683,
+      "candidate_id": null,
+      "note": "Robert Ide (senate SD-029) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 8663,
+      "candidate_id": null,
+      "note": "Charles Scott (senate SD-030) has no November 2026 candidacy in the database."
+    },
+    {
+      "people_id": 23192,
+      "candidate_id": "5e3b3d0c-b133-49d7-8e95-a9a7b8eaa36c",
+      "note": "Evie Brennan (senate SD-031) to Evie Brennan. Proposed by name and seat (first_and_last)."
+    }
+  ]
+}

@@ -1,0 +1,1971 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-09T23:02:15.111Z",
+  "finishedAt": "2026-09-09T23:02:16.325Z",
+  "jurisdiction": "WI",
+  "sessionId": 2197,
+  "evidenceDir": "evidence/rollcall/legiscan-wi-2197",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/wi-2197/WI/2025-2026_Regular_Session",
+  "peopleMembers": 132,
+  "candidatePool": 230,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 3819,
+      "rosterName": "Christine Sinicki",
+      "rosterSeat": "house HD-020",
+      "candidateId": "14b20d74-7be1-4046-9c5b-19737050e319",
+      "candidateName": "Christine M. Sinicki",
+      "candidacy": "state_lower: Assembly District 20 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 3820,
+      "rosterName": "Jeff Smith",
+      "rosterSeat": "senate SD-031",
+      "candidateId": "7c435828-69f5-4ec4-ad1e-6fc398a491a9",
+      "candidateName": "Jeff Smith",
+      "candidacy": "state_upper: State Senate District 31 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 3846,
+      "rosterName": "Jeffrey Mursau",
+      "rosterSeat": "house HD-036",
+      "candidateId": "396eafec-b103-459f-98be-cbb090bd0f5f",
+      "candidateName": "Jeffrey L. Mursau",
+      "candidacy": "state_lower: Assembly District 36 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 3847,
+      "rosterName": "Dan Knodl",
+      "rosterSeat": "house HD-024",
+      "candidateId": "0e4eae31-7e2a-4046-9390-2848dec6d49b",
+      "candidateName": "Dan Knodl",
+      "candidacy": "state_lower: Assembly District 24 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 3916,
+      "rosterName": "Timothy Carpenter",
+      "rosterSeat": "senate SD-003",
+      "candidateId": "3caa9c90-a0c3-44d1-baac-fff050aac94b",
+      "candidateName": "Tim Carpenter",
+      "candidacy": "state_upper: State Senate District 3 (2024); Wisconsin",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12267,
+      "rosterName": "Scott Krug",
+      "rosterSeat": "house HD-072",
+      "candidateId": "753ac867-49bc-48c5-8964-8a25b32e9a0b",
+      "candidateName": "Scott Krug",
+      "candidacy": "state_lower: Assembly District 72 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12269,
+      "rosterName": "Travis Tranel",
+      "rosterSeat": "house HD-049",
+      "candidateId": "96f52e69-e887-48c4-a4bd-514c97a8e59e",
+      "candidateName": "Travis Tranel",
+      "candidacy": "state_lower: Assembly District 49 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12277,
+      "rosterName": "Chris Kapenga",
+      "rosterSeat": "senate SD-033",
+      "candidateId": "1aace776-e566-454c-9fd3-151b74c7d905",
+      "candidateName": "Chris Kapenga",
+      "candidacy": "state_upper: State Senate District 33 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12291,
+      "rosterName": "Tyler August",
+      "rosterSeat": "house HD-031",
+      "candidateId": "c64c4739-6c9b-4500-ad3a-2ade795ec7a4",
+      "candidateName": "Tyler August",
+      "candidacy": "state_lower: Assembly District 31 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12299,
+      "rosterName": "Howard Marklein",
+      "rosterSeat": "senate SD-017",
+      "candidateId": "0b15296a-169f-49be-b86a-f6311342bec9",
+      "candidateName": "Howard Marklein",
+      "candidacy": "state_upper: State Senate District 17 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12304,
+      "rosterName": "Christopher Larson",
+      "rosterSeat": "senate SD-007",
+      "candidateId": "e688370a-768e-4346-a7c8-e6229a2df311",
+      "candidateName": "Chris J. Larson",
+      "candidacy": "state_upper: State Senate District 7 (2024); Wisconsin",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 13126,
+      "rosterName": "Steve Doyle",
+      "rosterSeat": "house HD-094",
+      "candidateId": "7032f350-3f41-4b99-9155-d03c3437bb19",
+      "candidateName": "Steve Doyle",
+      "candidacy": "state_lower: Assembly District 94 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 13657,
+      "rosterName": "Jill Billings",
+      "rosterSeat": "house HD-095",
+      "candidateId": "a71239b6-999b-4f49-af94-8af9a8d99750",
+      "candidateName": "Jill Billings",
+      "candidacy": "state_lower: Assembly District 95 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14585,
+      "rosterName": "Rob Swearingen",
+      "rosterSeat": "house HD-034",
+      "candidateId": "f5378b25-84d0-4006-b6f6-d89c1f076050",
+      "candidateName": "Rob Swearingen",
+      "candidacy": "state_lower: Assembly District 34 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15091,
+      "rosterName": "Mark Born",
+      "rosterSeat": "house HD-037",
+      "candidateId": "cb859dd8-ff88-4c9f-aa6f-79849c6afee1",
+      "candidateName": "Mark Born",
+      "candidacy": "state_lower: Assembly District 37 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15094,
+      "rosterName": "John Jagler",
+      "rosterSeat": "senate SD-013",
+      "candidateId": "7911a764-682f-433b-8b2e-775c3bf401ff",
+      "candidateName": "John Jagler",
+      "candidacy": "state_upper: State Senate District 13 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15099,
+      "rosterName": "John Spiros",
+      "rosterSeat": "house HD-086",
+      "candidateId": "15a84d74-f640-49c5-b3f6-a9937c50f6a4",
+      "candidateName": "John Spiros",
+      "candidacy": "state_lower: Assembly District 86 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15100,
+      "rosterName": "Paul Tittl",
+      "rosterSeat": "house HD-025",
+      "candidateId": "805e8ded-ac04-4e17-95db-d42afe3fa632",
+      "candidateName": "Paul Tittl",
+      "candidacy": "state_lower: Assembly District 25 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15719,
+      "rosterName": "Dianne Hesselbein",
+      "rosterSeat": "senate SD-027",
+      "candidateId": "a640b8a6-7ca8-4733-a6a5-4fcc407f2404",
+      "candidateName": "Dianne Hesselbein",
+      "candidacy": "state_upper: State Senate District 27 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16023,
+      "rosterName": "Adam Neylon",
+      "rosterSeat": "house HD-015",
+      "candidateId": "1ea8e5a7-3d24-4e6b-b736-f7e68440aaa3",
+      "candidateName": "Adam Neylon",
+      "candidacy": "state_lower: Assembly District 15 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16418,
+      "rosterName": "Joel Kitchens",
+      "rosterSeat": "house HD-001",
+      "candidateId": "307500c6-3b49-446d-9871-ca9cd9eb5d86",
+      "candidateName": "Joel Kitchens",
+      "candidacy": "state_lower: Assembly District 1 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16422,
+      "rosterName": "Todd Novak",
+      "rosterSeat": "house HD-051",
+      "candidateId": "648cadf3-52cc-41fd-a41d-2a0e10c196a1",
+      "candidateName": "Todd Novak",
+      "candidacy": "state_lower: Assembly District 51 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16423,
+      "rosterName": "Romaine Quinn",
+      "rosterSeat": "senate SD-025",
+      "candidateId": "4cd7ec2f-d2aa-41bc-8160-96a9a02c3ae9",
+      "candidateName": "Romaine Robert Quinn",
+      "candidacy": "state_upper: State Senate District 23 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 16425,
+      "rosterName": "Mark Spreitzer",
+      "rosterSeat": "senate SD-015",
+      "candidateId": "31eb6ce6-d66d-4b3d-b5ab-7636762e99b1",
+      "candidateName": "Mark Spreitzer",
+      "candidacy": "state_upper: State Senate District 15 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16426,
+      "rosterName": "David Steffen",
+      "rosterSeat": "house HD-004",
+      "candidateId": "9b87f34b-2b4e-47e6-9cc6-3911d8d1d4dc",
+      "candidateName": "David Steffen",
+      "candidacy": "state_lower: Assembly District 4 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16428,
+      "rosterName": "Lisa Subeck",
+      "rosterSeat": "house HD-079",
+      "candidateId": "cfbe7888-6293-4cb6-bd68-a4d2cee07c8c",
+      "candidateName": "Lisa Subeck",
+      "candidacy": "state_lower: Assembly District 79 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16429,
+      "rosterName": "Nancy VanderMeer",
+      "rosterSeat": "house HD-070",
+      "candidateId": "c0671372-35ea-4340-a3ef-0752e2e9524e",
+      "candidateName": "Nancy VanderMeer",
+      "candidacy": "state_lower: Assembly District 70 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17720,
+      "rosterName": "Cindi Duchow",
+      "rosterSeat": "house HD-097",
+      "candidateId": "f145a4e7-a78f-42a0-8b48-e25a662a8c0e",
+      "candidateName": "Cindi Duchow",
+      "candidacy": "state_lower: Assembly District 97 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18356,
+      "rosterName": "Treig Pronschinske",
+      "rosterSeat": "house HD-029",
+      "candidateId": "c77a0ad4-0168-43c8-a46f-b779cb3d7180",
+      "candidateName": "Treig Pronschinske",
+      "candidacy": "state_lower: Assembly District 29 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18357,
+      "rosterName": "Patrick Snyder",
+      "rosterSeat": "house HD-085",
+      "candidateId": "d48a86ee-254e-4998-bc46-bd1e3556b2a9",
+      "candidateName": "Patrick Snyder",
+      "candidacy": "state_lower: Assembly District 85 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18359,
+      "rosterName": "Rob Summerfield",
+      "rosterSeat": "house HD-068",
+      "candidateId": "8e0ba99c-d2ac-4b7d-9a08-751f618cb06f",
+      "candidateName": "Rob Summerfield",
+      "candidacy": "state_lower: Assembly District 68 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18360,
+      "rosterName": "Ron Tusler",
+      "rosterSeat": "house HD-003",
+      "candidateId": "7275b2bc-37a3-4e66-beb5-8c16aaae7045",
+      "candidateName": "Ron Tusler",
+      "candidacy": "state_lower: Assembly District 3 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18361,
+      "rosterName": "Chuck Wichgers",
+      "rosterSeat": "house HD-084",
+      "candidateId": "0b54817e-2c5d-4159-8ccf-06d90f4bd4bd",
+      "candidateName": "Chuck Wichgers",
+      "candidacy": "state_lower: Assembly District 84 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18362,
+      "rosterName": "Shannon Zimmerman",
+      "rosterSeat": "house HD-030",
+      "candidateId": "a8455a45-6a55-442a-9caa-7fee7a49b02d",
+      "candidateName": "Shannon Zimmerman",
+      "candidacy": "state_lower: Assembly District 30 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19568,
+      "rosterName": "Greta Neubauer",
+      "rosterSeat": "house HD-066",
+      "candidateId": "fefb72a0-6b7d-4f30-9f21-ed51c4239940",
+      "candidateName": "Greta Neubauer",
+      "candidacy": "state_lower: Assembly District 66 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20178,
+      "rosterName": "Barbara Dittrich",
+      "rosterSeat": "house HD-099",
+      "candidateId": "a6e0140b-f387-4378-84bc-a0ff94991771",
+      "candidateName": "Barbara Dittrich",
+      "candidacy": "state_lower: Assembly District 99 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20181,
+      "rosterName": "Kalan Haywood",
+      "rosterSeat": "house HD-016",
+      "candidateId": "f4de2279-c4de-4b38-a005-1fca426506ec",
+      "candidateName": "Kalan Haywood",
+      "candidacy": "state_lower: Assembly District 16 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20188,
+      "rosterName": "Shae Sortwell",
+      "rosterSeat": "house HD-002",
+      "candidateId": "813e78f8-0ad8-4a05-9d85-bdfb4fa56b97",
+      "candidateName": "Shae Sortwell",
+      "candidacy": "state_lower: Assembly District 2 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20189,
+      "rosterName": "Shelia Stubbs",
+      "rosterSeat": "house HD-078",
+      "candidateId": "b5d18f59-5732-48a4-9ae2-d8f46fc79527",
+      "candidateName": "Shelia Stubbs",
+      "candidacy": "state_lower: Assembly District 78 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20190,
+      "rosterName": "Robyn Vining",
+      "rosterSeat": "house HD-013",
+      "candidateId": "5c3e918c-83d3-488e-895b-6e24ad8d8898",
+      "candidateName": "Robyn Vining",
+      "candidacy": "state_upper: State Senate District 5 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 20191,
+      "rosterName": "Robert Wittke",
+      "rosterSeat": "house HD-063",
+      "candidateId": "3cf5218d-d657-4a6d-870f-89e3e0570d0b",
+      "candidateName": "Robert Wittke",
+      "candidacy": "state_lower: Assembly District 63 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21362,
+      "rosterName": "Tip McGuire",
+      "rosterSeat": "house HD-064",
+      "candidateId": "e85db54b-e54b-4dcd-acb4-5ef82dcf0cc7",
+      "candidateName": "Tip McGuire",
+      "candidacy": "state_lower: Assembly District 64 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21987,
+      "rosterName": "Deb Andraca",
+      "rosterSeat": "house HD-023",
+      "candidateId": "f5e70fb7-2e83-409c-89d7-34c1f71524e1",
+      "candidateName": "Deb Andraca",
+      "candidacy": "state_lower: Assembly District 23 (2024); Wisconsin",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21988,
+      "rosterName": "David Armstrong",
+      "rosterSeat": "house HD-067",
+      "candidateId": "d7015288-fed0-4348-b3ba-071346be6c9c",
+      "candidateName": "David Armstrong",
+      "candidacy": "state_lower: Assembly District 67 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21990,
+      "rosterName": "Rachael Cabral-Guevara",
+      "rosterSeat": "senate SD-019",
+      "candidateId": "0745e43a-57fb-4b68-925a-8bfbbcd493af",
+      "candidateName": "Rachael Ann Cabral-Guevara",
+      "candidacy": "state_upper: State Senate District 19 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21991,
+      "rosterName": "Calvin Callahan",
+      "rosterSeat": "house HD-035",
+      "candidateId": "45cbbcb6-4040-460c-b0ed-f19bac7b525c",
+      "candidateName": "Calvin Callahan",
+      "candidacy": "state_lower: Assembly District 35 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21993,
+      "rosterName": "Alex Dallman",
+      "rosterSeat": "house HD-039",
+      "candidateId": "e3f64c43-cd74-425d-b980-828d9d30027b",
+      "candidateName": "Alex Dallman",
+      "candidacy": "state_lower: Assembly District 39 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21996,
+      "rosterName": "Supreme Omokunde",
+      "rosterSeat": "house HD-017",
+      "candidateId": "d2b070ba-5f3e-4396-a410-96503665036b",
+      "candidateName": "Supreme Moore Omokunde",
+      "candidacy": "state_lower: Assembly District 17 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21997,
+      "rosterName": "Clint Moses",
+      "rosterSeat": "house HD-092",
+      "candidateId": "0dc0183f-1a0d-40e2-a13f-e70e2a71a99b",
+      "candidateName": "Clint Moses",
+      "candidacy": "state_lower: Assembly District 92 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22002,
+      "rosterName": "Lee Snodgrass",
+      "rosterSeat": "house HD-052",
+      "candidateId": "1cc222a0-46d2-48d8-bbe4-4614d19beaed",
+      "candidateName": "Lee Snodgrass",
+      "candidacy": "state_lower: Assembly District 52 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22924,
+      "rosterName": "Elijah Behnke",
+      "rosterSeat": "house HD-006",
+      "candidateId": "9539dc4b-b23f-4ca3-95d7-03f63a065cc4",
+      "candidateName": "Elijah Behnke",
+      "candidacy": "state_lower: Assembly District 6 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22945,
+      "rosterName": "William Penterman",
+      "rosterSeat": "house HD-038",
+      "candidateId": "dcad11cb-8cc9-4ed5-9da0-a04cab05b63c",
+      "candidateName": "William Penterman",
+      "candidacy": "state_lower: Assembly District 38 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23583,
+      "rosterName": "Clinton Anderson",
+      "rosterSeat": "house HD-045",
+      "candidateId": "dbfce109-23e9-41f3-b21d-117cb22c3c95",
+      "candidateName": "Clinton Anderson",
+      "candidacy": "state_lower: Assembly District 45 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23584,
+      "rosterName": "Mike Bare",
+      "rosterSeat": "house HD-080",
+      "candidateId": "4f690c22-ddc4-426e-b9e4-b0e141e2d08f",
+      "candidateName": "Mike Bare",
+      "candidacy": "state_lower: Assembly District 80 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23587,
+      "rosterName": "Ryan Clancy",
+      "rosterSeat": "house HD-019",
+      "candidateId": "ced0a2e3-4b4f-4d79-899a-bdf6512bad39",
+      "candidateName": "Ryan Clancy",
+      "candidacy": "state_lower: Assembly District 19 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23589,
+      "rosterName": "Joy Goeben",
+      "rosterSeat": "house HD-005",
+      "candidateId": "648d30d0-99a1-45b3-9612-ed293b321b23",
+      "candidateName": "Joy Goeben",
+      "candidacy": "state_lower: Assembly District 5 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23590,
+      "rosterName": "Chanz Green",
+      "rosterSeat": "house HD-074",
+      "candidateId": "3db7712f-2e8b-4b79-8908-fca304dd56ed",
+      "candidateName": "Chanz Green",
+      "candidacy": "state_lower: Assembly District 74 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23591,
+      "rosterName": "Nate Gustafson",
+      "rosterSeat": "house HD-055",
+      "candidateId": "9591a243-6857-47f6-8d23-df3c0c17aad2",
+      "candidateName": "Nate Gustafson",
+      "candidacy": "state_lower: Assembly District 55 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23592,
+      "rosterName": "Karen Hurd",
+      "rosterSeat": "house HD-069",
+      "candidateId": "1ea055d4-a796-48cc-97d5-085394055081",
+      "candidateName": "Karen Hurd",
+      "candidacy": "state_lower: Assembly District 69 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23593,
+      "rosterName": "Jenna Jacobson",
+      "rosterSeat": "house HD-050",
+      "candidateId": "c6316d06-ff2e-4cc7-8ccc-999e1154c579",
+      "candidateName": "Jenna Jacobson",
+      "candidacy": "state_upper: State Senate District 17 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 23594,
+      "rosterName": "Darrin Madison",
+      "rosterSeat": "house HD-010",
+      "candidateId": "1809ab09-3077-4622-950f-fbfd1bd489c2",
+      "candidateName": "Darrin Madison",
+      "candidacy": "state_lower: Assembly District 10 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23595,
+      "rosterName": "Dave Maxey",
+      "rosterSeat": "house HD-083",
+      "candidateId": "d9a7404e-a1e2-4764-9d26-b28e008b00e1",
+      "candidateName": "Dave Maxey",
+      "candidacy": "state_lower: Assembly District 83 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23597,
+      "rosterName": "Amanda Nedweski",
+      "rosterSeat": "house HD-032",
+      "candidateId": "0d306ab8-f032-446c-948f-d2cd43ee62b0",
+      "candidateName": "Amanda Nedweski",
+      "candidacy": "state_lower: Assembly District 32 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23599,
+      "rosterName": "Lori Palmeri",
+      "rosterSeat": "house HD-054",
+      "candidateId": "10328cfa-1b1e-4e22-b54e-328d0a0c7b23",
+      "candidateName": "Lori Palmeri",
+      "candidacy": "state_lower: Assembly District 54 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23605,
+      "rosterName": "Cory Tomczyk",
+      "rosterSeat": "senate SD-029",
+      "candidateId": "6b280264-6493-4134-8336-f55550c893c0",
+      "candidateName": "Cory Tomczyk",
+      "candidacy": "state_upper: State Senate District 29 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23606,
+      "rosterName": "Alex Joers",
+      "rosterSeat": "house HD-081",
+      "candidateId": "0684aa44-6fd8-4404-b000-41392a0117fd",
+      "candidateName": "Alex Joers",
+      "candidacy": "state_lower: Assembly District 81 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24954,
+      "rosterName": "Paul Melotik",
+      "rosterSeat": "house HD-022",
+      "candidateId": "d0c16a43-aa05-4f2d-910a-b6286dc1fecb",
+      "candidateName": "Paul Melotik",
+      "candidacy": "state_lower: Assembly District 22 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26074,
+      "rosterName": "Margaret Arney",
+      "rosterSeat": "house HD-018",
+      "candidateId": "00234db9-4fbd-4cdb-a3e2-07e3c78b9828",
+      "candidateName": "Margaret Arney",
+      "candidacy": "state_lower: Assembly District 18 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26075,
+      "rosterName": "Lindee Brill",
+      "rosterSeat": "house HD-027",
+      "candidateId": "88a066ea-5411-4480-8f84-4b160255fd82",
+      "candidateName": "Lindee Brill",
+      "candidacy": "state_lower: Assembly District 27 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26076,
+      "rosterName": "Brienne Brown",
+      "rosterSeat": "house HD-043",
+      "candidateId": "eb6e8513-5048-4630-bb92-36c21dc5d1fc",
+      "candidateName": "Brienne Brown",
+      "candidacy": "state_lower: Assembly District 43 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26077,
+      "rosterName": "Angelina Cruz",
+      "rosterSeat": "house HD-062",
+      "candidateId": "30cd492f-156c-45d0-a367-3362fdbcdb61",
+      "candidateName": "Angelina M. Cruz",
+      "candidacy": "state_lower: Assembly District 62 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26078,
+      "rosterName": "Karen DeSanto",
+      "rosterSeat": "house HD-040",
+      "candidateId": "bbacea3a-7706-40be-b26a-6d2da7680e35",
+      "candidateName": "Karen DeSanto",
+      "candidacy": "state_lower: Assembly District 40 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26079,
+      "rosterName": "Ben DeSmidt",
+      "rosterSeat": "house HD-065",
+      "candidateId": "97b8e9e7-113a-417f-b66e-36291f6cda5d",
+      "candidateName": "Ben DeSmidt",
+      "candidacy": "state_lower: Assembly District 65 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26080,
+      "rosterName": "Joan Fitzgerald",
+      "rosterSeat": "house HD-046",
+      "candidateId": "963cee7f-3ac7-427a-8428-6fbda451edfa",
+      "candidateName": "Joan Fitzgerald",
+      "candidacy": "state_lower: Assembly District 46 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26081,
+      "rosterName": "Benjamin Franklin",
+      "rosterSeat": "house HD-088",
+      "candidateId": "e2e22971-6d3e-450f-87fd-47adcb2a2ce2",
+      "candidateName": "Ben Franklin",
+      "candidacy": "state_lower: Assembly District 88 (2024); Wisconsin",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26082,
+      "rosterName": "Russell Goodwin",
+      "rosterSeat": "house HD-012",
+      "candidateId": "941f44ab-49f4-4675-a3b0-a3f730899bd4",
+      "candidateName": "Russell Antonio Goodwin, Sr.",
+      "candidacy": "state_lower: Assembly District 12 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26083,
+      "rosterName": "Andrew Hysell",
+      "rosterSeat": "house HD-048",
+      "candidateId": "c23c55ce-68b2-4d09-9112-d17e77f71317",
+      "candidateName": "Andrew Hysell",
+      "candidacy": "state_lower: Assembly District 48 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26084,
+      "rosterName": "Brent Jacobson",
+      "rosterSeat": "house HD-087",
+      "candidateId": "bbae018b-9070-497e-912c-b53cfc9a6764",
+      "candidateName": "Brent Jacobson",
+      "candidacy": "state_lower: Assembly District 87 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26085,
+      "rosterName": "Tara Johnson",
+      "rosterSeat": "house HD-096",
+      "candidateId": "89ccbfe4-7731-45f8-990a-09e027bceaee",
+      "candidateName": "Tara Johnson",
+      "candidacy": "state_lower: Assembly District 96 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26086,
+      "rosterName": "Karen Kirsch",
+      "rosterSeat": "house HD-007",
+      "candidateId": "4c17226a-d168-49db-beec-1eaee53b5ae5",
+      "candidateName": "Karen Kirsch",
+      "candidacy": "state_lower: Assembly District 7 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26087,
+      "rosterName": "Rob Kreibich",
+      "rosterSeat": "house HD-028",
+      "candidateId": "4facf6b7-e3af-42a5-af38-5668f8228cd6",
+      "candidateName": "Rob Kreibich",
+      "candidacy": "state_lower: Assembly District 28 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26088,
+      "rosterName": "Renuka Mayadev",
+      "rosterSeat": "house HD-077",
+      "candidateId": "55e46642-d34e-457b-b479-96aef6bf7ff7",
+      "candidateName": "Renuka Mayadev",
+      "candidacy": "state_lower: Assembly District 77 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26089,
+      "rosterName": "Maureen McCarville",
+      "rosterSeat": "house HD-042",
+      "candidateId": "6024064d-0391-489d-82d7-1f279b8fa005",
+      "candidateName": "Maureen McCarville",
+      "candidacy": "state_lower: Assembly District 42 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26091,
+      "rosterName": "Christian Phelps",
+      "rosterSeat": "house HD-093",
+      "candidateId": "1bd55d41-6a03-411b-837e-61c4217f4a87",
+      "candidateName": "Christian Phelps",
+      "candidacy": "state_lower: Assembly District 93 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26092,
+      "rosterName": "Jim Piwowarczyk",
+      "rosterSeat": "house HD-098",
+      "candidateId": "89ad5ef1-31a3-4825-a9a0-cdede05e9db8",
+      "candidateName": "Jim Piwowarczyk",
+      "candidacy": "state_lower: Assembly District 98 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26094,
+      "rosterName": "Amaad Rivera-Wagner",
+      "rosterSeat": "house HD-090",
+      "candidateId": "d4cb5696-6caa-465a-8e9d-b45e7786cae7",
+      "candidateName": "Amaad Rivera-Wagner",
+      "candidacy": "state_lower: Assembly District 90 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26095,
+      "rosterName": "Ann Roe",
+      "rosterSeat": "house HD-044",
+      "candidateId": "8abf5f91-74c7-4f5b-82d5-ad54efc66f1e",
+      "candidateName": "Ann Roe",
+      "candidacy": "state_lower: Assembly District 44 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26096,
+      "rosterName": "Joe Sheehan",
+      "rosterSeat": "house HD-026",
+      "candidateId": "cd67a2c3-8278-43b1-87c1-5d714701214e",
+      "candidateName": "Joe Sheehan",
+      "candidacy": "state_lower: Assembly District 26 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26097,
+      "rosterName": "Ryan Spaude",
+      "rosterSeat": "house HD-089",
+      "candidateId": "d04cd8e6-a632-48b9-b72c-701995fdedaf",
+      "candidateName": "Ryan Spaude",
+      "candidacy": "state_lower: Assembly District 89 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26098,
+      "rosterName": "Angela Stroud",
+      "rosterSeat": "house HD-073",
+      "candidateId": "54bc21b1-98e3-412b-839e-bc81d716e3c5",
+      "candidateName": "Angela Stroud",
+      "candidacy": "state_lower: Assembly District 73 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26099,
+      "rosterName": "Sequanna Taylor",
+      "rosterSeat": "house HD-011",
+      "candidateId": "1f34b45a-a9c2-47b0-9866-c9cf28cab60f",
+      "candidateName": "Sequanna Taylor",
+      "candidacy": "state_lower: Assembly District 11 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26100,
+      "rosterName": "Angelito Tenorio",
+      "rosterSeat": "house HD-014",
+      "candidateId": "e3046bec-d810-45f1-b8a2-64f57851d780",
+      "candidateName": "Angelito Tenorio",
+      "candidacy": "state_lower: Assembly District 14 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26101,
+      "rosterName": "Duke Tucker",
+      "rosterSeat": "house HD-075",
+      "candidateId": "57183a77-8e03-401c-80b2-85a14b139cb8",
+      "candidateName": "Duke Tucker",
+      "candidacy": "state_lower: Assembly District 75 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26102,
+      "rosterName": "Randy Udell",
+      "rosterSeat": "house HD-047",
+      "candidateId": "dcf66a57-225c-4994-a961-8cabb12a2b87",
+      "candidateName": "Randy Udell",
+      "candidacy": "state_lower: Assembly District 47 (2024); Wisconsin",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 12262,
+      "name": "Van Wanggaard",
+      "seat": "senate SD-021"
+    },
+    {
+      "peopleId": 12276,
+      "name": "Andre Jacque",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 13347,
+      "name": "Robert Brooks",
+      "seat": "house HD-059"
+    },
+    {
+      "peopleId": 15092,
+      "name": "Mary Felzkowski",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 15093,
+      "name": "Rob Hutton",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 15096,
+      "name": "David Murphy",
+      "seat": "house HD-056"
+    },
+    {
+      "peopleId": 15362,
+      "name": "LaTonya Johnson",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 16062,
+      "name": "Jessie Rodriguez",
+      "seat": "house HD-021"
+    },
+    {
+      "peopleId": 16407,
+      "name": "Scott Allen",
+      "seat": "house HD-082"
+    },
+    {
+      "peopleId": 18358,
+      "name": "Rob Stafsholt",
+      "seat": "senate SD-010"
+    },
+    {
+      "peopleId": 18363,
+      "name": "Dan Feyen",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 18364,
+      "name": "Patrick Testin",
+      "seat": "senate SD-024"
+    },
+    {
+      "peopleId": 19637,
+      "name": "Rick Gundrum",
+      "seat": "house HD-058"
+    },
+    {
+      "peopleId": 20179,
+      "name": "Jodi Emerson",
+      "seat": "house HD-091"
+    },
+    {
+      "peopleId": 20182,
+      "name": "Jesse James",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 20183,
+      "name": "Tony Kurtz",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 20615,
+      "name": "Devin LeMahieu",
+      "seat": "senate SD-009"
+    },
+    {
+      "peopleId": 21984,
+      "name": "Julian Bradley",
+      "seat": "senate SD-028"
+    },
+    {
+      "peopleId": 21985,
+      "name": "Brad Pfaff",
+      "seat": "senate SD-032"
+    },
+    {
+      "peopleId": 21986,
+      "name": "Eric Wimberger",
+      "seat": "senate SD-002"
+    },
+    {
+      "peopleId": 21994,
+      "name": "Dora Drake",
+      "seat": "senate SD-004"
+    },
+    {
+      "peopleId": 21995,
+      "name": "Francesca Hong",
+      "seat": "house HD-076"
+    },
+    {
+      "peopleId": 21998,
+      "name": "Sylvia Ortiz-Velez",
+      "seat": "house HD-008"
+    },
+    {
+      "peopleId": 23588,
+      "name": "Bob Donovan",
+      "seat": "house HD-061"
+    },
+    {
+      "peopleId": 23598,
+      "name": "Jerry O'Connor",
+      "seat": "house HD-060"
+    },
+    {
+      "peopleId": 23600,
+      "name": "Melissa Ratcliff",
+      "seat": "senate SD-016"
+    },
+    {
+      "peopleId": 26090,
+      "name": "Vinnie Miresse",
+      "seat": "house HD-071"
+    },
+    {
+      "peopleId": 26093,
+      "name": "Pricilla Prado",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 26103,
+      "name": "Kristin Dassler-Alfheim",
+      "seat": "senate SD-018"
+    },
+    {
+      "peopleId": 26104,
+      "name": "Jodi Habush Sinykin",
+      "seat": "senate SD-008"
+    },
+    {
+      "peopleId": 26105,
+      "name": "Sarah Keyeski",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 26106,
+      "name": "Jamie Wall",
+      "seat": "senate SD-030"
+    },
+    {
+      "peopleId": 3815,
+      "name": "Kelda Roys",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 3835,
+      "name": "Robert Wirch",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 3876,
+      "name": "Dean Kaufert",
+      "seat": "house HD-053"
+    },
+    {
+      "peopleId": 3933,
+      "name": "Robin Vos",
+      "seat": "house HD-033"
+    },
+    {
+      "peopleId": 3942,
+      "name": "Kevin Petersen",
+      "seat": "house HD-057"
+    },
+    {
+      "peopleId": 3946,
+      "name": "Steve Nass",
+      "seat": "senate SD-011"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "dd989380-31ef-49c3-b10b-99b981895d1c",
+      "name": "Adam Duda",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f0ac2bf6-8fd0-4f3f-96b1-0d62aca51ac1",
+      "name": "Alciro Deacon",
+      "scope": "state_lower",
+      "districtName": "Assembly District 16 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "8b652157-f439-4a05-92a2-1055d7e3b7f1",
+      "name": "Aleaner Pabonnie",
+      "scope": "state_lower",
+      "districtName": "Assembly District 23 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "6ab3dd7e-6d88-4cc4-9abf-ceb04f834178",
+      "name": "Alex Corrigan",
+      "scope": "state_lower",
+      "districtName": "Assembly District 55 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "c24d879c-23a3-4218-804f-4a91329a1190",
+      "name": "Alexia Unertl",
+      "scope": "state_lower",
+      "districtName": "Assembly District 4 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "d2015489-2022-41ab-aa33-e49679f65e2e",
+      "name": "Alicia Saunders",
+      "scope": "state_lower",
+      "districtName": "Assembly District 2 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "0f149ba1-1dc0-4e6e-aae5-b88d33b29166",
+      "name": "Amy Binsfeld",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "cfacbc25-a43e-4e41-9943-e54c5a5db81d",
+      "name": "Amy Zimmerman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 13 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "c6dba64e-d21f-4958-ba96-fcef179ef2ce",
+      "name": "AmyRose Murphy",
+      "scope": "state_lower",
+      "districtName": "Assembly District 14 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "0211b634-faaf-4bb1-8eb6-58c9b1c88530",
+      "name": "Andy Wuethrich",
+      "scope": "state_lower",
+      "districtName": "Assembly District 86 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "e85e74d5-b2ae-4e87-8379-cdefcb087069",
+      "name": "Angel Sanchez",
+      "scope": "state_lower",
+      "districtName": "Assembly District 8 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "55908449-71a2-4101-b10f-7fd5b4175001",
+      "name": "Anthony W. Phillips",
+      "scope": "state_lower",
+      "districtName": "Assembly District 56 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "369a9f28-2e91-46dd-9db9-829f22e7ca80",
+      "name": "Becky Nichols",
+      "scope": "state_lower",
+      "districtName": "Assembly District 53 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "83f34eb0-1d6a-459e-bb32-43089027e3f9",
+      "name": "Ben Brist",
+      "scope": "state_lower",
+      "districtName": "Assembly District 61 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "72cdce50-e9cf-4a29-a66c-0d281a5f57e8",
+      "name": "Ben Gruber",
+      "scope": "state_lower",
+      "districtName": "Assembly District 51 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "750c21ad-2279-4b8d-a16f-0c98870d91cf",
+      "name": "Bernie Newman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 58 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "3f8e8692-2d79-4df2-98fc-73f74e06e1b5",
+      "name": "Bill Oemichen",
+      "scope": "state_lower",
+      "districtName": "Assembly District 50 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "a266d8c0-e9b4-428a-b531-4613546b85df",
+      "name": "Bob Donovan",
+      "scope": "state_lower",
+      "districtName": "Assembly District 61 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "2ac85b38-81b3-4d77-aa52-9a8e2516d32c",
+      "name": "Bob Look",
+      "scope": "state_lower",
+      "districtName": "Assembly District 87 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f88ed234-13a7-4d9a-a3dc-5f7a78a78258",
+      "name": "Bobby R. Lindsey",
+      "scope": "state_lower",
+      "districtName": "Assembly District 89 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "8ae20fe6-1379-4701-9b50-142801c7561e",
+      "name": "Bradley Petersen",
+      "scope": "state_lower",
+      "districtName": "Assembly District 59 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "9df6ceab-ba41-48ef-9424-757ab0d85908",
+      "name": "Brandy Tollefson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 88 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "b295b125-1138-4f92-9f88-672a0c90552c",
+      "name": "Bruce Stabenow",
+      "scope": "state_lower",
+      "districtName": "Assembly District 91 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "22e97a44-61a0-44ec-ba31-0c10591049c7",
+      "name": "Bryson Reyes",
+      "scope": "state_lower",
+      "districtName": "Assembly District 82 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "3784ae2d-9d1e-4387-8623-04ceb964044c",
+      "name": "Cedric Schnitzler",
+      "scope": "state_lower",
+      "districtName": "Assembly District 95 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "d7b1cc9b-c18a-494a-9e4b-7622eb1df66f",
+      "name": "Charlene Abughrin",
+      "scope": "state_lower",
+      "districtName": "Assembly District 17 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "9cc5c817-d5a6-4719-a6b2-a30331962c31",
+      "name": "Charly Ray",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "35d5ae8b-1313-476d-a66f-06f2a51982b1",
+      "name": "Chris Danou",
+      "scope": "state_lower",
+      "districtName": "Assembly District 29 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "30d748e3-48e3-4698-ac2e-8af5499f564b",
+      "name": "Christian Ellis",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "38c9145e-2098-4440-b3fd-875e320abd76",
+      "name": "Christine Maltese",
+      "scope": "state_lower",
+      "districtName": "Assembly District 72 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "479d263d-ee0c-4493-8354-553cbb3a7555",
+      "name": "Christopher Able",
+      "scope": "state_lower",
+      "districtName": "Assembly District 25 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "676c83c1-c134-40d8-9502-c3f3a8a4beed",
+      "name": "Christopher Dean",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "e17c7460-a17b-49e0-b143-52d581868606",
+      "name": "Dana Glasstein",
+      "scope": "state_lower",
+      "districtName": "Assembly District 22 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "3845492d-b7f8-4497-95a4-766042342ac6",
+      "name": "Daniel J. Bukiewicz",
+      "scope": "state_lower",
+      "districtName": "Assembly District 21 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "002f9009-0d16-4378-8a4d-39bd372666df",
+      "name": "David Daniels",
+      "scope": "state_lower",
+      "districtName": "Assembly District 53 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "6034280d-4fd3-4435-8445-a2bdf6c77399",
+      "name": "David Schupbach",
+      "scope": "state_lower",
+      "districtName": "Assembly District 5 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "95e2094e-6404-4c7c-b727-6810a16f442f",
+      "name": "Dennis D. Degenhardt",
+      "scope": "state_lower",
+      "districtName": "Assembly District 58 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "b7f6d094-bd84-4681-8fb0-55e0b1bd6976",
+      "name": "Dina Nina Martinez-Rutherford",
+      "scope": "state_lower",
+      "districtName": "Assembly District 76 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "e95cfa23-3c4a-4186-b401-91110346028c",
+      "name": "Dylan Pfaffenbach",
+      "scope": "state_lower",
+      "districtName": "Assembly District 21 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "798b41ea-2d00-4916-a5c6-97c3682a1f81",
+      "name": "Ed Hibsch",
+      "scope": "state_lower",
+      "districtName": "Assembly District 64 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "9c9c70d2-f9a1-4fba-897e-fc8d680627b4",
+      "name": "Eddie Phanichkul",
+      "scope": "state_lower",
+      "districtName": "Assembly District 63 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "8450bdc8-7c7c-4134-aa66-49b89eeb2a5e",
+      "name": "Elisha King",
+      "scope": "state_lower",
+      "districtName": "Assembly District 68 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "7f02b339-b995-4680-8af3-913a83166b1d",
+      "name": "Elizabeth McCrank",
+      "scope": "state_lower",
+      "districtName": "Assembly District 35 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "604eeafc-a176-4ada-ad1a-7cc2cba9e6ff",
+      "name": "Ellen Schutt",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "3dabd74a-ddb0-46f9-81e8-74fa2f70cce8",
+      "name": "Emily Daniels Tseffos",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "b8a0a995-86a9-45bc-9d67-ed5bf433c96e",
+      "name": "Erik Severson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "3eedbe7b-7b8a-4d14-8450-d0655913aa37",
+      "name": "Frank Kostka",
+      "scope": "state_lower",
+      "districtName": "Assembly District 73 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "cc1991fd-54b7-4105-9581-09ac80d6fd33",
+      "name": "Gillian Battino",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "85cde79c-0339-4377-8deb-945b38fd029c",
+      "name": "Gina Cefalu Paulick",
+      "scope": "state_lower",
+      "districtName": "Assembly District 66 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f4ef0980-4b2b-4a0d-8480-9840a0d05660",
+      "name": "Grace Abitz",
+      "scope": "state_lower",
+      "districtName": "Assembly District 56 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "a05036a8-1df3-4c2d-845f-765044f9ec71",
+      "name": "Greg Miller",
+      "scope": "state_lower",
+      "districtName": "Assembly District 32 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "1f30efef-dbc5-45c8-a323-aa74551ba5c3",
+      "name": "Henry Johnson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 78 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "297052ba-6ee8-4ba8-993d-c883cc0cbc2d",
+      "name": "Indiana Thompson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 67 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "adc3b195-ff6e-4e95-9ee1-1c1732d9f144",
+      "name": "Ismael Luna",
+      "scope": "state_lower",
+      "districtName": "Assembly District 8 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "bdc45a61-0e10-4bba-a842-369200283763",
+      "name": "Jack Holzman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 59 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "87511930-5ed9-48a1-bf5a-e0680579d81c",
+      "name": "Jane McCormick",
+      "scope": "state_lower",
+      "districtName": "Assembly District 77 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "513d1b2b-5351-4eb4-902d-897ea368688f",
+      "name": "Jeff Disher",
+      "scope": "state_lower",
+      "districtName": "Assembly District 71 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "da3103d9-5920-4b90-ba5b-0c04396399a8",
+      "name": "Jeff Foster",
+      "scope": "state_upper",
+      "districtName": "State Senate District 23 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "d2466be1-6e5e-4034-b0ea-18e13e746350",
+      "name": "Jeremiah Fredrickson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 92 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "632c0a5a-69e3-4d51-bae1-d6040f69b83d",
+      "name": "Jessica Henderson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 90 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "0f3fbfe6-68c9-4258-b034-8f0e7cdd6782",
+      "name": "Jim Croft",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "579a33f6-5fcb-4db8-b2ea-ae6a15eadceb",
+      "name": "Jim Green",
+      "scope": "state_lower",
+      "districtName": "Assembly District 96 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "79f131dc-b061-43df-8a8e-f5feb3f1c40d",
+      "name": "Jocelyn Jordan",
+      "scope": "state_lower",
+      "districtName": "Assembly District 45 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "e48faec2-2f58-495b-bd88-77f9bc49bb46",
+      "name": "Jodi Emerson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 91 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "fc3c0de7-f800-4f10-a034-d9746790246a",
+      "name": "Joel Richmond",
+      "scope": "state_lower",
+      "districtName": "Assembly District 18 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "df84f8bc-ff77-4ad5-ac10-8a2824dedce2",
+      "name": "Joey Marschall",
+      "scope": "state_lower",
+      "districtName": "Assembly District 57 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "811f1f8d-68c2-4e93-b68b-a6fafa1e71cb",
+      "name": "John Belanger",
+      "scope": "state_lower",
+      "districtName": "Assembly District 26 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "da7c99e3-2e31-46c1-b768-761ccf5b8789",
+      "name": "John Donohue",
+      "scope": "state_lower",
+      "districtName": "Assembly District 46 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "a6eea727-b0c4-4eab-9174-cfe33513ce12",
+      "name": "John Fons",
+      "scope": "state_lower",
+      "districtName": "Assembly District 79 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "193d7fcc-fa70-4804-b68c-42b992d697fe",
+      "name": "John Kroll",
+      "scope": "state_lower",
+      "districtName": "Assembly District 85 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f276ade0-835b-4aaa-b0c2-058c9797d719",
+      "name": "John Perryman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 31 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "df335964-74b0-423d-8ae0-561e7dbd80dc",
+      "name": "John Rindy",
+      "scope": "state_lower",
+      "districtName": "Assembly District 49 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "ee8dd8eb-e406-4db7-87fb-a3c85405bb0a",
+      "name": "Jon Aleckson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 50 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "9fc56732-1ffd-4e34-894e-05544b9ada2d",
+      "name": "Josh Kelley",
+      "scope": "state_lower",
+      "districtName": "Assembly District 69 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f7413dfc-aeb6-47b2-b066-18f7abde57b8",
+      "name": "Julie Helmer",
+      "scope": "state_lower",
+      "districtName": "Assembly District 40 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "ee9c7700-e890-47e7-9e68-b6a40ef87255",
+      "name": "Justin Schumacher",
+      "scope": "state_lower",
+      "districtName": "Assembly District 5 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "7ac14185-9505-4a1f-befc-ea3256e1c224",
+      "name": "Keith F. Miller",
+      "scope": "state_lower",
+      "districtName": "Assembly District 42 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "e3f52cbd-493b-4372-b5b3-5e1224b751fd",
+      "name": "Keith Mogel",
+      "scope": "state_lower",
+      "districtName": "Assembly District 75 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "c2ac1db2-a9e3-463a-a226-b22e1bfe6141",
+      "name": "Keith Purnell",
+      "scope": "state_lower",
+      "districtName": "Assembly District 94 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "701767e1-b4f4-4aa6-844e-213c8dfda3a7",
+      "name": "Kevin Knoke",
+      "scope": "state_lower",
+      "districtName": "Assembly District 30 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "c2baaa9d-77e5-42a4-8afa-a516be1492f2",
+      "name": "Kevin Krentz",
+      "scope": "state_lower",
+      "districtName": "Assembly District 57 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "98bc7002-ed98-4e17-896f-c2b1b78addf2",
+      "name": "Kyle Cleary",
+      "scope": "state_lower",
+      "districtName": "Assembly District 20 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f719cc0c-fe8a-40c0-91a4-5d1479c3fbf4",
+      "name": "LaToya Bates",
+      "scope": "state_lower",
+      "districtName": "Assembly District 37 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "de6e70c0-6668-4511-a797-301a780b0a76",
+      "name": "Lee Whiting",
+      "scope": "state_lower",
+      "districtName": "Assembly District 7 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "a4fa6b68-7f74-4a15-9f58-ddf7f6be56a4",
+      "name": "Maria Elena Bisabarros",
+      "scope": "state_lower",
+      "districtName": "Assembly District 33 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "0ae1105a-2d71-4a27-857e-1ec5b32af53a",
+      "name": "Mark Becker",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "599c471f-6f90-43e3-9a7a-20acdae27132",
+      "name": "Mark Kjorlie",
+      "scope": "state_lower",
+      "districtName": "Assembly District 48 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "e709bf9b-35a8-42a3-b4dc-60e6d3adea53",
+      "name": "Mark S. Maier",
+      "scope": "state_lower",
+      "districtName": "Assembly District 81 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "1699efdc-8aaf-45e8-99f5-971aa152217a",
+      "name": "Marty Ryan",
+      "scope": "state_lower",
+      "districtName": "Assembly District 60 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "840f89c3-3c54-4867-a8e9-2ac0ce52ebe1",
+      "name": "Matt Brown",
+      "scope": "state_lower",
+      "districtName": "Assembly District 24 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "38244664-b781-4e4a-95fa-6c79e90c40e0",
+      "name": "Matt Philibert",
+      "scope": "state_lower",
+      "districtName": "Assembly District 98 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "36e0463a-0a28-4d8e-8135-9eaea81ea2ad",
+      "name": "Merlin Van Buren",
+      "scope": "state_lower",
+      "districtName": "Assembly District 34 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "23f583d2-3deb-4375-93dd-c4ef4740ed47",
+      "name": "Michael Ayala",
+      "scope": "state_lower",
+      "districtName": "Assembly District 93 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "889a1248-05a5-4e38-a40b-4916f2d88162",
+      "name": "Michael J. Goodwin",
+      "scope": "state_lower",
+      "districtName": "Assembly District 3 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "aa765995-d509-4072-9e8b-cf68c34f6bfc",
+      "name": "Michael Skivington",
+      "scope": "state_lower",
+      "districtName": "Assembly District 39 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "db179122-1166-482d-9aea-cc05cd7b7570",
+      "name": "Michele Magadance Skinner",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "e6868517-00e3-41d9-98d2-40af3aa7e80f",
+      "name": "Mike Bellagio",
+      "scope": "state_lower",
+      "districtName": "Assembly District 62 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f0aa811f-2a6f-4fcc-b8f1-db8c9da276f0",
+      "name": "Mike Moeller",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "bf4c3e91-2816-4a8e-b218-d5ef18be5725",
+      "name": "Mike Morgan",
+      "scope": "state_lower",
+      "districtName": "Assembly District 13 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "46c1db16-f4c3-4bff-b263-3de730d67a5f",
+      "name": "Mike Roberts",
+      "scope": "state_upper",
+      "districtName": "State Senate District 5 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "83704610-0f2e-453e-b9c4-b9528a0b2b8c",
+      "name": "Mike Van Someren",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "efc7a67b-6fc5-41c1-969d-84652f933d86",
+      "name": "Nathan Tataje",
+      "scope": "state_lower",
+      "districtName": "Assembly District 51 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "b163cddd-7898-42cf-a4f1-f5a70abfc2f3",
+      "name": "Nic Cravillion",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "7edcc0c6-7fad-4332-8e33-efe61dfd9829",
+      "name": "Nina Chat",
+      "scope": "state_lower",
+      "districtName": "Assembly District 76 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "90ac8b97-7198-4d81-8cda-c0607ffe114e",
+      "name": "Paul Johnson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 74 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "729ab0e6-0a90-4d7c-bacb-223d3438ef62",
+      "name": "Paul McGraw",
+      "scope": "state_lower",
+      "districtName": "Assembly District 43 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "fada82de-0f5d-4d91-a90c-f2d39b128e11",
+      "name": "Paul Michael Weber",
+      "scope": "state_lower",
+      "districtName": "Assembly District 95 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "736dc91f-e65f-4d0d-8008-dad17ae2c690",
+      "name": "Priscilla A. Prado",
+      "scope": "state_lower",
+      "districtName": "Assembly District 9 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "6ce550f7-b904-4cf1-a24a-2afd2e2eb9c7",
+      "name": "Rachael Dowling",
+      "scope": "state_lower",
+      "districtName": "Assembly District 53 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "0c804386-4ea0-421c-8a5c-7d04ac1ecb0e",
+      "name": "Reive Pullen",
+      "scope": "state_lower",
+      "districtName": "Assembly District 52 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "1dce07f3-d611-4880-a94d-739cf247a636",
+      "name": "Renee A. Paplham",
+      "scope": "state_lower",
+      "districtName": "Assembly District 1 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "0ca4183b-976e-4073-b4c9-1cf76447696a",
+      "name": "Rico Camacho",
+      "scope": "state_lower",
+      "districtName": "Assembly District 82 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "353e8be8-c727-466f-b4c0-80b8e3c3517b",
+      "name": "Robert Longwell-Grice",
+      "scope": "state_lower",
+      "districtName": "Assembly District 10 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "36f5c929-7d13-452a-a37e-b471beaa151b",
+      "name": "Robin Lillesve",
+      "scope": "state_lower",
+      "districtName": "Assembly District 28 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "862ebd1c-b5aa-4e4a-8a60-21376b987201",
+      "name": "Roger Halls",
+      "scope": "state_lower",
+      "districtName": "Assembly District 69 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "55fffc54-be66-4dc2-856b-47d0ab80bc09",
+      "name": "Ron Woodman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 44 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "74f664e8-1331-40ea-96d4-194c9ccf8df9",
+      "name": "Sam Guerrero",
+      "scope": "state_lower",
+      "districtName": "Assembly District 9 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "6553fbf7-96aa-4928-b269-5ce9a2caa6df",
+      "name": "Sandy Bakk",
+      "scope": "state_lower",
+      "districtName": "Assembly District 47 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "c03fe90b-afe5-40da-be4c-1ae894038515",
+      "name": "Sasha Ripley",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "72771b54-1caf-4eac-81a4-6bf0ddfdd003",
+      "name": "Scott Fleming",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "10436dd7-069c-4f43-979c-3d6c32e89e18",
+      "name": "Shandowlyon Reaves",
+      "scope": "state_lower",
+      "districtName": "Assembly District 11 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "b627e782-8fef-41cc-8d0f-830973e9d2fd",
+      "name": "Shena Chapman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 36 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "7e7fed6c-2dc6-4bad-b270-eec33edefdda",
+      "name": "Shirley Hinze",
+      "scope": "state_lower",
+      "districtName": "Assembly District 6 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "68b2fa50-bbfa-422d-8b77-9a748e690de7",
+      "name": "Simran Arora",
+      "scope": "state_lower",
+      "districtName": "Assembly District 80 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "65c4737e-5c49-4506-9695-e90f641e28e9",
+      "name": "Stephanie Stuve Bodeen",
+      "scope": "state_lower",
+      "districtName": "Assembly District 70 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "702d2b24-ff90-4d55-ae64-11e441b5dd87",
+      "name": "Stephen Tryon",
+      "scope": "state_lower",
+      "districtName": "Assembly District 15 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "99eb277e-0173-496c-b80a-08f554a5f67d",
+      "name": "Steve Wicklund",
+      "scope": "state_lower",
+      "districtName": "Assembly District 33 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "52c2ec2f-7c8b-4456-b8d7-7939997d1af4",
+      "name": "Terri Wenkman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 38 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "edadc995-044c-40e4-a5b1-f7c9abd072de",
+      "name": "Tiffany Brault",
+      "scope": "state_lower",
+      "districtName": "Assembly District 60 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "814591da-45de-47df-b3b2-12abf5084f2e",
+      "name": "Tim Paterson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 54 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "9709978e-16ad-4d06-a66a-baae5e6aafee",
+      "name": "Tony Kurtz",
+      "scope": "state_lower",
+      "districtName": "Assembly District 41 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f2ea0beb-3c97-4eec-a61f-fb21d4eec008",
+      "name": "Trevor Jung",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "ea4ab0a1-e40f-496c-8af5-1c4106796f08",
+      "name": "Valerie Kretchmer",
+      "scope": "state_lower",
+      "districtName": "Assembly District 65 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "50c911e9-fe5e-4b64-990c-1c40b51fecd0",
+      "name": "Vinnie Miresse",
+      "scope": "state_lower",
+      "districtName": "Assembly District 71 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "f9397c5a-af84-4682-bf00-28e3e19a02f0",
+      "name": "Yasmine B. Outlaw",
+      "scope": "state_lower",
+      "districtName": "Assembly District 19 (2024); Wisconsin"
+    },
+    {
+      "candidateId": "ae24147c-3ebe-4c03-ab17-512d57dd39fc",
+      "name": "Zach Commons",
+      "scope": "state_lower",
+      "districtName": "Assembly District 41 (2024); Wisconsin"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}

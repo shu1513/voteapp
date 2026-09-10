@@ -33,7 +33,6 @@ export default function SupportOncePage() {
           A one-time contribution helps us keep bringing you higher-quality content, with no
           commitment.
         </p>
-        <p>Choose your amount below; you will finish your payment securely on Stripe.</p>
       </section>
 
       {me?.email_verified ? (

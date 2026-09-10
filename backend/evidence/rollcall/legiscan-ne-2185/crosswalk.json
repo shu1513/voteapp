@@ -1,0 +1,258 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "NE",
+  "session_id": 2185,
+  "note": "people_id -> VoteApp candidate id for the Nebraska 109th Legislature (LegiScan 2185). Nebraska has one house, so every seat is a senate seat and LegiScan's `district` field is read in preference to `role`. The 14 committee sponsor pseudo-people in the people file (blank district) are excluded, the Maryland shape, leaving 50 members: the 49 senators plus one mid-term replacement in District 41. 12 of them map to a candidate: 11 proposed by the resolver and accepted after checking each one's seat against the candidate's district, and one added by hand. The other 38 are deliberate nulls, each with its reason. Most are structural: only half of Nebraska's districts vote in any one year, so most sitting senators cannot appear on the November 2026 ballot at all.",
+  "entries": [
+    {
+      "people_id": 6952,
+      "candidate_id": "d87591b5-d9a6-4392-bcaf-765d71dc7ed3",
+      "note": "Danielle Conrad, senate SD-046. Name and seat both agree with the candidate row for District 46."
+    },
+    {
+      "people_id": 16896,
+      "candidate_id": "f35b23a9-735f-4b7d-a0c3-677433e316b3",
+      "note": "Merv Riepe, senate SD-012. Name and seat both agree with the candidate row for District 12."
+    },
+    {
+      "people_id": 18557,
+      "candidate_id": null,
+      "note": "Dan Quick, senate SD-035. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 19282,
+      "candidate_id": null,
+      "note": "Robert Clements, senate SD-002. District 2 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20431,
+      "candidate_id": null,
+      "note": "John Arch, senate SD-014. District 14 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20432,
+      "candidate_id": null,
+      "note": "Machaela Cavanaugh, senate SD-006. District 6 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20433,
+      "candidate_id": null,
+      "note": "Wendy DeBoer, senate SD-010. District 10 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20434,
+      "candidate_id": null,
+      "note": "Myron Dorn, senate SD-030. District 30 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20435,
+      "candidate_id": null,
+      "note": "Ben Hansen, senate SD-016. District 16 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20537,
+      "candidate_id": null,
+      "note": "Megan Hunt, senate SD-008. District 8 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20799,
+      "candidate_id": null,
+      "note": "Mike Moser, senate SD-022. District 22 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20820,
+      "candidate_id": null,
+      "note": "Dave Murman, senate SD-038. District 38 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 20936,
+      "candidate_id": null,
+      "note": "Tom Brandt, senate SD-032. District 32 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 22137,
+      "candidate_id": null,
+      "note": "John Cavanaugh, senate SD-009. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 22138,
+      "candidate_id": null,
+      "note": "Terrell McKinney, senate SD-011. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 22282,
+      "candidate_id": null,
+      "note": "Eliot Bostar, senate SD-029. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 22355,
+      "candidate_id": null,
+      "note": "Rita Sanders, senate SD-045. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 23101,
+      "candidate_id": "3b816690-42af-41be-b031-6069a040397a",
+      "note": "Michael Jacobson, senate SD-042. Our candidate row for District 42 reads Mike Jacobson, the name he uses. Same seat, same person; the proposer missed it because it matches on the legal first name."
+    },
+    {
+      "people_id": 23160,
+      "candidate_id": null,
+      "note": "Kathleen Kauth, senate SD-031. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 23167,
+      "candidate_id": null,
+      "note": "Robert Dover, senate SD-019. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 23684,
+      "candidate_id": "1e4dfe8d-2557-442e-b09b-bc336a760725",
+      "note": "George Dungan, senate SD-026. Name and seat both agree with the candidate row for District 26."
+    },
+    {
+      "people_id": 23685,
+      "candidate_id": "4c591565-e04a-449e-b056-e92a85ec18ba",
+      "note": "Loren Lippincott, senate SD-034. Name and seat both agree with the candidate row for District 34."
+    },
+    {
+      "people_id": 23763,
+      "candidate_id": "51b97126-6d01-427b-afe1-42aeab75d395",
+      "note": "Barry DeKay, senate SD-040. Name and seat both agree with the candidate row for District 40."
+    },
+    {
+      "people_id": 23764,
+      "candidate_id": "126b0e30-b036-405a-a79f-f1fc8e838185",
+      "note": "John Fredrickson, senate SD-020. Name and seat both agree with the candidate row for District 20."
+    },
+    {
+      "people_id": 23765,
+      "candidate_id": null,
+      "note": "Jane Raybould, senate SD-028. District 28 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 23876,
+      "candidate_id": "4859f44f-7376-492a-af78-1a5a4d8760d0",
+      "note": "Rick Holdcroft, senate SD-036. Name and seat both agree with the candidate row for District 36."
+    },
+    {
+      "people_id": 23877,
+      "candidate_id": "df1dc14e-c67a-4b29-a065-4b092c9e81b7",
+      "note": "Brad Von Gillern, senate SD-004. Name and seat both agree with the candidate row for District 4."
+    },
+    {
+      "people_id": 23980,
+      "candidate_id": "21060c5a-b768-4623-b370-08d99a91d338",
+      "note": "Teresa Ibach, senate SD-044. Name and seat both agree with the candidate row for District 44."
+    },
+    {
+      "people_id": 24114,
+      "candidate_id": null,
+      "note": "Beau Ballard, senate SD-021. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 24300,
+      "candidate_id": null,
+      "note": "Christy Armendariz, senate SD-018. District 18 IS on the November 2026 ballot, but the sitting senator is not one of its candidates, so there is no candidate row to link. Nebraska limits a senator to two consecutive terms."
+    },
+    {
+      "people_id": 24301,
+      "candidate_id": "427da471-1e68-42d1-a94f-66705f122301",
+      "note": "Brian Hardin, senate SD-048. Name and seat both agree with the candidate row for District 48."
+    },
+    {
+      "people_id": 24682,
+      "candidate_id": "4341cfe0-3f4e-421d-9100-cb10bf0d55f6",
+      "note": "Jana Hughes, senate SD-024. Name and seat both agree with the candidate row for District 24."
+    },
+    {
+      "people_id": 24932,
+      "candidate_id": null,
+      "note": "Carolyn Bosn, senate SD-025. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 25028,
+      "candidate_id": null,
+      "note": "Fred Meyer, senate SD-041. LegiScan lists two members at District 41, so the seat changed hands during this Legislature. Neither of them is on the November 2026 ballot; the two candidates for the seat are different people."
+    },
+    {
+      "people_id": 26035,
+      "candidate_id": null,
+      "note": "Bob Andersen, senate SD-049. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26036,
+      "candidate_id": null,
+      "note": "Stanley Clouse, senate SD-037. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26037,
+      "candidate_id": null,
+      "note": "Dunixi Guereca, senate SD-007. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26038,
+      "candidate_id": null,
+      "note": "Robert Hallstrom, senate SD-001. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26039,
+      "candidate_id": null,
+      "note": "Margo Juarez, senate SD-005. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26040,
+      "candidate_id": null,
+      "note": "Dan Lonowski, senate SD-033. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26041,
+      "candidate_id": null,
+      "note": "Daniel McKeon, senate SD-041. LegiScan lists two members at District 41, so the seat changed hands during this Legislature. Neither of them is on the November 2026 ballot; the two candidates for the seat are different people."
+    },
+    {
+      "people_id": 26042,
+      "candidate_id": null,
+      "note": "Glen Meyer, senate SD-017. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26043,
+      "candidate_id": null,
+      "note": "Jason Prokop, senate SD-027. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26044,
+      "candidate_id": null,
+      "note": "Victor Rountree, senate SD-003. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26045,
+      "candidate_id": null,
+      "note": "Tony Sorrentino, senate SD-039. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26046,
+      "candidate_id": null,
+      "note": "Ashlei Spivey, senate SD-013. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26047,
+      "candidate_id": null,
+      "note": "Tanya Storer, senate SD-043. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26048,
+      "candidate_id": null,
+      "note": "Jared Storm, senate SD-023. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26049,
+      "candidate_id": null,
+      "note": "Paul Strommen, senate SD-047. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    },
+    {
+      "people_id": 26050,
+      "candidate_id": null,
+      "note": "Dave Wordekemper, senate SD-015. That seat is NOT on the November 2026 ballot. Nebraska senators serve four-year terms and half the districts vote each cycle, so this is how the calendar works, not a gap in our roster."
+    }
+  ]
+}

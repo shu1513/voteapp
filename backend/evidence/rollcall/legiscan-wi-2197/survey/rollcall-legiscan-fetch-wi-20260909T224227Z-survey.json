@@ -1,0 +1,1352 @@
+{
+  "runId": "rollcall-legiscan-fetch-wi-20260909T224227Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "WI",
+  "startedAt": "2026-09-09T22:42:27.517Z",
+  "finishedAt": "2026-09-09T22:42:30.590Z",
+  "datasetDir": "~/legiscan-data/wi-2197/WI/2025-2026_Regular_Session",
+  "bills": 2749,
+  "votes": 572,
+  "people": 141,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Assembly: Read a third time and passed",
+      "count": 149,
+      "withoutMemberList": 0,
+      "minTotal": 95,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB1",
+        "AB4",
+        "AB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Read a third time and concurred in",
+      "count": 79,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "AB1",
+        "AB94",
+        "AB95"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Read a third time and passed",
+      "count": 67,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5",
+        "SB4",
+        "SB25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Read a third time and concurred in",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 97,
+      "maxTotal": 99,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR2",
+        "SB24",
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Decision of the Chair upheld",
+      "count": 34,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "AB4",
+        "AB6",
+        "AB66"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Decision of the Chair stands as the judgment of the Senate",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB125",
+        "SB56",
+        "AB73"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Read a third time and concurred in as amended",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB279",
+        "SB391",
+        "SB7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 1 rejected",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB4",
+        "SB66",
+        "SB108"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Substitute Amendment 1 rejected",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB56",
+        "SB182",
+        "SB108"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 1 laid on table",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB279",
+        "SB108",
+        "SB283"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SJR1",
+        "SR1",
+        "SJR7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Substitute Amendment 1 laid on table",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB85",
+        "AB279",
+        "SB108"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 2 rejected",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB182",
+        "SB111",
+        "SB106"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Adopted",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "AR2",
+        "AR1",
+        "AJR50"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Assembly Substitute Amendment 1 concurred in",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB485",
+        "SB376",
+        "SB248"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Substitute Amendment 3 laid on table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB617",
+        "AB38",
+        "AB315"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Referred to Campaigns and Elections",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB14",
+        "AB13",
+        "AB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Read a third time and concurred in as amended",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB89",
+        "AB320",
+        "AB453"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 1 adopted",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB111",
+        "SB41",
+        "SB210"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 3 to Assembly Substitute Amendment 2 laid on table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50",
+        "AB472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 4 to Assembly Substitute Amendment 2 laid on table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50",
+        "AB472"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Substitute Amendment 2 laid on table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB840",
+        "AB612"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Move to call the question",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB45",
+        "SJR88"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Read a third time and adopted",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR2",
+        "SJR116"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 1 to Senate Substitute Amendment 1 rejected",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB7",
+        "SB622"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 1 to Assembly Substitute Amendment 1 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB455"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 1 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 10 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 11 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 12 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 13 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 14 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 15 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 16 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 17 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 18 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 19 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB182"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 2 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 20 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 21 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 22 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 23 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 24 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 3 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB182"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 5 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 6 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 7 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 8 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Assembly Amendment 9 to Assembly Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB50"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Concurred in",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Concurred in as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR88"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Referred to Environment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB16"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly: Refused to refer to committee on Energy and Utilities",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB840"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Assembly Amendment 1 concurred in",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB480"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Assembly Substitute Amendment 1 nonconcurred in",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB179"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Assembly Substitute Amendment 2 concurred in",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB798"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Assembly Substitute Amendment 3 concurred in",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR116"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Assembly Substitute Amendment 7 concurred in",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB622"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Refused to refer to committee on Senate Organization",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Refused to suspend rules to withdraw from committee on Judiciary and Public Safety",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB444"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Refused to suspend rules to withdraw from committee on Senate Organization",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 1 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 10 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 11 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 12 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 13 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 14 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 15 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 16 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 17 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 18 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 19 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 2 to Senate Substitute Amendment 1 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB453"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 2 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 20 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 21 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 22 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 23 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 24 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 25 to Senate Substitute Amendment 2 laid on table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 26 to Senate Substitute Amendment 2 adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 3 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 4 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 5 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 6 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 7 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 8 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Amendment 9 to Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Substitute Amendment 2 adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB45"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate Substitute Amendment 2 rejected",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 33,
+      "maxTotal": 33,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "AB180"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 2423,
+    "JR": 302,
+    "R": 24
+  },
+  "sessionIds": {
+    "2197": 2749
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

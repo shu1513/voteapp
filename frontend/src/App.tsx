@@ -262,7 +262,7 @@ export function App() {
   const onSearchLanding = location.pathname === "/";
 
   return (
-    <div className="min-h-screen bg-white text-ink">
+    <div className="min-h-screen bg-page text-ink">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-20 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:shadow-md"
@@ -273,7 +273,7 @@ export function App() {
           (HomePage.tsx), so the header drops its own copy — one brand mark
           per page — and its border, so the white canvas runs unbroken from
           the top edge to the address field. */}
-      <header className={onSearchLanding ? "bg-white" : "border-b border-line bg-white"}>
+      <header className={onSearchLanding ? "bg-page" : "border-b border-line bg-page"}>
         {/* flex-wrap: when logo + nav outgrow the row (guest nav with the
             draft link at phone widths) the nav drops to its own line instead
             of the shrink-0 logo painting over it. ml-auto keeps the wrapped
