@@ -14,9 +14,10 @@ MEASURES = {
     body=("Senate Bill 1433, which changes Hawaii's needle exchange program. The program may now give "
           "out sterile needles and syringes based on need. Before, it could give one for each used one "
           "returned. It may also serve people who use drugs without injecting, though not with syringes. "
-          "Participants and program staff cannot be charged with a drug paraphernalia offense for needles, "
-          "syringes, or approved supplies such as cookers. Participants also cannot be charged for drug "
-          "residue in a used syringe for two months after a program visit. The protection covers only "
+          "Participants cannot be charged with a drug paraphernalia offense for needles, syringes, or approved "
+          "supplies such as cookers while at a program visit, and program staff cannot be charged for them "
+          "while doing their jobs. Participants also cannot be charged for drug residue in a used needle or "
+          "syringe for two months after their last program visit. The protection covers only "
           "exchanges between participants and program staff. Police who make an arrest in good faith are "
           "not liable."),
     labels=[{"slug": "environment_and_public_health", "yea": "for", "nay": None}],
@@ -24,7 +25,7 @@ MEASURES = {
   ("2175", "SB 897"): dict(
     body=("Senate Bill 897, which caps what an electric utility must pay for property damage after a "
           "catastrophic wildfire that its equipment may have caused or made worse. A wildfire counts as "
-          "catastrophic if it destroys more than 500 homes or businesses, or more than 50 for an electric "
+          "catastrophic if it substantially damages or destroys more than 500 homes or businesses, or more than 50 for an electric "
           "cooperative. The Public Utilities Commission sets the cap by rule, and the governor must approve "
           "the rule. A utility gets the cap only if it has an approved wildfire prevention plan and is "
           "carrying it out. The cap covers property losses only, not injuries or emotional harm. Utilities "
@@ -48,8 +49,8 @@ MEASURES = {
           "facility. It is also a crime to tie up a facility's phone lines with repeated calls, or to "
           "threaten its patients, staff, or owners. A first offense is a petty misdemeanor with at least 24 "
           "hours in jail and a $250 fine. A third offense carries up to 30 days. Patients, staff, and "
-          "facilities may also sue, and the attorney general may seek a court order. The act applies only to "
-          "adults. It says it does not limit peaceful protest or labor strikes."),
+          "facilities may also sue, and the attorney general may seek a court order. The criminal penalties "
+          "apply only to adults. It says it does not limit peaceful protest or labor strikes."),
     labels=[{"slug": "public_safety_and_crime_control", "yea": "for", "nay": None}],
     verb="final"),
   ("2245", "HB 2023"): dict(

@@ -1,9 +1,9 @@
 {
   "importerVersion": "rollcall-hi-import-v1",
-  "dryRun": true,
+  "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-09-10T00:59:40.891Z",
-  "finishedAt": "2026-09-10T00:59:42.118Z",
+  "startedAt": "2026-09-10T01:00:00.389Z",
+  "finishedAt": "2026-09-10T01:00:01.837Z",
   "jurisdiction": "HI",
   "sessionId": 2175,
   "evidenceDir": "evidence/rollcall/hawaii-2175/batch-01",
@@ -15,7 +15,7 @@
   "seatFile": "evidence/rollcall/hawaii-2175/seats.json",
   "files": 5,
   "outcomes": {
-    "dry_run": 5
+    "imported": 5
   },
   "actions": {
     "rewrite": 58,
@@ -28,7 +28,7 @@
       "chamber": "house",
       "sessionId": 2175,
       "roll": 385812063,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "26d60d51-7d2a-45bc-8609-b013098fc98d",
       "reviewStatus": "approved",
       "bill": "SB897",
@@ -36,7 +36,7 @@
       "officialVoteDate": null,
       "measureId": "SB 897",
       "question": "Passed Final Reading as amended in CD 1 with Representative(s) Iwamoto voting aye with reservations; Representative(s) Amato, Garcia, Garrett, Ilagan, La Chica, Matayoshi, Pierick, Poepoe, Tam, Templo voting no (10) and Representative(s) Cochran excused (1).",
-      "originRunId": "rollcall:HI:house:2175:385812063:2026-09-10T00:59:40.891Z",
+      "originRunId": "rollcall:HI:house:2175:385812063:2026-09-10T01:00:00.389Z",
       "members": 49,
       "excused": 1,
       "resolution": {
@@ -392,7 +392,7 @@
       "chamber": "house",
       "sessionId": 2175,
       "roll": 386722839,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "c50bb49c-abb8-41a7-b8d1-d92499f5c52a",
       "reviewStatus": "approved",
       "bill": "SB1433",
@@ -400,7 +400,7 @@
       "officialVoteDate": null,
       "measureId": "SB 1433",
       "question": "Passed Final Reading as amended in CD 1 with Representative(s) Souza voting aye with reservations; Representative(s) Alcos, Chun, Garcia, Kila, Kong, Lamosao, Lee, M., Matsumoto, Muraoka, Olds, Pierick, Reyes Oda, Shimizu voting no (13) and Representative(s) Cochran excused (1).",
-      "originRunId": "rollcall:HI:house:2175:386722839:2026-09-10T00:59:40.891Z",
+      "originRunId": "rollcall:HI:house:2175:386722839:2026-09-10T01:00:00.389Z",
       "members": 49,
       "excused": 1,
       "resolution": {
@@ -756,7 +756,7 @@
       "chamber": "senate",
       "sessionId": 2175,
       "roll": 382016649,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "6189ea53-365c-49c7-967e-ce7bd833240c",
       "reviewStatus": "approved",
       "bill": "SB97",
@@ -764,7 +764,7 @@
       "officialVoteDate": null,
       "measureId": "SB 97",
       "question": "Passed Final Reading, as amended (CD 2). Ayes, 18; Aye(s) with reservations: none. Noes, 7 (Senator(s) Awa, DeCoite, DeCorte, Fevella, Hashimoto, McKelvey, San Buenaventura). Excused, 0 (none).",
-      "originRunId": "rollcall:HI:senate:2175:382016649:2026-09-10T00:59:40.891Z",
+      "originRunId": "rollcall:HI:senate:2175:382016649:2026-09-10T01:00:00.389Z",
       "members": 25,
       "excused": 0,
       "resolution": {
@@ -808,7 +808,7 @@
       "chamber": "senate",
       "sessionId": 2175,
       "roll": 383625417,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "7518f517-351f-4eb4-8691-c4702fee7e6a",
       "reviewStatus": "approved",
       "bill": "HB137",
@@ -816,7 +816,7 @@
       "officialVoteDate": null,
       "measureId": "HB 137",
       "question": "Passed Third Reading. Ayes, 15; Aye(s) with reservations: none. Noes, 10 (Senator(s) Awa, DeCoite, DeCorte, Fevella, Gabbard, Ihara, Kidani, McKelvey, Richards, San Buenaventura). Excused, 0 (none). Transmitted to House.",
-      "originRunId": "rollcall:HI:senate:2175:383625417:2026-09-10T00:59:40.891Z",
+      "originRunId": "rollcall:HI:senate:2175:383625417:2026-09-10T01:00:00.389Z",
       "members": 25,
       "excused": 0,
       "resolution": {
@@ -860,7 +860,7 @@
       "chamber": "senate",
       "sessionId": 2175,
       "roll": 385812062,
-      "outcome": "dry_run",
+      "outcome": "imported",
       "legislativeVoteId": "a310015f-431c-4e6f-9898-5515055e480c",
       "reviewStatus": "approved",
       "bill": "SB897",
@@ -868,7 +868,7 @@
       "officialVoteDate": null,
       "measureId": "SB 897",
       "question": "Passed Final Reading, as amended (CD 1). Ayes, 20; Aye(s) with reservations: Senator(s) Chang, DeCoite, Fukunaga, Kim, Lee, C., McKelvey, Rhoads, San Buenaventura, Wakai. Noes, 5 (Senator(s) Awa, Elefante, Gabbard, Ihara, Keohokalole). Excused, 0 (none).",
-      "originRunId": "rollcall:HI:senate:2175:385812062:2026-09-10T00:59:40.891Z",
+      "originRunId": "rollcall:HI:senate:2175:385812062:2026-09-10T01:00:00.389Z",
       "members": 25,
       "excused": 0,
       "resolution": {

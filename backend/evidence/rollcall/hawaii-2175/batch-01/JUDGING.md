@@ -34,14 +34,14 @@ by state law becomes mandatory and does not name a number of years, because the 
 
 **SB 1433.** Needs-based distribution replaces one-for-one exchange (§325-113(c)). Non-injection
 drug users may receive services "exclusive of syringes and needles" (§325-113(d)). The liability
-section shields program staff and participants for needles, syringes and "authorized objects"
+section shields program staff (on duty) and participants (at a program visit) for needles, syringes and "authorized objects"
 (cookers, cottons, ties), and shields participants from residue-based possession charges for two
 months after a program visit; it applies only to exchanges between participants and staff, and a
 good-faith arrest carries no civil liability (§325-114). The two-month window and the
 participant-to-staff limit are both stated.
 
 **SB 897.** The cap applies to "qualifying damages," defined as economic damage to real or
-personal property and excluding bodily or emotional harm; a catastrophic wildfire destroys more
+personal property and excluding bodily or emotional harm; a catastrophic wildfire substantially damages or destroys more
 than 500 structures (50 for a cooperative). The PUC sets the maximum payable amount by rule with
 the Governor's approval, and a utility may assert the cap only with an approved wildfire
 mitigation plan being implemented on schedule and full compliance with the rules' conditions.

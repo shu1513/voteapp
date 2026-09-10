@@ -19,7 +19,6 @@ import {
   reconstructHawaiiMembers,
   HAWAII_JURISDICTION,
   type HawaiiMemberLists,
-  type HawaiiSeatFile,
 } from "../pipeline/rollcall/hawaiiRollCall.js";
 import {
   loadLegiscanCrosswalkCandidates,
@@ -72,7 +71,8 @@ import { listHawaiiRollCallEvidenceFiles, type HawaiiRollCallEvidenceFile } from
 //
 //   npm run rollcall:hi:import -- --session 2175 --evidence-dir evidence/rollcall/hawaii-2175/batch-01 \
 //     --crosswalk-file evidence/rollcall/hawaii-2175/crosswalk.json \
-//     --people-file evidence/rollcall/hawaii-2175/hawaii-people-2175.json --dry-run
+//     --people-file evidence/rollcall/hawaii-2175/hawaii-people-2175.json \
+//     --seat-file evidence/rollcall/hawaii-2175/seats.json --dry-run
 
 export const HAWAII_ROLLCALL_IMPORT_IMPORTER_VERSION = "rollcall-hi-import-v1";
 
@@ -168,10 +168,10 @@ async function main(): Promise<void> {
     sessionId,
   });
   const people = [...snapshot.byPeopleId.values()];
-  let seats: HawaiiSeatFile | null = null;
-  if (seatFileRaw !== null) {
-    seats = parseHawaiiSeatFile(JSON.parse(readFileSync(resolve(seatFileRaw), "utf8")) as unknown, sessionId);
+  if (seatFileRaw === null) {
+    throw new Error("--seat-file is required (the committed seats.json; without it a departed member is counted as an aye)");
   }
+  const seats = parseHawaiiSeatFile(JSON.parse(readFileSync(resolve(seatFileRaw), "utf8")) as unknown, sessionId);
 
   loadProjectEnv();
   const databaseUrl = process.env.DATABASE_URL?.trim();
@@ -406,7 +406,7 @@ async function main(): Promise<void> {
     crosswalkEntries: crosswalk.byPeopleId.size,
     peopleFile: reportPath(peopleFileRaw),
     peopleMembers: snapshot.byPeopleId.size,
-    seatFile: seatFileRaw === null ? null : reportPath(seatFileRaw),
+    seatFile: reportPath(seatFileRaw),
     files: files.length,
     outcomes,
     actions,

@@ -21,7 +21,6 @@ import {
   HAWAII_JURISDICTION,
   type HawaiiHistoryRow,
   type HawaiiQuestionClass,
-  type HawaiiSeatFile,
   type HawaiiVoteEvidence,
 } from "../pipeline/rollcall/hawaiiRollCall.js";
 import { parseLegiscanPerson, type LegiscanPerson } from "../pipeline/rollcall/legiscanMemberResolver.js";
@@ -44,7 +43,7 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 // parse errors and never stored. Offline, no candidate writes, no AI.
 //
 //   npm run rollcall:hi:fetch -- --session 2175 --dataset-dir ~/legiscan-data/hi-2175/HI/2025-2025_Regular_Session \
-//     --evidence-dir ~/legiscan-data/hi-2175-evidence
+//     --seat-file evidence/rollcall/hawaii-2175/seats.json --evidence-dir ~/legiscan-data/hi-2175-evidence
 //   npm run rollcall:hi:fetch -- --session 2245 --dataset-dir <dir> --seat-file evidence/rollcall/hawaii-2245/seats.json --dry-run
 
 export const HAWAII_ROLLCALL_FETCH_IMPORTER_VERSION = "rollcall-hi-fetch-v1";
@@ -163,10 +162,12 @@ async function main(): Promise<void> {
   if (people.length === 0) {
     throw new Error(`${datasetDir} holds no people`);
   }
-  let seats: HawaiiSeatFile | null = null;
-  if (seatFileRaw !== null) {
-    seats = parseHawaiiSeatFile(JSON.parse(readFileSync(resolve(seatFileRaw), "utf8")) as unknown, sessionId);
+  if (seatFileRaw === null) {
+    throw new Error(
+      "--seat-file is required: a vacant House seat is invisible in the vote text, so without the seat file the departed member is counted as an aye"
+    );
   }
+  const seats = parseHawaiiSeatFile(JSON.parse(readFileSync(resolve(seatFileRaw), "utf8")) as unknown, sessionId);
 
   loadProjectEnv();
   let pool: Pool | null = null;
@@ -383,7 +384,7 @@ async function main(): Promise<void> {
     finishedAt: new Date().toISOString(),
     datasetDir: reportPath(datasetDir),
     evidenceDir: reportPath(evidenceDir),
-    seatFile: seatFileRaw === null ? null : reportPath(seatFileRaw),
+    seatFile: reportPath(seatFileRaw),
     bills: dataset.billsById.size,
     people: people.length,
     billsScanned,
