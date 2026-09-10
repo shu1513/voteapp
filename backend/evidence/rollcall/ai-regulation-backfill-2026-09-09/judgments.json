@@ -382,6 +382,29 @@
           "nay": null
         }
       ]
+    },
+    {
+      "chamber": "house",
+      "jurisdiction": "SD",
+      "session": "2170",
+      "roll": 1509251,
+      "measure_id": "SB 164",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 164, which made it a crime to spread an undisclosed deepfake about a candidate. A deepfake is an image, audio or video made or altered with artificial intelligence or other digital tools that is so realistic a reasonable person would believe it shows real speech or conduct. Within ninety days of an election, no one may spread a deepfake meant to injure a candidate without the required disclosure, if they know or should know what it is. Breaking the rule is a Class 1 misdemeanor. Satire and parody are exempt, as are news broadcasts that flag the doubt, paid publication by news outlets, and internet services that only carry the content. The South Dakota House vote was 45-24. The Governor signed it on March 31, 2025.",
+      "nay_description": "Voted against Senate Bill 164, which made it a crime to spread an undisclosed deepfake about a candidate. A deepfake is an image, audio or video made or altered with artificial intelligence or other digital tools that is so realistic a reasonable person would believe it shows real speech or conduct. Within ninety days of an election, no one may spread a deepfake meant to injure a candidate without the required disclosure, if they know or should know what it is. Breaking the rule is a Class 1 misdemeanor. Satire and parody are exempt, as are news broadcasts that flag the doubt, paid publication by news outlets, and internet services that only carry the content. The South Dakota House vote was 45-24. The Governor signed it on March 31, 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     }
   ]
 }

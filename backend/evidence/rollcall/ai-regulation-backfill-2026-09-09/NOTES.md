@@ -34,8 +34,8 @@ rolls (the earlier nay review found a no vote evidences no stance there).
 - IL SB 1920 (AI guidance for schools plus ASL materials — two subjects, guidance not rules)
 - NC H 936 (robocall law; AI voice calls incidental)
 - CA AB 2465, CA AB 1792, US H.R. 5764 (immigration, curriculum, AI adoption help)
-- SD SB 164 (election deepfake crime — belongs here, but its evidence sits on
-  the unmerged South Dakota batch; re-judge it once that PR lands)
+- SD SB 164 — deferred until #1272 merged; done the same day from `sd-2170/`
+  (house 1509251, `for`, +25 tags)
 
 ## Import mechanics
 
