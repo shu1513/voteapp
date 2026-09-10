@@ -20,10 +20,6 @@
     "reason": "Duplicate of the imported roll-call record for bill 5917. This hand-written record describes the same vote, the one Washington recorded 32-17, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
   },
   {
-    "recordId": "6b159ff0-f87d-4512-bf9a-ffacb657770f",
-    "reason": "Duplicate of the imported roll-call record for bill 5917. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
-  },
-  {
     "recordId": "744265b5-821e-4f27-8507-02f224b6028f",
     "reason": "Duplicate of the imported roll-call record for bill 5917. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
   },

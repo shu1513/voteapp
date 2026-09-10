@@ -46,10 +46,13 @@ title-is-not-the-text rule, and reading the report is what caught it.
 
 ## Duplicates
 
-The precise sweep found **10** hand-written records describing this batch's own rolls, all
-retired before the import, on Senate Bill 5917 (8), House Bill 2105 and House Bill 1170.
+The precise sweep found **9** hand-written records describing this batch's own rolls, all
+retired before the import, on Senate Bill 5917 (7), House Bill 2105 and House Bill 1170.
+A tenth, Emily Alvarado's co-sponsorship of Senate Bill 5917, was retired by mistake and
+restored on review: co-sponsoring is a different act from voting, and the import does not
+carry it.
 
-The importer raised 113 `related` flags, and the gap between 113 and 10 was checked rather
+The importer raised 113 `related` flags, and the gap between 113 and 9 was checked rather
 than assumed. A wider sweep over every live hand-written record mentioning these nine bill
 numbers and a vote returned five, and **all five are correctly left alone**: two are about
 different bills entirely, one is a co-sponsorship, and two describe House Bill 1491's

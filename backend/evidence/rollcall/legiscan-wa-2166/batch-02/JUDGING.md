@@ -47,6 +47,10 @@ whole thing is read.
 Floor area ratio is glossed in place. The exclusions cities may apply (shorelines,
 critical areas, landmarks, historic districts and others) are carried but summarised.
 
+Review correction: the half-mile rail radius is not universal. A commuter rail stop in a
+city of 15,000 or fewer people gets a quarter mile (section 51 of the act), which changes
+which lots the density rule reaches. Both chamber descriptions now say so.
+
 Nay is null: the argument against upzoning sits inside `housing_affordability` itself.
 
 ### House Bill 1747 — Fair Chance Act, `civil_rights` yes = for, no = null
@@ -59,6 +63,13 @@ act only with a legitimate business reason.
 
 The exception and the adult-conviction standard are both carried; without them the rule
 reads as absolute. "Recognizance" is glossed as "a promise to appear".
+
+Review correction: the act phases in (15 or more employees from July 1, 2026, fewer from
+January 1, 2027) and does not cover employers whose workers have unsupervised access to
+children or vulnerable adults, law enforcement and criminal justice agencies, employers a
+federal or state law requires to check records, or federal-contract work that bars people
+with records. The descriptions had presented the rules as live from July 2025 with a
+single exception; they now carry the dates and the exempt employers.
 
 ### House Bill 2105 — immigrant worker notice, `immigration` yes = for, no = null
 
@@ -78,8 +89,11 @@ single-family home, two per 1,000 square feet of commercial space, and no minimu
 for a listed set including affordable housing, senior housing, child care, small homes and
 small commercial spaces, ground-floor non-residential space in mixed-use buildings, and
 conversions. Accessible parking under the Americans with Disabilities Act is unaffected —
-carried, because without it the description overstates the reach. Compliance timelines
-differ by population.
+carried, because without it the description overstates the reach.
+
+Review correction: cities of 30,000 or fewer people are EXEMPT, not merely given longer.
+Places of 50,000 or more had 18 months and places between 30,000 and 50,000 three years.
+The first draft said "more than 50,000" and gave every smaller place three years.
 
 ### Senate Bill 5480 — medical debt, `corporate_accountability` yes = for, no = null
 

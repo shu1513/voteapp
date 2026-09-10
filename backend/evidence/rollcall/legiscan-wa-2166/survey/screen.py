@@ -13,8 +13,7 @@ import pathlib
 import re
 import sys
 
-P = pathlib.Path("/Users/shu/voteApp/.claude/worktrees/caveman-ultra-6ecdae/backend/"
-                 "evidence/rollcall/legiscan-wa-2166/survey/divided-enacted-worklist.tsv")
+P = pathlib.Path(__file__).resolve().with_name("divided-enacted-worklist.tsv")
 
 # (regex over the description, disposition, reason)
 RULES = [
@@ -74,13 +73,19 @@ KEEP_ANYWAY = {
 }
 
 
+SCREENED_IN = "screened in: needs a full read"
+# Only rows this script wrote are screened again. Imported batches and hand-written
+# dispositions carry their own reasons and are final.
+SCRIPT_REASONS = {why for _, _, why in RULES} | {SCREENED_IN}
+
+
 def main():
     rows = list(csv.DictReader(P.open(), delimiter="\t"))
     counts = collections.Counter()
     touched = collections.Counter()
     for r in rows:
-        if r["disposition"] == "batch-01":
-            counts["batch-01"] += 1
+        if r["reason"] not in SCRIPT_REASONS:
+            counts[r["disposition"]] += 1
             continue
         desc = (r["description"] or "").lower()
         hit = None
@@ -90,7 +95,7 @@ def main():
             r["disposition"], r["reason"] = hit[0], hit[1]
             touched[r["bill"]] = 1
         else:
-            r["disposition"], r["reason"] = "candidate", "screened in: needs a full read"
+            r["disposition"], r["reason"] = "candidate", SCREENED_IN
         counts[r["disposition"]] += 1
 
     if "--write" in sys.argv:
