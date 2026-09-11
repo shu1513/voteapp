@@ -172,7 +172,7 @@ const PINNED_DOCUMENTS = [
     // Clarifications of existing practice, nothing new collected —
     // TERMS_VERSION stays 1.4, no re-acceptance.
     version: "1.6",
-    sha256: "a041b7a2f41278e77ea13b796c88a292dd8b78ab1fe64469ed608df9506aab59",
+    sha256: "01043ef6113fded9a558901ee19d7a4d6ff09eab7b383ca970babffb7200c2aa",
   },
   {
     filename: "disclaimer.md",

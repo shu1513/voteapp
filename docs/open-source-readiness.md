@@ -68,9 +68,13 @@ What the app holds about a person, checked against the schema: account
 email and first name, district ids (never the address), follows, research
 interests, and the picks table (`user_election_choices`: candidate or
 measure position per race). Picks are the most sensitive rows in the
-database. IPs live only in the Redis rate limiter; analytics events carry no
-user id, IP, or cookie; Ask questions are stored anonymously for 90 days;
-account deletion cascades.
+database. `user_pick_card_shares` holds one row per shared date: the random
+token behind `/picks/<token>`, the election date, and whether the owner's
+first name shows on the public card; the picks themselves are read live from
+the choices table. A row lives until the owner revokes it or deletes the
+account (the user foreign key cascades). IPs live only in the Redis rate
+limiter; analytics events carry no user id, IP, or cookie; Ask questions are
+stored anonymously for 90 days; account deletion cascades.
 
 Two gaps closed in the same PR as this section:
 

@@ -42,17 +42,15 @@ export function useMintPickCardShare() {
         method: "POST",
         body: { election_date: electionDate },
       }),
-    // Write the minted share into the list straight away (so the page shows
-    // the link with no flash back to the mint button while the list
-    // refetches), then refetch so the server stays the single source of
-    // truth — a revoke from another tab must not be masked by a stale
-    // mutation result held in component state.
-    onSuccess: ({ share }) => {
-      queryClient.setQueryData<{ shares: PickCardShare[] }>(PICK_CARD_SHARES_KEY, (previous) => ({
-        shares: [share, ...(previous?.shares ?? []).filter((row) => row.election_date !== share.election_date)],
-      }));
-      void queryClient.invalidateQueries({ queryKey: PICK_CARD_SHARES_KEY });
-    },
+    // Returned (not fire-and-forget), same contract as useSetElectionChoice:
+    // the mutation stays pending until the refetched list holds the new
+    // link, so the page never flashes back to the mint button. The list is
+    // the only source of truth — nothing is written into the cache from the
+    // mutation result, so a mint that completes after this tab's account
+    // changed (useMe purges account-scoped keys on an identity change) can
+    // only trigger a refetch as the new account, never plant the old
+    // account's token.
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: PICK_CARD_SHARES_KEY }),
   });
 }
 
