@@ -7,7 +7,7 @@
 BEGIN;
 
 UPDATE public.research_areas
-SET description = 'Lower household costs for housing, energy, prescription drugs, food, and everyday and imported goods, and raise wages so people can afford them.',
+SET description = 'Lower household costs for housing, energy, prescription drugs, food, and everyday and imported goods.',
     updated_at = now()
 WHERE slug = 'cost_of_living_reduction';
 
