@@ -1,0 +1,189 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1517188,
+   "measure_id": "AB 66",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 66, which would have barred prosecutors from dropping or reducing charges for certain crimes without a judge's approval, and from offering deferred prosecution deals once those charges were filed. The crimes included domestic abuse, sexual assault, crimes against children, car theft, abuse of vulnerable adults, reckless driving that causes great bodily harm, and illegal gun possession by someone with a violent felony record. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 66, which would have barred prosecutors from dropping or reducing charges for certain crimes without a judge's approval, and from offering deferred prosecution deals once those charges were filed. The crimes included domestic abuse, sexual assault, crimes against children, car theft, abuse of vulnerable adults, reckless driving that causes great bodily harm, and illegal gun possession by someone with a violent felony record. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1614204,
+   "measure_id": "AB 377",
+   "vote_date": "2026-01-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 377, which would have made English Wisconsin's official language and required state and local governments to communicate in English, with exceptions such as protecting health, safety or a defendant's rights. Hospitals would have been exempt. Agencies and courts could have offered artificial intelligence or machine translation in place of a required interpreter, though not to a defendant accused of a violent crime. The Assembly passed it 51-45, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 377, which would have made English Wisconsin's official language and required state and local governments to communicate in English, with exceptions such as protecting health, safety or a defendant's rights. Hospitals would have been exempt. Agencies and courts could have offered artificial intelligence or machine translation in place of a required interpreter, though not to a defendant accused of a violent crime. The Assembly passed it 51-45, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1613583,
+   "measure_id": "AB 380",
+   "vote_date": "2026-01-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 380, which would have made a judge or court commissioner go without pay while suspended by the state Supreme Court over criminal misconduct. Before a temporary suspension, a panel would have had to find probable cause at a hearing, and a judge who was later cleared would have received back pay. The Assembly passed it 57-42, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 380, which would have made a judge or court commissioner go without pay while suspended by the state Supreme Court over criminal misconduct. Before a temporary suspension, a panel would have had to find probable cause at a hearing, and a judge who was later cleared would have received back pay. The Assembly passed it 57-42, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1601824,
+   "measure_id": "AB 58",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 58, which would have allowed only the U.S. flag, the Wisconsin flag and state agency flags on state, local government and school buildings, with exceptions such as military, tribal and first responder flags. No excepted flag could have stood for a political or social cause, a racial identity, or a sexual orientation or gender identity. The Assembly passed it 50-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 58, which would have allowed only the U.S. flag, the Wisconsin flag and state agency flags on state, local government and school buildings, with exceptions such as military, tribal and first responder flags. No excepted flag could have stood for a political or social cause, a racial identity, or a sexual orientation or gender identity. The Assembly passed it 50-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1609656,
+   "measure_id": "AB 617",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 617, which would have changed absentee voting and ballot counting. Clerks would have had to return a ballot with a faulty envelope to the voter, or contact the voter, so the error could be fixed. Voters who applied by email could have gotten text alerts when their application and ballot arrived. The deadline to request a ballot by mail would have moved from five days before the election to seven. Cities could no longer have counted ballots at one central location instead of at the polls, and early voting sites would have had to be in fixed buildings. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 617, which would have changed absentee voting and ballot counting. Clerks would have had to return a ballot with a faulty envelope to the voter, or contact the voter, so the error could be fixed. Voters who applied by email could have gotten text alerts when their application and ballot arrived. The deadline to request a ballot by mail would have moved from five days before the election to seven. Cities could no longer have counted ballots at one central location instead of at the polls, and early voting sites would have had to be in fixed buildings. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1614720,
+   "measure_id": "AB 840",
+   "vote_date": "2026-01-20",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 840, which would have set rules for the largest data centers. Utility regulators would have had to keep the cost of serving them off other customers' bills. New centers would have needed closed-loop or equally water-saving cooling, any renewable power plant serving them on site, and a bond to cover cleanup. Every large center would also have reported its water use each year. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 840, which would have set rules for the largest data centers. Utility regulators would have had to keep the cost of serving them off other customers' bills. New centers would have needed closed-loop or equally water-saving cooling, any renewable power plant serving them on site, and a bond to cover cleanup. Every large center would also have reported its water use each year. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1639884,
+   "measure_id": "AB 963",
+   "vote_date": "2026-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 963, which would have required social media companies with at least $1 billion in yearly revenue to estimate users' ages and get a parent's consent before a minor could hold an account. Minors' accounts would have had the most private settings by default, no targeted ads, and no features such as infinite scroll, autoplay or like counts. The Assembly passed it 60-35, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 963, which would have required social media companies with at least $1 billion in yearly revenue to estimate users' ages and get a parent's consent before a minor could hold an account. Minors' accounts would have had the most private settings by default, no targeted ads, and no features such as infinite scroll, autoplay or like counts. The Assembly passed it 60-35, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1592439,
+   "measure_id": "SB 94",
+   "vote_date": "2025-06-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 94, which would have made it a felony to urge or organize a riot or to commit violence during one. People harmed by a riot or vandalism could have sued those responsible and anyone who gave them support meant for the crime. Officials could not have stopped police from arresting rioters or breaking up a riot. The Senate passed it 18-14, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Senate Bill 94, which would have made it a felony to urge or organize a riot or to commit violence during one. People harmed by a riot or vandalism could have sued those responsible and anyone who gave them support meant for the crime. Officials could not have stopped police from arresting rioters or breaking up a riot. The Senate passed it 18-14, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1629702,
+   "measure_id": "SB 384",
+   "vote_date": "2026-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 384, which would have required health care providers to give a child born alive after an attempted abortion the same care as any other newborn of that age, and to get the child to a hospital. Failing to do so would have been a felony with up to six years in prison, and intentionally killing such a child would have carried life in prison. The mother could not have been charged. The Senate passed it 17-16, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Senate Bill 384, which would have required health care providers to give a child born alive after an attempted abortion the same care as any other newborn of that age, and to get the child to a hospital. Failing to do so would have been a felony with up to six years in prison, and intentionally killing such a child would have carried life in prison. The mother could not have been charged. The Senate passed it 17-16, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1609541,
+   "measure_id": "SB 394",
+   "vote_date": "2025-11-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 394, which would have made it a felony to damage or put graffiti on any statue, plaque, painting or other monument of historical or commemorative value on public property. The Senate passed it 18-15, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Senate Bill 394, which would have made it a felony to damage or put graffiti on any statue, plaque, painting or other monument of historical or commemorative value on public property. The Senate passed it 18-15, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
