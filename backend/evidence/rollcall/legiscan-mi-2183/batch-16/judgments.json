@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1705291,
+      "measure_id": "HB 5520",
+      "vote_date": "2026-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5520. It would bring back holding third graders back for reading, starting with students in grade 3 in the 2027-2028 school year. A student who does not score proficient in English on the state test could not move to grade 4 unless the student shows proficiency on another approved reading test or a portfolio, is proficient in every other subject, or gets a good cause exemption. Exemptions would cover students with disability plans, English learners with under 3 years of instruction, some recent transfers, students already held back after 2 years of help, and cases where a parent asks and the superintendent agrees. The House passed it 57-49. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5520. It would bring back holding third graders back for reading, starting with students in grade 3 in the 2027-2028 school year. A student who does not score proficient in English on the state test could not move to grade 4 unless the student shows proficiency on another approved reading test or a portfolio, is proficient in every other subject, or gets a good cause exemption. Exemptions would cover students with disability plans, English learners with under 3 years of instruction, some recent transfers, students already held back after 2 years of help, and cases where a parent asks and the superintendent agrees. The House passed it 57-49. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
