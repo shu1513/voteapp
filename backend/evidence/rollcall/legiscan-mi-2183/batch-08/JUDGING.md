@@ -20,9 +20,13 @@ provision relied on, and an application not flagged as incomplete within 7 days
 is considered complete.
 
 ### HB 5936, HB 5937, HB 5938, HB 6038 — environmental permits
-HB 5936 changes section 1307(7) from "15% of the greater of" the application fee
-or first periodic charge to the total amount, and adds a duty to cite the
-statutory basis for every approval or denial. HB 5937 cuts the administrative
+HB 5936 strikes "an amount equal to 15% of the greater of" from section
+1307(7), so the department pays the total application fee and, where one is
+charged, the total first periodic charge, not 15% of the larger one. Section
+1307(8) is untouched: permits under sections 11509, 11512, 30304 (wetlands) and
+32603 stay automatically approved on a missed deadline and get no payment,
+which is why the description says "most permits". It also adds a duty to cite
+the statutory basis for every approval or denial. HB 5937 cuts the administrative
 completeness period in section 1305 from 30 days to 7 and adds a processing
 period for wetland permits under section 30304 of 30 days, or 90 days if a
 hearing is held. HB 5938 moves the optional wetland hearing from within 60 days
@@ -64,6 +68,16 @@ Judge: 11 updated. Dry run: 1,033 planned inserts, 0 errors, stamp
 `2026-09-11T06:50:57.402Z`, which matches zero rows. Real run: 11 files
 imported, **1,033 inserts**, 0 notified, stamp `2026-09-11T06:51:00.104Z`, 96
 candidates, 674 area tags. Michigan roll-call records went 3,535 to 4,568.
+
+**HB 5936 fix (review follow-up).** The first description said the department
+would refund "the full application fee" on any missed deadline. Two things were
+off: section 1307(8) permits are automatically approved instead of paid, and
+the struck words "15% of the greater of" mean the payment now covers the
+application fee and the first periodic charge, not the larger of the two. The
+description now says "most permits" and "plus any first annual or other
+periodic fee". Judged (1 updated, 10 unchanged), re-imported locally: 94
+rewrites, 939 unchanged, stamp `2026-09-11T19:03:56.188Z`, 0 notified. The
+original `import-report.json` is kept; new reports are `import-hb5936-fix-*`.
 
 ## Duplicates
 
