@@ -1,0 +1,385 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-11T21:20:10.218Z",
+  "finishedAt": "2026-09-11T21:20:12.328Z",
+  "jurisdiction": "WA",
+  "sessionId": 2166,
+  "evidenceDir": "evidence/rollcall/legiscan-wa-2166/batch-15",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-wa-2166/crosswalk.json",
+  "crosswalkEntries": 151,
+  "peopleFile": "evidence/rollcall/legiscan-wa-2166/legiscan-people-wa-2166.json",
+  "peopleMembers": 151,
+  "files": 12,
+  "outcomes": {
+    "imported": 12
+  },
+  "actions": {
+    "unchanged": 227
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-wa-senate-2166-roll1506493.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1506493,
+      "outcome": "imported",
+      "legislativeVoteId": "e73dd716-36b3-465d-bbb0-bdc65218ed8a",
+      "reviewStatus": "approved",
+      "bill": "SB5701",
+      "voteDate": "2025-03-05",
+      "officialVoteDate": null,
+      "measureId": "SB 5701",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1506493:2026-09-11T21:20:10.218Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1509220.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1509220,
+      "outcome": "imported",
+      "legislativeVoteId": "d1536353-f5ae-4f1e-babf-fe7ba749d48a",
+      "reviewStatus": "approved",
+      "bill": "SB5466",
+      "voteDate": "2025-03-10",
+      "officialVoteDate": null,
+      "measureId": "SB 5466",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1509220:2026-09-11T21:20:10.218Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1514946.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1514946,
+      "outcome": "imported",
+      "legislativeVoteId": "15d5afdc-f38e-4eb0-83d3-b101ca9b19d4",
+      "reviewStatus": "approved",
+      "bill": "SB5490",
+      "voteDate": "2025-03-11",
+      "officialVoteDate": null,
+      "measureId": "SB 5490",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1514946:2026-09-11T21:20:10.218Z",
+      "members": 48,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1515872.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1515872,
+      "outcome": "imported",
+      "legislativeVoteId": "00d0bc66-8964-49f2-9784-81a4031c1db4",
+      "reviewStatus": "approved",
+      "bill": "SB5576",
+      "voteDate": "2025-03-11",
+      "officialVoteDate": null,
+      "measureId": "SB 5576",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1515872:2026-09-11T21:20:10.218Z",
+      "members": 48,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1515889.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1515889,
+      "outcome": "imported",
+      "legislativeVoteId": "29b716a4-a136-414e-8f10-b7b85d88f565",
+      "reviewStatus": "approved",
+      "bill": "SB5469",
+      "voteDate": "2025-03-12",
+      "officialVoteDate": null,
+      "measureId": "SB 5469",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1515889:2026-09-11T21:20:10.218Z",
+      "members": 48,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1516313.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1516313,
+      "outcome": "imported",
+      "legislativeVoteId": "f2f7e0ee-8c0b-4a68-af69-770c00a30729",
+      "reviewStatus": "approved",
+      "bill": "SB5708",
+      "voteDate": "2025-03-12",
+      "officialVoteDate": null,
+      "measureId": "SB 5708",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1516313:2026-09-11T21:20:10.218Z",
+      "members": 48,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1530742.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1530742,
+      "outcome": "imported",
+      "legislativeVoteId": "ee37adce-29bf-47ee-9a37-cbdeccdfaa12",
+      "reviewStatus": "approved",
+      "bill": "SB5800",
+      "voteDate": "2025-03-29",
+      "officialVoteDate": null,
+      "measureId": "SB 5800",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1530742:2026-09-11T21:20:10.218Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1558716.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1558716,
+      "outcome": "imported",
+      "legislativeVoteId": "86b967a2-1a47-4ccb-b591-d8b2ada2f20c",
+      "reviewStatus": "approved",
+      "bill": "SB5797",
+      "voteDate": "2025-04-27",
+      "officialVoteDate": null,
+      "measureId": "SB 5797",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1558716:2026-09-11T21:20:10.218Z",
+      "members": 47,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 7
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1615268.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1615268,
+      "outcome": "imported",
+      "legislativeVoteId": "375ce5e8-ce1d-48e4-9889-75b26048c513",
+      "reviewStatus": "approved",
+      "bill": "SB5581",
+      "voteDate": "2026-01-21",
+      "officialVoteDate": null,
+      "measureId": "SB 5581",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1615268:2026-09-11T21:20:10.218Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1633792.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1633792,
+      "outcome": "imported",
+      "legislativeVoteId": "44989af6-a2d7-490d-b6a0-3b5beadddbbf",
+      "reviewStatus": "approved",
+      "bill": "SB5496",
+      "voteDate": "2026-02-13",
+      "officialVoteDate": null,
+      "measureId": "SB 5496",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1633792:2026-09-11T21:20:10.218Z",
+      "members": 48,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1636319.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1636319,
+      "outcome": "imported",
+      "legislativeVoteId": "5fe38657-ad9a-46d1-8b07-e2267b9e8a15",
+      "reviewStatus": "approved",
+      "bill": "SB5360",
+      "voteDate": "2026-02-17",
+      "officialVoteDate": null,
+      "measureId": "SB 5360",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1636319:2026-09-11T21:20:10.218Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 19,
+        "unmatched_reviewed": 30
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1648423.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1648423,
+      "outcome": "imported",
+      "legislativeVoteId": "530ef857-a211-4551-b042-12ef40cc8afe",
+      "reviewStatus": "approved",
+      "bill": "SB5647",
+      "voteDate": "2026-02-28",
+      "officialVoteDate": null,
+      "measureId": "SB 5647",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1648423:2026-09-11T21:20:10.218Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    }
+  ]
+}
