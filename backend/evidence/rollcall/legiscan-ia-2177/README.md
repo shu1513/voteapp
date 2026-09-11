@@ -56,7 +56,8 @@ Dispositions are in `survey/divided-enacted-worklist.tsv`.
 Review fixes re-ran the importer in place; rewritten rows carry the re-run stamp instead:
 batch 02 `2026-09-10T05:44:42.259Z` (112 rows), batch 03 `2026-09-10T05:44:47.601Z` (176),
 batch 04 `2026-09-10T05:44:51.277Z` (92), batch 05 `2026-09-10T04:48:47.712Z` (15),
-batch 06 `2026-09-11T02:18:16.187Z` (114).
+batch 06 `2026-09-11T02:18:16.187Z` (114), batch 07 `2026-09-11T06:18:44.057Z` (80),
+batch 08 `2026-09-11T06:18:50.682Z` (33).
 
 **Local total: 3,004 candidate records, 102 candidates, 64 approved roll calls over 40
 measures. Production holds zero Iowa roll-call records.**
@@ -90,3 +91,14 @@ carrying that date. One of them, HF 2694, reached batch-05 and was imported befo
 warning was acted on. It was re-judged with an `official_vote_date` override and re-imported
 for real; the ledger is `batch-05/import-date-override-report.json`. The audit script now
 stops the run instead of printing a warning.
+
+## Not-enacted scope (batches 07-09, 2026-09-11)
+
+Bills that did not become law. The 91st General Assembly adjourned for good on 2026-05-03, so
+each description is conditional ("would have") and ends with a fate sentence derived from the
+dataset: the other chamber never voted, the chambers never agreed on the same text, or the
+Governor vetoed it. Pool and dispositions: `survey/not-enacted-worklist.json` (90 slots on 85
+measures, each chamber's final kept roll, kept if divided). 25 measures imported on 26 rolls;
+60 dropped with written reasons, including three whose substance became law through another bill
+(HF 2336, HF 2716, SF 507). Tools outside the repo: `ia_notenacted.py` (pool), `ia_build_ne.py`
+(conditional builder, refuses enacted bills), `ia_finish_ne.py` (audit gate).
