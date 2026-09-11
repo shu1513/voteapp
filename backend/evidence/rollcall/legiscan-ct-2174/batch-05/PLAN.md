@@ -23,5 +23,6 @@ vote:
 
 - SB 1222: roll 1571790 (Senate roll 168, 11-25) rejected Senate Amendment A;
   passage was roll 169.
-- SB 1371: rolls 1574190 (roll 188, 9-11) and 1574189 (roll 189, 11-23)
-  rejected Senate Amendments B and A; passage was roll 190.
+- SB 1371: rolls 1574190 (roll 188, 9-25) and 1574189 (roll 189, 11-23)
+  rejected Senate Amendments B and A; passage was roll 190. LegiScan lists
+  roll 188 as 9-11; the official Senate roll shows 9 yea, 25 nay, 2 absent.
