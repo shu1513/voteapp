@@ -70,9 +70,15 @@ cross-subsidy from other utilities, separate enterprise funds, a wall between
 the staff who run the network and the staff who regulate private providers, and
 public disclosure of bond defaults and rating changes.
 
-A city whose legislative body authorized broadband before March 1, 2025 is
-exempt from the pre-approval conditions in Part 2 but remains subject to the
-operating limits in Part 3.
+Two grandfathering rules, both in 10-18-104. A city whose legislative body
+authorized broadband before March 1, 2025 is exempt from the pre-approval
+conditions in Part 2 but remains subject to the operating limits in Part 3
+(subsection (2)). A city that enacted a bond resolution for broadband on or
+before January 1, 2025, or that ran a broadband service for three consecutive
+years before March 1, 2025, is exempt from the whole chapter except 303(6),
+303(9), 303(12), 304 and 305 (subsections (4)-(5)) — so the cross-subsidy ban
+in 303(5) and the staff-separation rule do not reach it. The description names
+both rules.
 
 The direction is contested in good faith: supporters call it taxpayer
 protection and competitive fairness. But the measurable effect is that a city
