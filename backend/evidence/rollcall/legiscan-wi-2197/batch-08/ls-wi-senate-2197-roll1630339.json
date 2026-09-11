@@ -1,0 +1,191 @@
+{
+  "jurisdiction": "WI",
+  "sessionId": 2197,
+  "chamber": "senate",
+  "rollNumber": 1630339,
+  "bill": "AB102",
+  "measureId": "AB 102",
+  "machineUrl": "https://legiscan.com/WI/rollcall/AB102/id/1630339",
+  "fetchedAt": "2026-09-11T05:27:22.145Z",
+  "rollCall": {
+    "roll_call_id": 1630339,
+    "bill_id": 1989693,
+    "date": "2026-02-11",
+    "desc": "Senate: Read a third time and concurred in",
+    "yea": 18,
+    "nay": 15,
+    "nv": 0,
+    "absent": 0,
+    "total": 33,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 100,
+    "votes": [
+      {
+        "people_id": 3815,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3820,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3835,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3916,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3946,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12262,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12276,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12277,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12299,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12304,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 15092,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15093,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15094,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15362,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 15719,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 16423,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16425,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 18358,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 18363,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 18364,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20182,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20615,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21984,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21985,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 21986,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21990,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21994,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 23600,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 23605,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 26103,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 26104,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 26105,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 26106,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      }
+    ]
+  }
+}
