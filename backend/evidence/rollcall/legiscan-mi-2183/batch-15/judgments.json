@@ -62,8 +62,8 @@
       "measure_id": "SB 78",
       "vote_date": "2025-05-20",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 78. It would let a person convicted of a felony committed before age 18 ask a court to set it aside, even for offenses that normally cannot be cleared. At least 15 years must have passed since release, with no adult conviction, no pending charge and no illegal drug use since. Crimes requiring sex offender registration would not qualify. The Senate passed it 23-11. The House has not voted on it, so it is not law.",
-      "nay_description": "Voted against Senate Bill 78. It would let a person convicted of a felony committed before age 18 ask a court to set it aside, even for offenses that normally cannot be cleared. At least 15 years must have passed since release, with no adult conviction, no pending charge and no illegal drug use since. Crimes requiring sex offender registration would not qualify. The Senate passed it 23-11. The House has not voted on it, so it is not law.",
+      "yea_description": "Voted for Senate Bill 78. It would let a person convicted of a felony committed before age 18 ask a court to set it aside, even for offenses that normally cannot be cleared. At least 15 years must have passed since release, with no adult conviction, no pending charge and no positive test for illegal drug use since the conviction. Crimes requiring sex offender registration would not qualify. The Senate passed it 23-11. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 78. It would let a person convicted of a felony committed before age 18 ask a court to set it aside, even for offenses that normally cannot be cleared. At least 15 years must have passed since release, with no adult conviction, no pending charge and no positive test for illegal drug use since the conviction. Crimes requiring sex offender registration would not qualify. The Senate passed it 23-11. The House has not voted on it, so it is not law.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
