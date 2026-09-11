@@ -65,7 +65,8 @@ three new crimes:
   public, or while congregating with people one knows are committing one (class
   A misdemeanor);
 - acting with two or more others to keep someone from entering or leaving a
-  house of worship (third degree felony, with a civil suit).
+  house of worship, with the purpose of preventing that person from exercising
+  religious liberty rights (third degree felony, with a civil suit).
 
 The mask offense raises a protest-rights concern, and the house-of-worship
 offense protects a civil right. So `civil_rights` runs both ways and is not

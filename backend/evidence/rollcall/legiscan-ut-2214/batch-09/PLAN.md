@@ -67,6 +67,13 @@ Every label states `nay: null`.
 - Database on that stamp: 203 rows, 72 distinct candidates, 145 area tags.
 - Convergence dry run afterwards: 203 unchanged. The first dry-run stamp
   `2026-09-10T16:42:30.947Z` matches 0 rows.
+- Review fixes to HB 331 (the house-of-worship felony needs a religious
+  purpose) and HB 540 (audio recording skips justice courts), see `JUDGING.md`:
+  `import-dry-run-rerun-report.json` planned 19 rewrites and 184 unchanged, and
+  `import-rerun-report.json` (stamp `2026-09-11T03:55:13.395Z`) applied them.
+  SB 58 keeps its wording: the excused-absence carve-out from funding
+  withholding is a narrow detail, and "may hold back" already reads as
+  discretionary.
 
 ## The 2026 pool is closed
 
