@@ -1,0 +1,94 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1712580,
+      "measure_id": "HB 5707",
+      "vote_date": "2026-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5707. It would let a landowner dig or build a pond of less than 1 acre on land zoned for homes or farming without a state permit, if the pond is for noncommercial home use and is not connected to a lake, river or stream. The pond would also be exempt from the state's wetland permit rules, and the dug-out soil could be spread on nearby dry land. The exemption from the inland lakes and streams permit would reach back to January 1, 2020. The House passed it 63-44. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5707. It would let a landowner dig or build a pond of less than 1 acre on land zoned for homes or farming without a state permit, if the pond is for noncommercial home use and is not connected to a lake, river or stream. The pond would also be exempt from the state's wetland permit rules, and the dug-out soil could be spread on nearby dry land. The exemption from the inland lakes and streams permit would reach back to January 1, 2020. The House passed it 63-44. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1624562,
+      "measure_id": "HB 4445",
+      "vote_date": "2026-02-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4445. It would let hunters bait deer anywhere in Michigan during the open deer seasons. Today a state wildlife order bans deer baiting in the Lower Peninsula. It would also write separate definitions of deer baiting and deer feeding into law. The House passed it 66-38. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4445. It would let hunters bait deer anywhere in Michigan during the open deer seasons. Today a state wildlife order bans deer baiting in the Lower Peninsula. It would also write separate definitions of deer baiting and deer feeding into law. The House passed it 66-38. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1707949,
+      "measure_id": "HB 5536",
+      "vote_date": "2026-06-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5536. It would narrow which wetlands the state protects. A wetland would be covered only if it sits next to a federally protected water and has a continuous surface connection to it. Local wetland rules would keep the broader current test, except that a wetland could no longer qualify just by being larger than 5 acres. The House passed it 57-51. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5536. It would narrow which wetlands the state protects. A wetland would be covered only if it sits next to a federally protected water and has a continuous surface connection to it. Local wetland rules would keep the broader current test, except that a wetland could no longer qualify just by being larger than 5 acres. The House passed it 57-51. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1712562,
+      "measure_id": "HB 5502",
+      "vote_date": "2026-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5502. It would add to the list of wetlands the state does not regulate: any wetland created by accident through human activity that was not meant to create a wetland. The state environment department would have to prove a wetland was not created that way before regulating it. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5502. It would add to the list of wetlands the state does not regulate: any wetland created by accident through human activity that was not meant to create a wetland. The state environment department would have to prove a wetland was not created that way before regulating it. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1710242,
+      "measure_id": "HB 5069",
+      "vote_date": "2026-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5069. It would ban the sale of food containing brominated vegetable oil, propylparaben, or the dyes Red 40, Green 3, Blue 1, Blue 2 or Yellow 6, starting January 1, 2029. The ban would not apply if the federal government bans these substances by that date. The House passed it 56-51. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5069. It would ban the sale of food containing brominated vegetable oil, propylparaben, or the dyes Red 40, Green 3, Blue 1, Blue 2 or Yellow 6, starting January 1, 2029. The ban would not apply if the federal government bans these substances by that date. The House passed it 56-51. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
