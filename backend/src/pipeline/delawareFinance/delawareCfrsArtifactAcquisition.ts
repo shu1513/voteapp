@@ -1,4 +1,4 @@
-// Delaware CFRS artifact acquisition (plan-delaware-finance.md Phase 2).
+// Delaware CFRS artifact acquisition (docs/plans/plan-delaware-finance.md Phase 2).
 //
 // The one component that touches the live portal for money data: it runs the
 // probe-proven choreography for a single committee and lands the result as an

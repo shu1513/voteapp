@@ -20,7 +20,7 @@ import {
   type ErtsContributionExportRow,
 } from "./rhodeIslandErtsParsers.js";
 
-// Direct-contribution aggregation for Rhode Island (rhode_island_plan.md
+// Direct-contribution aggregation for Rhode Island (docs/plans/rhode_island_plan.md
 // decisions 1, 10, 13). Cache only, no portal traffic. Three jobs:
 //
 // 1. `direct_contribution_total` — donor money only, summed from the report

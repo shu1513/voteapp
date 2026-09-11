@@ -1,4 +1,4 @@
-// South Carolina finance snapshot writer (plan-south-carolina-finance.md,
+// South Carolina finance snapshot writer (docs/plans/plan-south-carolina-finance.md,
 // Phase 4). Thin wrapper over the standard state-finance writer. Identity:
 // the Ethics API's positive integer candidateFilerId, stored as text in
 // candidate_filer_id (id 0 marks SEI-only filers with no candidate account

@@ -18,9 +18,9 @@ describe("georgiaBallotLookupFinanceLoader", () => {
     eligibleOffice: { office_scope: "statewide", office_canonical_name: "Governor" },
     // United States Senator is GA 2026's only non-state statewide election
     // row — federal money belongs to the FEC, never this module
-    // (georgia_plan.md D9).
+    // (docs/plans/georgia_plan.md D9).
     ineligibleOffice: { office_scope: "statewide", office_canonical_name: "United States Senator" },
-    // georgia_plan.md D6/D12: no per-target amount exists on Georgia
+    // docs/plans/georgia_plan.md D6/D12: no per-target amount exists on Georgia
     // independent expenditures, so any multi-target expenditure — several
     // candidates, or a candidate plus a ballot measure — stays out of the
     // per-candidate totals; the retired pre-July-2025 system's filings carry

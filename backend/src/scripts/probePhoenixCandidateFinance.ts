@@ -1,4 +1,4 @@
-// Phase 0 probe for the Phoenix city finance module (plan-phoenix-finance.md).
+// Phase 0 probe for the Phoenix city finance module (docs/plans/plan-phoenix-finance.md).
 // NO schema, NO writes: replays the Phoenix City Clerk eFiling portal's Kendo
 // grid endpoints headlessly, downloads report PDFs into a scratch cache, and
 // checks the plan's Phase 0 gates. Everything the build phases need from the

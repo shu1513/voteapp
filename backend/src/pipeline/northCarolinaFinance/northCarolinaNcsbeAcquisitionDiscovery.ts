@@ -18,7 +18,7 @@ import {
 import { fetchNcsbeCommitteeSearch, requireNcsbeYear, type NcsbeTransport } from "./northCarolinaNcsbeClient.js";
 import { parseNcsbeCommitteeSearchPage, parseNcsbeDocumentListPage } from "./northCarolinaNcsbeParsers.js";
 
-// Acquisition-side discovery for the NCSBE portal (north_carolina_plan.md,
+// Acquisition-side discovery for the NCSBE portal (docs/plans/north_carolina_plan.md,
 // the "owed before PR 9's live run" work): instead of explicit
 // `--committee <SBoEID>:<OGID>` args, the acquisition discovers what to fetch
 // from the roster and from the cached IE inventories.

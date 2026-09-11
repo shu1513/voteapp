@@ -5,7 +5,7 @@ import {
   type GeorgiaTransactionRow,
 } from "./georgiaEthicsClient.js";
 
-// Direct-contribution aggregation for Georgia (georgia_plan.md D5, taxonomy
+// Direct-contribution aggregation for Georgia (docs/plans/georgia_plan.md D5, taxonomy
 // A8). Rows arrive already scoped to the candidate's registration chain and
 // already source-selected per report (D8) — this module never filters by
 // transaction date (the store holds garbage dates on valid rows, A4) and

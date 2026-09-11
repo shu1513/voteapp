@@ -14,7 +14,7 @@ import {
 } from "./northCarolinaNcsbeParsers.js";
 
 // Direct-money aggregation for one linked NC candidate committee over one
-// Y−1..Y cycle window (north_carolina_plan.md decisions 7 + 11). The cover
+// Y−1..Y cycle window (docs/plans/north_carolina_plan.md decisions 7 + 11). The cover
 // summary is authoritative for every summary number — `total_receipts` /
 // `total_disbursements` are the selected reports' official Period values,
 // `direct_contribution_total` is the cover's itemized + aggregated

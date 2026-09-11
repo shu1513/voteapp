@@ -17,7 +17,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // entry page.
 const GENERIC_RHODE_ISLAND_ERTS_SOURCE_URL = "https://www.ricampaignfinance.com/RIPublic/Homepage.aspx";
 
-// rhode_island_plan.md decision 5/7: CF-8 outside-spending filings are
+// docs/plans/rhode_island_plan.md decision 5/7: CF-8 outside-spending filings are
 // scanned PDFs ingested as hand-curated supplement entries, a multi-target
 // filing without the apportionment RI regulation 410-RICR-10-00-13
 // §13.5(B)(2)(d) requires is quarantined in full, and §17-25.3-1 obliges
@@ -29,7 +29,7 @@ const RHODE_ISLAND_OUTSIDE_COVERAGE_NOTE =
   "with a clear per-candidate amount — filings naming several candidates without a stated split are excluded — " +
   "and the state requires spenders to disclose only donors above $1,000 per cycle, with statutory exceptions.";
 
-// rhode_island_plan.md decision 1/13: RI discloses employer, never
+// docs/plans/rhode_island_plan.md decision 1/13: RI discloses employer, never
 // occupation (§ 17-25-11), so the occupation card can never populate; and
 // lawful "Aggregate - *" rows (donors at or under $200/year) are inside the
 // direct total but never in the size buckets, so buckets cannot reconcile

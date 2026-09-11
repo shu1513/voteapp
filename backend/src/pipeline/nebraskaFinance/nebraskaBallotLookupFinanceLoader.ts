@@ -18,7 +18,7 @@ const GENERIC_NEBRASKA_NADC_SOURCE_URL = "https://nadc-e.nebraska.gov/PublicSite
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 // The loader body below moved verbatim from ballotLookup.ts
-// (plan-ballot-lookup.md Phase 2); these aliases keep its signature and row
+// (docs/plans/plan-ballot-lookup.md Phase 2); these aliases keep its signature and row
 // references byte-identical while the shapes live in the shared module.
 type CandidateRow = StateFinanceRequestCandidateRow;
 type ElectionRow = StateFinanceRequestElectionRow;

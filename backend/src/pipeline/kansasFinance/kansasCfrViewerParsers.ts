@@ -1,4 +1,4 @@
-// Parsers for Kansas SOS CFR viewer pages (plan-kansas-finance.md).
+// Parsers for Kansas SOS CFR viewer pages (docs/plans/plan-kansas-finance.md).
 //
 // Every shape below was captured live 2026-08-26. The viewer renders values
 // in id-stamped <span>s, which keeps parsing structural:

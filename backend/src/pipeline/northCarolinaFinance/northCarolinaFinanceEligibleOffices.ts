@@ -8,7 +8,7 @@ export type NorthCarolinaFinanceEligibleOfficeKey = `${string}::${string}`;
 // join this list when a cycle with real statewide rows enters scope, grounded
 // against those rows then. Judicial offices and district attorneys are
 // deferred like every other state's, and county/municipal candidates file
-// with county boards; see north_carolina_plan.md decision 2.
+// with county boards; see docs/plans/north_carolina_plan.md decision 2.
 export const NORTH_CAROLINA_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "state_upper::State Senator",
   "state_lower::State Lower Chamber Legislator",

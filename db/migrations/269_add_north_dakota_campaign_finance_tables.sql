@@ -1,6 +1,6 @@
 BEGIN;
 
--- North Dakota campaign finance (plan-north-dakota-finance.md, Phase 1).
+-- North Dakota campaign finance (docs/plans/plan-north-dakota-finance.md, Phase 1).
 -- Standard five-table shape (Arkansas 266 / West Virginia 267 / Idaho 268 lineage) with
 -- the plan's adaptations:
 --   * committee_id holds the CFRS registry entityId (10 digits, e.g.

@@ -1,4 +1,4 @@
-// Positioned-text extraction for scanned KPDC PDFs (plan-kansas-finance.md).
+// Positioned-text extraction for scanned KPDC PDFs (docs/plans/plan-kansas-finance.md).
 //
 // KPDC serves every filing — even e-filed reports — as print-then-scan PDFs
 // with an OCR text layer. The layer is noisy (stray border digits, broken

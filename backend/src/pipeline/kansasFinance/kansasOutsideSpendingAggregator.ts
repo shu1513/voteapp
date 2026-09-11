@@ -1,4 +1,4 @@
-// Kansas outside spending (plan-kansas-finance.md, Phase 5 — path 1:
+// Kansas outside spending (docs/plans/plan-kansas-finance.md, Phase 5 — path 1:
 // dedicated independent-expenditure statements, K.S.A. 25-4150).
 //
 // The statements are scanned PDFs, transcribed row by row into

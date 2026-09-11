@@ -1,5 +1,5 @@
 // Delaware filed-report inventory: canonical per-period selection and
-// election-period window resolution (plan-delaware-finance.md facts 3 + 5).
+// election-period window resolution (docs/plans/plan-delaware-finance.md facts 3 + 5).
 //
 // Amendment rule (fact 3, proven live 2026-08-26/27): the canonical version
 // per filing period is the HIGHEST PDF-footer `Version:` per

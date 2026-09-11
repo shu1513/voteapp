@@ -1,4 +1,4 @@
-// Kansas per-candidate finance sync (plan-kansas-finance.md, Phase 4 step 3).
+// Kansas per-candidate finance sync (docs/plans/plan-kansas-finance.md, Phase 4 step 3).
 // The link is the input (auto-link or an operator wrote it). This builds the
 // candidate's period ledger from the live SOS CFR viewer with the canonical
 // reports' Schedules A and B, adds the transcribed covers of its paper

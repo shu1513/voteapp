@@ -1,4 +1,4 @@
-// Arkansas finance snapshot writer (plan-arkansas-finance.md, Phase 1). Thin
+// Arkansas finance snapshot writer (docs/plans/plan-arkansas-finance.md, Phase 1). Thin
 // wrapper over the standard state-finance writer, mirroring New Hampshire
 // (same Civix CFIS build) on identity and Alabama on the direct-only shape.
 //

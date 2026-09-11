@@ -52,7 +52,7 @@ const writer = createStandardStateFinanceSnapshotWriter({
   label: "Georgia",
   // Link identity is the PeachFile filerEntityId, which only exists for
   // PeachFile-era (2026-cycle) filers — archive-only 2022–2025 entities are
-  // out of v1 link scope (georgia_plan.md D7). The exact filerEntityId
+  // out of v1 link scope (docs/plans/georgia_plan.md D7). The exact filerEntityId
   // validation shape is pinned from acquisition-spike bytes; until then the
   // factory's nonempty check is the only structural validation.
   minElectionYear: 2026,
@@ -62,7 +62,7 @@ const writer = createStandardStateFinanceSnapshotWriter({
   // Georgia replaces every summary column except the outside totals, which
   // keep the stored value when the incoming value is NULL so a direct-only
   // refresh without IE report data does not wipe them (preserveWhenNull
-  // default). direct_contribution_total stays NULL in v1 (georgia_plan.md
+  // default). direct_contribution_total stays NULL in v1 (docs/plans/georgia_plan.md
   // D4: the official candidate-index totals include loans, interest, and
   // unitemized money, so the shared loader must fall through to
   // total_receipts) — "replace" keeps a stray stored value from surviving a

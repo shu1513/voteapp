@@ -343,5 +343,5 @@ plans. Consequences, in order of urgency:
   edit to the Blueprint-managed `DATABASE_URL`, which a sync would revert;
   workers/migrations stay on the owner role).
 - Sentry stays dark until DSNs exist and the staging scrub test passes
-  (plan-error-monitoring.md); set `SENTRY_DSN` on api + workers and the
+  (docs/plans/plan-error-monitoring.md); set `SENTRY_DSN` on api + workers and the
   `VITE_SENTRY_DSN`/`DEPLOY_RELEASE` build vars on SSR when ready.

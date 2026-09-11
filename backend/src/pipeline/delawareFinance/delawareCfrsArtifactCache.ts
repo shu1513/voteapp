@@ -1,4 +1,4 @@
-// Delaware CFRS artifact cache (plan-delaware-finance.md architecture).
+// Delaware CFRS artifact cache (docs/plans/plan-delaware-finance.md architecture).
 //
 // The sync is cache-only: it never touches the live portal. This module owns
 // the restricted on-disk artifact store the acquisition layer (Phase 2)

@@ -101,7 +101,7 @@ CREATE TRIGGER ny_candidate_finance_summaries_set_updated_at
 BEFORE UPDATE ON public.ny_candidate_finance_summaries
 FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
--- Direct-campaign breakdowns are written in Phase 2 of plan-new-york-finance.md;
+-- Direct-campaign breakdowns are written in Phase 2 of docs/plans/plan-new-york-finance.md;
 -- the table ships now so the schema is complete. New York never has occupation
 -- data (NYSBOE does not collect it), so the allowed category types are
 -- contribution_size / contributor_type / donor.

@@ -1,7 +1,7 @@
 // Alabama direct-finance aggregation: contribution-size buckets from the
 // cached cash extracts, gated by the cash coverage ratio.
 //
-// Money model (plan-alabama-finance.md, Summary mapping): the SUMMARY comes
+// Money model (docs/plans/plan-alabama-finance.md, Summary mapping): the SUMMARY comes
 // from the live race row and is never touched here. This module only builds
 // the size buckets and the coverage evidence that gates them:
 // - coverage cash = signed sum of every non-in-kind cash row for the FCPA

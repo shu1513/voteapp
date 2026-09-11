@@ -1,4 +1,4 @@
-// Kansas per-candidate period ledger (plan-kansas-finance.md, Phase 2).
+// Kansas per-candidate period ledger (docs/plans/plan-kansas-finance.md, Phase 2).
 //
 // K.S.A. 25-4148(a) fixes the reporting calendar from the election dates:
 // - pre-primary: 1/1 of the election year through 12 days before the

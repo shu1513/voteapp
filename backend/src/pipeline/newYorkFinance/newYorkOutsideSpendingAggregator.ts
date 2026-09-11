@@ -15,7 +15,7 @@ import {
 } from "./newYorkSodaClient.js";
 import { toNewYorkBoeOfficeSearchInput } from "./newYorkFinanceEligibleOffices.js";
 
-// Strict Schedule R acceptance rules (plan-new-york-finance.md). Every rule
+// Strict Schedule R acceptance rules (docs/plans/plan-new-york-finance.md). Every rule
 // must hold; anything ambiguous or structurally incomplete is skipped and
 // counted, never guessed. Party committees also file Schedule R (verified:
 // NYS Democratic Committee allocations to Hochul), so the registry gate to

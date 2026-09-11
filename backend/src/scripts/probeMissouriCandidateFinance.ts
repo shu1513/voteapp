@@ -1,4 +1,4 @@
-// Phase 0 probe for the Missouri finance module (plan-missouri-finance.md).
+// Phase 0 probe for the Missouri finance module (docs/plans/plan-missouri-finance.md).
 // NO schema, NO database writes: exercises the MEC WebForms portals live
 // through missouriMecClient and checks the plan's acquisition gates. Every
 // pinned constant (paths, control names, export headers, grid markers) was

@@ -1,4 +1,4 @@
-// Phase 0 probe for the San Diego city finance module (plan-san-diego-finance.md).
+// Phase 0 probe for the San Diego city finance module (docs/plans/plan-san-diego-finance.md).
 // NO schema, NO writes: downloads the csd efile.systems bulk workbooks into the
 // artifact cache, runs the shipped San José machinery against them (the direct
 // aggregator and committee resolver are agency-agnostic), and checks the plan's

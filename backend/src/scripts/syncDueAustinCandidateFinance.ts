@@ -1,4 +1,4 @@
-// Austin candidate finance due sync (plan-austin-finance.md Phase 3).
+// Austin candidate finance due sync (docs/plans/plan-austin-finance.md Phase 3).
 // Runs the auto-link leg plus the due-list sync loop against the City of Austin Socrata datasets;
 // gated by AUSTIN_CAMPAIGN_FINANCE_ENABLED + AUSTIN_CAMPAIGN_FINANCE_SYNC_ENABLED
 // (or --force). --dry-run performs every fetch and reconciliation but writes

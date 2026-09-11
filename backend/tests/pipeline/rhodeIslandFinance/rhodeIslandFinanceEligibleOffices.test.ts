@@ -62,7 +62,7 @@ describe("rhodeIslandFinanceEligibleOffices", () => {
       isRhodeIslandFinanceEligibleOffice({ officeScope: "us_house", officeCanonicalName: "United States Representative" })
     ).toBe(false);
     // Municipal offices are out of v1: paper filing is lawful for smaller
-    // committees, so electronic coverage is unproven (rhode_island_plan.md
+    // committees, so electronic coverage is unproven (docs/plans/rhode_island_plan.md
     // decision 9).
     expect(isRhodeIslandFinanceEligibleOffice({ officeScope: "place", officeCanonicalName: "Mayor" })).toBe(false);
     expect(isRhodeIslandFinanceEligibleOffice({ officeScope: "state_lower", officeCanonicalName: "State Senator" })).toBe(false);

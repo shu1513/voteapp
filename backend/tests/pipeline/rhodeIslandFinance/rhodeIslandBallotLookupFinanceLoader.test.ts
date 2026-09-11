@@ -20,7 +20,7 @@ describe("rhodeIslandBallotLookupFinanceLoader", () => {
     // every state pins (georgia precedent; also RI PR 1's eligible-offices
     // test).
     ineligibleOffice: { office_scope: "statewide", office_canonical_name: "United States Senator" },
-    // rhode_island_plan.md decision 1: RI discloses employer, never
+    // docs/plans/rhode_island_plan.md decision 1: RI discloses employer, never
     // occupation, so the loader selects contribution-size buckets only
     // (Louisiana/Vermont narrowing).
     directCategoryTypes: ["contribution_size"],

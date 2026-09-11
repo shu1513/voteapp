@@ -1,5 +1,5 @@
 // Parsers for the Rhode Island ERTS portal (ricampaignfinance.com). Every
-// parser is fail-closed (rhode_island_plan.md decision 3): a page or export
+// parser is fail-closed (docs/plans/rhode_island_plan.md decision 3): a page or export
 // that does not match the pinned shape throws or classifies as unreadable
 // instead of yielding partial rows. The shapes here were proven live by the
 // PR 3 acquisition spike (`src/scripts/probeRhodeIslandCandidateFinance.ts`,

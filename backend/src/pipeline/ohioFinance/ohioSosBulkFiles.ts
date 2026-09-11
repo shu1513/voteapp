@@ -8,7 +8,7 @@ import {
 } from "./ohioSosCsv.js";
 
 // Pinned schemas + typed row mappers for every Ohio SoS bulk export the
-// pipeline consumes (ohio_plan.md "Required artifacts per cycle Y"). Headers
+// pipeline consumes (docs/plans/ohio_plan.md "Required artifacts per cycle Y"). Headers
 // were captured byte-for-byte from the 2026-08-04 acquisition spike files;
 // the parser compares them after whitespace/underscore normalization, so
 // drift like CAC_EXP's "CANDIDATE FIRST NAME" (spaces, not underscores)

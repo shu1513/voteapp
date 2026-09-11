@@ -1,4 +1,4 @@
-// Phase 0 probe for the Delaware finance module (plan-delaware-finance.md).
+// Phase 0 probe for the Delaware finance module (docs/plans/plan-delaware-finance.md).
 // NO schema, NO database writes: exercises the CFRS portal live through
 // delawareCfrsClient/delawareCfrsParsers and checks the plan's Phase 0 gates.
 // Every pinned constant (paths, field sets, CSV headers, gold committees) was
@@ -195,7 +195,7 @@ function multisetHash(rows: readonly Record<string, string>[]): string {
 
 async function main(): Promise<void> {
   const gates: Gate[] = [];
-  console.log("Delaware CFRS Phase 0 probe (plan-delaware-finance.md)");
+  console.log("Delaware CFRS Phase 0 probe (docs/plans/plan-delaware-finance.md)");
   console.log(artifactDir === null ? "artifacts: NOT saved (set DELAWARE_CFRS_PROBE_ARTIFACT_DIR)" : `artifacts: ${artifactDir}`);
 
   // --- Gate 1: acquisition (registrant autocomplete + receipts flow). ---

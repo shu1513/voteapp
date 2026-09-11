@@ -1,4 +1,4 @@
-// Direct-finance aggregation for Arkansas CFIS (plan-arkansas-finance.md,
+// Direct-finance aggregation for Arkansas CFIS (docs/plans/plan-arkansas-finance.md,
 // Phase 3). Headline totals are the registration row's server-computed
 // cycle figures; occupation and contribution-size breakdowns are computed
 // from the registration-scoped receipt search. All arithmetic in integer

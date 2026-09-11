@@ -1,4 +1,4 @@
-// Denver candidate finance due sync (plan-denver-finance.md Phase 3).
+// Denver candidate finance due sync (docs/plans/plan-denver-finance.md Phase 3).
 // Runs the auto-link leg plus the due-list sync loop against SearchLight;
 // gated by DENVER_CAMPAIGN_FINANCE_ENABLED + DENVER_CAMPAIGN_FINANCE_SYNC_ENABLED
 // (or --force). --dry-run performs every fetch and reconciliation but writes

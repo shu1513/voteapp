@@ -3,7 +3,7 @@ import { pathToFileURL } from "node:url";
 import { loadProjectEnv } from "../config/env.js";
 import { readStrictFlagValue } from "../utils/cliFlags.js";
 
-// Phase 0 connectivity probe for New York campaign finance (plan-new-york-finance.md).
+// Phase 0 connectivity probe for New York campaign finance (docs/plans/plan-new-york-finance.md).
 //
 // The NYSBOE Public Reporting hosts block backend clients behind a Cloudflare
 // challenge, so New York must be built on the official NY Open Data (Socrata)

@@ -1,5 +1,5 @@
 // Ballot-lookup finance loader for San Francisco (Phase 8 of
-// plan-san-francisco-finance.md). Modeled on the Los Angeles City loader —
+// docs/plans/plan-san-francisco-finance.md). Modeled on the Los Angeles City loader —
 // a bespoke loader over the ballotLookupFinanceShared primitives, NOT
 // standardStateFinanceBallotLookupLoader: the standard loader expects an
 // outsideGroupBreakdowns table SF will never have (the SFEC manifest

@@ -32,7 +32,7 @@ stay empty permanently.*
 - Never bulk-download the 18M-row dataset. Filtered SODA queries only:
   `$where` on year/schedule/filer, stable `$order`, bounded `$limit`/`$offset`,
   max-page guard. Repo precedent for all of this:
-  [washingtonPdcClient.ts](backend/src/pipeline/washingtonFinance/washingtonPdcClient.ts)
+  [washingtonPdcClient.ts](../../backend/src/pipeline/washingtonFinance/washingtonPdcClient.ts)
   (data.wa.gov Socrata client with appToken, paging, maxPages).
 
 ### Disclosure schema (e9ss-239a, key columns)
@@ -108,10 +108,10 @@ L, N, O, R ("Expense Allocation Among Candidates").
 ### Classifier defect (fix before NY ships)
 
 `ORGANIZATION_PATTERN_RULES` at
-[financeLabelClassifier.ts:175](backend/src/pipeline/finance/financeLabelClassifier.ts:175)
+[financeLabelClassifier.ts:175](../../backend/src/pipeline/finance/financeLabelClassifier.ts:175)
 matches `TECHNOLOGIES` → `technology`, so "Uber Technologies Inc." misfiles as
 technology; AI never revisits rule-classified labels
-([financeIndustryClassificationService.ts:96](backend/src/pipeline/finance/financeIndustryClassificationService.ts:96)).
+([financeIndustryClassificationService.ts:96](../../backend/src/pipeline/finance/financeIndustryClassificationService.ts:96)).
 Fix: exact org rules before pattern rules — `UBER TECHNOLOGIES` →
 `transportation` (add `LYFT` while there). Gambling orgs (FanDuel, DK Crown
 Holdings — real 2026 oppose-side funders, verified) have no fitting slug in

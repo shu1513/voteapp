@@ -18,7 +18,7 @@ export type NewYorkBoeOfficeSearchInput = {
 
 // State offices only. NYC city offices (Mayor, Council, Public Advocate, NYC
 // Comptroller, Borough President) file with the NYC Campaign Finance Board,
-// and county/local offices are out of scope (plan-new-york-finance.md).
+// and county/local offices are out of scope (docs/plans/plan-new-york-finance.md).
 export const NEW_YORK_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "statewide::Governor",
   "statewide::Lieutenant Governor",

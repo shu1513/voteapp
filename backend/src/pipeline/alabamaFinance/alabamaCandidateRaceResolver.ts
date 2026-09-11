@@ -3,7 +3,7 @@
 // Identity evidence is the candidate name within the office's race rows for
 // the linked election cycle, plus — for legislative offices — the district
 // carried by the committee-search join (race rows have no district column;
-// plan-alabama-finance.md, gotcha 14). Pure functions: the auto-link fetches
+// docs/plans/plan-alabama-finance.md, gotcha 14). Pure functions: the auto-link fetches
 // race rows and the office's committee-search rows, then calls these.
 //
 // Fail-closed rules (plan Phase 3): never link on a bare surname, never link

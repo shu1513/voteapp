@@ -1,4 +1,4 @@
-// Kansas Phase 0 probe (plan-kansas-finance.md). Validates the SOS CFR
+// Kansas Phase 0 probe (docs/plans/plan-kansas-finance.md). Validates the SOS CFR
 // viewer acquisition contracts and the OCR/fixture ground truth. No
 // database, cache, scheduler, or published snapshot.
 //

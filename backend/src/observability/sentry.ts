@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 
-// Error monitoring per plan-error-monitoring.md Phase 2. Everything is dark
+// Error monitoring per docs/plans/plan-error-monitoring.md Phase 2. Everything is dark
 // unless SENTRY_DSN is set (local dev and tests never send). Errors only:
 // no tracing, no profiling, and defaultIntegrations: false so nothing —
 // request data, console breadcrumbs, process context — attaches to events

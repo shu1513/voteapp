@@ -1,4 +1,4 @@
-// West Virginia finance snapshot writer (plan-west-virginia-finance.md,
+// West Virginia finance snapshot writer (docs/plans/plan-west-virginia-finance.md,
 // Phase 1). Thin wrapper over the standard state-finance writer. Identity:
 // the registry `entityId` (10 digits, == bulk-CSV RegistrantID) in
 // committee_id; the internal orgID is an acquisition key only.

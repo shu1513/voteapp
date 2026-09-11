@@ -2,7 +2,7 @@
 // (extract kind, year). Stores the raw zip exactly as the portal served it,
 // with integrity metadata alongside (pattern: newHampshireCfsArtifactCache.ts).
 // Catalog download ids are unstable rows, so every refresh resolves the id
-// from a fresh catalog read (plan-alabama-finance.md, gotcha 2). A failed or
+// from a fresh catalog read (docs/plans/plan-alabama-finance.md, gotcha 2). A failed or
 // rejected download never disturbs the last good artifact: zip files are
 // content-addressed (`STEM.<csvSha prefix>.zip`) and the metadata file is the
 // atomic commit pointer, so a crash between the two writes leaves the old

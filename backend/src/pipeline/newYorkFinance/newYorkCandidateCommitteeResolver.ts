@@ -9,7 +9,7 @@ import {
 import { toNewYorkBoeOfficeSearchInput } from "./newYorkFinanceEligibleOffices.js";
 
 // The NYSBOE filer registry has no candidate -> authorized-committee foreign
-// key (verified in plan-new-york-finance.md), so committee resolution is
+// key (verified in docs/plans/plan-new-york-finance.md), so committee resolution is
 // name-based and deliberately conservative:
 //   1. the candidate must appear in the registry as an ACTIVE State-level
 //      CANDIDATE filer for the expected office and district, and

@@ -1,4 +1,4 @@
-// SearchLight Denver JSON API client (plan-denver-finance.md).
+// SearchLight Denver JSON API client (docs/plans/plan-denver-finance.md).
 //
 // SearchLight (https://denver.maplight.com) is the Denver Clerk & Recorder's
 // campaign finance filing system; its public dashboard rides an anonymous,

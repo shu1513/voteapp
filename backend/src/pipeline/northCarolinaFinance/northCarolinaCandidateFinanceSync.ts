@@ -22,7 +22,7 @@ import {
   type NorthCarolinaFinanceSummaryInput,
 } from "./northCarolinaFinanceWriter.js";
 
-// Per-candidate write step for North Carolina finance (north_carolina_plan.md
+// Per-candidate write step for North Carolina finance (docs/plans/north_carolina_plan.md
 // PR 7), ohio shape: this module takes aggregation RESULTS, not artifacts —
 // the batch layer owns the artifact cache and the aggregators, and this
 // module turns one candidate's results into one snapshot write.
@@ -53,7 +53,7 @@ type ConnectableQueryable = Queryable & {
 };
 
 // One candidate's slice of the year's outside-group funder aggregation
-// (north_carolina_plan.md PR 8, #3): raw donor/industry breakdowns from the
+// (docs/plans/north_carolina_plan.md PR 8, #3): raw donor/industry breakdowns from the
 // batch layer plus its row counters, pre industry enrichment.
 export type NorthCarolinaCandidateOutsideFundersInput = {
   breakdowns: readonly NorthCarolinaFinanceOutsideGroupBreakdownInput[];

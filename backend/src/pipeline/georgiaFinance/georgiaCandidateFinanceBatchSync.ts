@@ -20,7 +20,7 @@ import {
   type GeorgiaIndependentExpenditureRow,
 } from "./georgiaEthicsClient.js";
 
-// Batch layer for Georgia candidate finance (georgia_plan.md PR 4/PR 5,
+// Batch layer for Georgia candidate finance (docs/plans/georgia_plan.md PR 4/PR 5,
 // tennessee shape): auto-link missing links first (fail-open — a broken
 // auto-link must not block syncing already-linked candidates), fetch the
 // shared PeachFile IE store once, then run the due list stalest-first and

@@ -2,7 +2,7 @@
 //
 // The NYSBOE Public Reporting hosts block backend clients behind a Cloudflare
 // challenge, so this module must never fetch from them; data.ny.gov is the
-// production path (plan-new-york-finance.md, verified from Render on
+// production path (docs/plans/plan-new-york-finance.md, verified from Render on
 // 2026-07-11). Queries stay narrow: filtered $where, stable $order, bounded
 // paging — never a bulk download of the ~18M-row disclosure dataset.
 export const NEW_YORK_SODA_BASE_URL = "https://data.ny.gov/resource";

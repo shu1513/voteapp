@@ -1,7 +1,7 @@
 export type RhodeIslandFinanceEligibleOfficeKey = `${string}::${string}`;
 
 // Rhode Island v1 scope: statewide general offices + General Assembly
-// (rhode_island_plan.md decision 9). Rhode Island's official title for its
+// (docs/plans/rhode_island_plan.md decision 9). Rhode Island's official title for its
 // treasurer is "General Treasurer", but the VoteApp canonical office name is
 // "State Treasurer" (seedOffices.ts; the RI 2026 statewide election row is
 // DB-verified as State Treasurer) — the list must use the canonical name or

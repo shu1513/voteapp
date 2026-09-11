@@ -6,7 +6,7 @@ import {
 } from "./georgiaEthicsClient.js";
 
 // Resolves an app candidate election to its PeachFile candidate registration
-// (georgia_plan.md D2/D7: link identity is the PeachFile filerEntityId, so
+// (docs/plans/georgia_plan.md D2/D7: link identity is the PeachFile filerEntityId, so
 // resolution runs against the PeachFile candidate index only — F3). Exact
 // single-registration matches only; anything else fails closed (tennessee
 // pattern). The archive side of the identity chain is discovered later, at
@@ -63,7 +63,7 @@ export type GeorgiaCandidateCommitteeResolution =
       matches: GeorgiaCandidateCommitteeMatch[];
     };
 
-// PeachFile office labels for the eligible offices (georgia_plan.md D9).
+// PeachFile office labels for the eligible offices (docs/plans/georgia_plan.md D9).
 // Labels marked "observed" are pinned from spike bytes — 1,100+ IE target
 // rows plus report inventories. Agriculture and Labor never appeared in the
 // probed sample, so both plausible orderings are listed; a wrong alias can

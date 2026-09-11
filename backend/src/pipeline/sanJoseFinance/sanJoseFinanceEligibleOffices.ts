@@ -1,5 +1,5 @@
 // Eligibility for San José campaign finance (Phase 2 of
-// plan-san-jose-finance.md), modeled on losAngelesCityFinanceEligibleOffices.
+// docs/plans/plan-san-jose-finance.md), modeled on losAngelesCityFinanceEligibleOffices.
 // San José city offices only: Mayor and the ten council districts. Sync is
 // additionally gated to roster candidates — eligibility here is the
 // structural whitelist, not the per-election gate.

@@ -25,7 +25,7 @@ import { NORTH_CAROLINA_SBOEID_PATTERN } from "../pipeline/northCarolinaFinance/
 import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 // Downloads one cycle of NCSBE campaign-finance artifacts into the local
-// cache (north_carolina_plan.md PR 4): per-committee document inventories and
+// cache (docs/plans/north_carolina_plan.md PR 4): per-committee document inventories and
 // every structured disclosure report touching the Y−1..Y window, plus the
 // statewide IE doc-type inventories and their structured reports. Plain paced
 // HTTP — no browser, no session (the opposite of Ohio). Nothing here writes

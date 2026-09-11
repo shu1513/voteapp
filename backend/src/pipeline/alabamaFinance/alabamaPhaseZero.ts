@@ -1,5 +1,5 @@
 // Phase 0 pure functions: filing-detail cover parsing and race-vs-extract
-// reconciliation. No network, no database (plan-alabama-finance.md, Phase 0).
+// reconciliation. No network, no database (docs/plans/plan-alabama-finance.md, Phase 0).
 
 import type { AlabamaRaceRow } from "./alabamaFcpaClient.js";
 import type { AlabamaCashRow, AlabamaExpenditureRow } from "./alabamaFcpaCsv.js";

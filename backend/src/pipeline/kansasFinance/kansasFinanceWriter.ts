@@ -1,4 +1,4 @@
-// Kansas finance snapshot writer (plan-kansas-finance.md, Phase 3+).
+// Kansas finance snapshot writer (docs/plans/plan-kansas-finance.md, Phase 3+).
 // Thin wrapper over the standard state-finance writer. Identity: Kansas has
 // no filer id (the viewer keeps report identity in server session state), so
 // committee_id is the deterministic viewer SEARCH RECIPE

@@ -284,7 +284,7 @@ function numberTokensLicensedByWords(text: string): Set<string> {
 }
 
 /**
- * Cheap mechanical pre-filter (plan-content-wording.md Phase 2 layer 1).
+ * Cheap mechanical pre-filter (docs/plans/plan-content-wording.md Phase 2 layer 1).
  * Catches obvious breakage before spending a verification call; everything
  * subtle (flipped stance, lost negation, changed name) is the verifier's job.
  * Returns null when the rewrite passes, otherwise the flag reason.

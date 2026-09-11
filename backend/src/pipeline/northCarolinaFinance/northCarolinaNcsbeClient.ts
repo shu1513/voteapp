@@ -12,7 +12,7 @@ import {
 } from "./northCarolinaNcsbeParsers.js";
 
 // HTTP client for the NCSBE portal. Every route lives here and nowhere else
-// (north_carolina_plan.md decision 10 — the state is actively replacing this
+// (docs/plans/north_carolina_plan.md decision 10 — the state is actively replacing this
 // early-2000s ASP.NET app, so route changes must be one-module migrations).
 // Transport is fail-closed per decision 9: bodies are validated by shape
 // (the server labels real JSON `text/html`), transaction fetches page until

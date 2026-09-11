@@ -1,4 +1,4 @@
-// Delaware CFRS artifact parsers (plan-delaware-finance.md).
+// Delaware CFRS artifact parsers (docs/plans/plan-delaware-finance.md).
 //
 // Every shape here was pinned from live portal responses on 2026-08-26:
 // - Receipts/expenses CSV exports are NOT RFC CSV: fields are never quoted

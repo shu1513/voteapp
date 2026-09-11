@@ -48,7 +48,7 @@ import {
   type NorthCarolinaOutsideReportInput,
 } from "./northCarolinaOutsideSpendingAggregator.js";
 
-// Batch sync for North Carolina candidate finance (north_carolina_plan.md
+// Batch sync for North Carolina candidate finance (docs/plans/north_carolina_plan.md
 // PR 7), ohio pattern with the state's structural difference: instead of
 // eleven bulk files there are many small per-report artifacts, all read from
 // the local cache the acquisition script installs — this module NEVER touches

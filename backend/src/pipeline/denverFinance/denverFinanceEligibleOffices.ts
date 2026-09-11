@@ -1,4 +1,4 @@
-// Eligibility for Denver city campaign finance (plan-denver-finance.md
+// Eligibility for Denver city campaign finance (docs/plans/plan-denver-finance.md
 // Phase 2), copy-adapted from sanDiegoCityFinanceEligibleOffices. v1 scope is
 // the cycle-36 contest only: the Nov 3, 2026 City Council Vacancy Election
 // (At-Large Seat B) on the Denver place row. The at-large seat letter lives

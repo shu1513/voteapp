@@ -1,5 +1,5 @@
 -- Rhode Island campaign finance: canonical five-table state-finance schema
--- (north carolina 212 model, rhode_island_plan.md). committee_id is the ERTS
+-- (north carolina 212 model, docs/plans/rhode_island_plan.md). committee_id is the ERTS
 -- organization key — a stable numeric Board key. Unlike the canonical
 -- template, the summaries amounts CHECK allows signed cash_on_hand from day
 -- one: cash on hand is a balance, not a flow, and RI CF-2s carry liabilities

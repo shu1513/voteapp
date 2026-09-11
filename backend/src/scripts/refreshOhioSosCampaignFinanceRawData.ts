@@ -30,7 +30,7 @@ import { readStrictFlagValues } from "../utils/cliFlags.js";
 // expenditure report found in them.
 //
 // The portal is behind Cloudflare and refuses scripted HTTP, headless
-// Chrome, and fresh-profile automated Chrome alike (ohio_plan.md decision 9),
+// Chrome, and fresh-profile automated Chrome alike (docs/plans/ohio_plan.md decision 9),
 // so this script drives a Chrome the user has already started with their own
 // profile. It solves no challenges and spoofs nothing: if Cloudflare shows an
 // interstitial, the script stops and says so.

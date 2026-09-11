@@ -20,7 +20,7 @@ import {
 
 // HTTP client for the ERTS portal. Every route lives here and nowhere else so
 // a portal change is a one-module migration (north carolina decision-10
-// discipline). Transport is fail-closed (rhode_island_plan.md decision 3): the
+// discipline). Transport is fail-closed (docs/plans/rhode_island_plan.md decision 3): the
 // portal answers a rejected search with a 200 redirect back to the search
 // page, so every fetch validates its body against the expected page marker —
 // a login page, error page, or challenge page must never read as data.

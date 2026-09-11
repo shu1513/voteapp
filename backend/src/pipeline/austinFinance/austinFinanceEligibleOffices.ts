@@ -1,4 +1,4 @@
-// Eligibility for City of Austin campaign finance (plan-austin-finance.md
+// Eligibility for City of Austin campaign finance (docs/plans/plan-austin-finance.md
 // Phase 2), copy-adapted from denverFinanceEligibleOffices. Scope guard =
 // the Austin place row + an explicit election-date allowlist — never a
 // state-wide office sweep. Structural eligibility is any Mayor or City

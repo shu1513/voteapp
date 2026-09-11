@@ -1,4 +1,4 @@
-// Delaware candidate finance sync (plan-delaware-finance.md, Phase 1).
+// Delaware candidate finance sync (docs/plans/plan-delaware-finance.md, Phase 1).
 //
 // CACHE-ONLY: this module never touches the live portal — acquisition is a
 // separate layer behind DELAWARE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED.

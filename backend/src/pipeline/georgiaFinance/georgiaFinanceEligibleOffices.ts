@@ -6,7 +6,7 @@ export type GeorgiaFinanceEligibleOfficeKey = `${string}::${string}`;
 // GA 2026's only other statewide row — federal money belongs to the FEC,
 // never this module. County offices (County Commissioner, District Attorney)
 // and school boards file locally, largely as uploaded documents without
-// structured transactions, so they stay out of v1; see georgia_plan.md D9.
+// structured transactions, so they stay out of v1; see docs/plans/georgia_plan.md D9.
 export const GEORGIA_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "statewide::Governor",
   "statewide::Lieutenant Governor",

@@ -1,7 +1,7 @@
 // Read-only client for the Alabama FCPA public portal (Tyler entellitrak app
 // at fcpa.alabamavotes.gov). Phase 0 scope: race summaries, committee search,
 // bulk-extract catalog/download, filings list, filing-detail pages. See
-// plan-alabama-finance.md and backend/docs/alabama-campaign-finance.md.
+// docs/plans/plan-alabama-finance.md and backend/docs/alabama-campaign-finance.md.
 
 import { unzipSync } from "fflate";
 
@@ -211,7 +211,7 @@ export async function getAlabamaRaceRows(
 ): Promise<AlabamaRaceRow[]> {
   // Never pass the year param: it takes internal option ids with a different
   // year attribution than the extracts. The no-year response is the cycle
-  // aggregate (plan-alabama-finance.md, gotcha 1).
+  // aggregate (docs/plans/plan-alabama-finance.md, gotcha 1).
   return requestAllPages<AlabamaRaceRow>(
     "com.acf.common.page.politicalracesearchresults",
     {

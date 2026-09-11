@@ -1,4 +1,4 @@
-// North Dakota finance snapshot writer (plan-north-dakota-finance.md,
+// North Dakota finance snapshot writer (docs/plans/plan-north-dakota-finance.md,
 // Phase 1). Thin wrapper over the standard state-finance writer. Identity:
 // the registry `entityId` (10 digits, == bulk-CSV RegistrantID == API
 // entityID) in committee_id; the internal orgID is an acquisition key only.

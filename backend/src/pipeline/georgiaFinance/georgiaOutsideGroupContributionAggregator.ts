@@ -8,7 +8,7 @@ import { GEORGIA_TRANSACTION_SUB_TYPE_CLASS_BY_HOST_CODE } from "./georgiaDirect
 import type { GeorgiaOutsideSpendingGroup, GeorgiaSupportOppose } from "./georgiaOutsideSpendingAggregator.js";
 import type { GeorgiaFinanceOutsideGroupBreakdownInput } from "./georgiaFinanceWriter.js";
 
-// Funders of Georgia outside spenders (georgia_plan.md PR 6, maryland/ohio
+// Funders of Georgia outside spenders (docs/plans/georgia_plan.md PR 6, maryland/ohio
 // donor+industry pattern): each IE spender is an ordinary PeachFile filer, so
 // its itemized contributions come from the same TCON search the direct leg
 // uses. The sync layer fetches the rows per spender (scoped by registration

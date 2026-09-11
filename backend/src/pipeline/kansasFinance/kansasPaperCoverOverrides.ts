@@ -1,4 +1,4 @@
-// Transcribed paper covers (plan-kansas-finance.md, Phase 4 — paper filers).
+// Transcribed paper covers (docs/plans/plan-kansas-finance.md, Phase 4 — paper filers).
 //
 // A paper (scanned) report is a viewer row with no cover to open, so the
 // aggregator fails the candidate closed ("no opened cover for the canonical

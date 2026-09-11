@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react";
 
-// Error monitoring per plan-error-monitoring.md Phase 3, mirroring the
+// Error monitoring per docs/plans/plan-error-monitoring.md Phase 3, mirroring the
 // backend module (backend/src/observability/sentry.ts): dark unless
 // VITE_SENTRY_DSN is set at build time, errors only, and a scrubber that
 // keeps addresses, emails, and district query strings out of events.

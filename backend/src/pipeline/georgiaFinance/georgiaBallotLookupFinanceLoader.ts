@@ -14,7 +14,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 const GENERIC_GEORGIA_ETHICS_SOURCE_URL = "https://ethics.ga.gov/records-search-all/";
 
-// georgia_plan.md D6/D12: Georgia discloses no per-target amount on an
+// docs/plans/georgia_plan.md D6/D12: Georgia discloses no per-target amount on an
 // independent expenditure, so a transaction naming more than one target —
 // several candidates, or a candidate plus a ballot measure — has no
 // defensible split and stays out of the per-candidate totals (49 of 387 IE
@@ -39,7 +39,7 @@ const GEORGIA_OUTSIDE_COVERAGE_NOTE =
 // figures, which count money (pre-July-2025 filings, loans, carried
 // balances) that the current system's transaction store does not itemize —
 // so the occupation/size breakdowns can legitimately explain less than the
-// official total (live-verified 2026-08-09; see georgia_plan.md). Without
+// official total (live-verified 2026-08-09; see docs/plans/georgia_plan.md). Without
 // this sentence a reader reasonably assumes the breakdowns cover all the
 // money.
 const GEORGIA_DIRECT_COVERAGE_NOTE =

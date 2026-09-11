@@ -65,7 +65,7 @@ const writer = createStandardStateFinanceSnapshotWriter({
   label: "Rhode Island",
   // Current (2026) cycle only: ERTS has no statewide export, so every cycle
   // is a fresh per-organization crawl — historical expansion is a separate,
-  // separately tested decision (rhode_island_plan.md).
+  // separately tested decision (docs/plans/rhode_island_plan.md).
   minElectionYear: 2026,
   // Migration 236 ships the relaxed amounts CHECK from day one: cash on hand
   // is a signed balance, RI CF-2s carry liabilities, and an official negative

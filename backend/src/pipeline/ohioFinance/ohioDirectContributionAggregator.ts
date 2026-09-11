@@ -5,7 +5,7 @@ import {
 } from "./ohioSosBulkFiles.js";
 
 // Direct-money aggregation for one Ohio candidate committee over one
-// election cycle (ohio_plan.md PR 6). Itemized receipts come from the
+// election cycle (docs/plans/ohio_plan.md PR 6). Itemized receipts come from the
 // CAC_CON_{Y-1,Y} bulk files; disbursements and cash on hand come from the
 // candidate cover pages, whose reports chain per period with no amendment
 // duplicates (verified on the real 2026-cycle files: AMT_FORWARD equals the

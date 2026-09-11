@@ -1,4 +1,4 @@
-// Kansas finance due sync (plan-kansas-finance.md, Phase 4): active links
+// Kansas finance due sync (docs/plans/plan-kansas-finance.md, Phase 4): active links
 // whose snapshot is missing or stale, each rebuilt from the live SOS CFR
 // viewer and written through the standard snapshot writer. Run the auto-link
 // CLI first; this never creates links.

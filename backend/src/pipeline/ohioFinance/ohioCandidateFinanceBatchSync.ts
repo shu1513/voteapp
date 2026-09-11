@@ -52,7 +52,7 @@ import {
   type OhioSosExpenditureRow,
 } from "./ohioSosBulkFiles.js";
 
-// Batch sync for Ohio candidate finance (ohio_plan.md PR 7), maryland
+// Batch sync for Ohio candidate finance (docs/plans/ohio_plan.md PR 7), maryland
 // pattern with one structural difference: the ~90 MB CAC_CON files are
 // never materialized (decision 10). Each cycle year streams its two
 // contribution files exactly once, feeding one direct accumulator per

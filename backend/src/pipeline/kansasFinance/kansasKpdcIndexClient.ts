@@ -1,4 +1,4 @@
-// KPDC scanned-archive client (plan-kansas-finance.md, Phase 1).
+// KPDC scanned-archive client (docs/plans/plan-kansas-finance.md, Phase 1).
 //
 // The archive under kansas.gov/ethics/CFAScanned/ is plain static hosting:
 // hand-authored HTML link trees per office family and cycle (e.g.

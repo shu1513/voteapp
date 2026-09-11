@@ -4,7 +4,7 @@
 // against one full registration sweep per run, and write only exact matches
 // with linkSource "cfis_registration" — the writer's manual-link protection
 // guarantees operator links always win. Ambiguity and misses are reported,
-// never linked (plan-arkansas-finance.md, Phase 2).
+// never linked (docs/plans/plan-arkansas-finance.md, Phase 2).
 
 import type { Pool, PoolClient } from "pg";
 

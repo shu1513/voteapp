@@ -1,4 +1,4 @@
-// Kansas viewer Candidate-filings enumeration (plan-kansas-finance.md),
+// Kansas viewer Candidate-filings enumeration (docs/plans/plan-kansas-finance.md),
 // shared by the Phase 3 auto-link and the Phase 2 per-candidate ledger: one
 // search per filing type over the office's cycle window, every grid page,
 // each row keeping a handle that opens its e-filed HTML report from the

@@ -1,4 +1,4 @@
--- Denver city campaign-finance tables (plan-denver-finance.md Phase 1).
+-- Denver city campaign-finance tables (docs/plans/plan-denver-finance.md Phase 1).
 -- Standard five-table shape (migration 172 Houston is the closest template):
 -- Phase 3 reuses standardStateFinanceBallotLookupLoader and
 -- standardStateFinanceDueListQuery as-is, so the summaries carry the standard

@@ -1,4 +1,4 @@
-// Phase 0 gate computations for Arkansas CFIS (plan-arkansas-finance.md).
+// Phase 0 gate computations for Arkansas CFIS (docs/plans/plan-arkansas-finance.md).
 // Pure functions + row-callback accumulators (the parser hands rows over one
 // at a time so only gold-entity detail is retained); no database, no
 // publication.

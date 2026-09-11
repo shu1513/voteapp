@@ -1,4 +1,4 @@
-// Link writes and the all-or-nothing snapshot writer (plan-san-diego-finance.md
+// Link writes and the all-or-nothing snapshot writer (docs/plans/plan-san-diego-finance.md
 // Phase 1). Copy-adapted from sanJoseFinance/sanJoseFinanceWriter.ts — same
 // vendor portal, same CAL 2.20 export, same accounting model; only the table
 // prefix (sdcity_) and error wording differ. Upsert semantics: one active

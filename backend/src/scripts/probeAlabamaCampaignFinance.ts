@@ -1,4 +1,4 @@
-// Alabama FCPA Phase 0 probe (plan-alabama-finance.md). Validates, against
+// Alabama FCPA Phase 0 probe (docs/plans/plan-alabama-finance.md). Validates, against
 // live public data only (no database, no cache, no snapshot):
 //   1. race-search id scrape + race-row enumeration for several offices,
 //   2. bulk-extract catalog/download/parse contracts with quarantine stats,

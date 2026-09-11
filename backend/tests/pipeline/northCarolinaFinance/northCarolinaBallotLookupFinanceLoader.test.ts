@@ -17,10 +17,10 @@ describe("northCarolinaBallotLookupFinanceLoader", () => {
     genericSourceUrl: "https://cf.ncsbe.gov/CFOrgLkup/",
     eligibleOffice: { office_scope: "state_upper", office_canonical_name: "State Senator" },
     // NC 2026's only statewide election row is the US Senate race — federal
-    // money belongs to the FEC, never this module (north_carolina_plan.md
+    // money belongs to the FEC, never this module (docs/plans/north_carolina_plan.md
     // decision 2).
     ineligibleOffice: { office_scope: "statewide", office_canonical_name: "United States Senator" },
-    // north_carolina_plan.md decision 13: filings without a structured data
+    // docs/plans/north_carolina_plan.md decision 13: filings without a structured data
     // view (scanned images) stay out of the totals until a reviewed PDF/image
     // path ships. Pinned so the disclosure cannot quietly disappear while the
     // gap remains.

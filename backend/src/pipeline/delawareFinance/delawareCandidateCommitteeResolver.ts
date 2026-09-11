@@ -1,4 +1,4 @@
-// Delaware candidate -> committee resolver (plan-delaware-finance.md).
+// Delaware candidate -> committee resolver (docs/plans/plan-delaware-finance.md).
 //
 // Evidence model (probe gate 11 pinned the sources): bulk registry rows
 // carry NO OfficeSought/DistrictName, so office evidence comes from the

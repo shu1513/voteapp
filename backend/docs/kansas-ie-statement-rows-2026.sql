@@ -1,5 +1,5 @@
 -- Kansas 2026 independent-expenditure statement rows, transcribed by hand from
--- the KPDC scans on the "Others" tree (plan-kansas-finance.md, Phase 5 path 1).
+-- the KPDC scans on the "Others" tree (docs/plans/plan-kansas-finance.md, Phase 5 path 1).
 -- One row per PRINTED row; period_due_key is the CHECKED period box, not the
 -- filename token; statement_total is the printed "Total this Period". Vendors
 -- are payees, not contributors, so no contributor names appear (K.S.A. 25-4154(d)).

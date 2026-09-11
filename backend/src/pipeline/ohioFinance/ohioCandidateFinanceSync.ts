@@ -22,7 +22,7 @@ import {
   type OhioFinanceSummaryInput,
 } from "./ohioFinanceWriter.js";
 
-// Per-candidate write step for Ohio finance (ohio_plan.md PR 7). Unlike the
+// Per-candidate write step for Ohio finance (docs/plans/ohio_plan.md PR 7). Unlike the
 // maryland sibling this takes aggregation RESULTS, not raw rows: the ~90 MB
 // CAC_CON files must be streamed exactly once for every open accumulator
 // (decision 10), so the batch layer owns loading and aggregation and this
@@ -38,7 +38,7 @@ type ConnectableQueryable = Queryable & {
 };
 
 // One candidate's slice of the year's outside-group funder aggregation
-// (ohio_plan.md PR 8, #3): raw donor/industry breakdowns from the batch
+// (docs/plans/ohio_plan.md PR 8, #3): raw donor/industry breakdowns from the batch
 // layer plus its row counters, pre industry enrichment.
 export type OhioCandidateOutsideFundersInput = {
   breakdowns: readonly OhioFinanceOutsideGroupBreakdownInput[];

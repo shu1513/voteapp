@@ -2,7 +2,7 @@ import { createReadStream } from "node:fs";
 
 // Chunk-feedable CSV parser for the Ohio SoS bulk exports served by the
 // CFDISCLOSURE file-transfer page. Quirks pinned by the 2026-08-04 acquisition
-// spike (ohio_plan.md decision 10): bytes are Windows-1252 (not valid UTF-8),
+// spike (docs/plans/ohio_plan.md decision 10): bytes are Windows-1252 (not valid UTF-8),
 // rows are separated by bare CR (no LF anywhere in the files), currency
 // amounts arrive quoted ("$150,000.00"), headers drift between underscores and
 // spaces (CANDIDATE_FIRST_NAME vs CANDIDATE FIRST NAME), the active-candidate

@@ -26,7 +26,7 @@ Verdict: **BUILDABLE.** All four targets available: totals raised, totals spent,
 
 ## Gotchas
 
-- K.S.A. 25-4154(d): contributor names may not be used for **commercial** purposes (class A misdemeanor). Whether any VoteApp use counts as commercial is an **open legal question** (paid memberships exist) — no judgment is made here. Posture per `plan-kansas-finance.md`: contributor names stay in restricted raw staging only, never in published surfaces; counsel/KPDC review of the ingestion + publication pattern is required before any name-bearing feature.
+- K.S.A. 25-4154(d): contributor names may not be used for **commercial** purposes (class A misdemeanor). Whether any VoteApp use counts as commercial is an **open legal question** (paid memberships exist) — no judgment is made here. Posture per `docs/plans/plan-kansas-finance.md`: contributor names stay in restricted raw staging only, never in published surfaces; counsel/KPDC review of the ingestion + publication pattern is required before any name-bearing feature.
 - KPDC file-name convention: `<officecode><initials>_<period>.pdf`, e.g. `SW01CH_202607`, `H001DH_202601`; `AT`=appointment of treasurer, `PLF`=last-minute (July), `Aff`=exemption affidavit. Codes are per-district+initials, not stable IDs.
 - Statewide 2026 cycle covers 1/1/23–12/31/26 (4-year); House cycles 2-year; Senate 4-year (next 2028 — no regular Senate races Nov 2026).
 - Amendments exist both as `amend` PDFs and Amendment Date column in the viewer; take latest.

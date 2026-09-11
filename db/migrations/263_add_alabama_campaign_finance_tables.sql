@@ -1,6 +1,6 @@
 BEGIN;
 
--- Alabama campaign finance (plan-alabama-finance.md, Phase 2).
+-- Alabama campaign finance (docs/plans/plan-alabama-finance.md, Phase 2).
 -- Mirrors Montana migration 261 with the plan's adaptations:
 --   * committee_id holds the FCPA portal's internal numeric committee id
 --     (race-row COMMITTEEID, e.g. 7962) — the join key for race totals,

@@ -1,6 +1,6 @@
 BEGIN;
 
--- Kansas campaign finance (plan-kansas-finance.md, Phase 3).
+-- Kansas campaign finance (docs/plans/plan-kansas-finance.md, Phase 3).
 -- Mirrors Alabama migration 263 / Montana 261 with the plan's adaptations:
 --   * Kansas has no filer id: the SOS CFR viewer identifies a report only by
 --     server session state. committee_id therefore holds the deterministic

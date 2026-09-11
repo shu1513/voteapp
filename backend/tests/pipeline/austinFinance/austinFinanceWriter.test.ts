@@ -40,7 +40,7 @@ const link = {
   filerName: "Watson, Kirk P.",
 };
 
-// Watson 2024 fixtures (plan-austin-finance.md Phase 0 gates): raised /
+// Watson 2024 fixtures (docs/plans/plan-austin-finance.md Phase 0 gates): raised /
 // spent are effective-report cover sums; the outside figures are the Austin
 // Leadership PAC allocation.
 const summary = {
