@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1547040,
+      "measure_id": "SB 767",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 767, which gave Calvert County deputy sheriffs and correctional deputies the right to organize and bargain with the Sheriff and the County Administrator over wages and employee benefits. A union is recognized through a petition, or through a secret-ballot election if the Sheriff challenges the petition. Any extra money a contract needs still requires approval by the County Commissioners. The Maryland House of Delegates passed it 108-27 and it was signed into law as Chapter 132 of 2025.",
+      "nay_description": "Voted against passing SB 767, which gave Calvert County deputy sheriffs and correctional deputies the right to organize and bargain with the Sheriff and the County Administrator over wages and employee benefits. A union is recognized through a petition, or through a secret-ballot election if the Sheriff challenges the petition. Any extra money a contract needs still requires approval by the County Commissioners. The Maryland House of Delegates passed it 108-27 and it was signed into law as Chapter 132 of 2025.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
