@@ -28,7 +28,7 @@ import {
   listDueNewHampshireCandidateFinanceSyncRows,
   type NewHampshireCandidateFinanceDueRow,
 } from "./newHampshireCandidateFinanceDueList.js";
-import { resolveNewHampshireCandidateFiler } from "./newHampshireCandidateFilerResolver.js";
+import { resolveNewHampshireCandidateFilerPreferringActive } from "./newHampshireCandidateFilerResolver.js";
 import {
   syncNewHampshireCandidateFinance,
   type NewHampshireCandidateFinanceSyncResult,
@@ -153,8 +153,8 @@ export function createSharedNewHampshireCfsBatchClient(
 
 /**
  * Picks the candidate spelling the per-candidate sync must resolve with: the
- * first of the due row's spellings that resolves (any registration status,
- * exactly as the sync resolves) to the linked filing entity. Pure — it reads
+ * first of the due row's spellings that resolves (Active registrations first,
+ * then any status, exactly as the sync resolves) to the linked filing entity. Pure — it reads
  * the registry rows it is given. Throws, with every attempt listed, when no
  * spelling lands on the linked filer, so the batch records the link as failed
  * without calling the sync (and without writing another filer's money).
@@ -166,7 +166,7 @@ export function chooseSyncCandidateName(input: {
 }): string {
   const attempts: string[] = [];
   for (const candidateName of input.row.candidateNames) {
-    const resolution = resolveNewHampshireCandidateFiler({
+    const resolution = resolveNewHampshireCandidateFilerPreferringActive({
       candidateName,
       officeScope: input.row.officeScope,
       officeName: input.row.officeName,

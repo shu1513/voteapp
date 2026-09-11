@@ -17,6 +17,8 @@ import {
   type NewHampshireFilingEntityRow,
 } from "./newHampshireCfsClient.js";
 import {
+  isActiveNewHampshireRegistration,
+  NEW_HAMPSHIRE_CFS_ACTIVE_REGISTRATION_STATUS,
   normalizeNewHampshireCandidateNameForStorage,
   resolveNewHampshireCandidateFiler,
   type NewHampshireCandidateFilerMatch,
@@ -33,8 +35,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 /** Public portal; the same default the per-candidate sync stores as sourceUrl. */
 export const NEW_HAMPSHIRE_CFS_PUBLIC_URL = "https://cfs.sos.nh.gov/";
 export const NEW_HAMPSHIRE_FINANCE_AUTOMATIC_LINK_SOURCE: NewHampshireFinanceLinkSource = "cfs_registration";
-/** CFS registration status that the auto-link accepts for a new link. */
-export const NEW_HAMPSHIRE_CFS_ACTIVE_REGISTRATION_STATUS = "Active";
+export { NEW_HAMPSHIRE_CFS_ACTIVE_REGISTRATION_STATUS };
 
 /** The registry calls shared by the auto-link and the batch sync. */
 export type NewHampshireCfsRegistryClient = {
@@ -177,10 +178,6 @@ export async function listNewHampshireCandidateElectionsMissingFinanceLinks(
   }));
 }
 
-function isActiveRegistration(row: NewHampshireFilingEntityRow): boolean {
-  return row.status.trim().toLowerCase() === NEW_HAMPSHIRE_CFS_ACTIVE_REGISTRATION_STATUS.toLowerCase();
-}
-
 // The resolver takes one spelling; try the display name first, then the
 // structured "First Last" one, and keep the first spelling that finds any
 // registration (matched or ambiguous). All-miss returns the first miss.
@@ -243,7 +240,7 @@ export async function autoLinkNewHampshireCandidateFinanceForCandidateElection(i
 }): Promise<NewHampshireFinanceAutoLinkResult> {
   const candidate = input.candidateElection;
   const base = { candidateId: candidate.candidateId, electionId: candidate.electionId, electionCycleId: input.electionCycleId };
-  const activeRows = input.filingEntityRows.filter(isActiveRegistration);
+  const activeRows = input.filingEntityRows.filter(isActiveNewHampshireRegistration);
   const resolution = resolveAcrossNames({ candidate, electionCycleId: input.electionCycleId, filingEntityRows: activeRows });
   if (resolution.status === "ambiguous") {
     return {

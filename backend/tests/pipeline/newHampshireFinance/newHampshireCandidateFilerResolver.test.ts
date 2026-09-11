@@ -4,6 +4,7 @@ import {
   normalizeNewHampshireCandidateNameForStorage,
   normalizeNewHampshireCandidateNameKeys,
   resolveNewHampshireCandidateFiler,
+  resolveNewHampshireCandidateFilerPreferringActive,
 } from "../../../src/pipeline/newHampshireFinance/newHampshireCandidateFilerResolver.js";
 import type { NewHampshireFilingEntityRow } from "../../../src/pipeline/newHampshireFinance/newHampshireCfsClient.js";
 
@@ -90,27 +91,197 @@ describe("newHampshireCandidateFilerResolver", () => {
     ).toMatchObject({ status: "matched", filingEntityId: 4 });
   });
 
-  it("rejects candidate committees whose official registration omits the required district", () => {
+  // Live 2026 shape: 22 Active State Senate committees register without a
+  // district (Abbas, Watters, Prentiss, ...).
+  const abbasInput = {
+    candidateName: "Daryl Abbas",
+    officeScope: "state_upper",
+    officeName: "State Senator",
+    district: "22",
+    electionCycleId: 110,
+  } as const;
+  const abbasBlankDistrict = (overrides: Partial<NewHampshireFilingEntityRow> = {}) =>
+    filingEntity({
+      filingEntityId: 208786,
+      filerName: "Abbas for New Hampshire",
+      committeeName: "Abbas for New Hampshire",
+      candidateName: "Daryl Abbas",
+      firstName: "Daryl",
+      lastName: "Abbas",
+      district: null,
+      ...overrides,
+    });
+
+  it("accepts a district-blank State Senate committee when the name matches exactly one filer", () => {
     expect(
       resolveNewHampshireCandidateFiler({
-        candidateName: "Daryl Abbas",
-        officeScope: "state_upper",
-        officeName: "State Senator",
-        district: "22",
+        ...abbasInput,
+        filingEntityRows: [
+          abbasBlankDistrict(),
+          // Another district-blank Senate filer with a different name is not a conflict.
+          abbasBlankDistrict({ filingEntityId: 1, candidateName: "David Watters", firstName: "David", lastName: "Watters" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filingEntityId: 208786,
+      filerName: "Abbas for New Hampshire",
+      candidateAliases: ["Daryl Abbas"],
+      district: "22",
+      confidence: "unique_name",
+      matchedRegistrationRowCount: 1,
+    });
+  });
+
+  it("prefers an exact-district registration over a district-blank one", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...abbasInput,
+        filingEntityRows: [
+          abbasBlankDistrict(),
+          abbasBlankDistrict({ filingEntityId: 9, filerName: "Abbas 2026", district: "22" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filingEntityId: 9, confidence: "exact", district: "22" });
+  });
+
+  it("reports district-blank fallback as ambiguous when the name is not unique in the office", () => {
+    const otherDistrict = resolveNewHampshireCandidateFiler({
+      ...abbasInput,
+      filingEntityRows: [
+        abbasBlankDistrict(),
+        abbasBlankDistrict({ filingEntityId: 9, filerName: "Abbas for Senate 3", district: "3" }),
+      ],
+    });
+    expect(otherDistrict).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+    expect(
+      otherDistrict.status === "ambiguous"
+        ? otherDistrict.matches.map((match) => [match.filingEntityId, match.district, match.confidence])
+        : []
+    ).toEqual([
+      [9, "3", "unique_name"],
+      [208786, "22", "unique_name"],
+    ]);
+
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...abbasInput,
+        filingEntityRows: [abbasBlankDistrict(), abbasBlankDistrict({ filingEntityId: 9, filerName: "Abbas Two" })],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+  });
+
+  it("treats a non-empty district the parser cannot read as conflicting evidence, not a blank", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...abbasInput,
+        filingEntityRows: [abbasBlankDistrict({ district: "District 3 - Nashua" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+    // Whitespace-only is a blank.
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...abbasInput,
+        filingEntityRows: [abbasBlankDistrict({ district: "  " })],
+      })
+    ).toMatchObject({ status: "matched", filingEntityId: 208786, confidence: "unique_name" });
+  });
+
+  it("prefers Active registrations and falls back to any status only when Active finds nothing", () => {
+    // Live SS9 shape: an Active district-blank committee plus a Closed exact-district one.
+    const mcLaughlin = {
+      candidateName: "Matthew McLaughlin",
+      officeScope: "state_upper",
+      officeName: "State Senator",
+      district: "9",
+      electionCycleId: 110,
+    } as const;
+    const activeBlank = filingEntity({
+      filingEntityId: 243712,
+      filerName: "Friend's of Matt McLaughlin",
+      candidateName: "Matthew McLaughlin",
+      firstName: "Matthew",
+      lastName: "McLaughlin",
+      district: null,
+      status: "Active",
+    });
+    const closedExact = filingEntity({
+      filingEntityId: 241471,
+      filerName: "McLaughlin, Matthew",
+      candidateName: "Matthew McLaughlin",
+      firstName: "Matthew",
+      lastName: "McLaughlin",
+      filerTypeCode: "CC",
+      filerSubTypeCode: null,
+      district: "9",
+      status: "Closed",
+    });
+
+    expect(
+      resolveNewHampshireCandidateFilerPreferringActive({ ...mcLaughlin, filingEntityRows: [closedExact, activeBlank] })
+    ).toMatchObject({ status: "matched", filingEntityId: 243712, confidence: "unique_name" });
+    // Status-agnostic resolution still picks the exact-district row.
+    expect(resolveNewHampshireCandidateFiler({ ...mcLaughlin, filingEntityRows: [closedExact, activeBlank] })).toMatchObject({
+      status: "matched",
+      filingEntityId: 241471,
+      confidence: "exact",
+    });
+    // Only a Closed registration: still resolves (manual links to closed filers keep syncing).
+    expect(resolveNewHampshireCandidateFilerPreferringActive({ ...mcLaughlin, filingEntityRows: [closedExact] })).toMatchObject({
+      status: "matched",
+      filingEntityId: 241471,
+    });
+    // Active ambiguity is not papered over by the fallback.
+    expect(
+      resolveNewHampshireCandidateFilerPreferringActive({
+        ...mcLaughlin,
+        filingEntityRows: [closedExact, activeBlank, { ...activeBlank, filingEntityId: 1, filerName: "Second" }],
+      })
+    ).toMatchObject({ status: "ambiguous" });
+  });
+
+  it("never applies the district-blank fallback to offices whose districts repeat by county", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        candidateName: "Wayne Campbell",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "State House District Strafford 4 (2024); New Hampshire",
         electionCycleId: 110,
         filingEntityRows: [
           filingEntity({
-            filingEntityId: 208786,
-            filerName: "Abbas for New Hampshire",
-            committeeName: "Abbas for New Hampshire",
-            candidateName: "Daryl Abbas",
-            firstName: "Daryl",
-            lastName: "Abbas",
+            filingEntityId: 244578,
+            filerName: "Committee to Elect Packy Campbell",
+            candidateName: "Wayne Campbell",
+            firstName: "Wayne",
+            lastName: "Campbell",
+            officeName: "State Representative",
+            county: null,
             district: null,
           }),
         ],
       })
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
+  it("drops an alias shared by a district-blank Senate filer and a same-named House filer", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...abbasInput,
+        filingEntityRows: [
+          abbasBlankDistrict(),
+          abbasBlankDistrict({
+            filingEntityId: 77,
+            filerName: "Abbas, Daryl",
+            filerTypeCode: "CAN",
+            filerSubTypeCode: null,
+            officeName: "State Representative",
+            county: "Rockingham",
+            district: "5",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filingEntityId: 208786, candidateAliases: [] });
   });
 
   it("never derives candidate identity from committee or filer display text", () => {

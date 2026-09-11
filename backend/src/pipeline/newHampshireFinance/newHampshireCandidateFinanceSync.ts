@@ -11,7 +11,7 @@ import {
 } from "./newHampshireCfsClient.js";
 import {
   normalizeNewHampshireCandidateNameForStorage,
-  resolveNewHampshireCandidateFiler,
+  resolveNewHampshireCandidateFilerPreferringActive,
   type NewHampshireCandidateFilerResolution,
 } from "./newHampshireCandidateFilerResolver.js";
 import {
@@ -208,7 +208,9 @@ export async function syncNewHampshireCandidateFinance(
     input.cfsClientOptions
   );
   validateFilingEntityCycle({ rows: filingEntityRows, electionCycleId, electionYear });
-  const resolution = resolveNewHampshireCandidateFiler({
+  // Same selection rule as the auto-link: Active registrations first, any
+  // status only as a fallback, so a link the auto-link wrote resolves here too.
+  const resolution = resolveNewHampshireCandidateFilerPreferringActive({
     candidateName,
     officeScope,
     officeName,
