@@ -58,8 +58,10 @@ department "may not issue an order of constraint under any circumstance." An
 order of constraint is one that applies to all or substantially all of a group
 of people or of public places and imposes isolation, quarantine, a stay-at-home
 order, physical control, a required action, or the closing of schools, theaters
-or gatherings. The act also removes the words limiting that definition to
-declared emergencies, so the ban is broader than emergency orders alone.
+or gatherings. The act strikes one reference to a declared public health
+emergency from that definition, but Subsection (10)(a)(ii) still requires that
+the order be made in response to a declared public health emergency, so the ban
+reaches group orders during a declared emergency, not beyond it.
 
 An order of restriction may now name only one individual. And a place of public
 accommodation or a state-regulated enterprise may not require a face covering
