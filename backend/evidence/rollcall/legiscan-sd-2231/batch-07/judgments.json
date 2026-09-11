@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1637650,
+      "measure_id": "HB 1217",
+      "vote_date": "2026-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1217, which would have barred South Dakota schools, colleges and universities from using public money to support unions. They could no longer deduct union dues from pay, give a union more worker information than public records law requires unless the worker agreed in writing, or send out union messages. Workers could still use their own earned leave for union work, but on-duty union representation would be paid only if the union repaid the cost. Breaking the rule would have brought civil penalties and lawsuits. The South Dakota House rejected it, 27-40. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1217, which would have barred South Dakota schools, colleges and universities from using public money to support unions. They could no longer deduct union dues from pay, give a union more worker information than public records law requires unless the worker agreed in writing, or send out union messages. Workers could still use their own earned leave for union work, but on-duty union representation would be paid only if the union repaid the cost. Breaking the rule would have brought civil penalties and lawsuits. The South Dakota House rejected it, 27-40. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
