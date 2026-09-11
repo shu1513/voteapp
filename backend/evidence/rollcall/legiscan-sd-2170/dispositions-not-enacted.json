@@ -1,0 +1,2758 @@
+[
+ {
+  "session": 2170,
+  "bill_number": "HB1013",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499613,
+    "date": "2025-02-25",
+    "tally": "31-39",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Increase weights and measures inspection fees charged by the Department of Public Safety.",
+  "disposition": "dropped",
+  "reason": "An inspection fee schedule for scales and fuel pumps. Administrative, and no research area carries a direction on it."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1017",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1477735,
+    "date": "2025-01-30",
+    "tally": "34-32",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require the acceptance of a cash payment for admission to a school-affiliated event.",
+  "disposition": "dropped",
+  "reason": "Requiring schools to take cash at the gate is a payment-method rule. No research area covers it."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1023",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1473923,
+    "date": "2025-01-23",
+    "tally": "38-31",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Modify the definition of a conviction for purposes of license revocation.",
+  "disposition": "dropped",
+  "reason": "A definitional change to when a driving conviction counts. Technical."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1025",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1496977,
+    "date": "2025-02-21",
+    "tally": "34-35",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Authorize the Department of Corrections to construct a prison facility for offenders committed to the Department of Corrections in Lincoln County, to make an appropriation therefor, to transfer moneys to the incarceration construction fund, and to declare an emergency.",
+  "disposition": "dropped",
+  "reason": "Authority to build a men's prison. The vote turned on the site and the price, not on a policy direction any area carries."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1054",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1482626,
+    "date": "2025-02-05",
+    "tally": "18-49",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Allow public schools to authorize an individual to volunteer or be employed as a school chaplain.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "civil_rights (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1058",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1489408,
+    "date": "2025-02-13",
+    "tally": "24-44",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit the reporting of medical debt to a consumer reporting agency and to provide a penalty therefor.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "corporate_accountability (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1073",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1476541,
+    "date": "2025-01-29",
+    "tally": "40-28",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Designate contact information provided on a voter registration form as not for public inspection.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "data_privacy (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1085",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499650,
+    "date": "2025-02-25",
+    "tally": "40-30",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Establish a moratorium on the construction of carbon dioxide pipelines in this state.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "environment_and_public_health (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1105",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1486470,
+    "date": "2025-02-11",
+    "tally": "30-38",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require the display of the state seal or motto in public school classrooms.",
+  "disposition": "dropped",
+  "reason": "Displaying the state seal or motto in classrooms is symbolic and carries no area direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1107",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1482329,
+    "date": "2025-02-05",
+    "tally": "28-39",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit natural asset companies.",
+  "disposition": "dropped",
+  "reason": "Natural asset companies are a federal rule-making that never took effect. Too obscure to be a recognized subject."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1109",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1483850,
+    "date": "2025-02-06",
+    "tally": "42-26",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1493600,
+    "date": "2025-02-19",
+    "tally": "17-17",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit the manufacture, sale, or distribution of cell-cultured meat in this state, and to provide a penalty therefor.",
+  "disposition": "dropped",
+  "reason": "A ban on lab-grown meat reads as consumer protection and as protection of an industry at once. No honest direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1115",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499189,
+    "date": "2025-02-25",
+    "tally": "56-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Establish the crime of aggravated criminal entry of a motor vehicle with the intent to steal a firearm or firearm silencer, to make offenders ineligible for presumptive probation, and to provide a penalty therefor.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "public_safety_and_crime_control (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1117",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1485599,
+    "date": "2025-02-10",
+    "tally": "29-39",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify requirements on the use of mobile electronic devices while driving.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "public_safety_and_crime_control (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1121",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1489830,
+    "date": "2025-02-13",
+    "tally": "11-24",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Revise passenger limits for holders of restricted minor's driving permits.",
+  "disposition": "dropped",
+  "reason": "Read the text: it swaps one exception to the young-driver passenger limit for another, adding a childcare exception while folding the household exception into family. It neither tightens nor loosens the limit, so no direction is defensible."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1122",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1484449,
+    "date": "2025-02-07",
+    "tally": "26-41",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Amend provisions of the Uniform Commercial Code.",
+  "disposition": "dropped",
+  "reason": "Uniform Commercial Code drafting amendments. Technical."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1124",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1493691,
+    "date": "2025-02-19",
+    "tally": "43-27",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Repeal a requirement regarding possession of a registry card.",
+  "disposition": "dropped",
+  "reason": "Repealing a card-possession rule inside the medical cannabis program. Narrow and procedural."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1132",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1516989,
+    "date": "2025-03-13",
+    "tally": "27-43",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1505011,
+    "date": "2025-03-04",
+    "tally": "20-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Establish provisions for eligibility in the child care assistance program for certain child care employees.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "social_programs_and_welfare (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1135",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499674,
+    "date": "2025-02-25",
+    "tally": "53-15",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Provide opportunities for treatment courts for South Dakotans, create a workgroup to study rehabilitation programs, and declare an emergency.",
+  "disposition": "dropped",
+  "reason": "A vehicle bill. When the House passed it 53-15 the whole text read 'The Legislature shall provide opportunities for South Dakotans'; the treatment-court substance was added by Senate amendment two weeks later. The House voted on nothing."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1152",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1492638,
+    "date": "2025-02-18",
+    "tally": "32-37",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit the enforcement and implementation of directives from intergovernmental organizations, and to provide a penalty therefor.",
+  "disposition": "dropped",
+  "reason": "A bar on enforcing directives from international bodies that bind nobody in state law. No area direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1154",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1485765,
+    "date": "2025-02-10",
+    "tally": "36-32",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Change the approval requirement for the construction or expansion of a municipal camping or tourist accommodation facility.",
+  "disposition": "dropped",
+  "reason": "Who approves a municipal campground. Local and narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1165",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1492641,
+    "date": "2025-02-18",
+    "tally": "40-30",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1509722,
+    "date": "2025-03-10",
+    "tally": "15-19",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide a means by which an agricultural producer may request an automatic refund of an assessment on crops.",
+  "disposition": "dropped",
+  "reason": "A refund of a crop checkoff assessment. Narrow to one industry."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1167",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1498277,
+    "date": "2025-02-24",
+    "tally": "56-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Make an appropriation for the development of South Dakota.",
+  "disposition": "dropped",
+  "reason": "An appropriation. Appropriations are excluded, as in every prior state."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1169",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1531120,
+    "date": "2025-03-31",
+    "tally": "50-18",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1531119,
+    "date": "2025-03-31",
+    "tally": "16-16",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify the signature requirement for a petition to initiate a constitutional amendment.",
+  "disposition": "dropped",
+  "reason": "Signature thresholds for an initiated constitutional amendment. Missouri HJR 3, the same measure in another state, carried no direction any research area could hold, and neither does this one."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1170",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1498295,
+    "date": "2025-02-24",
+    "tally": "56-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Make an appropriation for economic development in South Dakota.",
+  "disposition": "dropped",
+  "reason": "An appropriation."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1176",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1484230,
+    "date": "2025-02-07",
+    "tally": "39-28",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Provide that equine dental maintenance not constitute the practice of veterinary medicine.",
+  "disposition": "dropped",
+  "reason": "Whether floating a horse's teeth is veterinary practice. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1180",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1492642,
+    "date": "2025-02-18",
+    "tally": "31-39",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require that a candidate for election to the board of a school district disclose the candidate's party affiliation on a declaration of candidacy.",
+  "disposition": "dropped",
+  "reason": "Party labels on school board ballots. Arguable either way as transparency or as partisanship."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1185",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1489819,
+    "date": "2025-02-13",
+    "tally": "28-40",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide that public moneys for education may not be used for lobbying purposes.",
+  "disposition": "dropped",
+  "reason": "A bar on school lobbying spending. No area carries a direction on it."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1186",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499697,
+    "date": "2025-02-25",
+    "tally": "32-38",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide for the revision and eventual repeal of the employer's investment in South Dakota's future fee.",
+  "disposition": "dropped",
+  "reason": "Winding down an employer training fee. Reads as a tax cut and as a cut to training money at once."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1193",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1492899,
+    "date": "2025-02-18",
+    "tally": "28-42",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit the Board of Regents and institutions under its control from requiring students to reside in on-campus housing or purchase meal plans.",
+  "disposition": "dropped",
+  "reason": "Whether the Regents may require students to live on campus. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1201",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1489412,
+    "date": "2025-02-13",
+    "tally": "28-40",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish requirements for school employees regarding gender ideology.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "civil_rights (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1204",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499682,
+    "date": "2025-02-25",
+    "tally": "36-34",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Revise the subpoena powers of the Government Operations and Audit Committee.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "anti_corruption (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1205",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1489756,
+    "date": "2025-02-13",
+    "tally": "31-37",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require legislative approval of real property leases that are necessary for the operation of state government and exceed specified durations or rental payments.",
+  "disposition": "dropped",
+  "reason": "Legislative sign-off on state office leases. Procedural."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1220",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1489876,
+    "date": "2025-02-13",
+    "tally": "33-36",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Amend provisions pertaining to the verification of registered voters contained in the master registration file.",
+  "disposition": "dropped",
+  "reason": "Affidavit-driven removal from the voter roll. List maintenance every state does; the argument is about method, not direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1223",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1493748,
+    "date": "2025-02-19",
+    "tally": "34-36",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide for conscience exemptions from certain vaccinations.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "environment_and_public_health (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1228",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499689,
+    "date": "2025-02-25",
+    "tally": "37-32",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require an environmental impact statement from applicants seeking a carbon dioxide transmission facility permit from the Public Utilities Commission of the State of South Dakota.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "environment_and_public_health (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1235",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499311,
+    "date": "2025-02-25",
+    "tally": "39-31",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1509747,
+    "date": "2025-03-10",
+    "tally": "13-21",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Reduce a limit on the annual increases of property tax revenues payable to certain taxing districts, and to subject school districts to a limit on property taxes collected in a year.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "cost_of_living_reduction (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1236",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1494019,
+    "date": "2025-02-19",
+    "tally": "51-19",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Expand the safety zone within which hunting and trapping are restricted.",
+  "disposition": "dropped",
+  "reason": "The distance from a house within which hunting is barred. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1242",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499577,
+    "date": "2025-02-25",
+    "tally": "36-34",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Limit the amount of money that a political action committee may accept from an authorized committee of a candidate for federal office.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "anti_corruption (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1249",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1499453,
+    "date": "2025-02-25",
+    "tally": "36-34",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1512437,
+    "date": "2025-03-10",
+    "tally": "17-16",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Protect landowners from the use of deception, fraud, harassment, intimidation, misrepresentation, or threat, in acquiring easements or easement options.",
+  "disposition": "batch-06",
+  "evidence_dir": "legiscan-sd-2170/batch-04",
+  "labels": "civil_rights (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1260",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1493771,
+    "date": "2025-02-19",
+    "tally": "35-35",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require that birth certificates and certain official documents reflect biological sex.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "civil_rights (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1261",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1493859,
+    "date": "2025-02-19",
+    "tally": "38-32",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1501506,
+    "date": "2025-02-27",
+    "tally": "14-21",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide the board of commissioners with authority over certain intra-county land uses and construction projects.",
+  "disposition": "dropped",
+  "reason": "County authority over intra-county siting. The same ground as HB 1249 and HB 1228, and thinner."
+ },
+ {
+  "session": 2170,
+  "bill_number": "HB1266",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1496550,
+    "date": "2025-02-21",
+    "tally": "47-22",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Attach the South Dakota State Brand Board to the Office of School and Public Lands.",
+  "disposition": "dropped",
+  "reason": "Moving the Brand Board between offices. Administrative."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB103",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1479765,
+    "date": "2025-02-04",
+    "tally": "13-22",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit the use of voter centers in a county.",
+  "disposition": "dropped",
+  "reason": "Whether a county may use a vote center instead of precinct polling places. Convenience against precinct control, with no settled direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB107",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1483470,
+    "date": "2025-02-06",
+    "tally": "20-15",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Exempt trailer manufacturers and trailer dealers from certain provisions regarding motor vehicle dealer license requirements.",
+  "disposition": "dropped",
+  "reason": "A dealer licensing exemption for trailer makers. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB124",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1499247,
+    "date": "2025-02-25",
+    "tally": "15-20",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish the Incarceration Task Force.",
+  "disposition": "dropped",
+  "reason": "A study task force. A task force takes no position on the policy it studies."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB127",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1512145,
+    "date": "2025-03-10",
+    "tally": "37-32",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Authorize the expenditure of moneys and make an appropriation for grants supporting airport terminal improvements and expansion.",
+  "disposition": "dropped",
+  "reason": "An appropriation."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB129",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1500474,
+    "date": "2025-02-26",
+    "tally": "31-39",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify renewal fee requirements for an on-sale liquor licensee whose business premises have been annexed into a municipality of the first class.",
+  "disposition": "dropped",
+  "reason": "A liquor license renewal fee after annexation. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB132",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1504114,
+    "date": "2025-03-03",
+    "tally": "16-19",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Make an appropriation for grants to support airport terminal improvement and expansion.",
+  "disposition": "dropped",
+  "reason": "An appropriation."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB137",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1498203,
+    "date": "2025-02-24",
+    "tally": "28-7",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Make an appropriation for the economic development of South Dakota.",
+  "disposition": "dropped",
+  "reason": "An appropriation."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB147",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1499471,
+    "date": "2025-02-25",
+    "tally": "16-19",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Promote and enhance the greatness of South Dakota.",
+  "disposition": "dropped",
+  "reason": "Title says only 'promote and enhance the greatness of South Dakota'. A vehicle bill with no subject of its own."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB156",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1492315,
+    "date": "2025-02-18",
+    "tally": "16-19",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Increase the minimum age for marriage.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "civil_rights (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB157",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1498526,
+    "date": "2025-02-24",
+    "tally": "19-16",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Require proof of workers' compensation insurance for contractors of public improvements.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "corporate_accountability (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB16",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1503457,
+    "date": "2025-03-03",
+    "tally": "14-21",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Set aside certain contractor's excise tax collections relating to the Ellsworth Air Force Base, to create a fund for the collections, and to provide an appropriation therefor.",
+  "disposition": "dropped",
+  "reason": "An excise tax set-aside for one air base. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB161",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1484383,
+    "date": "2025-02-07",
+    "tally": "13-22",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish a maximum school administrator salary.",
+  "disposition": "dropped",
+  "reason": "A cap on administrator pay. Reads as spending restraint and as a hiring handicap at once."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB169",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1509643,
+    "date": "2025-03-10",
+    "tally": "27-42",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require a public hearing prior to a vote to impose an excess tax levy.",
+  "disposition": "dropped",
+  "reason": "A hearing notice before an excess levy vote. Procedural, and the same ground as SB 85 in 2026."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB172",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1511772,
+    "date": "2025-03-10",
+    "tally": "35-34",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1496604,
+    "date": "2025-02-21",
+    "tally": "20-13",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Provide a rebuttable presumption in favor of joint physical custody of a minor child.",
+  "disposition": "dropped",
+  "reason": "A presumption of joint custody. Family law with no research area direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB175",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1506775,
+    "date": "2025-03-05",
+    "tally": "30-40",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Create provisions governing litigation financing.",
+  "disposition": "dropped",
+  "reason": "Third-party litigation funding. Argued as consumer protection and as tort restriction at once."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB177",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1489112,
+    "date": "2025-02-13",
+    "tally": "17-18",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide a sales and use tax refund for goods and services related to data center operations.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "corporate_accountability (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB178",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1498503,
+    "date": "2025-02-24",
+    "tally": "28-7",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Increase a tax on aviation gasoline and jet fuel.",
+  "disposition": "dropped",
+  "reason": "An aviation fuel tax rise. Narrow to one industry."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB188",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1499603,
+    "date": "2025-02-25",
+    "tally": "14-21",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Amend eligibility to vote by absentee ballot.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "election_integrity (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB190",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1489486,
+    "date": "2025-02-13",
+    "tally": "11-24",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide school choice through an education tax credit.",
+  "disposition": "dropped",
+  "reason": "A tax credit for private school tuition. School-choice financing is dropped on the standing precedent (PA HB 1500, TX SB 2, GA SB 82)."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB192",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1503646,
+    "date": "2025-03-03",
+    "tally": "14-55",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Rename the Department of Corrections.",
+  "disposition": "dropped",
+  "reason": "Renaming a department. Symbolic."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB196",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1492779,
+    "date": "2025-02-18",
+    "tally": "7-28",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Incorporate the Oceti Sakowin Essential Understandings in public school curriculum.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "public_education_quality (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB198",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1497802,
+    "date": "2025-02-24",
+    "tally": "18-17",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Establish conditions a prospective condemnor must satisfy before commencing condemnation proceedings.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "civil_rights (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB201",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1506989,
+    "date": "2025-03-05",
+    "tally": "32-38",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit contributions and loans from an authorized committee of a candidate for federal office.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "anti_corruption (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB202",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1496756,
+    "date": "2025-02-21",
+    "tally": "21-12",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Create the water infrastructure development fund.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "public_infrastructure (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB203",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1492769,
+    "date": "2025-02-18",
+    "tally": "12-23",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Increase the minimum age to purchase a lottery ticket.",
+  "disposition": "dropped",
+  "reason": "The minimum age to buy a lottery ticket. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB205",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1492793,
+    "date": "2025-02-18",
+    "tally": "15-20",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Increase the limit on the number of video lottery machines in a licensed establishment.",
+  "disposition": "dropped",
+  "reason": "The cap on video lottery machines per bar. Narrow."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB208",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1501552,
+    "date": "2025-02-27",
+    "tally": "31-39",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1493898,
+    "date": "2025-02-19",
+    "tally": "19-15",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Amend provisions pertaining to a school district's proposed opt out, capital outlay certificate, or other agreement.",
+  "disposition": "dropped",
+  "reason": "School opt-out notice mechanics. Procedural, and the same ground as SB 223 in 2026."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB22",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1476001,
+    "date": "2025-01-28",
+    "tally": "18-17",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Modify provisions pertaining to the submission of a nominating petition.",
+  "disposition": "dropped",
+  "reason": "Nominating petition filing mechanics. Procedural."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB23",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1475088,
+    "date": "2025-01-27",
+    "tally": "26-8",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Require the secretary of state to publish the numbers pertaining to the collection of signatures on a nominating petition.",
+  "disposition": "dropped",
+  "reason": "Publishing petition signature counts. Thin, and overlapped by HB 1169."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB50",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1482300,
+    "date": "2025-02-05",
+    "tally": "17-16",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit the use of drones for purposes of assessing real property for taxation, and to provide a penalty therefor.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "data_privacy (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB51",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1485223,
+    "date": "2025-02-10",
+    "tally": "31-37",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1475677,
+    "date": "2025-01-28",
+    "tally": "18-17",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Require the display and curricular inclusion of the Ten Commandments and other documents.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "civil_rights (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB67",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1479243,
+    "date": "2025-02-03",
+    "tally": "14-21",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish the state office of apprenticeship within the Department of Labor and Regulation.",
+  "disposition": "batch-07",
+  "evidence_dir": "legiscan-sd-2170/batch-05",
+  "labels": "reduce_wealth_gap (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SB95",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1509541,
+    "date": "2025-03-10",
+    "tally": "42-27",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1503719,
+    "date": "2025-03-03",
+    "tally": "24-11",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Make an appropriation to the Department of Revenue for distribution to county rural access infrastructure funds and to declare an emergency.",
+  "disposition": "dropped",
+  "reason": "An appropriation to county road funds."
+ },
+ {
+  "session": 2170,
+  "bill_number": "SJR502",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1479924,
+    "date": "2025-02-04",
+    "tally": "29-38",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1472687,
+    "date": "2025-01-21",
+    "tally": "23-9",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Applying to the United States Congress for a convention of the states to propose amendments to the United States Constitution regarding the imposition of fiscal restraints on the federal government, further limiting the power and jurisdiction of the federal government, and limiting the terms of office for members of Congress and other federal officials.",
+  "disposition": "dropped",
+  "reason": "An Article V convention application. No research area carries a direction on convening a constitutional convention."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1008",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1617209,
+    "date": "2026-01-26",
+    "tally": "31-36",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Direct the amendment of the Administrative Rules of South Dakota regarding the awarding of high school credit for participation in extracurricular athletics.",
+  "disposition": "dropped",
+  "reason": "Directing a rule change on high school credit. Administrative."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1009",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1614649,
+    "date": "2026-01-20",
+    "tally": "21-48",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Revise the speed limit restriction applicable to the operation of a golf cart on certain highways.",
+  "disposition": "dropped",
+  "reason": "Golf cart speed limits. Narrow."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1010",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1637337,
+    "date": "2026-02-18",
+    "tally": "21-46",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify requirements regarding the use of a mobile electronic device while operating a motor vehicle.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "public_safety_and_crime_control (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1015",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1617074,
+    "date": "2026-01-26",
+    "tally": "33-34",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Create a pilot program in the Unified Judicial System to develop a pretrial release program.",
+  "disposition": "dropped",
+  "reason": "A pilot program that reports back to the Legislature. Like a study, a pilot takes no settled position on the policy it tests."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1040",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1639370,
+    "date": "2026-02-19",
+    "tally": "40-25",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1655186,
+    "date": "2026-03-05",
+    "tally": "12-22",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Revise the child support obligation schedule.",
+  "disposition": "dropped",
+  "reason": "The child support schedule. Family law with no research area direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1068",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1625015,
+    "date": "2026-02-05",
+    "tally": "28-40",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Authorize the dispensing of ivermectin and hydroxychloroquine under a written protocol developed by a health care provider, and to provide liability protection therefor.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "environment_and_public_health (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1077",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1672933,
+    "date": "2026-03-30",
+    "tally": "32-32",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1624919,
+    "date": "2026-02-05",
+    "tally": "18-16",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Consider a cultivated-protein food product to be adulterated food.",
+  "disposition": "dropped",
+  "reason": "Cultivated protein declared adulterated. Same double reading as HB 1109 in 2025."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1078",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1616779,
+    "date": "2026-01-23",
+    "tally": "33-31",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Direct the amendment of the Administrative Rules of South Dakota regarding the coursework required for high school graduation.",
+  "disposition": "dropped",
+  "reason": "Directing a rule change on coursework. Administrative."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1086",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1648895,
+    "date": "2026-03-02",
+    "tally": "42-23",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Make an appropriation for providing a grant to a nonprofit that delivers programming to support offenders and correctional staff.",
+  "disposition": "dropped",
+  "reason": "An appropriation."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1087",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1617905,
+    "date": "2026-01-27",
+    "tally": "28-38",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit the use of paid petition circulators.",
+  "disposition": "dropped",
+  "reason": "A ban on paid petition circulators. Ballot-access mechanics, dropped on the same ground as HB 1169."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1094",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1620900,
+    "date": "2026-02-02",
+    "tally": "35-30",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Clarify that consent for the donation of ovum or sperm must be explicit.",
+  "disposition": "dropped",
+  "reason": "Explicit consent for gamete donation. Narrow, and the direction depends on facts the bill does not settle."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1103",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1620930,
+    "date": "2026-02-02",
+    "tally": "16-49",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require that annual withdrawal of groundwater from any groundwater source may not exceed the annual recharge of water to the groundwater source.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "environment_and_public_health (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1105",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1631063,
+    "date": "2026-02-11",
+    "tally": "45-20",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Restrict contracts and declarations that prohibit the use of commercial or residential property for any healthcare service in medically underserved areas or communities, or in areas with a medically underserved population under federal law.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "healthcare_affordability (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1112",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1625092,
+    "date": "2026-02-05",
+    "tally": "18-50",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify the definition of an electronic smoking device.",
+  "disposition": "dropped",
+  "reason": "A definitional change to what counts as an electronic smoking device. Technical."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1113",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1642827,
+    "date": "2026-02-24",
+    "tally": "45-21",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish a manufactured housing downpayment assistance program.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "housing_affordability (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1116",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1628464,
+    "date": "2026-02-10",
+    "tally": "23-43",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit a video streaming service from transmitting certain advertising during children's programming and provide a penalty therefor.",
+  "disposition": "dropped",
+  "reason": "Advertising rules inside children's streaming programs. Narrow."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1124",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1624148,
+    "date": "2026-02-04",
+    "tally": "21-48",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish the crime of trespass upon a place of worship, provide a penalty therefor, and declare an emergency.",
+  "disposition": "dropped",
+  "reason": "A new trespass offence for places of worship. Overlapped by existing trespass law and thin."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1125",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1623806,
+    "date": "2026-02-04",
+    "tally": "26-43",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Create a taskforce to study the impact of artificial intelligence systems on the state.",
+  "disposition": "dropped",
+  "reason": "A task force to study artificial intelligence. A study takes no position."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1138",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1672644,
+    "date": "2026-03-30",
+    "tally": "36-27",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1655219,
+    "date": "2026-03-05",
+    "tally": "20-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Require the licensure of non-medical home care agencies, and to provide a penalty therefor.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "corporate_accountability (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1151",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1636144,
+    "date": "2026-02-17",
+    "tally": "27-39",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Ban kratom and kratom products and to provide a penalty therefor.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "environment_and_public_health (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1153",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1628708,
+    "date": "2026-02-10",
+    "tally": "25-41",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Protect certain rights of healthcare providers.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "civil_rights (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1160",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1641195,
+    "date": "2026-02-23",
+    "tally": "41-26",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1658040,
+    "date": "2026-03-09",
+    "tally": "15-19",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Repeal the medical marijuana oversight committee.",
+  "disposition": "dropped",
+  "reason": "Repealing an oversight committee inside the medical cannabis program. Procedural."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1163",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1640156,
+    "date": "2026-02-20",
+    "tally": "32-35",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit certain persons from requiring genetic-based vaccinations.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "environment_and_public_health (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1165",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1631169,
+    "date": "2026-02-11",
+    "tally": "27-38",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish basic and advanced esthetics licenses, and to revise the licensure chapter for cosmetology, nail technology, and esthetics.",
+  "disposition": "dropped",
+  "reason": "Esthetics license tiers. Narrow to one trade."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1171",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1635612,
+    "date": "2026-02-17",
+    "tally": "23-42",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish provisions related to the disclosure of COVID-19 and mRNA vaccination status and blood donations.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "environment_and_public_health (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1173",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1636205,
+    "date": "2026-02-17",
+    "tally": "44-22",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Require certain applicants that seek a permit from the Public Utilities Commission of the State of South Dakota to prepare and pay for an environmental impact statement.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "environment_and_public_health (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1179",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1650909,
+    "date": "2026-03-03",
+    "tally": "16-18",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify provisions related to the reimbursement fee for preparation of a garnishment disclosure.",
+  "disposition": "dropped",
+  "reason": "A garnishment paperwork fee. Narrow."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1182",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1637293,
+    "date": "2026-02-18",
+    "tally": "25-42",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish a data collection system pertaining to assisted reproductive technology and to provide a penalty therefor.",
+  "disposition": "batch-08",
+  "evidence_dir": "legiscan-sd-2231/batch-04",
+  "labels": "womens_reproductive_rights (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1198",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1632388,
+    "date": "2026-02-12",
+    "tally": "21-41",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require that certain facilities obtain conditional use permits from adjacent political subdivisions.",
+  "disposition": "dropped",
+  "reason": "Conditional use permits across subdivision lines. The same ground as HB 1173 and thinner."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1202",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1649328,
+    "date": "2026-03-02",
+    "tally": "43-22",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Authorize the construction of a trades center on the campus of Lake Area Technical College, to make an appropriation therefor, and to declare an emergency.",
+  "disposition": "dropped",
+  "reason": "An appropriation for one campus building."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1208",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1625840,
+    "date": "2026-02-06",
+    "tally": "30-34",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Revise licensure provisions for electricians.",
+  "disposition": "dropped",
+  "reason": "Electrician license classes. Narrow to one trade."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1209",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1632086,
+    "date": "2026-02-12",
+    "tally": "49-13",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Require employment verification eligibility through the e-verify program and to provide a penalty therefor.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "immigration (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1210",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1639992,
+    "date": "2026-02-20",
+    "tally": "32-35",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit COVID-19 vaccination requirements and to provide a penalty therefor.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "environment_and_public_health (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1217",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1637650,
+    "date": "2026-02-18",
+    "tally": "27-40",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Limit the use of taxpayer funds and resources by a public education employer to support a labor organization or affiliate and to provide a penalty therefor.",
+  "disposition": "dropped",
+  "reason": "Public employer support for a union. There is no labor or workplace research area, so nothing carries an honest direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1222",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1639290,
+    "date": "2026-02-19",
+    "tally": "29-36",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit members of the Board of Economic Development from having any interest in moneys from or approved by the Board of Economic Development.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "anti_corruption (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1230",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1641878,
+    "date": "2026-02-23",
+    "tally": "31-36",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify requirements for payment of the employer's investment in South Dakota's future fee.",
+  "disposition": "dropped",
+  "reason": "Payment mechanics for an employer training fee. Technical."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1241",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1658091,
+    "date": "2026-03-09",
+    "tally": "14-20",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify the requirements for public notice of a hearing prior to a vote to impose an excess tax levy, and to modify requirements to refer an excess tax levy of a school district to a vote.",
+  "disposition": "dropped",
+  "reason": "Notice mechanics before an excess levy vote. Procedural."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1243",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1628368,
+    "date": "2026-02-10",
+    "tally": "28-38",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require the display of the state motto in public schools and provide for associated legal representation.",
+  "disposition": "dropped",
+  "reason": "Displaying the state motto in schools. Symbolic, as HB 1105 in 2025."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1246",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1640299,
+    "date": "2026-02-20",
+    "tally": "30-37",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit nondisclosure of certain agreements related to data centers.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "anti_corruption (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1253",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1637391,
+    "date": "2026-02-18",
+    "tally": "38-29",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1658008,
+    "date": "2026-03-09",
+    "tally": "9-24",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Adjust the assessment methodology for owner-occupied single-family dwellings and nonagricultural property.",
+  "disposition": "dropped",
+  "reason": "Read the text: it replaces a year's market value with an eight-year trimmed average. That lowers assessments while values rise and raises them while values fall, so the text alone gives no direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1272",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1637663,
+    "date": "2026-02-18",
+    "tally": "43-24",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require that a snow bear be titled and licensed.",
+  "disposition": "dropped",
+  "reason": "Titling a tracked snow vehicle. Narrow."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1275",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1640182,
+    "date": "2026-02-20",
+    "tally": "50-17",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Create requirements for age verification and parental consent for application stores and to provide a penalty therefor.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "data_privacy (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1278",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1641401,
+    "date": "2026-02-23",
+    "tally": "20-47",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit certain political committees from accepting contributions by certain officers or employees of this state.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "anti_corruption (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1287",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1636100,
+    "date": "2026-02-17",
+    "tally": "29-37",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require an alternate approval process for an operation that extracts materials by the use of explosives.",
+  "disposition": "dropped",
+  "reason": "An alternate permit route for blasting operations. Narrow, and the same ground as HB 1173."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1308",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1642817,
+    "date": "2026-02-24",
+    "tally": "24-42",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Reduce certain property taxes for owner-occupied property, and to increase the rates for certain gross receipts taxes and use taxes.",
+  "disposition": "dropped",
+  "reason": "Property tax down and sales tax up in one bill. The two halves pull opposite ways on the same area."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1316",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1636161,
+    "date": "2026-02-17",
+    "tally": "24-42",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Revise the time for conducting the canvass of an election.",
+  "disposition": "dropped",
+  "reason": "When the canvass is held. Procedural."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HB1323",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1640074,
+    "date": "2026-02-20",
+    "tally": "39-28",
+    "outcome": "Passed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1657987,
+    "date": "2026-03-09",
+    "tally": "19-15",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Modify the requirements to refer an ordinance or resolution to the voters of a political subdivision.",
+  "disposition": "dropped",
+  "reason": "Read the text: it changes the filing window and effective dates for referring a county ordinance to voters. Ballot-access mechanics, dropped on the same ground as HB 1169 and HB 1087."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HJR5001",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1649610,
+    "date": "2026-03-02",
+    "tally": "14-19",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Proposing and submitting to the voters at the next general election an amendment to the Constitution of the State of South Dakota, requiring a declaration of necessity and clarifying public use of private property taken or damaged by eminent domain.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "civil_rights (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "HJR5002",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1619542,
+    "date": "2026-01-29",
+    "tally": "27-39",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Proposing and submitting to the voters at the next general election an amendment to the Constitution of the State of South Dakota, repealing the requirement to provide expanded medicaid.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "healthcare_affordability (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB115",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1621033,
+    "date": "2026-02-02",
+    "tally": "19-15",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Remove the prohibition pertaining to the shooting of mourning doves located within specific areas.",
+  "disposition": "dropped",
+  "reason": "Where mourning doves may be shot. Narrow."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB118",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1643664,
+    "date": "2026-02-24",
+    "tally": "16-17",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Deposit certain tax revenues into a homeowner tax reduction fund.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "cost_of_living_reduction (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB122",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1626888,
+    "date": "2026-02-09",
+    "tally": "24-9",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Establish the crime of failure to summon aid for a suicide attempt and provide a penalty therefor.",
+  "disposition": "dropped",
+  "reason": "A duty to summon aid after a suicide attempt. Direction contested and the subject is thin."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB126",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1640138,
+    "date": "2026-02-20",
+    "tally": "14-20",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Increase the amount of value exempt from property taxes under a tax relief program for disabled veterans and surviving spouses.",
+  "disposition": "batch-09",
+  "evidence_dir": "legiscan-sd-2231/batch-05",
+  "labels": "social_programs_and_welfare (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB150",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1639483,
+    "date": "2026-02-19",
+    "tally": "15-19",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Exempt one motor vehicle of a debtor from being taken by legal process.",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
+  "labels": "reduce_wealth_gap (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB156",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1630908,
+    "date": "2026-02-11",
+    "tally": "25-8",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Modify the crime of cruelty to an animal and increase the penalty therefor.",
+  "disposition": "dropped",
+  "reason": "Animal cruelty penalties. No research area carries a direction on it."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB187",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1635925,
+    "date": "2026-02-17",
+    "tally": "11-23",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Define nonpublic school.",
+  "disposition": "dropped",
+  "reason": "Defining a nonpublic school. School-choice groundwork, dropped on the standing precedent."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB190",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1648884,
+    "date": "2026-03-02",
+    "tally": "30-35",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1636200,
+    "date": "2026-02-17",
+    "tally": "19-15",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Codify the rights of a parent.",
+  "disposition": "dropped",
+  "reason": "A parental-rights act puts parents' rights against children's own, and each side calls itself the rights side. No single direction holds."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB193",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1641714,
+    "date": "2026-02-23",
+    "tally": "17-17",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Clarify the definition of backup electric generation.",
+  "disposition": "dropped",
+  "reason": "A definition of backup generation. Technical."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB195",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1636147,
+    "date": "2026-02-17",
+    "tally": "17-17",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Repeal the expiration of a reduction in certain gross receipts and use tax rates.",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
+  "labels": "cost_of_living_reduction (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB196",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1643623,
+    "date": "2026-02-24",
+    "tally": "15-18",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Increase the income limits for a property tax assessment freeze.",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
+  "labels": "cost_of_living_reduction (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB198",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1655400,
+    "date": "2026-03-05",
+    "tally": "28-39",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1635823,
+    "date": "2026-02-17",
+    "tally": "19-15",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Restrict the use of a cell phone by a student during the school day.",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
+  "labels": "public_education_quality (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB199",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1641732,
+    "date": "2026-02-23",
+    "tally": "16-17",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Establish a new fund to provide property tax relief.",
+  "disposition": "dropped",
+  "reason": "Another property tax relief fund. Overlapped by SB 118 and thinner."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB205",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1643207,
+    "date": "2026-02-24",
+    "tally": "29-37",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Revise registration fees for drones and establish a fund to support drone aviation.",
+  "disposition": "dropped",
+  "reason": "Drone registration fees. Narrow."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB211",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1643711,
+    "date": "2026-02-24",
+    "tally": "17-16",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Prohibit certain billing practices by ambulance service providers and establish reimbursement standards for out-of-network emergency medical services.",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
+  "labels": "healthcare_affordability (yea for)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB218",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1639485,
+    "date": "2026-02-19",
+    "tally": "17-17",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Provide for the establishment of charter schools.",
+  "disposition": "dropped",
+  "reason": "Charter schools. School-choice financing, dropped on the standing precedent."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB220",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1653488,
+    "date": "2026-03-04",
+    "tally": "30-37",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1649316,
+    "date": "2026-03-02",
+    "tally": "24-9",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Authorize a comprehensive study of juvenile correctional and residential facilities, to make an appropriation therefor, and to declare an emergency.",
+  "disposition": "dropped",
+  "reason": "A study of juvenile facilities. A study takes no position."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB223",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1646856,
+    "date": "2026-02-26",
+    "tally": "32-34",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1636380,
+    "date": "2026-02-17",
+    "tally": "20-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Modify the requirements for a petition to refer an excess tax levy of a school district to a vote.",
+  "disposition": "dropped",
+  "reason": "Referral petition mechanics for a school levy. Procedural."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB224",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1637316,
+    "date": "2026-02-18",
+    "tally": "20-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Provide a rebuttable presumption in favor of joint physical custody of a minor child.",
+  "disposition": "dropped",
+  "reason": "A presumption of joint custody, as SB 172 in 2025."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB229",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1641737,
+    "date": "2026-02-23",
+    "tally": "16-18",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Require an election to approve the issuance of certain capital outlay certificates, lease-purchase contracts, or installment purchase contracts.",
+  "disposition": "dropped",
+  "reason": "Elections on capital outlay certificates. Procedural."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB239",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1641821,
+    "date": "2026-02-23",
+    "tally": "17-16",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Modify provisions relating to the reinvestment payment program, and relating to the purchasing of goods and services used by projects approved for the reinvestment payment program.",
+  "disposition": "dropped",
+  "reason": "The reinvestment payment program's mechanics. Narrow."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB24",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1623639,
+    "date": "2026-02-04",
+    "tally": "38-29",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Create a solid background license plate for South Dakota.",
+  "disposition": "dropped",
+  "reason": "A license plate design. Trivial."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB62",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1617205,
+    "date": "2026-01-26",
+    "tally": "14-20",
+    "outcome": "Failed"
+   }
+  ],
+  "title": "Discontinue the issuance of new Class B electrician licenses.",
+  "disposition": "dropped",
+  "reason": "Ending a class of electrician license. Narrow to one trade."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB85",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1623836,
+    "date": "2026-02-04",
+    "tally": "29-39",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1617110,
+    "date": "2026-01-26",
+    "tally": "20-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Require an election for an excess tax levy of a school district.",
+  "disposition": "batch-10",
+  "evidence_dir": "legiscan-sd-2231/batch-06",
+  "labels": "public_education_quality (yea against)",
+  "reason": "Imported: closely divided, did not become law, recognizable subject, defensible direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SB97",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1635754,
+    "date": "2026-02-17",
+    "tally": "18-16",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Adjust a limit on the percentage increase in revenue payable from property taxes.",
+  "disposition": "dropped",
+  "reason": "Read the amendment the Senate voted: it replaces the new-growth allowance with a formula keeping three percent of growth plus sixty percent of any excess. Whether a district may collect more or less than now depends on its own growth, so no single direction holds."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SJR501",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1617102,
+    "date": "2026-01-26",
+    "tally": "20-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Proposing and submitting to the voters at the next general election an amendment to the Constitution of the State of South Dakota, limiting the number of terms an individual may serve as a member of the Legislature.",
+  "disposition": "dropped",
+  "reason": "Legislative term limits. Argued as accountability and as loss of experience; no honest single direction."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SJR502",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1617103,
+    "date": "2026-01-26",
+    "tally": "24-10",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Applying to the United States Congress under Article V of the United States Constitution to call for a convention proposing an amendment to the constitution fixing the number of justices of the United States Supreme Court at one chief justice and eight associate justices.",
+  "disposition": "dropped",
+  "reason": "An Article V convention application."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SJR503",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1617172,
+    "date": "2026-01-26",
+    "tally": "25-9",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Applying to the United States Congress for a convention of the states to propose amendments to the United States Constitution regarding the imposition of fiscal restraints on the federal government, further limiting the power and jurisdiction of the federal government, and limiting the terms of office for members of Congress and other federal officials.",
+  "disposition": "dropped",
+  "reason": "An Article V convention application."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SJR504",
+  "slots": [
+   {
+    "chamber": "S",
+    "roll_call_id": 1630695,
+    "date": "2026-02-11",
+    "tally": "23-10",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Proposing and submitting to the voters at the next general election an amendment to the Constitution of the State of South Dakota, providing for wagering on sporting events via mobile or electronic platform.",
+  "disposition": "dropped",
+  "reason": "Mobile sports wagering. No research area carries a direction on it."
+ },
+ {
+  "session": 2231,
+  "bill_number": "SJR508",
+  "slots": [
+   {
+    "chamber": "H",
+    "roll_call_id": 1653908,
+    "date": "2026-03-04",
+    "tally": "25-42",
+    "outcome": "Failed"
+   },
+   {
+    "chamber": "S",
+    "roll_call_id": 1643351,
+    "date": "2026-02-24",
+    "tally": "19-14",
+    "outcome": "Passed"
+   }
+  ],
+  "title": "Proposing and submitting to the voters at the next general election, amendments to the Constitution of the State of South Dakota, removing the lieutenant governor as presiding officer of the Senate.",
+  "disposition": "dropped",
+  "reason": "Removing the lieutenant governor as presiding officer. Structural."
+ }
+]
