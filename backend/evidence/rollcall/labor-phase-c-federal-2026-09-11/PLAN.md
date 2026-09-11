@@ -1,6 +1,6 @@
 # Federal labor measures reopened (labor phase C)
 
-**9 roll calls, 9 measures, 1,218 records, 246 candidates, 731 area tags.**
+**9 roll calls, 9 measures, 1,219 records, 247 candidates, 731 area tags.**
 
 These federal votes were left pending in earlier runs because no research area
 covered labor or union rights. H.R. 2550 carries the note "no labor research
@@ -21,9 +21,12 @@ and judged under the scope rules in `labor-rights-backfill-2026-09-10/NOTES.md`.
 | H.R. 1948, VA clinician bargaining | House 117-2 roll 530 | 219-201 | for |
 | H.R. 2550, restore federal worker bargaining | House 119-1 roll 332 | 231-195 | for |
 
-Every label is `labor_rights` with `nay: null`. None became law: each passed
-one chamber and the other never voted, so each roll is the only floor vote on
-its text. H.R. 2550 is still pending in the Senate.
+Every label is `labor_rights` with `nay: null`. None became law as a
+standalone bill: each passed one chamber and the other never voted, so each
+roll is the only floor vote on its text. H.R. 2499's text was later enacted
+inside the FY2023 defense authorization (Pub. L. 117-263, section 5305); the
+other eight were not enacted elsewhere. H.R. 2550 is still pending in the
+Senate.
 
 ## Considered and left out
 

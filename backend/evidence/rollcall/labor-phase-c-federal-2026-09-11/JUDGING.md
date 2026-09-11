@@ -26,9 +26,13 @@ standard. Removing a workplace safety rule: `against`. The House never voted.
 
 ## H.R. 2499 (House 117-2 roll 149)
 New 5 U.S.C. 8143b: for federal employees with five years in fire protection,
-listed cancers, chronic lung disease, and heart events or strokes tied to duty
-are presumed work-caused for workers' compensation. Widens workers'
-compensation: `for`.
+listed cancers and chronic lung disease are presumed work-caused for workers'
+compensation; so is a sudden cardiac event or stroke, but only while, or within
+24 hours after, firefighting or emergency response (section 8143b(a)(2)(N)).
+Widens workers' compensation: `for`. The Senate never voted on this bill, but
+the same text was enacted as section 5305 of the FY2023 defense authorization
+(Pub. L. 117-263, December 23, 2022), so the sentences say the provisions
+became law rather than "did not become law".
 
 ## H.R. 903 (House 117-2 roll 172)
 Moves TSA screeners into the title 5 personnel system, so chapter 71 (labor
@@ -65,6 +69,14 @@ now has `nay: null`. Judge: 9 updated. `rollcall:resolve` matched members.
 Dry run: 1,218 planned inserts, 0 errors, stamp `2026-09-11T07:59:21.483Z`.
 Real run: 9 files imported, **1,218 inserts**, 0 notified, stamp
 `2026-09-11T07:59:34.733Z`, 246 candidates, 731 area tags.
+
+Rerun after review: the H.R. 2499 sentences were corrected (24-hour limit on
+heart attacks and strokes; provisions enacted in the FY2023 defense bill), so
+`rollcall:judge` updated that row and `rollcall:import` rewrote its **137**
+records in place (`import-rerun-report.json`, stamp
+`2026-09-11T20:19:12.270Z`). The rerun also inserted one record on H.R. 2550:
+Maggie Goodlander (NH), whose candidate row gained its FEC id after the first
+run. Totals now 1,219 records, 247 candidates.
 
 ## Duplicates
 
