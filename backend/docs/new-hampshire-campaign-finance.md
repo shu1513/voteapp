@@ -161,7 +161,12 @@ are unique statewide, so a district-blank Senate registration is accepted with
 confidence `unique_name` when it is the only name-matching filer of that office
 in the cycle; an exact-district registration always wins, and a same-named
 filer in another district or a second district-blank filer is reported as
-ambiguous. District-blank House and commissioner rows stay unmatched.
+ambiguous. Only a genuinely empty district field counts as blank; a non-empty
+value the parser cannot read is conflicting evidence and stays unmatched.
+District-blank House and commissioner rows stay unmatched. The auto-link and
+the sync share one selection rule: Active registrations first, any status only
+when Active finds nothing, so an Active district-blank committee beats a Closed
+exact-district one on both paths.
 State House district numbers repeat by county, so match both the registration's
 county (`town` in the API response) and district number to VoteApp's
 county-qualified House district name. County-office links likewise require the

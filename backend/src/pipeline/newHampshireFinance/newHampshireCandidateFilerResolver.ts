@@ -327,12 +327,28 @@ function registrationRaceTargetKey(row: NewHampshireFilingEntityRow): string | n
   return `${officeName}\u0000${district?.key ?? ""}`;
 }
 
+/**
+ * Only a genuinely empty district field is "blank". A non-empty value the
+ * parser cannot read ("District 3 - Nashua") is conflicting evidence, not
+ * missing evidence, and never qualifies for the fallback.
+ */
+function isDistrictBlank(row: NewHampshireFilingEntityRow): boolean {
+  return !row.district?.trim();
+}
+
 /** Race target of a district-blank registration, for offices where the blank is matchable. */
 function districtBlankRaceTargetKey(row: NewHampshireFilingEntityRow): string | null {
   const officeName = canonicalOfficeName(row.officeName ?? "");
   if (!officeName || !officeAllowsDistrictBlankFallback(officeName)) return null;
-  if (normalizeDistrictEvidence(officeName, row.district, row.county)) return null;
+  if (!isDistrictBlank(row)) return null;
   return `${officeName} `;
+}
+
+/** CFS registration status the auto-link links on and the sync prefers. */
+export const NEW_HAMPSHIRE_CFS_ACTIVE_REGISTRATION_STATUS = "Active";
+
+export function isActiveNewHampshireRegistration(row: NewHampshireFilingEntityRow): boolean {
+  return row.status.trim().toLowerCase() === NEW_HAMPSHIRE_CFS_ACTIVE_REGISTRATION_STATUS.toLowerCase();
 }
 
 // An alias is kept only when every registration matching it points at one
@@ -487,12 +503,15 @@ export function resolveNewHampshireCandidateFiler(
       matchDistrict = district;
     } else if (!blankFallback) {
       continue;
-    } else if (rowDistrict === null) {
+    } else if (isDistrictBlank(row)) {
       bucket = blankByFiler;
       matchDistrict = district;
-    } else {
+    } else if (rowDistrict !== null) {
       bucket = otherDistrictByFiler;
       matchDistrict = rowDistrict;
+    } else {
+      // Non-empty but unreadable district: conflicting evidence, skip.
+      continue;
     }
 
     const names = officialCandidateNames(row);
@@ -547,4 +566,22 @@ export function resolveNewHampshireCandidateFiler(
     };
   }
   return { status: "matched", ...matches[0]! };
+}
+
+/**
+ * The filer-selection rule shared by the auto-link and the sync: resolve
+ * against Active registrations first, and only when that finds nothing fall
+ * back to every status (so a manually linked Closed filer still syncs). An
+ * Active district-blank committee therefore beats a Closed exact-district one
+ * on both paths, and a link the auto-link writes is a link the sync accepts.
+ */
+export function resolveNewHampshireCandidateFilerPreferringActive(
+  input: NewHampshireCandidateFilerResolverInput
+): NewHampshireCandidateFilerResolution {
+  const activeRows = input.filingEntityRows.filter(isActiveNewHampshireRegistration);
+  const active = resolveNewHampshireCandidateFiler({ ...input, filingEntityRows: activeRows });
+  if (active.status !== "unmatched" || activeRows.length === input.filingEntityRows.length) {
+    return active;
+  }
+  return resolveNewHampshireCandidateFiler(input);
 }

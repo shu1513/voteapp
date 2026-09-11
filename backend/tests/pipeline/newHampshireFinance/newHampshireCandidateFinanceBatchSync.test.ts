@@ -120,6 +120,39 @@ describe("chooseSyncCandidateName", () => {
       'no candidate spelling resolves to linked filer 50451 ("Sample Candidate" -> filer 50450)'
     );
   });
+
+  it("accepts the link the auto-link wrote when an Active district-blank committee coexists with a Closed exact one", () => {
+    // Live SS9 regression: auto-link (Active only) links 243712; the batch must
+    // land on the same filer, not on the Closed exact-district 241471.
+    const activeBlank = filingEntity({
+      filingEntityId: 243712,
+      filerName: "Friend's of Matt McLaughlin",
+      candidateName: "Matthew McLaughlin",
+      firstName: "Matthew",
+      lastName: "McLaughlin",
+      district: null,
+      status: "Active",
+    });
+    const closedExact = filingEntity({
+      filingEntityId: 241471,
+      filerName: "McLaughlin, Matthew",
+      candidateName: "Matthew McLaughlin",
+      firstName: "Matthew",
+      lastName: "McLaughlin",
+      district: "9",
+      status: "Closed",
+    });
+    const row = dueRow({
+      candidateName: "Matthew McLaughlin",
+      candidateNames: ["Matthew McLaughlin"],
+      district: "9",
+      filingEntityId: 243712,
+      filerName: "Friend's of Matt McLaughlin",
+    });
+    expect(chooseSyncCandidateName({ electionCycleId: CYCLE_2026_ID, filingEntityRows: [closedExact, activeBlank], row })).toBe(
+      "Matthew McLaughlin"
+    );
+  });
 });
 
 describe("syncDueNewHampshireCandidateFinance", () => {

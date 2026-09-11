@@ -4,6 +4,7 @@ import {
   normalizeNewHampshireCandidateNameForStorage,
   normalizeNewHampshireCandidateNameKeys,
   resolveNewHampshireCandidateFiler,
+  resolveNewHampshireCandidateFilerPreferringActive,
 } from "../../../src/pipeline/newHampshireFinance/newHampshireCandidateFilerResolver.js";
 import type { NewHampshireFilingEntityRow } from "../../../src/pipeline/newHampshireFinance/newHampshireCfsClient.js";
 
@@ -168,6 +169,75 @@ describe("newHampshireCandidateFilerResolver", () => {
         filingEntityRows: [abbasBlankDistrict(), abbasBlankDistrict({ filingEntityId: 9, filerName: "Abbas Two" })],
       })
     ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+  });
+
+  it("treats a non-empty district the parser cannot read as conflicting evidence, not a blank", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...abbasInput,
+        filingEntityRows: [abbasBlankDistrict({ district: "District 3 - Nashua" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+    // Whitespace-only is a blank.
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...abbasInput,
+        filingEntityRows: [abbasBlankDistrict({ district: "  " })],
+      })
+    ).toMatchObject({ status: "matched", filingEntityId: 208786, confidence: "unique_name" });
+  });
+
+  it("prefers Active registrations and falls back to any status only when Active finds nothing", () => {
+    // Live SS9 shape: an Active district-blank committee plus a Closed exact-district one.
+    const mcLaughlin = {
+      candidateName: "Matthew McLaughlin",
+      officeScope: "state_upper",
+      officeName: "State Senator",
+      district: "9",
+      electionCycleId: 110,
+    } as const;
+    const activeBlank = filingEntity({
+      filingEntityId: 243712,
+      filerName: "Friend's of Matt McLaughlin",
+      candidateName: "Matthew McLaughlin",
+      firstName: "Matthew",
+      lastName: "McLaughlin",
+      district: null,
+      status: "Active",
+    });
+    const closedExact = filingEntity({
+      filingEntityId: 241471,
+      filerName: "McLaughlin, Matthew",
+      candidateName: "Matthew McLaughlin",
+      firstName: "Matthew",
+      lastName: "McLaughlin",
+      filerTypeCode: "CC",
+      filerSubTypeCode: null,
+      district: "9",
+      status: "Closed",
+    });
+
+    expect(
+      resolveNewHampshireCandidateFilerPreferringActive({ ...mcLaughlin, filingEntityRows: [closedExact, activeBlank] })
+    ).toMatchObject({ status: "matched", filingEntityId: 243712, confidence: "unique_name" });
+    // Status-agnostic resolution still picks the exact-district row.
+    expect(resolveNewHampshireCandidateFiler({ ...mcLaughlin, filingEntityRows: [closedExact, activeBlank] })).toMatchObject({
+      status: "matched",
+      filingEntityId: 241471,
+      confidence: "exact",
+    });
+    // Only a Closed registration: still resolves (manual links to closed filers keep syncing).
+    expect(resolveNewHampshireCandidateFilerPreferringActive({ ...mcLaughlin, filingEntityRows: [closedExact] })).toMatchObject({
+      status: "matched",
+      filingEntityId: 241471,
+    });
+    // Active ambiguity is not papered over by the fallback.
+    expect(
+      resolveNewHampshireCandidateFilerPreferringActive({
+        ...mcLaughlin,
+        filingEntityRows: [closedExact, activeBlank, { ...activeBlank, filingEntityId: 1, filerName: "Second" }],
+      })
+    ).toMatchObject({ status: "ambiguous" });
   });
 
   it("never applies the district-blank fallback to offices whose districts repeat by county", () => {
