@@ -20,10 +20,10 @@ import { APP_NAME } from "@voteapp/api-client";
 export const SITE_ORIGIN = "https://electionssimplified.com";
 
 const SHARE_IMAGE = `${SITE_ORIGIN}/og-card.png`;
-const SHARE_IMAGE_ALT = `${APP_NAME} — see who the candidates really are by their track records`;
+const SHARE_IMAGE_ALT = `${APP_NAME} — see who the political candidates really are by their track records`;
 
 export const DEFAULT_DESCRIPTION =
-  "See who the candidates really are by their track records.";
+  "See who the political candidates really are by their track records.";
 
 type PageMetaInput = {
   title: string;
