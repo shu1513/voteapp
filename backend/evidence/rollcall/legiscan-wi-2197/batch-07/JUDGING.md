@@ -99,31 +99,48 @@ introduced print against the amendment.
 SB 275, SB 276, SB 277 and SB 289 would have, in turn: made statements of scope
 for agency rules expire sooner and limited each to one rule; awarded attorney
 fees to anyone who successfully challenges a rule; made every chapter of the
-administrative code expire every seven years unless readopted; and required the
-Legislature's approval for any rule with net costs.
+administrative code expire every seven years unless readopted; and made an
+agency stop work on any proposed rule with net costs, where today the line is
+$10 million over two years.
 
-They read two ways. Clearing out stale rules and requiring a cost count is what
-`government_efficiency` describes; making it harder for agencies to write and
-keep rules weakens the enforcement that `corporate_accountability` and
-`environment_and_public_health` depend on. Neither side of that is foreign to the
-research areas, so no single direction is defensible. The underlying contest is
-between the Legislature and executive agencies over who writes rules, and no
-area describes separation of powers.
+**Re-examined 2026-09-11 at the operator's request, from the full enrolled
+text. The drop stands, and the reason is sharper than the first draft's.**
 
-The campaign had no earlier ruling on this class. This is the first, and it is
-written here so other states can follow it or the operator can overrule it.
+The four bills govern how every agency writes rules, on every subject at once.
+None names a policy field. The research areas each describe an outcome in a
+field: cleaner water, safer workplaces, fair treatment. A label would claim the
+bill moves one of those outcomes, when the bill never says which rules it will
+touch. Two areas come close, and neither fits:
 
-SB 277's Senate slot would also have fallen to the version rule: the Assembly
-replaced the whole bill with a substitute after the Senate voted.
+- `government_efficiency` is about the government's own operations: service
+  delivery, waste and modernization. These bills are about the cost that rules
+  put on businesses, local governments and people outside the government. SB 277
+  also adds paperwork for agencies: a readoption notice for each chapter, a
+  legislative staff certification and a committee review every seven years.
+  So even inside that area, "more efficient" is not a safe reading.
+- `environment_and_public_health`, `labor_rights` and `corporate_accountability`
+  would each read a yes vote as against, since SB 289 and SB 277 make new or
+  stricter standards harder to adopt. SB 277 even bars a readopted chapter from
+  adding any cost or stricter standard, including one needed to meet a change in
+  federal law. But the bills reach those fields only through whatever rules an
+  agency later proposes. Tagging a yes vote as against clean water would put a
+  claim on a record that the bill's text does not make.
 
-## AB 595: an open operator question
+SB 275 and SB 276 are the clearest drops: one is a filing deadline, the other a
+fee rule for lawsuits. SB 277 has a second, independent problem: after the Senate's 18-15 vote,
+the Assembly replaced the whole bill with a substitute, and the Senate accepted
+it without a recorded vote. Only the Assembly's 53-45 vote is on the final text.
 
-AB 595 would have changed how Wisconsin removes ineligible voters from its
-registration list, added a citizenship audit and data sharing, and set fees for
-obtaining the list. It is the same structure as Wyoming HB0318 — `election_integrity`
-reads it as accurate rolls, `civil_rights` as a risk of cancelling eligible
-voters — which is still an open campaign-wide operator question. It is dropped on
-the same basis as AB 100 and AB 102 in batch-05, and ready to add.
+**The ruling for other states:** a bill that changes rulemaking procedure for
+all agencies, without naming a policy field, is dropped. If the operator wants
+these votes on the site, the fix is a new research area about the amount of
+regulation, not a stretch of an existing one.
+
+## AB 595: imported in batch-09
+
+AB 595 was dropped here pending the campaign-wide decision on Wyoming HB0318.
+Wyoming batch-04 made that decision, and AB 595 was imported as
+`election_integrity`, a yes vote is for. See `../batch-09/JUDGING.md`.
 
 ## The other drops
 
