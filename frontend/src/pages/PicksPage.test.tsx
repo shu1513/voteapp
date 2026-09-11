@@ -197,6 +197,7 @@ describe("PicksPage", () => {
     stubApiRoutes({
       "/api/me": { body: ME_UNVERIFIED },
       "/api/me/election-choices": { body: { choices: [electionChoice()] } },
+      "/api/me/pick-card-shares": { body: { shares: [] } },
     });
     renderPicks();
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
@@ -392,11 +393,20 @@ describe("PicksPage", () => {
   it("mints a share link on demand and swaps in the share menu", async () => {
     const fetchMock = stubApiRoutes(
       verifiedRoutes({
-        // Same path, two shapes: GET lists (nothing yet), POST mints.
-        "/api/me/pick-card-shares": (_url: URL, init?: RequestInit) =>
-          init?.method === "POST"
-            ? { body: { share: { token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" } } }
-            : { body: { shares: [] } },
+        // Same path, two shapes: GET lists, POST mints. Stateful: after the
+        // mint the list must carry the link, because the page reads ONLY the
+        // list (the refetch after minting would otherwise wipe the link).
+        "/api/me/pick-card-shares": (() => {
+          const share = { token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" };
+          let minted = false;
+          return (_url: URL, init?: RequestInit) => {
+            if (init?.method === "POST") {
+              minted = true;
+              return { body: { share } };
+            }
+            return { body: { shares: minted ? [share] : [] } };
+          };
+        })(),
       })
     );
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
@@ -497,6 +507,58 @@ describe("PicksPage", () => {
     expect(await screen.findByRole("heading", { name: "November 3, 2026" })).toBeInTheDocument();
     expect(screen.getByRole("progressbar", { name: "0 of 2 races decided" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /^Share/ })).not.toBeInTheDocument();
+  });
+
+  it("keeps Stop sharing on a zero-pick card whose link is still live", async () => {
+    // Picks cleared after sharing: the public URL still serves a bare card
+    // with the owner's first name, so the exit must stay reachable even
+    // though there is nothing left to mint.
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": { body: { choices: [] } },
+        "/api/me/pick-card-shares": {
+          body: { shares: [{ token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" }] },
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByRole("button", { name: "Stop sharing my November 3, 2026 picks" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "electionssimplified.com/picks/tok_abcdefghijklmnopqrstuvwxyz012345" })
+    ).toBeInTheDocument();
+    // Not listed a second time below the cards: the card owns this date.
+    expect(screen.queryByText(/^Shared links/)).not.toBeInTheDocument();
+  });
+
+  it("lists a live link for a date with no card under Shared links, with Stop sharing", async () => {
+    // The election dropped off the ballot (or the address changed): no card,
+    // but the link keeps serving results and the first name. Verified and
+    // unverified renders both list it.
+    const share = { token: "tok_pastdate_0123456789abcdefghijklmn", election_date: "2026-08-04" };
+    stubApiRoutes(verifiedRoutes({ "/api/me/pick-card-shares": { body: { shares: [share] } } }));
+    renderPicks();
+
+    expect(await screen.findByText("Shared links (1)")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Stop sharing my August 4, 2026 picks" })).toBeInTheDocument();
+    // The live URL itself, so the owner can see what is still public.
+    expect(
+      screen.getByRole("link", { name: "electionssimplified.com/picks/tok_pastdate_0123456789abcdefghijklmn" })
+    ).toBeInTheDocument();
+  });
+
+  it("lists live links for unverified users too, since revoking is not verification-gated", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_UNVERIFIED },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/pick-card-shares": {
+        body: { shares: [{ token: "tok_pastdate_0123456789abcdefghijklmn", election_date: "2026-08-04" }] },
+      },
+    });
+    renderPicks();
+
+    expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Stop sharing my August 4, 2026 picks" })).toBeInTheDocument();
   });
 
   it("keeps a just-finished election's card, with result chips, out of Past elections", async () => {

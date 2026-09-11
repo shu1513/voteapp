@@ -42,7 +42,17 @@ export function useMintPickCardShare() {
         method: "POST",
         body: { election_date: electionDate },
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: PICK_CARD_SHARES_KEY }),
+    // Write the minted share into the list straight away (so the page shows
+    // the link with no flash back to the mint button while the list
+    // refetches), then refetch so the server stays the single source of
+    // truth — a revoke from another tab must not be masked by a stale
+    // mutation result held in component state.
+    onSuccess: ({ share }) => {
+      queryClient.setQueryData<{ shares: PickCardShare[] }>(PICK_CARD_SHARES_KEY, (previous) => ({
+        shares: [share, ...(previous?.shares ?? []).filter((row) => row.election_date !== share.election_date)],
+      }));
+      void queryClient.invalidateQueries({ queryKey: PICK_CARD_SHARES_KEY });
+    },
   });
 }
 
