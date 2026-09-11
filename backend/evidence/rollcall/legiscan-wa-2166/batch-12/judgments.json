@@ -1,0 +1,328 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1504127,
+      "measure_id": "HB 1068",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1068. Interest arbitration is a process where a neutral arbitrator settles a contract dispute when a union and a public employer cannot agree. This law gives it to members of the Washington Management Service who work for the Department of Corrections. These are managers in the state prison system. It became law as chapter 162 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 72-25.",
+      "nay_description": "Voted against passing House Bill 1068. Interest arbitration is a process where a neutral arbitrator settles a contract dispute when a union and a public employer cannot agree. This law gives it to members of the Washington Management Service who work for the Department of Corrections. These are managers in the state prison system. It became law as chapter 162 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 72-25.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1549262,
+      "measure_id": "HB 1068",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1068. Interest arbitration is a process where a neutral arbitrator settles a contract dispute when a union and a public employer cannot agree. This law gives it to members of the Washington Management Service who work for the Department of Corrections. These are managers in the state prison system. It became law as chapter 162 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 36-12.",
+      "nay_description": "Voted against passing House Bill 1068. Interest arbitration is a process where a neutral arbitrator settles a contract dispute when a union and a public employer cannot agree. This law gives it to members of the Washington Management Service who work for the Department of Corrections. These are managers in the state prison system. It became law as chapter 162 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 36-12.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1653579,
+      "measure_id": "HB 1069",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1069. For Department of Corrections workers, this law makes the state bargain with their unions over payments toward extra retirement benefits, including medical plans run by or for a union. These payments may not go to interest arbitration, where a neutral arbitrator settles a deadlock. They also do not count against the set dollar amount the state bargains for each worker's health care. It became law as chapter 189 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 31-18.",
+      "nay_description": "Voted against passing House Bill 1069. For Department of Corrections workers, this law makes the state bargain with their unions over payments toward extra retirement benefits, including medical plans run by or for a union. These payments may not go to interest arbitration, where a neutral arbitrator settles a deadlock. They also do not count against the set dollar amount the state bargains for each worker's health care. It became law as chapter 189 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 31-18.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1515688,
+      "measure_id": "HB 1141",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1141. This law gives workers who grow, harvest, dry and trim cannabis on licensed farms the right to form a union and bargain as a group. The state Public Employment Relations Commission oversees it. Employers may not interfere with, pressure or punish workers for organizing. A union can win recognition in a secret ballot election, or by a count of signed cards when more than half the workers back it. Both sides must bargain in good faith over wages, hours and working conditions. It became law as chapter 106 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 55-40.",
+      "nay_description": "Voted against passing House Bill 1141. This law gives workers who grow, harvest, dry and trim cannabis on licensed farms the right to form a union and bargain as a group. The state Public Employment Relations Commission oversees it. Employers may not interfere with, pressure or punish workers for organizing. A union can win recognition in a secret ballot election, or by a count of signed cards when more than half the workers back it. Both sides must bargain in good faith over wages, hours and working conditions. It became law as chapter 106 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 55-40.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1547614,
+      "measure_id": "HB 1141",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1141. This law gives workers who grow, harvest, dry and trim cannabis on licensed farms the right to form a union and bargain as a group. The state Public Employment Relations Commission oversees it. Employers may not interfere with, pressure or punish workers for organizing. A union can win recognition in a secret ballot election, or by a count of signed cards when more than half the workers back it. Both sides must bargain in good faith over wages, hours and working conditions. It became law as chapter 106 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 29-20.",
+      "nay_description": "Voted against passing House Bill 1141. This law gives workers who grow, harvest, dry and trim cannabis on licensed farms the right to form a union and bargain as a group. The state Public Employment Relations Commission oversees it. Employers may not interfere with, pressure or punish workers for organizing. A union can win recognition in a secret ballot election, or by a count of signed cards when more than half the workers back it. Both sides must bargain in good faith over wages, hours and working conditions. It became law as chapter 106 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 29-20.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1552360,
+      "measure_id": "HB 1213",
+      "vote_date": "2025-04-19",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1213. Washington's paid family and medical leave program pays workers part of their wages while on leave. This law lets workers claim leave in blocks as short as four hours, down from eight. It widens job protection, the right to come back to the same or an equal job. That right now reaches employers with 25 or more workers in 2026, 15 in 2027 and 8 from 2028. Workers qualify after 180 days on the job, instead of meeting an hours test. Employers must keep up health coverage during protected leave. Small employers can get a new $3,000 grant. It became law as chapter 304 of the 2025 session laws and took effect on January 1, 2026. The Washington House approved it 57-38.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1213. Washington's paid family and medical leave program pays workers part of their wages while on leave. This law lets workers claim leave in blocks as short as four hours, down from eight. It widens job protection, the right to come back to the same or an equal job. That right now reaches employers with 25 or more workers in 2026, 15 in 2027 and 8 from 2028. Workers qualify after 180 days on the job, instead of meeting an hours test. Employers must keep up health coverage during protected leave. Small employers can get a new $3,000 grant. It became law as chapter 304 of the 2025 session laws and took effect on January 1, 2026. The Washington House approved it 57-38.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1548981,
+      "measure_id": "HB 1213",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1213. Washington's paid family and medical leave program pays workers part of their wages while on leave. This law lets workers claim leave in blocks as short as four hours, down from eight. It widens job protection, the right to come back to the same or an equal job. That right now reaches employers with 25 or more workers in 2026, 15 in 2027 and 8 from 2028. Workers qualify after 180 days on the job, instead of meeting an hours test. Employers must keep up health coverage during protected leave. Small employers can get a new $3,000 grant. It became law as chapter 304 of the 2025 session laws and took effect on January 1, 2026. The Washington Senate approved it 28-20.",
+      "nay_description": "Voted against passing House Bill 1213. Washington's paid family and medical leave program pays workers part of their wages while on leave. This law lets workers claim leave in blocks as short as four hours, down from eight. It widens job protection, the right to come back to the same or an equal job. That right now reaches employers with 25 or more workers in 2026, 15 in 2027 and 8 from 2028. Workers qualify after 180 days on the job, instead of meeting an hours test. Employers must keep up health coverage during protected leave. Small employers can get a new $3,000 grant. It became law as chapter 304 of the 2025 session laws and took effect on January 1, 2026. The Washington Senate approved it 28-20.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1633934,
+      "measure_id": "HB 1570",
+      "vote_date": "2026-02-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1570. This law lets student workers at Western Washington University form unions and bargain under the state law for public workers, if no other bargaining law covers them. It covers jobs such as dorm advisors, event and media helpers, and building managers. Talks may not cover firing for poor grades, tuition and fees, or the school calendar. Tuition waivers may be bargained. It became law as chapter 113 of the 2026 session laws and took effect on March 18, 2026. The Washington House approved it 58-35.",
+      "nay_description": "Voted against passing House Bill 1570. This law lets student workers at Western Washington University form unions and bargain under the state law for public workers, if no other bargaining law covers them. It covers jobs such as dorm advisors, event and media helpers, and building managers. Talks may not cover firing for poor grades, tuition and fees, or the school calendar. Tuition waivers may be bargained. It became law as chapter 113 of the 2026 session laws and took effect on March 18, 2026. The Washington House approved it 58-35.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1652662,
+      "measure_id": "HB 1570",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1570. This law lets student workers at Western Washington University form unions and bargain under the state law for public workers, if no other bargaining law covers them. It covers jobs such as dorm advisors, event and media helpers, and building managers. Talks may not cover firing for poor grades, tuition and fees, or the school calendar. Tuition waivers may be bargained. It became law as chapter 113 of the 2026 session laws and took effect on March 18, 2026. The Washington Senate approved it 29-19.",
+      "nay_description": "Voted against passing House Bill 1570. This law lets student workers at Western Washington University form unions and bargain under the state law for public workers, if no other bargaining law covers them. It covers jobs such as dorm advisors, event and media helpers, and building managers. Talks may not cover firing for poor grades, tuition and fees, or the school calendar. Tuition waivers may be bargained. It became law as chapter 113 of the 2026 session laws and took effect on March 18, 2026. The Washington Senate approved it 29-19.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1508909,
+      "measure_id": "HB 1821",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1821. Contractors on public works projects must pay the local prevailing wage and file payroll records with the state. This law lets two more kinds of groups get copies of those records from the Department of Labor and Industries. They are joint labor-management committees and benefit trusts run jointly by unions and employers. A committee may use the records only to file prevailing wage complaints, not for union organizing or business. It became law as chapter 99 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "nay_description": "Voted against passing House Bill 1821. Contractors on public works projects must pay the local prevailing wage and file payroll records with the state. This law lets two more kinds of groups get copies of those records from the Department of Labor and Industries. They are joint labor-management committees and benefit trusts run jointly by unions and employers. A committee may use the records only to file prevailing wage complaints, not for union organizing or business. It became law as chapter 99 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1543180,
+      "measure_id": "HB 1821",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1821. Contractors on public works projects must pay the local prevailing wage and file payroll records with the state. This law lets two more kinds of groups get copies of those records from the Department of Labor and Industries. They are joint labor-management committees and benefit trusts run jointly by unions and employers. A committee may use the records only to file prevailing wage complaints, not for union organizing or business. It became law as chapter 99 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 28-21.",
+      "nay_description": "Voted against passing House Bill 1821. Contractors on public works projects must pay the local prevailing wage and file payroll records with the state. This law lets two more kinds of groups get copies of those records from the Department of Labor and Industries. They are joint labor-management committees and benefit trusts run jointly by unions and employers. A committee may use the records only to file prevailing wage complaints, not for union organizing or business. It became law as chapter 99 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 28-21.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1633310,
+      "measure_id": "HB 2471",
+      "vote_date": "2026-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2471. Most private workers get their union rights from a federal law. This law creates a state union law for private workers, but it applies only if the federal law stops covering them. It also applies if the federal labor board will not act or loses the power to. In that case a state board would recognize unions by a card count or a vote, and could order a fired worker rehired and paid. If a first contract is not settled in six months, it would go to a neutral arbitrator. It does not cover bosses, contractors or public workers. It became law as chapter 130 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 58-35.",
+      "nay_description": "Voted against passing House Bill 2471. Most private workers get their union rights from a federal law. This law creates a state union law for private workers, but it applies only if the federal law stops covering them. It also applies if the federal labor board will not act or loses the power to. In that case a state board would recognize unions by a card count or a vote, and could order a fired worker rehired and paid. If a first contract is not settled in six months, it would go to a neutral arbitrator. It does not cover bosses, contractors or public workers. It became law as chapter 130 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 58-35.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1653483,
+      "measure_id": "HB 2471",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2471. Most private workers get their union rights from a federal law. This law creates a state union law for private workers, but it applies only if the federal law stops covering them. It also applies if the federal labor board will not act or loses the power to. In that case a state board would recognize unions by a card count or a vote, and could order a fired worker rehired and paid. If a first contract is not settled in six months, it would go to a neutral arbitrator. It does not cover bosses, contractors or public workers. It became law as chapter 130 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 31-18.",
+      "nay_description": "Voted against passing House Bill 2471. Most private workers get their union rights from a federal law. This law creates a state union law for private workers, but it applies only if the federal law stops covering them. It also applies if the federal labor board will not act or loses the power to. In that case a state board would recognize unions by a card count or a vote, and could order a fired worker rehired and paid. If a first contract is not settled in six months, it would go to a neutral arbitrator. It does not cover bosses, contractors or public workers. It became law as chapter 130 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 31-18.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1549327,
+      "measure_id": "SB 5503",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5503. This law changes how the state Public Employment Relations Commission handles public-sector union cases. When workers petition to form a new union, both sides must explain early which workers they dispute. The commission may set hearing dates without both sides' consent. It may assume the worst about a party that ignores its subpoenas, though not when a union properly claims union privilege. Public employers may not make a worker give up legal claims to settle a grievance. It became law as chapter 387 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-36.",
+      "nay_description": "Voted against passing Senate Bill 5503. This law changes how the state Public Employment Relations Commission handles public-sector union cases. When workers petition to form a new union, both sides must explain early which workers they dispute. The commission may set hearing dates without both sides' consent. It may assume the worst about a party that ignores its subpoenas, though not when a union properly claims union privilege. Public employers may not make a worker give up legal claims to settle a grievance. It became law as chapter 387 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-36.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1554473,
+      "measure_id": "SB 5503",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5503. This law changes how the state Public Employment Relations Commission handles public-sector union cases. When workers petition to form a new union, both sides must explain early which workers they dispute. The commission may set hearing dates without both sides' consent. It may assume the worst about a party that ignores its subpoenas, though not when a union properly claims union privilege. Public employers may not make a worker give up legal claims to settle a grievance. It became law as chapter 387 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5503. This law changes how the state Public Employment Relations Commission handles public-sector union cases. When workers petition to form a new union, both sides must explain early which workers they dispute. The commission may set hearing dates without both sides' consent. It may assume the worst about a party that ignores its subpoenas, though not when a union properly claims union privilege. Public employers may not make a worker give up legal claims to settle a grievance. It became law as chapter 387 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1650708,
+      "measure_id": "SB 6188",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6188. People who work on asbestos jobs must be certified by the state Department of Labor and Industries. The department could write rules only as far as needed to match federal law. This law removes that limit. Its rules must now rest on the best evidence, best practices and national industry standards, and be no more burdensome than needed to address safety and health hazards. It became law as chapter 179 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 61-33.",
+      "nay_description": "Voted against passing Senate Bill 6188. People who work on asbestos jobs must be certified by the state Department of Labor and Industries. The department could write rules only as far as needed to match federal law. This law removes that limit. Its rules must now rest on the best evidence, best practices and national industry standards, and be no more burdensome than needed to address safety and health hazards. It became law as chapter 179 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 61-33.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1659407,
+      "measure_id": "SB 6188",
+      "vote_date": "2026-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 6188. People who work on asbestos jobs must be certified by the state Department of Labor and Industries. The department could write rules only as far as needed to match federal law. This law removes that limit. Its rules must now rest on the best evidence, best practices and national industry standards, and be no more burdensome than needed to address safety and health hazards. It became law as chapter 179 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 6188. People who work on asbestos jobs must be certified by the state Department of Labor and Industries. The department could write rules only as far as needed to match federal law. This law removes that limit. Its rules must now rest on the best evidence, best practices and national industry standards, and be no more burdensome than needed to address safety and health hazards. It became law as chapter 179 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1633725,
+      "measure_id": "SB 6302",
+      "vote_date": "2026-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6302. Misclassification means treating a worker as a contractor when the worker should be an employee. This law targets it on public works jobs. Say a contractor uses three or more contractors at once for the same drywall, floor, tile, paint or glass work. If someone reports it, the state Department of Labor and Industries must look into it. Reports may come from the public owner, other firms, a union or the workers. A firm found to have misclassified workers faces wage law penalties, and the state must also refer it to the jobless and injury insurance programs. It became law as chapter 105 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 37-11.",
+      "nay_description": "Voted against passing Senate Bill 6302. Misclassification means treating a worker as a contractor when the worker should be an employee. This law targets it on public works jobs. Say a contractor uses three or more contractors at once for the same drywall, floor, tile, paint or glass work. If someone reports it, the state Department of Labor and Industries must look into it. Reports may come from the public owner, other firms, a union or the workers. A firm found to have misclassified workers faces wage law penalties, and the state must also refer it to the jobless and injury insurance programs. It became law as chapter 105 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 37-11.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

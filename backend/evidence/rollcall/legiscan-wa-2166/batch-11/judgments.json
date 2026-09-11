@@ -1,0 +1,368 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1650661,
+      "measure_id": "HB 1345",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1345. This law lets counties that plan under the state growth law allow a detached backyard home, called an accessory dwelling unit, on rural lots outside the areas set aside for city growth. Strict limits apply. A lot may have only one such unit. It may be no larger than 1,296 square feet, must share the main home's driveway, and must sit within 150 feet of it. Water use must be metered and stay within state limits, and the septic system must be able to handle it. Small lots of under one acre that do not meet zoning rules are not eligible. Counties must penalize units built without permits and report the number of permits each year. It became law as chapter 231 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 33-15.",
+      "nay_description": "Voted against passing House Bill 1345. This law lets counties that plan under the state growth law allow a detached backyard home, called an accessory dwelling unit, on rural lots outside the areas set aside for city growth. Strict limits apply. A lot may have only one such unit. It may be no larger than 1,296 square feet, must share the main home's driveway, and must sit within 150 feet of it. Water use must be metered and stay within state limits, and the septic system must be able to handle it. Small lots of under one acre that do not meet zoning rules are not eligible. Counties must penalize units built without permits and report the number of permits each year. It became law as chapter 231 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 33-15.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1552538,
+      "measure_id": "HB 1409",
+      "vote_date": "2025-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1409. Washington's clean fuels program makes fuel sellers cut the carbon pollution from transportation fuels over time. This law speeds up the required cuts. Fuels must be 45 percent cleaner than 2017 levels by 2038, or 55 percent if the state finds progress falling short. It sets added cuts of 5 percent by 2026, 4 percent by 2027, and 3 to 4 percent a year after that. It ends a rule that paused cuts beyond 10 percent until more biofuel plants were built. But from 2030, the standard may not tighten past 20 percent until a new or larger biofuel plant gets a permit. The general Clean Air Act penalties are replaced by fines written for this program, such as up to $10,000 a day for missing reports. It became law as chapter 319 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 54-43.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1409. Washington's clean fuels program makes fuel sellers cut the carbon pollution from transportation fuels over time. This law speeds up the required cuts. Fuels must be 45 percent cleaner than 2017 levels by 2038, or 55 percent if the state finds progress falling short. It sets added cuts of 5 percent by 2026, 4 percent by 2027, and 3 to 4 percent a year after that. It ends a rule that paused cuts beyond 10 percent until more biofuel plants were built. But from 2030, the standard may not tighten past 20 percent until a new or larger biofuel plant gets a permit. The general Clean Air Act penalties are replaced by fines written for this program, such as up to $10,000 a day for missing reports. It became law as chapter 319 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 54-43.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1549155,
+      "measure_id": "HB 1409",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1409. Washington's clean fuels program makes fuel sellers cut the carbon pollution from transportation fuels over time. This law speeds up the required cuts. Fuels must be 45 percent cleaner than 2017 levels by 2038, or 55 percent if the state finds progress falling short. It sets added cuts of 5 percent by 2026, 4 percent by 2027, and 3 to 4 percent a year after that. It ends a rule that paused cuts beyond 10 percent until more biofuel plants were built. But from 2030, the standard may not tighten past 20 percent until a new or larger biofuel plant gets a permit. The general Clean Air Act penalties are replaced by fines written for this program, such as up to $10,000 a day for missing reports. It became law as chapter 319 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-23.",
+      "nay_description": "Voted against passing House Bill 1409. Washington's clean fuels program makes fuel sellers cut the carbon pollution from transportation fuels over time. This law speeds up the required cuts. Fuels must be 45 percent cleaner than 2017 levels by 2038, or 55 percent if the state finds progress falling short. It sets added cuts of 5 percent by 2026, 4 percent by 2027, and 3 to 4 percent a year after that. It ends a rule that paused cuts beyond 10 percent until more biofuel plants were built. But from 2030, the standard may not tighten past 20 percent until a new or larger biofuel plant gets a permit. The general Clean Air Act penalties are replaced by fines written for this program, such as up to $10,000 a day for missing reports. It became law as chapter 319 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-23.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1506526,
+      "measure_id": "HB 1494",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1494. Washington lets cities give a property tax break to new apartment buildings that set aside homes at lower rents. This law widens it. Cities of at least 15,000 people that require affordable units in new buildings may offer the 20-year break within a mile of frequent transit. Large counties such as Clark, Kitsap and Snohomish may offer breaks in some areas near colleges or busy bus lines. A tenant keeps low-income status unless their income rises above 150 percent of the limit. Homes built for sale need a deed rule to stay affordable. Cities and counties may fine owners who fail to keep rents low, instead of only canceling the break. It became law as chapter 164 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 63-34.",
+      "nay_description": "Voted against passing House Bill 1494. Washington lets cities give a property tax break to new apartment buildings that set aside homes at lower rents. This law widens it. Cities of at least 15,000 people that require affordable units in new buildings may offer the 20-year break within a mile of frequent transit. Large counties such as Clark, Kitsap and Snohomish may offer breaks in some areas near colleges or busy bus lines. A tenant keeps low-income status unless their income rises above 150 percent of the limit. Homes built for sale need a deed rule to stay affordable. Cities and counties may fine owners who fail to keep rents low, instead of only canceling the break. It became law as chapter 164 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 63-34.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1548970,
+      "measure_id": "HB 1494",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1494. Washington lets cities give a property tax break to new apartment buildings that set aside homes at lower rents. This law widens it. Cities of at least 15,000 people that require affordable units in new buildings may offer the 20-year break within a mile of frequent transit. Large counties such as Clark, Kitsap and Snohomish may offer breaks in some areas near colleges or busy bus lines. A tenant keeps low-income status unless their income rises above 150 percent of the limit. Homes built for sale need a deed rule to stay affordable. Cities and counties may fine owners who fail to keep rents low, instead of only canceling the break. It became law as chapter 164 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "nay_description": "Voted against passing House Bill 1494. Washington lets cities give a property tax break to new apartment buildings that set aside homes at lower rents. This law widens it. Cities of at least 15,000 people that require affordable units in new buildings may offer the 20-year break within a mile of frequent transit. Large counties such as Clark, Kitsap and Snohomish may offer breaks in some areas near colleges or busy bus lines. A tenant keeps low-income status unless their income rises above 150 percent of the limit. Homes built for sale need a deed rule to stay affordable. Cities and counties may fine owners who fail to keep rents low, instead of only canceling the break. It became law as chapter 164 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1660978,
+      "measure_id": "HB 1903",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1903. This law creates a statewide program to help low-income households pay their energy bills. The state Department of Commerce runs it with money the Legislature provides. Utilities choose whether to take part, and they pass the aid on as a credit on customers' monthly bills. Households with the greatest need get the most. Aid must start within 14 months after funding is provided. It adds to utilities' own low-income programs, which may not be cut because of it. The governor vetoed only the section that created an advisory group. It became law as chapter 252 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 70-26.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1903. This law creates a statewide program to help low-income households pay their energy bills. The state Department of Commerce runs it with money the Legislature provides. Utilities choose whether to take part, and they pass the aid on as a credit on customers' monthly bills. Households with the greatest need get the most. Aid must start within 14 months after funding is provided. It adds to utilities' own low-income programs, which may not be cut because of it. The governor vetoed only the section that created an advisory group. It became law as chapter 252 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 70-26.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1656487,
+      "measure_id": "HB 1903",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1903. This law creates a statewide program to help low-income households pay their energy bills. The state Department of Commerce runs it with money the Legislature provides. Utilities choose whether to take part, and they pass the aid on as a credit on customers' monthly bills. Households with the greatest need get the most. Aid must start within 14 months after funding is provided. It adds to utilities' own low-income programs, which may not be cut because of it. The governor vetoed only the section that created an advisory group. It became law as chapter 252 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 35-13.",
+      "nay_description": "Voted against passing House Bill 1903. This law creates a statewide program to help low-income households pay their energy bills. The state Department of Commerce runs it with money the Legislature provides. Utilities choose whether to take part, and they pass the aid on as a credit on customers' monthly bills. Households with the greatest need get the most. Aid must start within 14 months after funding is provided. It adds to utilities' own low-income programs, which may not be cut because of it. The governor vetoed only the section that created an advisory group. It became law as chapter 252 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 35-13.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1660085,
+      "measure_id": "HB 2156",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 2156. This law has the Attorney General name investigators to look into economic and financial crimes. They count as limited peace officers, so they must meet state police training and background rules. They may send a search warrant to a business electronically once a judge approves it. They may not serve warrants in person, detain or arrest anyone, or carry weapons. Other police agencies' powers do not change. It became law as chapter 242 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 54-41.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 2156. This law has the Attorney General name investigators to look into economic and financial crimes. They count as limited peace officers, so they must meet state police training and background rules. They may send a search warrant to a business electronically once a judge approves it. They may not serve warrants in person, detain or arrest anyone, or carry weapons. Other police agencies' powers do not change. It became law as chapter 242 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 54-41.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1660084
+      ],
+      "note": "The House voted twice on the same day to accept the Senate's changes, 54-33 and then 54-41 on reconsideration. Same-day rolls cannot be ordered by date. The reconsideration vote is the House's final word, so it is the one judged, and the earlier roll is acknowledged."
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1655906,
+      "measure_id": "HB 2156",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2156. This law has the Attorney General name investigators to look into economic and financial crimes. They count as limited peace officers, so they must meet state police training and background rules. They may send a search warrant to a business electronically once a judge approves it. They may not serve warrants in person, detain or arrest anyone, or carry weapons. Other police agencies' powers do not change. It became law as chapter 242 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 29-19.",
+      "nay_description": "Voted against passing House Bill 2156. This law has the Attorney General name investigators to look into economic and financial crimes. They count as limited peace officers, so they must meet state police training and background rules. They may send a search warrant to a business electronically once a judge approves it. They may not serve warrants in person, detain or arrest anyone, or carry weapons. Other police agencies' powers do not change. It became law as chapter 242 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 29-19.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1661847,
+      "measure_id": "HB 2215",
+      "vote_date": "2026-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 2215. Washington's cap-and-invest program makes large polluters buy permits for the greenhouse gas they emit. Fuel suppliers had to take part only above 25,000 metric tons of emissions a year. From 2027, this law lowers that line to 500 tons for suppliers of gasoline, diesel, biodiesel or propane that started in 2023 or later, with a narrow exception. The state may adjust the line by rule. From 2027, fuel sellers must be in the program, or show their fuel came from a supplier that is, to win state or local contracts. Emissions from lubricants are exempt from 2027. The governor vetoed only the clause that would have made it take effect at once. It became law as chapter 251 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 57-38.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 2215. Washington's cap-and-invest program makes large polluters buy permits for the greenhouse gas they emit. Fuel suppliers had to take part only above 25,000 metric tons of emissions a year. From 2027, this law lowers that line to 500 tons for suppliers of gasoline, diesel, biodiesel or propane that started in 2023 or later, with a narrow exception. The state may adjust the line by rule. From 2027, fuel sellers must be in the program, or show their fuel came from a supplier that is, to win state or local contracts. Emissions from lubricants are exempt from 2027. The governor vetoed only the clause that would have made it take effect at once. It became law as chapter 251 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 57-38.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1547909,
+      "measure_id": "SB 5232",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5232. Washington's Housing and Essential Needs program helps some low-income adults pay for housing and basic needs. This law lets the state Department of Commerce keep helping elderly or disabled adults on federal Social Security who are leaving the program but still urgently need housing. Rent help referrals must be checked every 12 months. Aid may come as debit cards, travel vouchers, gift cards or payments to vendors. A 7 percent cap on administrative costs is replaced by the rate used in similar programs. The governor vetoed a section that would have loosened eligibility rules, including citizenship and residency rules, so current law on those stays. It became law as chapter 408 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "nay_description": "Voted against passing Senate Bill 5232. Washington's Housing and Essential Needs program helps some low-income adults pay for housing and basic needs. This law lets the state Department of Commerce keep helping elderly or disabled adults on federal Social Security who are leaving the program but still urgently need housing. Rent help referrals must be checked every 12 months. Aid may come as debit cards, travel vouchers, gift cards or payments to vendors. A 7 percent cap on administrative costs is replaced by the rate used in similar programs. The governor vetoed a section that would have loosened eligibility rules, including citizenship and residency rules, so current law on those stays. It became law as chapter 408 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 59-38.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1552214,
+      "measure_id": "SB 5232",
+      "vote_date": "2025-04-18",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5232. Washington's Housing and Essential Needs program helps some low-income adults pay for housing and basic needs. This law lets the state Department of Commerce keep helping elderly or disabled adults on federal Social Security who are leaving the program but still urgently need housing. Rent help referrals must be checked every 12 months. Aid may come as debit cards, travel vouchers, gift cards or payments to vendors. A 7 percent cap on administrative costs is replaced by the rate used in similar programs. The governor vetoed a section that would have loosened eligibility rules, including citizenship and residency rules, so current law on those stays. It became law as chapter 408 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5232. Washington's Housing and Essential Needs program helps some low-income adults pay for housing and basic needs. This law lets the state Department of Commerce keep helping elderly or disabled adults on federal Social Security who are leaving the program but still urgently need housing. Rent help referrals must be checked every 12 months. Aid may come as debit cards, travel vouchers, gift cards or payments to vendors. A 7 percent cap on administrative costs is replaced by the rate used in similar programs. The governor vetoed a section that would have loosened eligibility rules, including citizenship and residency rules, so current law on those stays. It became law as chapter 408 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1656447,
+      "measure_id": "SB 5520",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5520. People wrongly convicted of a felony and sent to prison can sue the state for money. This law makes that easier. A person counts as innocent if the full evidence, more likely than not, no longer supports the conviction. A claim may be filed on that same showing. New evidence that clears a person counts even if a court would not admit it. A guilty plea, or a false or illegally obtained confession, does not count as lying to cause the conviction. The Attorney General must concede most claims that meet these rules. To win in court, a person must still meet the higher clear and convincing standard. It became law as chapter 224 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 72-23.",
+      "nay_description": "Voted against passing Senate Bill 5520. People wrongly convicted of a felony and sent to prison can sue the state for money. This law makes that easier. A person counts as innocent if the full evidence, more likely than not, no longer supports the conviction. A claim may be filed on that same showing. New evidence that clears a person counts even if a court would not admit it. A guilty plea, or a false or illegally obtained confession, does not count as lying to cause the conviction. The Attorney General must concede most claims that meet these rules. To win in court, a person must still meet the higher clear and convincing standard. It became law as chapter 224 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 72-23.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1657670,
+      "measure_id": "SB 5520",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5520. People wrongly convicted of a felony and sent to prison can sue the state for money. This law makes that easier. A person counts as innocent if the full evidence, more likely than not, no longer supports the conviction. A claim may be filed on that same showing. New evidence that clears a person counts even if a court would not admit it. A guilty plea, or a false or illegally obtained confession, does not count as lying to cause the conviction. The Attorney General must concede most claims that meet these rules. To win in court, a person must still meet the higher clear and convincing standard. It became law as chapter 224 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 31-18.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5520. People wrongly convicted of a felony and sent to prison can sue the state for money. This law makes that easier. A person counts as innocent if the full evidence, more likely than not, no longer supports the conviction. A claim may be filed on that same showing. New evidence that clears a person counts even if a court would not admit it. A guilty plea, or a false or illegally obtained confession, does not count as lying to cause the conviction. The Attorney General must concede most claims that meet these rules. To win in court, a person must still meet the higher clear and convincing standard. It became law as chapter 224 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 31-18.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1653992,
+      "measure_id": "SB 6309",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6309. Regional transit authorities, such as Sound Transit, build light rail and other transit. This law speeds up their permits. They may apply for land use and building permits before they own the land, if they notify the owner, and local governments must accept the applications. Rail lines may exceed local height and setback limits when needed, while following local rules as far as practical. Land bought for transit is exempt from subdivision rules. It became law as chapter 166 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 56-38.",
+      "nay_description": "Voted against passing Senate Bill 6309. Regional transit authorities, such as Sound Transit, build light rail and other transit. This law speeds up their permits. They may apply for land use and building permits before they own the land, if they notify the owner, and local governments must accept the applications. Rail lines may exceed local height and setback limits when needed, while following local rules as far as practical. Land bought for transit is exempt from subdivision rules. It became law as chapter 166 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 56-38.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1658477,
+      "measure_id": "SB 6309",
+      "vote_date": "2026-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 6309. Regional transit authorities, such as Sound Transit, build light rail and other transit. This law speeds up their permits. They may apply for land use and building permits before they own the land, if they notify the owner, and local governments must accept the applications. Rail lines may exceed local height and setback limits when needed, while following local rules as far as practical. Land bought for transit is exempt from subdivision rules. It became law as chapter 166 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 6309. Regional transit authorities, such as Sound Transit, build light rail and other transit. This law speeds up their permits. They may apply for land use and building permits before they own the land, if they notify the owner, and local governments must accept the applications. Rail lines may exceed local height and setback limits when needed, while following local rules as far as practical. Land bought for transit is exempt from subdivision rules. It became law as chapter 166 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1659315,
+      "measure_id": "SB 6346",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6346. This law creates a state income tax of 9.9 percent on high incomes, starting in 2028. Only individuals pay it, and the first returns are due in 2029. Each person may deduct $1 million a year, and a married or partnered couple shares one $1 million deduction, so only income above that is taxed. The deduction rises with inflation from 2030. Charitable gifts of up to $100,000 may also be deducted. Long-term capital gains stay under the existing capital gains tax. Tribal members' income from their own lands is exempt. Five percent of the money goes to child care and early learning. It became law as chapter 238 of the 2026 session laws. Lawsuits claiming it breaks the state constitution were still pending in 2026. The Washington House approved it 51-46.",
+      "nay_description": "Voted against passing Senate Bill 6346. This law creates a state income tax of 9.9 percent on high incomes, starting in 2028. Only individuals pay it, and the first returns are due in 2029. Each person may deduct $1 million a year, and a married or partnered couple shares one $1 million deduction, so only income above that is taxed. The deduction rises with inflation from 2030. Charitable gifts of up to $100,000 may also be deducted. Long-term capital gains stay under the existing capital gains tax. Tribal members' income from their own lands is exempt. Five percent of the money goes to child care and early learning. It became law as chapter 238 of the 2026 session laws. Lawsuits claiming it breaks the state constitution were still pending in 2026. The Washington House approved it 51-46.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1661470,
+      "measure_id": "SB 6346",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 6346. This law creates a state income tax of 9.9 percent on high incomes, starting in 2028. Only individuals pay it, and the first returns are due in 2029. Each person may deduct $1 million a year, and a married or partnered couple shares one $1 million deduction, so only income above that is taxed. The deduction rises with inflation from 2030. Charitable gifts of up to $100,000 may also be deducted. Long-term capital gains stay under the existing capital gains tax. Tribal members' income from their own lands is exempt. Five percent of the money goes to child care and early learning. It became law as chapter 238 of the 2026 session laws. Lawsuits claiming it breaks the state constitution were still pending in 2026. The Washington Senate approved it 27-21.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 6346. This law creates a state income tax of 9.9 percent on high incomes, starting in 2028. Only individuals pay it, and the first returns are due in 2029. Each person may deduct $1 million a year, and a married or partnered couple shares one $1 million deduction, so only income above that is taxed. The deduction rises with inflation from 2030. Charitable gifts of up to $100,000 may also be deducted. Long-term capital gains stay under the existing capital gains tax. Tribal members' income from their own lands is exempt. Five percent of the money goes to child care and early learning. It became law as chapter 238 of the 2026 session laws. Lawsuits claiming it breaks the state constitution were still pending in 2026. The Washington Senate approved it 27-21.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1661153,
+      "measure_id": "SB 6355",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6355. This law creates the Washington Electric Transmission Authority, a public body to help build more high-voltage power lines in the state. Its first goal is reliable electric service. It must favor projects that connect renewable and other clean power, reach regional markets, cross utility lines, or would not otherwise be built. It may also upgrade existing lines. It must consult utilities and protect cultural and natural resources. It must try to buy land by agreement before using eminent domain, the power to take land for public use. It may not create state debt. It became law as chapter 249 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 66-27.",
+      "nay_description": "Voted against passing Senate Bill 6355. This law creates the Washington Electric Transmission Authority, a public body to help build more high-voltage power lines in the state. Its first goal is reliable electric service. It must favor projects that connect renewable and other clean power, reach regional markets, cross utility lines, or would not otherwise be built. It may also upgrade existing lines. It must consult utilities and protect cultural and natural resources. It must try to buy land by agreement before using eminent domain, the power to take land for public use. It may not create state debt. It became law as chapter 249 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 66-27.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1661374,
+      "measure_id": "SB 6355",
+      "vote_date": "2026-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 6355. This law creates the Washington Electric Transmission Authority, a public body to help build more high-voltage power lines in the state. Its first goal is reliable electric service. It must favor projects that connect renewable and other clean power, reach regional markets, cross utility lines, or would not otherwise be built. It may also upgrade existing lines. It must consult utilities and protect cultural and natural resources. It must try to buy land by agreement before using eminent domain, the power to take land for public use. It may not create state debt. It became law as chapter 249 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 32-17.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 6355. This law creates the Washington Electric Transmission Authority, a public body to help build more high-voltage power lines in the state. Its first goal is reliable electric service. It must favor projects that connect renewable and other clean power, reach regional markets, cross utility lines, or would not otherwise be built. It may also upgrade existing lines. It must consult utilities and protect cultural and natural resources. It must try to buy land by agreement before using eminent domain, the power to take land for public use. It may not create state debt. It became law as chapter 249 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 32-17.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
