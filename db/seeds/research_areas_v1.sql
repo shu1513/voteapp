@@ -8,7 +8,7 @@ VALUES
   (
     'cost_of_living_reduction',
     'Cost of Living Reduction',
-    'Lower household costs by improving price stability, competition, reduce or eliminate tariffs, and increase foreign trade.'
+    'Lower household costs for housing, energy, prescription drugs, food, and everyday and imported goods.'
   ),
   (
     'reduce_wealth_gap',
@@ -93,7 +93,7 @@ VALUES
   (
     'peaceful_foreign_policy',
     'Peaceful Foreign Policy',
-    'Prioritize diplomacy and de-escalation instead of war.'
+    'Favor diplomacy over military force in foreign conflicts.'
   ),
   (
     'housing_affordability',
@@ -133,7 +133,7 @@ VALUES
   (
     'gun_control',
     'Gun Control',
-    'Regulate firearm access through background checks, licensing, and safe-storage requirements to reduce gun violence.'
+    'Regulate firearm access through background checks, licensing, and safe-storage rules.'
   ),
   (
     'ai_regulation',
