@@ -7,7 +7,7 @@
 BEGIN;
 
 UPDATE public.research_areas
-SET description = 'Lower household costs for housing, food, energy, and everyday goods.',
+SET description = 'Lower household costs through more housing supply, cheaper energy, lower drug prices, higher wages, and lower tariffs on imported goods.',
     updated_at = now()
 WHERE slug = 'cost_of_living_reduction';
 
