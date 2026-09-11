@@ -1,0 +1,112 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1692107,
+      "measure_id": "HB 1168",
+      "vote_date": "2026-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1168. It makes it a felony to supply abortion pills for an illegal abortion. The act creates a new crime: trafficking in an abortion-inducing drug. A person commits it by handing over such a drug, or holding it to hand over, to someone they know means to use it for an unlawful abortion. Having reason to know is enough. The penalty is up to ten years in prison, a fine of up to $100,000, or both. The act names misoprostol and methotrexate when they are prescribed to end a pregnancy. It does not cover the same drugs given for other reasons, or to treat an ectopic pregnancy or a miscarriage. Pharmacists, drug makers and distributors acting lawfully in their usual work are not covered. Nor is birth control used as its maker directs. The Oklahoma Senate passed it 37-10. The Governor signed it.",
+      "nay_description": "Voted against House Bill 1168. It makes it a felony to supply abortion pills for an illegal abortion. The act creates a new crime: trafficking in an abortion-inducing drug. A person commits it by handing over such a drug, or holding it to hand over, to someone they know means to use it for an unlawful abortion. Having reason to know is enough. The penalty is up to ten years in prison, a fine of up to $100,000, or both. The act names misoprostol and methotrexate when they are prescribed to end a pregnancy. It does not cover the same drugs given for other reasons, or to treat an ectopic pregnancy or a miscarriage. Pharmacists, drug makers and distributors acting lawfully in their usual work are not covered. Nor is birth control used as its maker directs. The Oklahoma Senate passed it 37-10. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1606355,
+      "measure_id": "HB 1087",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1087. It adds a day to the school year and extends the teacher pay scale for long-serving teachers. Schools must now hold 181 days of classroom instruction a year instead of 180. A school that counts hours instead must hold 1,086 hours instead of 1,080. The state's minimum pay scale for teachers used to stop rising after 25 years. The act adds a step for each year from 26 to 35, so a teacher with a bachelor's degree and 35 years is owed at least $64,077. It also ends two rules on paying for raises. One gave an extra raise to teachers already paid above the scale in 2022-2023. The other had the State Board of Education pay for the scale's raises in districts that get no money from the state aid formula. The Oklahoma Senate passed it 35-12. The Governor signed it.",
+      "nay_description": "Voted against House Bill 1087. It adds a day to the school year and extends the teacher pay scale for long-serving teachers. Schools must now hold 181 days of classroom instruction a year instead of 180. A school that counts hours instead must hold 1,086 hours instead of 1,080. The state's minimum pay scale for teachers used to stop rising after 25 years. The act adds a step for each year from 26 to 35, so a teacher with a bachelor's degree and 35 years is owed at least $64,077. It also ends two rules on paying for raises. One gave an extra raise to teachers already paid above the scale in 2022-2023. The other had the State Board of Education pay for the scale's raises in districts that get no money from the state aid formula. The Oklahoma Senate passed it 35-12. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1605785,
+      "measure_id": "HB 2049",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2049. It makes the state check that Medicaid health plans cover mental health and addiction care as fully as other care. Parity means a plan may not limit mental health or addiction care more tightly than other care. Oklahoma pays private health plans to run much of its Medicaid coverage. The act tells the Oklahoma Health Care Authority to make sure those plans follow parity law. Each plan's contract must make it test its limits on this care. It must test them regularly, and again whenever it changes a limit, such as a rule on prior approval. The authority must set up a way to take and settle complaints. It must also publish the plans' reports and audits. Any parity report it sends to the federal government must be posted within thirty days. The Oklahoma Senate passed it 33-11. It became law without the Governor's signature.",
+      "nay_description": "Voted against House Bill 2049. It makes the state check that Medicaid health plans cover mental health and addiction care as fully as other care. Parity means a plan may not limit mental health or addiction care more tightly than other care. Oklahoma pays private health plans to run much of its Medicaid coverage. The act tells the Oklahoma Health Care Authority to make sure those plans follow parity law. Each plan's contract must make it test its limits on this care. It must test them regularly, and again whenever it changes a limit, such as a rule on prior approval. The authority must set up a way to take and settle complaints. It must also publish the plans' reports and audits. Any parity report it sends to the federal government must be posted within thirty days. The Oklahoma Senate passed it 33-11. It became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1691843,
+      "measure_id": "HB 3467",
+      "vote_date": "2026-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3467. It extends paid maternity leave for school staff to parents who adopt. School district workers, and teachers at some other state bodies, already get six weeks of paid maternity leave after a birth. The act extends the same leave to the adoption of a child under four years old. The leave must be taken right after the birth or adoption. The act also lets a worker use sick days to care for or bond with an infant, not only a newborn. The Oklahoma Senate passed it 36-10. The Governor signed it.",
+      "nay_description": "Voted against House Bill 3467. It extends paid maternity leave for school staff to parents who adopt. School district workers, and teachers at some other state bodies, already get six weeks of paid maternity leave after a birth. The act extends the same leave to the adoption of a child under four years old. The leave must be taken right after the birth or adoption. The act also lets a worker use sick days to care for or bond with an infant, not only a newborn. The Oklahoma Senate passed it 36-10. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1691905,
+      "measure_id": "HB 3985",
+      "vote_date": "2026-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3985. It lets property owners in big cities claim money when local government stops enforcing laws against public camping and similar offenses. The act covers cities of more than 130,000 people. It applies when the city or county has a policy or practice of not enforcing certain laws. These are laws against public camping, blocking streets, loitering, begging, public urination, public drinking, drug use and shoplifting. It also applies when the government keeps up a public nuisance. An owner may then claim what they spent to deal with the problem, or the drop in their property's value. Each year's payment is capped at the property tax the owner paid that government the year before. The rest carries forward to later years. The government has thirty days to accept or reject a claim. If the owner sues, the government must prove its actions were lawful or the claim unreasonable. A winning owner gets legal fees. The Oklahoma Senate passed it 30-16. The Governor signed it.",
+      "nay_description": "Voted against House Bill 3985. It lets property owners in big cities claim money when local government stops enforcing laws against public camping and similar offenses. The act covers cities of more than 130,000 people. It applies when the city or county has a policy or practice of not enforcing certain laws. These are laws against public camping, blocking streets, loitering, begging, public urination, public drinking, drug use and shoplifting. It also applies when the government keeps up a public nuisance. An owner may then claim what they spent to deal with the problem, or the drop in their property's value. Each year's payment is capped at the property tax the owner paid that government the year before. The rest carries forward to later years. The government has thirty days to accept or reject a claim. If the owner sues, the government must prove its actions were lawful or the claim unreasonable. A winning owner gets legal fees. The Oklahoma Senate passed it 30-16. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1698177,
+      "measure_id": "SB 1451",
+      "vote_date": "2026-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1451. It asks people registering to vote where they were registered before, so the old record can be removed. The voter registration form must now ask if the applicant was registered before in another county or state. If so, it asks for the name, address and party used then. Signing the form counts as a request to end that old registration. If the old one was in another state, the State Election Board must tell that state's election office. The Board must also publish a count each year. It covers these notices sent and received, and the records removed because they matched a voter in another state. The act took effect as soon as it was signed. The Oklahoma Senate passed it 35-9. The Governor signed it.",
+      "nay_description": "Voted against Senate Bill 1451. It asks people registering to vote where they were registered before, so the old record can be removed. The voter registration form must now ask if the applicant was registered before in another county or state. If so, it asks for the name, address and party used then. Signing the form counts as a request to end that old registration. If the old one was in another state, the State Election Board must tell that state's election office. The Board must also publish a count each year. It covers these notices sent and received, and the records removed because they matched a voter in another state. The act took effect as soon as it was signed. The Oklahoma Senate passed it 35-9. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
