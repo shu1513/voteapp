@@ -48,6 +48,27 @@ Every label states `nay` explicitly and every one is null.
 - Convergence dry run afterwards: {'unchanged': 140}. The dry-run stamp
   `2026-09-10T06:53:01.168Z` matches 0 rows.
 
+## Corrections after review (2026-09-10)
+
+Two descriptions were tightened against the enrolled text and re-applied
+through `rollcall:judge`, then re-imported; `import-rerun-report.json`
+shows {'rewrite': 18, 'unchanged': 122} and the convergence dry run after
+it {'unchanged': 140}.
+
+- **HB 471.** The work rules and six-month rechecks start January 1, 2027
+  (§10(2)); the first draft carried no date, so they read as already in
+  force beside the October 1, 2026 citizenship rule. The record now names
+  the date and the verified exemptions (§26B-3-142.1(4), e.g. medically
+  frail). 8 rows.
+- **SB 234.** The direct-causation test applies only to a rule with no
+  federal counterpart (§63G-3-306(2) refers to (1)(b)); the first draft read
+  as universal. The record now scopes it and names the exemptions in (3):
+  emergency rules, federally required rules, site-specific state-required
+  rules. 10 rows.
+- **HB 76, left as is.** The act also requires 10,000 square feet, but a
+  facility drawing 75 acre-feet a year is never smaller than that, so the
+  extra number would not change what a voter learns.
+
 ## Dropped
 
 HB 314 (strands point different ways), HB 437 (process change with no
