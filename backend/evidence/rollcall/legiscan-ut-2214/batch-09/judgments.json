@@ -1,0 +1,220 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1655741,
+   "measure_id": "HB 48",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 48, which lets a court send a teen convicted of aggravated murder to an adult prison instead of a youth lockup. This applies if the teen was 17 at the time of the crime, is at least 18 at sentencing, and would be a danger to others in the youth lockup. A prosecutor may also ask the parole board to move such a person to adult prison. The act also has state agencies report wider measures of how often people return to crime. The Utah House passed it 52-15 and it was signed into law.",
+   "nay_description": "Voted against House Bill 48, which lets a court send a teen convicted of aggravated murder to an adult prison instead of a youth lockup. This applies if the teen was 17 at the time of the crime, is at least 18 at sentencing, and would be a danger to others in the youth lockup. A prosecutor may also ask the parole board to move such a person to adult prison. The act also has state agencies report wider measures of how often people return to crime. The Utah House passed it 52-15 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1654689,
+   "measure_id": "HB 48",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 48, which lets a court send a teen convicted of aggravated murder to an adult prison instead of a youth lockup. This applies if the teen was 17 at the time of the crime, is at least 18 at sentencing, and would be a danger to others in the youth lockup. A prosecutor may also ask the parole board to move such a person to adult prison. The act also has state agencies report wider measures of how often people return to crime. The Utah Senate passed it 20-7 and it was signed into law.",
+   "nay_description": "Voted against House Bill 48, which lets a court send a teen convicted of aggravated murder to an adult prison instead of a youth lockup. This applies if the teen was 17 at the time of the crime, is at least 18 at sentencing, and would be a danger to others in the youth lockup. A prosecutor may also ask the parole board to move such a person to adult prison. The act also has state agencies report wider measures of how often people return to crime. The Utah Senate passed it 20-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1656334,
+   "measure_id": "HB 54",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 54, which requires anyone who drives a motorboat or sailboat to take a short state safety course each year, starting in 2027, and to carry proof of it. The course covers life jackets, boating under the influence, safe boating, and invasive species. A rental business must check for proof or give a safety briefing first. Breaking the rule is an infraction, the lowest level of offense. The Utah Senate passed it 20-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 54, which requires anyone who drives a motorboat or sailboat to take a short state safety course each year, starting in 2027, and to carry proof of it. The course covers life jackets, boating under the influence, safe boating, and invasive species. A rental business must check for proof or give a safety briefing first. Breaking the rule is an infraction, the lowest level of offense. The Utah Senate passed it 20-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1653644,
+   "measure_id": "HB 185",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 185, which sets up a fund the attorney general may use to try to stop federal climate rules. That means any rule that would make Utah join a cap-and-trade plan, report carbon pollution, pay for climate cleanup, or face climate claims. The fund gets money the state wins in carbon credit lawsuits, plus any money lawmakers add. State agencies must also report each carbon credit they sell. The Utah Senate passed it 19-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 185, which sets up a fund the attorney general may use to try to stop federal climate rules. That means any rule that would make Utah join a cap-and-trade plan, report carbon pollution, pay for climate cleanup, or face climate claims. The fund gets money the state wins in carbon credit lawsuits, plus any money lawmakers add. State agencies must also report each carbon credit they sell. The Utah Senate passed it 19-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1655900,
+   "measure_id": "HB 188",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 188, which requires a school to send a student to court after a third alleged drug possession offense at school. Before, school officials could choose other options instead. The principal must now also tell the student's parents about an offense at school. The act also bars youth probation officers from settling a case out of court when a minor 12 or older is accused of a drug-dealing misdemeanor. The Utah Senate passed it 21-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 188, which requires a school to send a student to court after a third alleged drug possession offense at school. Before, school officials could choose other options instead. The principal must now also tell the student's parents about an offense at school. The act also bars youth probation officers from settling a case out of court when a minor 12 or older is accused of a drug-dealing misdemeanor. The Utah Senate passed it 21-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1652981,
+   "measure_id": "HB 273",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 273, which sets rules for technology in public school classrooms. Schools must cut screen time that is not part of teaching and use only tools shown to help students learn. Each school system must adopt rules for artificial intelligence based on a state model. That model bars teachers from using it to grade student work on its own. It also bars using it to track students by their faces or other body features, or to profile their minds. The Utah Senate passed it 17-9 and it was signed into law.",
+   "nay_description": "Voted against House Bill 273, which sets rules for technology in public school classrooms. Schools must cut screen time that is not part of teaching and use only tools shown to help students learn. Each school system must adopt rules for artificial intelligence based on a state model. That model bars teachers from using it to grade student work on its own. It also bars using it to track students by their faces or other body features, or to profile their minds. The Utah Senate passed it 17-9 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "ai_regulation",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1654529,
+   "measure_id": "HB 331",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 331, which renames the crime of threatening terrorism to terrorism and makes it cover acts carried out, not just threats. It makes it a crime to commit a crime to help a foreign terrorist group, or to act unlawfully as an agent of a foreign government. It also bans wearing a mask to hide from police while committing a crime in public, or while with others the person knows are doing so. Three or more people who block someone from a house of worship to stop them from practicing their religion commit a felony. The Utah Senate passed it 21-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 331, which renames the crime of threatening terrorism to terrorism and makes it cover acts carried out, not just threats. It makes it a crime to commit a crime to help a foreign terrorist group, or to act unlawfully as an agent of a foreign government. It also bans wearing a mask to hide from police while committing a crime in public, or while with others the person knows are doing so. Three or more people who block someone from a house of worship to stop them from practicing their religion commit a felony. The Utah Senate passed it 21-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1646855,
+   "measure_id": "HB 419",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 419, which makes people who sue to block a coal mining permit post a bond before a court or agency can put the permit on hold while the case goes on. If they lose the case, they must pay the other side's losses from the hold. Utah already had this rule for permits from other state agencies, but coal mining permits had been left out of it until now. The Utah Senate passed it 15-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 419, which makes people who sue to block a coal mining permit post a bond before a court or agency can put the permit on hold while the case goes on. If they lose the case, they must pay the other side's losses from the hold. Utah already had this rule for permits from other state agencies, but coal mining permits had been left out of it until now. The Utah Senate passed it 15-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1656283,
+   "measure_id": "HB 436",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 436, which gives a city that files a state housing report extra priority for state road money if its housing grew by 2.5% or more in the past year, as counted by new occupancy permits. The priority can go to a major regional road project inside or outside the city. The total boost to any project's ranking is capped at 7%. The Utah Senate passed it 20-8 and it was signed into law.",
+   "nay_description": "Voted against House Bill 436, which gives a city that files a state housing report extra priority for state road money if its housing grew by 2.5% or more in the past year, as counted by new occupancy permits. The priority can go to a major regional road project inside or outside the city. The total boost to any project's ranking is capped at 7%. The Utah Senate passed it 20-8 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1656626,
+   "measure_id": "HB 539",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 539, which adds human trafficking and serious abuse of a vulnerable adult to the crimes that count as domestic violence. It also changes bail. A court must presume a person is a danger if the person is charged with a serious domestic violence crime while out on probation, parole, or bail for another one. Police must send charges to prosecutors within five work days unless they have good reason to wait. Workplace protective orders now also cover volunteers at nonprofit groups. The Utah Senate passed it 19-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 539, which adds human trafficking and serious abuse of a vulnerable adult to the crimes that count as domestic violence. It also changes bail. A court must presume a person is a danger if the person is charged with a serious domestic violence crime while out on probation, parole, or bail for another one. Police must send charges to prosecutors within five work days unless they have good reason to wait. Workplace protective orders now also cover volunteers at nonprofit groups. The Utah Senate passed it 19-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1653563,
+   "measure_id": "HB 540",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 540, which requires the courts to build one website where the public can search all public court records, starting in 2027. Users must register, and the courts may charge only after 50 searches or 50 downloads in a month. The act also requires audio recordings of public court hearings outside justice courts, which people may request. Judges must file yearly financial disclosures that the public can see. The Utah Senate passed it 20-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 540, which requires the courts to build one website where the public can search all public court records, starting in 2027. Users must register, and the courts may charge only after 50 searches or 50 downloads in a month. The act also requires audio recordings of public court hearings outside justice courts, which people may request. Judges must file yearly financial disclosures that the public can see. The Utah Senate passed it 20-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1652316,
+   "measure_id": "SB 58",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 58, which requires public schools to track attendance more closely. They must tell parents within two school days of an unexcused absence, watch for students who miss 10% or more of school, and step in with added help. The state school board must audit attendance records, and it may hold back state money from a school system that fails to fix bad records. The Utah House passed it 48-22 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 58, which requires public schools to track attendance more closely. They must tell parents within two school days of an unexcused absence, watch for students who miss 10% or more of school, and step in with added help. The state school board must audit attendance records, and it may hold back state money from a school system that fails to fix bad records. The Utah House passed it 48-22 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
