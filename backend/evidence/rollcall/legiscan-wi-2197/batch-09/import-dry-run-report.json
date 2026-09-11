@@ -1,0 +1,187 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-09-11T05:42:35.598Z",
+  "finishedAt": "2026-09-11T05:42:35.886Z",
+  "jurisdiction": "WI",
+  "sessionId": 2197,
+  "evidenceDir": "evidence/rollcall/legiscan-wi-2197/batch-09",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-wi-2197/crosswalk.json",
+  "crosswalkEntries": 132,
+  "peopleFile": "evidence/rollcall/legiscan-wi-2197/legiscan-people-wi-2197.json",
+  "peopleMembers": 132,
+  "files": 1,
+  "outcomes": {
+    "dry_run": 1
+  },
+  "actions": {
+    "insert": 11
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-wi-senate-2197-roll1664414.json",
+      "state": "WI",
+      "chamber": "senate",
+      "sessionId": 2197,
+      "roll": 1664414,
+      "outcome": "dry_run",
+      "legislativeVoteId": "114c6341-abef-48cf-80b7-628162a69cf0",
+      "reviewStatus": "approved",
+      "bill": "AB595",
+      "voteDate": "2026-03-17",
+      "officialVoteDate": null,
+      "measureId": "AB 595",
+      "question": "Senate: Read a third time and concurred in",
+      "originRunId": "rollcall:WI:senate:2197:1664414:2026-09-11T05:42:35.598Z",
+      "members": 33,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 22,
+        "matched": 11
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "1aace776-e566-454c-9fd3-151b74c7d905",
+          "candidateName": "Chris Kapenga",
+          "peopleId": 12277,
+          "memberName": "Chris Kapenga",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0b15296a-169f-49be-b86a-f6311342bec9",
+          "candidateName": "Howard Marklein",
+          "peopleId": 12299,
+          "memberName": "Howard Marklein",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7911a764-682f-433b-8b2e-775c3bf401ff",
+          "candidateName": "John Jagler",
+          "peopleId": 15094,
+          "memberName": "John Jagler",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4cd7ec2f-d2aa-41bc-8160-96a9a02c3ae9",
+          "candidateName": "Romaine Robert Quinn",
+          "peopleId": 16423,
+          "memberName": "Romaine Quinn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0745e43a-57fb-4b68-925a-8bfbbcd493af",
+          "candidateName": "Rachael Ann Cabral-Guevara",
+          "peopleId": 21990,
+          "memberName": "Rachael Cabral-Guevara",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "6b280264-6493-4134-8336-f55550c893c0",
+          "candidateName": "Cory Tomczyk",
+          "peopleId": 23605,
+          "memberName": "Cory Tomczyk",
+          "side": "yea",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7c435828-69f5-4ec4-ad1e-6fc398a491a9",
+          "candidateName": "Jeff Smith",
+          "peopleId": 3820,
+          "memberName": "Jeff Smith",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "3caa9c90-a0c3-44d1-baac-fff050aac94b",
+          "candidateName": "Tim Carpenter",
+          "peopleId": 3916,
+          "memberName": "Timothy Carpenter",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e688370a-768e-4346-a7c8-e6229a2df311",
+          "candidateName": "Chris J. Larson",
+          "peopleId": 12304,
+          "memberName": "Christopher Larson",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a640b8a6-7ca8-4733-a6a5-4fcc407f2404",
+          "candidateName": "Dianne Hesselbein",
+          "peopleId": 15719,
+          "memberName": "Dianne Hesselbein",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "31eb6ce6-d66d-4b3d-b5ab-7636762e99b1",
+          "candidateName": "Mark Spreitzer",
+          "peopleId": 16425,
+          "memberName": "Mark Spreitzer",
+          "side": "nay",
+          "action": "insert",
+          "recordId": null,
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}
