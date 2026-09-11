@@ -55,7 +55,12 @@ introduced-bill summary. A signature mismatch on a returned card marks the
 record challenged; an undeliverable notice marks it challenged and leads to
 cancellation if the voter does not vote or act by the first business day after
 the second November election. Subsection (1) keeps the rule that a clerk may not
-cancel a registration solely for failure to vote.
+cancel a registration solely for failure to vote. Review fix: the first
+description said "votes or updates it"; 509bb(4) saves the registration on any
+voting-related activity, and the notice in 509bb(2)(b) names requesting an
+absent voter ballot application as one. Re-judged and the 85 records rewritten
+in place (import-rerun-report.json). "The day after" stays: the election is a
+Tuesday in Nov 2-8, so the first business day after it is always the Wednesday.
 
 ### HB 4602 — test decks
 Section 794a: each board of election commissioners controls its own test deck
