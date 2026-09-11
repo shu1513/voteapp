@@ -1,0 +1,328 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1543144,
+      "measure_id": "SB 5662",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5662. Cities and water and sewer districts charge builders a fee to connect a new building to their pipes. In an eastern Washington county of more than 500,000 people, this law lets them waive that fee for shelters and affordable housing without covering the lost money from other funds. The builder must record a deed rule limiting the property to shelter or affordable housing, with price and income limits. If the property later changes use, the owner must pay the fee then in effect. It became law as chapter 351 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 64-33.",
+      "nay_description": "Voted against passing Senate Bill 5662. Cities and water and sewer districts charge builders a fee to connect a new building to their pipes. In an eastern Washington county of more than 500,000 people, this law lets them waive that fee for shelters and affordable housing without covering the lost money from other funds. The builder must record a deed rule limiting the property to shelter or affordable housing, with price and income limits. If the property later changes use, the owner must pay the fee then in effect. It became law as chapter 351 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 64-33.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1556299,
+      "measure_id": "SB 5686",
+      "vote_date": "2025-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5686. Washington's foreclosure mediation program helps homeowners at risk of losing a home work things out with a lender. From January 1, 2026, this law opens it to owners in condominium and homeowner associations who fall behind on association dues. A housing counselor first brings the owner and the association together, then may refer them to mediation. The association must send notice of late dues within 30 days. It must then wait 15 days before other collection steps. Until then it may charge only mailing costs, a $10 fee and one late fee of no more than $50 or 5 percent. It became law as chapter 393 of the 2025 session laws. The Washington House approved it 56-41.",
+      "nay_description": "Voted against passing Senate Bill 5686. Washington's foreclosure mediation program helps homeowners at risk of losing a home work things out with a lender. From January 1, 2026, this law opens it to owners in condominium and homeowner associations who fall behind on association dues. A housing counselor first brings the owner and the association together, then may refer them to mediation. The association must send notice of late dues within 30 days. It must then wait 15 days before other collection steps. Until then it may charge only mailing costs, a $10 fee and one late fee of no more than $50 or 5 percent. It became law as chapter 393 of the 2025 session laws. The Washington House approved it 56-41.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1557663,
+      "measure_id": "SB 5686",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5686. Washington's foreclosure mediation program helps homeowners at risk of losing a home work things out with a lender. From January 1, 2026, this law opens it to owners in condominium and homeowner associations who fall behind on association dues. A housing counselor first brings the owner and the association together, then may refer them to mediation. The association must send notice of late dues within 30 days. It must then wait 15 days before other collection steps. Until then it may charge only mailing costs, a $10 fee and one late fee of no more than $50 or 5 percent. It became law as chapter 393 of the 2025 session laws. The Washington Senate approved it 27-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5686. Washington's foreclosure mediation program helps homeowners at risk of losing a home work things out with a lender. From January 1, 2026, this law opens it to owners in condominium and homeowner associations who fall behind on association dues. A housing counselor first brings the owner and the association together, then may refer them to mediation. The association must send notice of late dues within 30 days. It must then wait 15 days before other collection steps. Until then it may charge only mailing costs, a $10 fee and one late fee of no more than $50 or 5 percent. It became law as chapter 393 of the 2025 session laws. The Washington Senate approved it 27-19.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1544915,
+      "measure_id": "SB 5714",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5714. Bail bond agents sell bonds that let people charged with crimes go free before trial, and bail recovery agents track down those who skip court. Both are licensed by the state. This law makes it misconduct, which can cost them their license, for a recovery agent to use the job to enforce a civil immigration warrant. It is also misconduct for an agent to share a defendant's immigration status with anyone outside the bail business. It became law as chapter 237 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 58-37.",
+      "nay_description": "Voted against passing Senate Bill 5714. Bail bond agents sell bonds that let people charged with crimes go free before trial, and bail recovery agents track down those who skip court. Both are licensed by the state. This law makes it misconduct, which can cost them their license, for a recovery agent to use the job to enforce a civil immigration warrant. It is also misconduct for an agent to share a defendant's immigration status with anyone outside the bail business. It became law as chapter 237 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 58-37.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1656567,
+      "measure_id": "SB 5847",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5847. This law protects an injured worker's choice of doctor under workers' compensation. Employers must tell injured workers they may pick their own provider for first or emergency care, and pick from the approved network after that. An employer may not pressure or threaten a worker to use a certain clinic. The state Department of Labor and Industries must look into complaints and can fine employers. If no network provider will treat the worker within 25 miles of home, the worker may see a provider outside the network. It became law as chapter 175 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington House approved it 67-28.",
+      "nay_description": "Voted against passing Senate Bill 5847. This law protects an injured worker's choice of doctor under workers' compensation. Employers must tell injured workers they may pick their own provider for first or emergency care, and pick from the approved network after that. An employer may not pressure or threaten a worker to use a certain clinic. The state Department of Labor and Industries must look into complaints and can fine employers. If no network provider will treat the worker within 25 miles of home, the worker may see a provider outside the network. It became law as chapter 175 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington House approved it 67-28.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1658985,
+      "measure_id": "SB 5847",
+      "vote_date": "2026-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5847. This law protects an injured worker's choice of doctor under workers' compensation. Employers must tell injured workers they may pick their own provider for first or emergency care, and pick from the approved network after that. An employer may not pressure or threaten a worker to use a certain clinic. The state Department of Labor and Industries must look into complaints and can fine employers. If no network provider will treat the worker within 25 miles of home, the worker may see a provider outside the network. It became law as chapter 175 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5847. This law protects an injured worker's choice of doctor under workers' compensation. Employers must tell injured workers they may pick their own provider for first or emergency care, and pick from the approved network after that. An employer may not pressure or threaten a worker to use a certain clinic. The state Department of Labor and Industries must look into complaints and can fine employers. If no network provider will treat the worker within 25 miles of home, the worker may see a provider outside the network. It became law as chapter 175 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1651847,
+      "measure_id": "SB 5855",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5855. This law bars police officers, including federal officers, from wearing masks that hide their faces while dealing with the public on duty. Undercover officers, SWAT teams and safety gear that work safety law requires are exempt. Medical masks, clear face shields, helmets and religious head coverings are allowed. A person held by an officer in a banned mask may sue, unless the officer could still be readily identified as state law requires. It became law as chapter 115 of the 2026 session laws and took effect on March 19, 2026. The Washington House approved it 56-37.",
+      "nay_description": "Voted against passing Senate Bill 5855. This law bars police officers, including federal officers, from wearing masks that hide their faces while dealing with the public on duty. Undercover officers, SWAT teams and safety gear that work safety law requires are exempt. Medical masks, clear face shields, helmets and religious head coverings are allowed. A person held by an officer in a banned mask may sue, unless the officer could still be readily identified as state law requires. It became law as chapter 115 of the 2026 session laws and took effect on March 19, 2026. The Washington House approved it 56-37.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1657454,
+      "measure_id": "SB 5855",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5855. This law bars police officers, including federal officers, from wearing masks that hide their faces while dealing with the public on duty. Undercover officers, SWAT teams and safety gear that work safety law requires are exempt. Medical masks, clear face shields, helmets and religious head coverings are allowed. A person held by an officer in a banned mask may sue, unless the officer could still be readily identified as state law requires. It became law as chapter 115 of the 2026 session laws and took effect on March 19, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5855. This law bars police officers, including federal officers, from wearing masks that hide their faces while dealing with the public on duty. Undercover officers, SWAT teams and safety gear that work safety law requires are exempt. Medical masks, clear face shields, helmets and religious head coverings are allowed. A person held by an officer in a banned mask may sue, unless the officer could still be readily identified as state law requires. It became law as chapter 115 of the 2026 session laws and took effect on March 19, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1648383,
+      "measure_id": "SB 5892",
+      "vote_date": "2026-02-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5892. This law tightens control of the state's list of registered voters. Counties may no longer hand out data from the list when asked. They must send people to the Secretary of State instead. An election worker who knowingly breaks that rule, or knowingly leaks data from the list, commits a felony. Voters' license and ID numbers, Social Security numbers and full birth dates are kept secret from all but election staff, unless the Secretary of State allows it. It became law as chapter 213 of the 2026 session laws and took effect on March 25, 2026. The Washington House approved it 57-36.",
+      "nay_description": "Voted against passing Senate Bill 5892. This law tightens control of the state's list of registered voters. Counties may no longer hand out data from the list when asked. They must send people to the Secretary of State instead. An election worker who knowingly breaks that rule, or knowingly leaks data from the list, commits a felony. Voters' license and ID numbers, Social Security numbers and full birth dates are kept secret from all but election staff, unless the Secretary of State allows it. It became law as chapter 213 of the 2026 session laws and took effect on March 25, 2026. The Washington House approved it 57-36.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1657266,
+      "measure_id": "SB 5892",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5892. This law tightens control of the state's list of registered voters. Counties may no longer hand out data from the list when asked. They must send people to the Secretary of State instead. An election worker who knowingly breaks that rule, or knowingly leaks data from the list, commits a felony. Voters' license and ID numbers, Social Security numbers and full birth dates are kept secret from all but election staff, unless the Secretary of State allows it. It became law as chapter 213 of the 2026 session laws and took effect on March 25, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5892. This law tightens control of the state's list of registered voters. Counties may no longer hand out data from the list when asked. They must send people to the Secretary of State instead. An election worker who knowingly breaks that rule, or knowingly leaks data from the list, commits a felony. Voters' license and ID numbers, Social Security numbers and full birth dates are kept secret from all but election staff, unless the Secretary of State allows it. It became law as chapter 213 of the 2026 session laws and took effect on March 25, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1654079,
+      "measure_id": "SB 5925",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5925. This law lets the Attorney General's office demand papers, written answers and sworn statements before it files a civil lawsuit. It may do so when facts point to a breach of the U.S. or state constitution, wage laws, or the state law against discrimination. It may also do so for the state law that limits police help with federal immigration arrests, and the law on city and county jails. It may not use this power against federal agencies or their staff for their official work, or in criminal cases. A demand must be clear and relevant, and may not ask for more than a court could. It became law as chapter 243 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 56-41.",
+      "nay_description": "Voted against passing Senate Bill 5925. This law lets the Attorney General's office demand papers, written answers and sworn statements before it files a civil lawsuit. It may do so when facts point to a breach of the U.S. or state constitution, wage laws, or the state law against discrimination. It may also do so for the state law that limits police help with federal immigration arrests, and the law on city and county jails. It may not use this power against federal agencies or their staff for their official work, or in criminal cases. A demand must be clear and relevant, and may not ask for more than a court could. It became law as chapter 243 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 56-41.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1657372,
+      "measure_id": "SB 5925",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5925. This law lets the Attorney General's office demand papers, written answers and sworn statements before it files a civil lawsuit. It may do so when facts point to a breach of the U.S. or state constitution, wage laws, or the state law against discrimination. It may also do so for the state law that limits police help with federal immigration arrests, and the law on city and county jails. It may not use this power against federal agencies or their staff for their official work, or in criminal cases. A demand must be clear and relevant, and may not ask for more than a court could. It became law as chapter 243 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5925. This law lets the Attorney General's office demand papers, written answers and sworn statements before it files a civil lawsuit. It may do so when facts point to a breach of the U.S. or state constitution, wage laws, or the state law against discrimination. It may also do so for the state law that limits police help with federal immigration arrests, and the law on city and county jails. It may not use this power against federal agencies or their staff for their official work, or in criminal cases. A demand must be clear and relevant, and may not ask for more than a court could. It became law as chapter 243 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1502646,
+      "measure_id": "SB 5375",
+      "vote_date": "2025-02-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5375. Washington requires people in many jobs, such as teachers, nurses and police, to report suspected child abuse or neglect. This law adds clergy, meaning ministers, priests, rabbis, imams, elders and other religious leaders. Unlike others, clergy may not skip a report because they learned of the abuse in a privileged conversation. It became law as chapter 197 of the 2025 session laws and took effect on July 27, 2025. In October 2025 a federal court permanently barred the state from enforcing it against Catholic priests for what they hear in confession. The duty still applies to clergy in every other setting. The Washington Senate approved it 28-20.",
+      "nay_description": "Voted against passing Senate Bill 5375. Washington requires people in many jobs, such as teachers, nurses and police, to report suspected child abuse or neglect. This law adds clergy, meaning ministers, priests, rabbis, imams, elders and other religious leaders. Unlike others, clergy may not skip a report because they learned of the abuse in a privileged conversation. It became law as chapter 197 of the 2025 session laws and took effect on July 27, 2025. In October 2025 a federal court permanently barred the state from enforcing it against Catholic priests for what they hear in confession. The duty still applies to clergy in every other setting. The Washington Senate approved it 28-20.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1546499,
+      "measure_id": "SB 5375",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5375. Washington requires people in many jobs, such as teachers, nurses and police, to report suspected child abuse or neglect. This law adds clergy, meaning ministers, priests, rabbis, imams, elders and other religious leaders. Unlike others, clergy may not skip a report because they learned of the abuse in a privileged conversation. It became law as chapter 197 of the 2025 session laws and took effect on July 27, 2025. In October 2025 a federal court permanently barred the state from enforcing it against Catholic priests for what they hear in confession. The duty still applies to clergy in every other setting. The Washington House approved it 64-31.",
+      "nay_description": "Voted against passing Senate Bill 5375. Washington requires people in many jobs, such as teachers, nurses and police, to report suspected child abuse or neglect. This law adds clergy, meaning ministers, priests, rabbis, imams, elders and other religious leaders. Unlike others, clergy may not skip a report because they learned of the abuse in a privileged conversation. It became law as chapter 197 of the 2025 session laws and took effect on July 27, 2025. In October 2025 a federal court permanently barred the state from enforcing it against Catholic priests for what they hear in confession. The duty still applies to clergy in every other setting. The Washington House approved it 64-31.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1656583,
+      "measure_id": "SB 5981",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5981. Under a federal program called 340B, drug makers sell medicine at a discount to clinics and hospitals that serve many low-income patients. This law bars drug makers from blocking or limiting delivery of those discounted drugs to such clinics, their contract pharmacies or other sites they choose. Drug makers also may not demand claims or sales data as a condition, unless federal law requires it. Clinics and the Attorney General may sue, and courts may impose fines of up to $5,000 a day for each violation. Hospitals and health centers must report each year how much they save and how they use the savings. It became law as chapter 227 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 67-30.",
+      "nay_description": "Voted against passing Senate Bill 5981. Under a federal program called 340B, drug makers sell medicine at a discount to clinics and hospitals that serve many low-income patients. This law bars drug makers from blocking or limiting delivery of those discounted drugs to such clinics, their contract pharmacies or other sites they choose. Drug makers also may not demand claims or sales data as a condition, unless federal law requires it. Clinics and the Attorney General may sue, and courts may impose fines of up to $5,000 a day for each violation. Hospitals and health centers must report each year how much they save and how they use the savings. It became law as chapter 227 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 67-30.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1657301,
+      "measure_id": "SB 5981",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House's changes to Senate Bill 5981. Under a federal program called 340B, drug makers sell medicine at a discount to clinics and hospitals that serve many low-income patients. This law bars drug makers from blocking or limiting delivery of those discounted drugs to such clinics, their contract pharmacies or other sites they choose. Drug makers also may not demand claims or sales data as a condition, unless federal law requires it. Clinics and the Attorney General may sue, and courts may impose fines of up to $5,000 a day for each violation. Hospitals and health centers must report each year how much they save and how they use the savings. It became law as chapter 227 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against accepting the House's changes to Senate Bill 5981. Under a federal program called 340B, drug makers sell medicine at a discount to clinics and hospitals that serve many low-income patients. This law bars drug makers from blocking or limiting delivery of those discounted drugs to such clinics, their contract pharmacies or other sites they choose. Drug makers also may not demand claims or sales data as a condition, unless federal law requires it. Clinics and the Attorney General may sue, and courts may impose fines of up to $5,000 a day for each violation. Hospitals and health centers must report each year how much they save and how they use the savings. It became law as chapter 227 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1648405,
+      "measure_id": "SB 6182",
+      "vote_date": "2026-02-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6182. This law creates a state grant program to keep abortion care available for people without enough money, such as those who are uninsured or whose insurance does not cover it. Using money the Legislature provides, the Department of Health must give at least 85 percent of the program's funds as grants. Grants go to abortion providers and abortion funds that work with the department, tribal health providers, and clinics serving underserved areas. The department may not reveal who works for or provides care through these groups, except as the program needs. It became law as chapter 228 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington Senate approved it 29-19.",
+      "nay_description": "Voted against passing Senate Bill 6182. This law creates a state grant program to keep abortion care available for people without enough money, such as those who are uninsured or whose insurance does not cover it. Using money the Legislature provides, the Department of Health must give at least 85 percent of the program's funds as grants. Grants go to abortion providers and abortion funds that work with the department, tribal health providers, and clinics serving underserved areas. The department may not reveal who works for or provides care through these groups, except as the program needs. It became law as chapter 228 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington Senate approved it 29-19.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1661148,
+      "measure_id": "SB 6182",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6182. This law creates a state grant program to keep abortion care available for people without enough money, such as those who are uninsured or whose insurance does not cover it. Using money the Legislature provides, the Department of Health must give at least 85 percent of the program's funds as grants. Grants go to abortion providers and abortion funds that work with the department, tribal health providers, and clinics serving underserved areas. The department may not reveal who works for or provides care through these groups, except as the program needs. It became law as chapter 228 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington House approved it 57-36.",
+      "nay_description": "Voted against passing Senate Bill 6182. This law creates a state grant program to keep abortion care available for people without enough money, such as those who are uninsured or whose insurance does not cover it. Using money the Legislature provides, the Department of Health must give at least 85 percent of the program's funds as grants. Grants go to abortion providers and abortion funds that work with the department, tribal health providers, and clinics serving underserved areas. The department may not reveal who works for or provides care through these groups, except as the program needs. It became law as chapter 228 of the 2026 session laws, and most of it took effect on June 11, 2026. The Washington House approved it 57-36.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
