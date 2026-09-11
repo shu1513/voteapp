@@ -11,8 +11,9 @@ review on 2026-09-11. Local database only. Production holds no Oklahoma roll-cal
 
 - **SB 2084** (batch-04) changed from `government_spending_reduction`, yes = for, to
   `labor_rights`, yes = against. The Labor Rights area did not exist when it was judged.
-- **HB 3127** (batch-02) keeps `civil_rights`, yes = against, and adds `labor_rights`,
-  yes = against.
+- **HB 3127** (batch-02) kept `civil_rights`, yes = against, and added `labor_rights`,
+  yes = against. It was then retracted on PR review: the 47-46 roll is a failed vote. See
+  `batch-02/PLAN.md`. Its 43 records are retired.
 - **SB 250, HB 1601 and HB 3467.** The Labor Rights backfill (PR #1305) added `labor_rights` to
   these three rolls in the database but not to their batch files. A re-run from those files
   would have removed the tag. The files now match the database. No record changed.
@@ -37,8 +38,10 @@ The reasons for each call, and for the four calls reviewed and kept, are in JUDG
   the 8 no voters carry none, because the no side is null.
 - Batches 02 and 04 were re-imported (`import-rerun-report-2026-09-11.json`, stamps
   `2026-09-11T05:39:12.446Z` and `2026-09-11T05:39:17.768Z`). All 216 and 262 records came back
-  unchanged; only tags moved. HB 3127's 22 yes voters now carry both labels. SB 2084's 34 yes
+  unchanged; only tags moved. HB 3127's 22 yes voters carried both labels until the roll was
+  retracted. SB 2084's 34 yes
   voters carry `labor_rights`, and its old spending tags are gone. The
   `import-dry-run-rerun-report.json` files in those two folders are now this review's check
   before the re-import.
-- Oklahoma now holds 1,631 records from 64 rolls for 53 candidates, locally.
+- Oklahoma now holds 1,588 records from 63 rolls for 53 candidates, locally, after the HB 3127
+  retraction.

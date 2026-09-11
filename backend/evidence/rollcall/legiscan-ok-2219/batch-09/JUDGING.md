@@ -34,7 +34,8 @@ did not yet exist, and the cap touches no budget.
 positive test, where before only safety-sensitive jobs were exempt. That narrows a job
 protection. Iowa HF 767, which widened employer drug testing, carries `labor_rights`, against.
 Maryland SB 439, which protected medical cannabis users at work, carries `civil_rights`. Both
-labels point the same way, so keeping both loses nothing.
+labels point the same way, so keeping both loses nothing. **Retracted after this review:** the
+roll turned out to be a failed vote, so the records are retired. See `batch-02/PLAN.md`.
 
 ## Reviewed and kept
 
