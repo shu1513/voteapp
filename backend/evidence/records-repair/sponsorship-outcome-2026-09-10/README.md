@@ -67,7 +67,7 @@ Hawaii County Bill 179, St. Louis County marijuana-testing bill).
 | GA | HB 641 (2026) | passed House, Senate second read only, session ended |
 | KY | HB 141 (2026) | passed House, died in Senate |
 | KY | HB 11 (2026) | died in House committee |
-| MD | HB 752 (2022) | hearings only |
+| MD | HB 752 (2022) | passed House 130-1, died in Senate Education |
 | MI | HB 4947 | passed House 87-22, in Senate committee (session open) |
 | OH | HB 154, 399, 233, 743, 313, 97, 187, 819 | in House committee (136th GA open) |
 | OH | HB 478, HB 284 | passed House 2026, in Senate (136th GA open) |
@@ -77,13 +77,16 @@ Hawaii County Bill 179, St. Louis County marijuana-testing bill).
 Applied with:
 
 ```
-npm run content:backfill-plain-language -- --rewrites-file backend/evidence/records-repair/sponsorship-outcome-2026-09-10/rewrites.json --allow-sourced-facts
+cd backend
+npm run content:backfill-plain-language -- --rewrites-file evidence/records-repair/sponsorship-outcome-2026-09-10/rewrites.json --allow-sourced-facts
 ```
 
 Lint (`candidateRecordPlainLanguageLint.ts`, 45-word sentences): 0 warnings on all
 38 rewrites. Result: processed 38, applied 38, flagged 0, stale 0. Source URLs were
 not changed; each still supports the sponsorship claim, and the outcome comes from
-the official histories listed above.
+the official histories listed above. Review fix: the MD HB 752 row first said "had
+hearings but did not pass"; the bill passed the House 130-1 and died in Senate
+Education, so that one row was re-applied with the corrected outcome.
 
 Not touched: the 322 rows that already state enactment were not individually
 re-verified; a dataset cross-check of their bill numbers is a separate task.
