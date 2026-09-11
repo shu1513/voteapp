@@ -1,6 +1,7 @@
 # Idaho batch-08: labor measures reopened (labor phase C)
 
-LegiScan session 2246. **2 roll calls, 1 measure, 86 records, 86 candidates.**
+LegiScan session 2246. **2 roll calls, 1 measure, 81 live records, 81
+candidates** (86 imported, 5 retired as substitute-cast votes; see JUDGING.md).
 
 Both measures below were dropped in an earlier batch because no research area
 covered labor or union rights. The `labor_rights` area now exists (migration
