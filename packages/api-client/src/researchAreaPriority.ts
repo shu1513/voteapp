@@ -8,6 +8,7 @@ const RESEARCH_AREA_PRIORITY: readonly string[] = [
   "healthcare_affordability",
   "environment_and_public_health",
   "reduce_wealth_gap",
+  "labor_rights",
   "anti_corruption",
   "government_efficiency",
   "cost_of_living_reduction",

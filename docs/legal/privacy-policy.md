@@ -43,12 +43,20 @@ id in sessionStorage (no cookie, 30-minute idle rotation), route ids never
 paths, no user/address/district/candidate/election ids, 90-day purge, and
 the /privacy opt-out control. Like 1.2, a disclosure of a practice that
 identifies nobody — CURRENT_TERMS_VERSION stays 1.4.
+1.5 → 1.6 on 2026-09-10 (open-source readiness): names the stored picks
+and the shared pick cards (public_pick_card_shares, first name, live view,
+"Stop sharing" on /me/picks = DELETE /api/me/pick-card-shares); scopes any
+future promotional content to research-area interests only, never picks or
+follows (the old wording read as pick-targeted); adds section-into-view to
+the analytics list (section_exposed in backend/src/usage/events.ts).
+Clarifications of existing practice, nothing new collected —
+CURRENT_TERMS_VERSION stays 1.4.
 -->
 
 # Elections Simplified Privacy Policy
 
-**Last updated:** September 4, 2026
-**Version:** 1.5
+**Last updated:** September 10, 2026
+**Version:** 1.6
 
 This Privacy Policy describes how Elections Simplified Inc., a Delaware corporation and the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
@@ -62,7 +70,11 @@ This Privacy Policy describes how Elections Simplified Inc., a Delaware corporat
 
 **Support payments (optional).** If you choose to support the Service with a one-time payment or a monthly membership, the payment is processed by Stripe (see Section 3); you enter your card details on Stripe's payment pages, and your card number never reaches our servers. Stripe's payment notifications to us may include limited billing details (such as the name and email address you gave Stripe), which we do not store. What we store is the payment amount, date, type (one-time or monthly), refund status, and Stripe reference identifiers, linked to your account.
 
-**Preferences and activity.** Settings you choose: candidates you follow, research-area interests, ballot ordering preferences, and email notification opt-ins. Because the Service is about elections, these choices may reflect your civic or political interests; we treat them as your private account data and never sell them or disclose them to third parties for advertising. We use them to provide the features you chose and to select relevant civic updates, information, and recommendations (occasionally including clearly labeled sponsored or promotional content) for the notification emails you control in settings; every such email includes a working unsubscribe link, and the underlying data never leaves us.
+**Preferences and activity.** Settings you choose: candidates you follow, research-area interests, ballot ordering preferences, and email notification opt-ins.
+
+**Your picks.** If you record a pick for a race or a position on a ballot measure, we store it on your account so your ballot draft is there when you return. Because the Service is about elections, your picks, follows, and interests may reveal your civic or political views. We treat them as your private account data and never sell them or disclose them to third parties; the one exception is a pick card you choose to share, described below. We use them to provide the features you chose and to select relevant civic updates for the notification emails you control in settings. If those emails ever include clearly labeled promotional content from a civic organization, it is chosen only from the research-area interests you selected (for example, an environmental group for someone who chose the environment as an interest), never from your picks or the candidates you follow. Every such email includes a working unsubscribe link, and the data used to choose them never leaves us.
+
+**Shared pick cards (optional).** If you click Share on a date's pick card, we create a link that shows anyone who has it the picks on that card for that date, together with your first name. The card is live: it shows your picks as they stand when the link is opened. Nothing is shared until you click Share, and you can stop sharing at any time from your picks page, which makes the link stop working. Deleting your account removes every shared link.
 
 **Ask (chat) questions.** If you use the Ask feature, the questions you type are processed to find an answer in our own election database. Questions are logged **anonymously**: before a question is stored, email addresses, phone numbers, street addresses, and long digit sequences are removed, and the stored question is never linked to your account. Stored question text is deleted after 90 days; only aggregate statistics about commonly asked questions (never rare or unique ones) are kept longer. Please don't include personal information in your questions.
 
@@ -70,7 +82,7 @@ This Privacy Policy describes how Elections Simplified Inc., a Delaware corporat
 
 **Technical information.** IP address, browser user agent, and request logs collected automatically for security, rate limiting, and abuse prevention. A session cookie (httpOnly) keeps you signed in. We do not use advertising or cross-site tracking cookies.
 
-**Usage analytics.** We collect information about how the Service is used so we can improve it: which kinds of pages are viewed (the page type, never the full web address), which site controls are used, how long a page stays visible, coarse device type (phone, tablet, or desktop), the general kind of site that referred you (a search engine, a social network, or none), the U.S. state and rough size of a ballot you looked at, and whether an action such as an address search succeeded or failed. This is collected by us, on our own infrastructure, with no third-party analytics service. It is tied to a random identifier that lives only in your browser tab, is not a cookie, resets after 30 minutes of inactivity, and is never linked to your account, your email, your address, the districts, candidates, or elections you looked at, or the choices you record. Analytics data is not used to build advertising profiles and is not shared with advertisers. You can turn it off for your browser (see Section 5).
+**Usage analytics.** We collect information about how the Service is used so we can improve it: which kinds of pages are viewed (the page type, never the full web address), which site controls are used, which sections of a page come into view as you scroll (for example, a candidate's finance section), how long a page stays visible, coarse device type (phone, tablet, or desktop), the general kind of site that referred you (a search engine, a social network, or none), the U.S. state and rough size of a ballot you looked at, and whether an action such as an address search succeeded or failed. This is collected by us, on our own infrastructure, with no third-party analytics service. It is tied to a random identifier that lives only in your browser tab, is not a cookie, resets after 30 minutes of inactivity, and is never linked to your account, your email, your address, the districts, candidates, or elections you looked at, or the choices you record. Analytics data is not used to build advertising profiles and is not shared with advertisers. You can turn it off for your browser (see Section 5).
 
 ## 2. How we use information
 
@@ -100,7 +112,7 @@ Account data is kept while your account is active. If you delete your account, y
 
 ## 5. Your choices
 
-You can view and update your name, email address, password, districts, follows, and email preferences in account settings; every notification email includes a working unsubscribe link; and you can delete your account entirely in settings. You can turn usage analytics off for your browser with the control at the bottom of this page; the choice is remembered in your browser, and we honor opt-out mechanisms where required by applicable law. For access or deletion requests you cannot complete in the app, or questions about this policy, contact contact@electionssimplified.com. Depending on where you live, you may have additional privacy rights (such as access, correction, deletion, or portability); we honor valid requests as required by applicable law.
+You can view and update your name, email address, password, districts, follows, and email preferences in account settings; you can change or remove your picks and stop sharing any pick card link from your picks page; every notification email includes a working unsubscribe link; and you can delete your account entirely in settings. You can turn usage analytics off for your browser with the control at the bottom of this page; the choice is remembered in your browser, and we honor opt-out mechanisms where required by applicable law. For access or deletion requests you cannot complete in the app, or questions about this policy, contact contact@electionssimplified.com. Depending on where you live, you may have additional privacy rights (such as access, correction, deletion, or portability); we honor valid requests as required by applicable law.
 
 ## 6. Security
 

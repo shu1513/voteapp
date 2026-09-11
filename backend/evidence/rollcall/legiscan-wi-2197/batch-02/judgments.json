@@ -1,0 +1,274 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1493267,
+   "measure_id": "AB 1",
+   "vote_date": "2025-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 1, which would have changed how Wisconsin grades its schools and reports test results. State school and school district report cards would have had to use the same score cutoffs, the same score ranges and the same written definitions for each of the five performance categories that the state used for the 2019-20 school year. For English and mathematics tests in grades 3 through 8, the state would have had to set cutoffs and pupil performance categories matching those of the National Assessment of Educational Progress, a test given across the country. For grades 9 through 11 it would have had to use the 2021-22 cutoffs and the labels Below Basic, Basic, Proficient and Advanced. The Assembly passed it 54-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 1, which would have changed how Wisconsin grades its schools and reports test results. State school and school district report cards would have had to use the same score cutoffs, the same score ranges and the same written definitions for each of the five performance categories that the state used for the 2019-20 school year. For English and mathematics tests in grades 3 through 8, the state would have had to set cutoffs and pupil performance categories matching those of the National Assessment of Educational Progress, a test given across the country. For grades 9 through 11 it would have had to use the 2021-22 cutoffs and the labels Below Basic, Basic, Proficient and Advanced. The Assembly passed it 54-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1519793,
+   "measure_id": "AB 1",
+   "vote_date": "2025-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 1, which would have changed how Wisconsin grades its schools and reports test results. State school and school district report cards would have had to use the same score cutoffs, the same score ranges and the same written definitions for each of the five performance categories that the state used for the 2019-20 school year. For English and mathematics tests in grades 3 through 8, the state would have had to set cutoffs and pupil performance categories matching those of the National Assessment of Educational Progress, a test given across the country. For grades 9 through 11 it would have had to use the 2021-22 cutoffs and the labels Below Basic, Basic, Proficient and Advanced. The Senate agreed to it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 1, which would have changed how Wisconsin grades its schools and reports test results. State school and school district report cards would have had to use the same score cutoffs, the same score ranges and the same written definitions for each of the five performance categories that the state used for the 2019-20 school year. For English and mathematics tests in grades 3 through 8, the state would have had to set cutoffs and pupil performance categories matching those of the National Assessment of Educational Progress, a test given across the country. For grades 9 through 11 it would have had to use the 2021-22 cutoffs and the labels Below Basic, Basic, Proficient and Advanced. The Senate agreed to it 18-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1493715,
+   "measure_id": "AB 5",
+   "vote_date": "2025-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 5, which would have required every school board to post its list of adopted textbooks on the board's website as well as file it with the school district clerk. Any resident of the district could then have asked in writing to see a copy of an adopted textbook, or of any curriculum or instructional material used in a school in the district. The board would have had to make it available within 14 days, at no cost, at the place the district uses for public records requests, and would have had to adopt procedures for doing it faster. The bill said it could not be read to require anything that would infringe copyright. The Assembly passed it 54-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 5, which would have required every school board to post its list of adopted textbooks on the board's website as well as file it with the school district clerk. Any resident of the district could then have asked in writing to see a copy of an adopted textbook, or of any curriculum or instructional material used in a school in the district. The board would have had to make it available within 14 days, at no cost, at the place the district uses for public records requests, and would have had to adopt procedures for doing it faster. The bill said it could not be read to require anything that would infringe copyright. The Assembly passed it 54-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1603905,
+   "measure_id": "AB 5",
+   "vote_date": "2025-10-14",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 5, which would have required every school board to post its list of adopted textbooks on the board's website as well as file it with the school district clerk. Any resident of the district could then have asked in writing to see a copy of an adopted textbook, or of any curriculum or instructional material used in a school in the district. The board would have had to make it available within 14 days, at no cost, at the place the district uses for public records requests, and would have had to adopt procedures for doing it faster. The bill said it could not be read to require anything that would infringe copyright. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 5, which would have required every school board to post its list of adopted textbooks on the board's website as well as file it with the school district clerk. Any resident of the district could then have asked in writing to see a copy of an adopted textbook, or of any curriculum or instructional material used in a school in the district. The board would have had to make it available within 14 days, at no cost, at the place the district uses for public records requests, and would have had to adopt procedures for doing it faster. The bill said it could not be read to require anything that would infringe copyright. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1553838,
+   "measure_id": "AB 166",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 166, which would have required every public, technical and private college in Wisconsin to report on its undergraduate programs each year. The report would have covered the average salary of graduates six months out, the average debt students leave with, the graduation rate, the total and net cost of attending, the financial aid available and the ten most popular degree programs. Most of those figures would have been reported both overall and separately for each major. The Higher Educational Aids Board would have turned the reports into one document that lets families compare colleges, and would have published a list of the 50 most in-demand jobs in the state with the pay and schooling each needs. Schools would have had to give that document to pupils in grades 10 through 12 as part of career planning. The Assembly passed it 56-39, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 166, which would have required every public, technical and private college in Wisconsin to report on its undergraduate programs each year. The report would have covered the average salary of graduates six months out, the average debt students leave with, the graduation rate, the total and net cost of attending, the financial aid available and the ten most popular degree programs. Most of those figures would have been reported both overall and separately for each major. The Higher Educational Aids Board would have turned the reports into one document that lets families compare colleges, and would have published a list of the 50 most in-demand jobs in the state with the pay and schooling each needs. Schools would have had to give that document to pupils in grades 10 through 12 as part of career planning. The Assembly passed it 56-39, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1614218,
+   "measure_id": "AB 457",
+   "vote_date": "2026-01-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 457, which would have stopped a school board from asking voters for permission to borrow money or to raise more than its revenue limit. The board could only have asked if the state education department first certified that the district was up to date on the financial reports it owes the state. The certification could have been no more than 14 days old when the board adopted the resolution. A resolution adopted without one, and any referendum held on that resolution, would have been void. The Assembly passed it 52-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 457, which would have stopped a school board from asking voters for permission to borrow money or to raise more than its revenue limit. The board could only have asked if the state education department first certified that the district was up to date on the financial reports it owes the state. The certification could have been no more than 14 days old when the board adopted the resolution. A resolution adopted without one, and any referendum held on that resolution, would have been void. The Assembly passed it 52-44, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1615445,
+   "measure_id": "AB 457",
+   "vote_date": "2026-01-21",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 457, which would have stopped a school board from asking voters for permission to borrow money or to raise more than its revenue limit. The board could only have asked if the state education department first certified that the district was up to date on the financial reports it owes the state. The certification could have been no more than 14 days old when the board adopted the resolution. A resolution adopted without one, and any referendum held on that resolution, would have been void. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 457, which would have stopped a school board from asking voters for permission to borrow money or to raise more than its revenue limit. The board could only have asked if the state education department first certified that the district was up to date on the financial reports it owes the state. The certification could have been no more than 14 days old when the board adopted the resolution. A resolution adopted without one, and any referendum held on that resolution, would have been void. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1609678,
+   "measure_id": "AB 582",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 582, which would have made it easier for a high school pupil to earn college credit that actually counts later. The University of Wisconsin System and the technical colleges would have had to agree on at least 72 credits of core general education courses that transfer between them. That agreement would have had to cover credits a pupil earned while still in high school. A separate agreement covering at least 36 credits would have been required with the state's private colleges, which could leave out a course that conflicts with a religious or professional requirement. The bill would also have created a Council on Dual Enrollment to study the programs and report on them. It would have required the state to run a public website and print a brochure explaining how the programs work. A pupil turned down by a school when asking to take a college course could have appealed to the state superintendent. The Assembly passed it 55-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 582, which would have made it easier for a high school pupil to earn college credit that actually counts later. The University of Wisconsin System and the technical colleges would have had to agree on at least 72 credits of core general education courses that transfer between them. That agreement would have had to cover credits a pupil earned while still in high school. A separate agreement covering at least 36 credits would have been required with the state's private colleges, which could leave out a course that conflicts with a religious or professional requirement. The bill would also have created a Council on Dual Enrollment to study the programs and report on them. It would have required the state to run a public website and print a brochure explaining how the programs work. A pupil turned down by a school when asking to take a college course could have appealed to the state superintendent. The Assembly passed it 55-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1609642,
+   "measure_id": "AB 614",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 614, which would have written into state law a teacher's authority to remove a disruptive pupil from class and send the pupil to the principal. The principal would have had to act on the removal within a set time, and a school board could not have fired, demoted or otherwise punished a teacher for making one. A district would have had to tell a pupil's parent when the pupil was involved in a disruptive incident, including when a pupil was removed from the class, and to adopt a code of conduct. The bill also set limits on removing a pupil whose behavior comes from a disability, and required a child's special education plan to say whether removal is appropriate for that behavior. The Assembly passed it 54-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 614, which would have written into state law a teacher's authority to remove a disruptive pupil from class and send the pupil to the principal. The principal would have had to act on the removal within a set time, and a school board could not have fired, demoted or otherwise punished a teacher for making one. A district would have had to tell a pupil's parent when the pupil was involved in a disruptive incident, including when a pupil was removed from the class, and to adopt a code of conduct. The bill also set limits on removing a pupil whose behavior comes from a disability, and required a child's special education plan to say whether removal is appropriate for that behavior. The Assembly passed it 54-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1630865,
+   "measure_id": "AB 614",
+   "vote_date": "2026-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 614, which would have written into state law a teacher's authority to remove a disruptive pupil from class and send the pupil to the principal. The principal would have had to act on the removal within a set time, and a school board could not have fired, demoted or otherwise punished a teacher for making one. A district would have had to tell a pupil's parent when the pupil was involved in a disruptive incident, including when a pupil was removed from the class, and to adopt a code of conduct. The bill also set limits on removing a pupil whose behavior comes from a disability, and required a child's special education plan to say whether removal is appropriate for that behavior. The Senate agreed to it 19-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 614, which would have written into state law a teacher's authority to remove a disruptive pupil from class and send the pupil to the principal. The principal would have had to act on the removal within a set time, and a school board could not have fired, demoted or otherwise punished a teacher for making one. A district would have had to tell a pupil's parent when the pupil was involved in a disruptive incident, including when a pupil was removed from the class, and to adopt a code of conduct. The bill also set limits on removing a pupil whose behavior comes from a disability, and required a child's special education plan to say whether removal is appropriate for that behavior. The Senate agreed to it 19-14, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1632980,
+   "measure_id": "AB 1005",
+   "vote_date": "2026-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 1005, which would have required that decisions on undergraduate admission to the University of Wisconsin-Madison be based predominantly on how an applicant scored on the ACT, the SAT or a similar test of college readiness. Pupils admitted through the state's guaranteed admission program would have been left out of that rule. It would have first applied to applications for the 2027-28 academic year. The Assembly passed it 52-45, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 1005, which would have required that decisions on undergraduate admission to the University of Wisconsin-Madison be based predominantly on how an applicant scored on the ACT, the SAT or a similar test of college readiness. Pupils admitted through the state's guaranteed admission program would have been left out of that rule. It would have first applied to applications for the 2027-28 academic year. The Assembly passed it 52-45, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1609464,
+   "measure_id": "SB 389",
+   "vote_date": "2025-11-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 389, which would have ended the automatic yearly increase in the money a school district may raise from state aid and property taxes. Under the law as it stands, each district's revenue limit rises by $325 per pupil every year with no end date. The bill would have kept that $325 increase through the 2026-27 school year and then stopped it, making no adjustment for 2027-28 or any year after. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 389, which would have ended the automatic yearly increase in the money a school district may raise from state aid and property taxes. Under the law as it stands, each district's revenue limit rises by $325 per pupil every year with no end date. The bill would have kept that $325 increase through the 2026-27 school year and then stopped it, making no adjustment for 2027-28 or any year after. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1639107,
+   "measure_id": "SB 389",
+   "vote_date": "2026-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 389, which would have ended the automatic yearly increase in the money a school district may raise from state aid and property taxes. Under the law as it stands, each district's revenue limit rises by $325 per pupil every year with no end date. The bill would have kept that $325 increase through the 2026-27 school year and then stopped it, making no adjustment for 2027-28 or any year after. The Assembly agreed to it 54-40, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 389, which would have ended the automatic yearly increase in the money a school district may raise from state aid and property taxes. Under the law as it stands, each district's revenue limit rises by $325 per pupil every year with no end date. The bill would have kept that $325 increase through the 2026-27 school year and then stopped it, making no adjustment for 2027-28 or any year after. The Assembly agreed to it 54-40, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1609480,
+   "measure_id": "SB 532",
+   "vote_date": "2025-11-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 532, which would have stopped University of Wisconsin System institutions from charging a student an extra fee for a course offered only online. Two exceptions were allowed: a fee that covers real costs the institution would not have if the course were taught in person, and a fee that is also charged for the same course taught in person. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 532, which would have stopped University of Wisconsin System institutions from charging a student an extra fee for a course offered only online. Two exceptions were allowed: a fee that covers real costs the institution would not have if the course were taught in person, and a fee that is also charged for the same course taught in person. The Senate passed it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1632852,
+   "measure_id": "SB 532",
+   "vote_date": "2026-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 532, which would have stopped University of Wisconsin System institutions from charging a student an extra fee for a course offered only online. Two exceptions were allowed: a fee that covers real costs the institution would not have if the course were taught in person, and a fee that is also charged for the same course taught in person. The Assembly added a section requiring each institution to say whether each course is in person, online or a mix of the two when it first publishes its course list for a term, and barring a change of format once enrollment has opened. The Assembly agreed to it 53-45, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Senate Bill 532, which would have stopped University of Wisconsin System institutions from charging a student an extra fee for a course offered only online. Two exceptions were allowed: a fee that covers real costs the institution would not have if the course were taught in person, and a fee that is also charged for the same course taught in person. The Assembly added a section requiring each institution to say whether each course is in person, online or a mix of the two when it first publishes its course list for a term, and barring a change of format once enrollment has opened. The Assembly agreed to it 53-45, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

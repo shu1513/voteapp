@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1639483,
+      "measure_id": "SB 150",
+      "vote_date": "2026-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 150, which would have raised how much personal property a debtor can keep from creditors. The bill began as a protection for one motor vehicle, but the Senate replaced its text before voting. As voted, a debtor could have shielded personal property worth up to twelve thousand dollars from seizure if the head of a family, up from seven thousand, and up to ten thousand dollars otherwise, up from five thousand. The South Dakota Senate rejected it, 15-19. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 150, which would have raised how much personal property a debtor can keep from creditors. The bill began as a protection for one motor vehicle, but the Senate replaced its text before voting. As voted, a debtor could have shielded personal property worth up to twelve thousand dollars from seizure if the head of a family, up from seven thousand, and up to ten thousand dollars otherwise, up from five thousand. The South Dakota Senate rejected it, 15-19. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1636147,
+      "measure_id": "SB 195",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 195, which would have made the 2023 sales tax cut permanent. In 2023 the Legislature lowered the state's sales and use tax rates, but wrote in that the cut would expire on June 30, 2027, and the old rates would return. The bill would have repealed that expiration, so the lower rates would have stayed. The South Dakota Senate rejected it, 17-17. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 195, which would have made the 2023 sales tax cut permanent. In 2023 the Legislature lowered the state's sales and use tax rates, but wrote in that the cut would expire on June 30, 2027, and the old rates would return. The bill would have repealed that expiration, so the lower rates would have stayed. The South Dakota Senate rejected it, 17-17. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1643623,
+      "measure_id": "SB 196",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 196, which would have widened a property tax freeze for lower-income homeowners. An assessment freeze stops the taxable value of an owner-occupied home from rising. A household of two or more qualifies only with income under sixty-five thousand dollars. The bill would have raised that limit to eighty-five thousand dollars. The limit for a single-person household would have stayed at fifty-five thousand. The South Dakota Senate rejected it, 15-18. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 196, which would have widened a property tax freeze for lower-income homeowners. An assessment freeze stops the taxable value of an owner-occupied home from rising. A household of two or more qualifies only with income under sixty-five thousand dollars. The bill would have raised that limit to eighty-five thousand dollars. The limit for a single-person household would have stayed at fifty-five thousand. The South Dakota Senate rejected it, 15-18. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1655400,
+      "measure_id": "SB 198",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 198, which would have banned student cell phone use during the school day. The House amended the bill before voting. As amended, a student could not have used a cell phone during the school day, with four exceptions. Those were an administrator's approval to manage the student's health, a disability plan or individual education program, a teacher allowing it as part of a lesson, and an emergency. Each school board would have had to adopt a policy setting out discipline for breaking the rule. The South Dakota House rejected it, 28-39. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 198, which would have banned student cell phone use during the school day. The House amended the bill before voting. As amended, a student could not have used a cell phone during the school day, with four exceptions. Those were an administrator's approval to manage the student's health, a disability plan or individual education program, a teacher allowing it as part of a lesson, and an emergency. Each school board would have had to adopt a policy setting out discipline for breaking the rule. The South Dakota House rejected it, 28-39. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1635823,
+      "measure_id": "SB 198",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 198, which would have banned student cell phone use during the school day. A student could not have used a cell phone during the school day unless it was part of an approved medical or educational accommodation or needed in an emergency affecting someone's health or safety. Each school board would have had to adopt a policy setting out discipline for breaking the rule. The South Dakota Senate passed it, 19-15. The South Dakota House rejected it, 28-39, so the bill did not become law.",
+      "nay_description": "Voted against Senate Bill 198, which would have banned student cell phone use during the school day. A student could not have used a cell phone during the school day unless it was part of an approved medical or educational accommodation or needed in an emergency affecting someone's health or safety. Each school board would have had to adopt a policy setting out discipline for breaking the rule. The South Dakota Senate passed it, 19-15. The South Dakota House rejected it, 28-39, so the bill did not become law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1643711,
+      "measure_id": "SB 211",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 211, which would have ended surprise bills from ambulances outside a patient's insurance network. An ambulance service outside a patient's insurance network could not have billed the patient for emergency care beyond the plan's normal copayment, coinsurance or deductible. The insurer would have had to pay the ambulance at least the rate set by the local government where the trip began. The rule would not have reached self-funded employer plans, Medicaid or Medicare. The South Dakota Senate voted 17-16 for it, but it failed because a bill needs 18 votes, a majority of all 35 members. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 211, which would have ended surprise bills from ambulances outside a patient's insurance network. An ambulance service outside a patient's insurance network could not have billed the patient for emergency care beyond the plan's normal copayment, coinsurance or deductible. The insurer would have had to pay the ambulance at least the rate set by the local government where the trip began. The rule would not have reached self-funded employer plans, Medicaid or Medicare. The South Dakota Senate voted 17-16 for it, but it failed because a bill needs 18 votes, a majority of all 35 members. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1623836,
+      "measure_id": "SB 85",
+      "vote_date": "2026-02-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 85, which would have required a public vote on every school property tax increase above the usual limit. A school board may raise property taxes above the usual limit, called an opt out, by a two-thirds vote of the board, and voters can force an election only by petition. The bill would have required every opt out to go to a public vote, held by October 1. The ballot would have had to state how many years the tax would run and the total dollars it would raise. The South Dakota House rejected it, 29-39. The bill did not become law.",
+      "nay_description": "Voted against Senate Bill 85, which would have required a public vote on every school property tax increase above the usual limit. A school board may raise property taxes above the usual limit, called an opt out, by a two-thirds vote of the board, and voters can force an election only by petition. The bill would have required every opt out to go to a public vote, held by October 1. The ballot would have had to state how many years the tax would run and the total dollars it would raise. The South Dakota House rejected it, 29-39. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1617110,
+      "measure_id": "SB 85",
+      "vote_date": "2026-01-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 85, which would have required a public vote on every school property tax increase above the usual limit. A school board may raise property taxes above the usual limit, called an opt out, by a two-thirds vote of the board, and voters can force an election only by petition. The bill would have required every opt out to go to a public vote, held by October 1. The ballot would have had to state how many years the tax would run and the total dollars it would raise. The South Dakota Senate passed it, 20-14. The South Dakota House rejected it, 29-39, so the bill did not become law.",
+      "nay_description": "Voted against Senate Bill 85, which would have required a public vote on every school property tax increase above the usual limit. A school board may raise property taxes above the usual limit, called an opt out, by a two-thirds vote of the board, and voters can force an election only by petition. The bill would have required every opt out to go to a public vote, held by October 1. The ballot would have had to state how many years the tax would run and the total dollars it would raise. The South Dakota Senate passed it, 20-14. The South Dakota House rejected it, 29-39, so the bill did not become law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

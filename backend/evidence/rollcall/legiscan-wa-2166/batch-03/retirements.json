@@ -1,0 +1,26 @@
+[
+  {
+    "recordId": "72a18fee-d908-44c5-a817-637ae7732656",
+    "reason": "Duplicate of the imported roll-call record for bill 1232. This hand-written record describes the same vote, the one Washington recorded 29-19, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "f332fada-d065-4cf0-9e91-7f31b7e6afcd",
+    "reason": "Duplicate of the imported roll-call record for bill 1710. This hand-written record describes the same vote, the one Washington recorded 30-19, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "da5a5b6e-4d49-4abb-b39f-63509397576e",
+    "reason": "Duplicate of the imported roll-call record for bill 1232. This hand-written record describes the same vote, the one Washington recorded 56-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "191ed5cb-f90d-48b4-b76c-14ee8a18fab8",
+    "reason": "Duplicate of the imported roll-call record for bill 1710. This hand-written record names the House vote on final passage after the Senate's amendments, which is the concurrence the roll-call pipeline now imports, recorded 57-39. It was not caught by the tally sweep because it quotes no tally. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "c4382dd3-6526-4ae6-88e5-4ff0e6381475",
+    "reason": "Duplicate of the imported roll-call record for bill 1232. This hand-written record describes the same vote, the one Washington recorded 29-19, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "7e3baa56-67b6-458c-9d6d-df44a7d0496b",
+    "reason": "Duplicate of the imported roll-call record for bill 1710. This hand-written record describes the same vote, the one Washington recorded 30-19, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  }
+]

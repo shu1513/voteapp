@@ -1,0 +1,6 @@
+[
+  {
+    "recordId": "6afa457f-8f16-4f2d-b46f-e5ea364e141c",
+    "reason": "Duplicate of the imported roll-call record for bill 1687. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. House Bill 1687 had only one House vote, so the match is exact. The imported record cites the roll call as its source; this one does not."
+  }
+]

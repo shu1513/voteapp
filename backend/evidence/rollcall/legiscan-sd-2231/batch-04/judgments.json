@@ -1,0 +1,241 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1637337,
+      "measure_id": "HB 1010",
+      "vote_date": "2026-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1010, which would have barred holding a phone to make calls while driving. South Dakota bars using a mobile electronic device while driving but exempts dialing and taking calls. The bill would have removed that exemption, leaving only voice-operated or hands-free use, with a tap allowed to switch a feature on or off. A navigation app could have been used only if the driver was not typing into it. A violation would have stayed a Class 2 misdemeanor. The South Dakota House rejected it, 21-46. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1010, which would have barred holding a phone to make calls while driving. South Dakota bars using a mobile electronic device while driving but exempts dialing and taking calls. The bill would have removed that exemption, leaving only voice-operated or hands-free use, with a tap allowed to switch a feature on or off. A navigation app could have been used only if the driver was not typing into it. A violation would have stayed a Class 2 misdemeanor. The South Dakota House rejected it, 21-46. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1625015,
+      "measure_id": "HB 1068",
+      "vote_date": "2026-02-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1068, which would have let pharmacists hand out ivermectin and hydroxychloroquine without an individual prescription. A pharmacist could have dispensed either drug to anyone eighteen or older under a standing written protocol from a licensed provider, rather than a prescription written for that patient. The protocol had to include a risk screening tool and information on when the drug should and should not be used, how to take it and how to handle side effects. A pharmacist acting in good faith would have been shielded from liability and discipline except for gross negligence. The South Dakota House rejected it, 28-40. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1068, which would have let pharmacists hand out ivermectin and hydroxychloroquine without an individual prescription. A pharmacist could have dispensed either drug to anyone eighteen or older under a standing written protocol from a licensed provider, rather than a prescription written for that patient. The protocol had to include a risk screening tool and information on when the drug should and should not be used, how to take it and how to handle side effects. A pharmacist acting in good faith would have been shielded from liability and discipline except for gross negligence. The South Dakota House rejected it, 28-40. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1620930,
+      "measure_id": "HB 1103",
+      "vote_date": "2026-02-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1103, which would have ended an exception letting water systems draw deep groundwater faster than it refills. South Dakota may not approve a groundwater permit if withdrawals would probably exceed the source's average yearly recharge. An exception lets water distribution systems draw more than that from the deepest formations, those below the Greenhorn formation. The bill as amended on the House floor would have repealed that exception from July 1, 2027, applying the recharge limit to every source. The South Dakota House rejected it, 16-49. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1103, which would have ended an exception letting water systems draw deep groundwater faster than it refills. South Dakota may not approve a groundwater permit if withdrawals would probably exceed the source's average yearly recharge. An exception lets water distribution systems draw more than that from the deepest formations, those below the Greenhorn formation. The bill as amended on the House floor would have repealed that exception from July 1, 2027, applying the recharge limit to every source. The South Dakota House rejected it, 16-49. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1631063,
+      "measure_id": "HB 1105",
+      "vote_date": "2026-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1105, which would have stopped property covenants from blocking health care services in underserved areas. A property owner can record a covenant, a binding restriction on how land may be used. The bill would have barred any covenant on commercial or residential property that prohibits using it for a health care service, where the property sits in an area, community or county the federal government designates as medically underserved. Any such covenant would have been unenforceable. The South Dakota House passed it, 45-20. A South Dakota Senate committee killed it, so the full Senate never voted on it and the bill did not become law.",
+      "nay_description": "Voted against House Bill 1105, which would have stopped property covenants from blocking health care services in underserved areas. A property owner can record a covenant, a binding restriction on how land may be used. The bill would have barred any covenant on commercial or residential property that prohibits using it for a health care service, where the property sits in an area, community or county the federal government designates as medically underserved. Any such covenant would have been unenforceable. The South Dakota House passed it, 45-20. A South Dakota Senate committee killed it, so the full Senate never voted on it and the bill did not become law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1642827,
+      "measure_id": "HB 1113",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1113, which would have created down payment loans for buying manufactured homes. The South Dakota Housing Development Authority would have run a revolving loan fund, lending up to five million dollars from the housing infrastructure fund on a rolling basis. An eligible buyer of a manufactured home could have borrowed up to ten thousand dollars toward the down payment, and repayments would have been lent out again. The South Dakota House voted 45-21 for it, but it failed because it needed a two-thirds majority, 47 votes. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1113, which would have created down payment loans for buying manufactured homes. The South Dakota Housing Development Authority would have run a revolving loan fund, lending up to five million dollars from the housing infrastructure fund on a rolling basis. An eligible buyer of a manufactured home could have borrowed up to ten thousand dollars toward the down payment, and repayments would have been lent out again. The South Dakota House voted 45-21 for it, but it failed because it needed a two-thirds majority, 47 votes. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1642825
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1672644,
+      "measure_id": "HB 1138",
+      "vote_date": "2026-03-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1138, which would have required agencies that send aides into people's homes to be licensed. A non-medical home care agency sends aides to help adults with bathing, dressing, eating and other daily tasks so they can stay at home. Each agency would have needed a Department of Health license, and running one without it would have been a misdemeanor. Aides would have needed eight hours of training including dementia care and a criminal background check, and agencies would have carried liability insurance of at least two hundred fifty thousand dollars and faced inspection. The South Dakota House voted 36-27 on overriding the Governor's veto, short of the 47 votes a two-thirds majority needs. The Governor vetoed the bill and the veto was not overridden, so it did not become law.",
+      "nay_description": "Voted against House Bill 1138, which would have required agencies that send aides into people's homes to be licensed. A non-medical home care agency sends aides to help adults with bathing, dressing, eating and other daily tasks so they can stay at home. Each agency would have needed a Department of Health license, and running one without it would have been a misdemeanor. Aides would have needed eight hours of training including dementia care and a criminal background check, and agencies would have carried liability insurance of at least two hundred fifty thousand dollars and faced inspection. The South Dakota House voted 36-27 on overriding the Governor's veto, short of the 47 votes a two-thirds majority needs. The Governor vetoed the bill and the veto was not overridden, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "senate",
+      "session": "2231",
+      "roll": 1655219,
+      "measure_id": "HB 1138",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1138, which would have required agencies that send aides into people's homes to be licensed. A non-medical home care agency sends aides to help adults with bathing, dressing, eating and other daily tasks so they can stay at home. Each agency would have needed a Department of Health license, and running one without it would have been a misdemeanor. Aides would have needed eight hours of training including dementia care and a criminal background check, and agencies would have carried liability insurance of at least two hundred fifty thousand dollars and faced inspection. The South Dakota Senate passed it, 20-14. The Governor vetoed the bill and the veto was not overridden, so it did not become law.",
+      "nay_description": "Voted against House Bill 1138, which would have required agencies that send aides into people's homes to be licensed. A non-medical home care agency sends aides to help adults with bathing, dressing, eating and other daily tasks so they can stay at home. Each agency would have needed a Department of Health license, and running one without it would have been a misdemeanor. Aides would have needed eight hours of training including dementia care and a criminal background check, and agencies would have carried liability insurance of at least two hundred fifty thousand dollars and faced inspection. The South Dakota Senate passed it, 20-14. The Governor vetoed the bill and the veto was not overridden, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1636144,
+      "measure_id": "HB 1151",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1151, which would have banned kratom. Kratom is a plant sold as a supplement whose active compounds act on the same brain receptors as opioids. Selling, distributing, buying, using or possessing kratom, a kratom product, or a product containing synthetic mitragynine or 7-hydroxymitragynine would have been a Class 2 misdemeanor. The bill would have replaced the current rules, which bar sales to and use by people under twenty-one, cap potency, ban synthetic or adulterated products and require warning labels. The South Dakota House rejected it, 27-39. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1151, which would have banned kratom. Kratom is a plant sold as a supplement whose active compounds act on the same brain receptors as opioids. Selling, distributing, buying, using or possessing kratom, a kratom product, or a product containing synthetic mitragynine or 7-hydroxymitragynine would have been a Class 2 misdemeanor. The bill would have replaced the current rules, which bar sales to and use by people under twenty-one, cap potency, ban synthetic or adulterated products and require warning labels. The South Dakota House rejected it, 27-39. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1628708,
+      "measure_id": "HB 1153",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1153, which would have let health care workers and institutions refuse services that violate their conscience. A health care provider, from a doctor or nurse to a pharmacy employee, a hospital or an insurer, could not have been required to take part in or pay for a particular medical service that violated its ethical, moral or religious beliefs. It could not have been disciplined, sanctioned by a licensing board or held liable for refusing, and could have sued over a violation. The federal emergency treatment law would still have applied. The South Dakota House rejected it, 25-41. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1153, which would have let health care workers and institutions refuse services that violate their conscience. A health care provider, from a doctor or nurse to a pharmacy employee, a hospital or an insurer, could not have been required to take part in or pay for a particular medical service that violated its ethical, moral or religious beliefs. It could not have been disciplined, sanctioned by a licensing board or held liable for refusing, and could have sued over a violation. The federal emergency treatment law would still have applied. The South Dakota House rejected it, 25-41. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1640156,
+      "measure_id": "HB 1163",
+      "vote_date": "2026-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1163, which would have banned requiring vaccines made with genetic material. A genetic-based vaccine was defined as one that works by using, modifying or transferring genetic material to produce an immune response, including messenger RNA and DNA vaccines. No employer, school or college could have required one or punished someone for not having one, and no public accommodation could have refused service over it. The attorney general could have imposed a civil penalty of up to ten thousand dollars. The ban would not have applied to health facilities bound by federal Medicare or CDC rules, existing school and preschool entry shots, clinical placements in state health-science programs, court orders or the National Guard. The South Dakota House rejected it, 32-35. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1163, which would have banned requiring vaccines made with genetic material. A genetic-based vaccine was defined as one that works by using, modifying or transferring genetic material to produce an immune response, including messenger RNA and DNA vaccines. No employer, school or college could have required one or punished someone for not having one, and no public accommodation could have refused service over it. The attorney general could have imposed a civil penalty of up to ten thousand dollars. The ban would not have applied to health facilities bound by federal Medicare or CDC rules, existing school and preschool entry shots, clinical placements in state health-science programs, court orders or the National Guard. The South Dakota House rejected it, 32-35. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1635612,
+      "measure_id": "HB 1171",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1171, which would have required blood banks to ask donors about COVID-19 and mRNA vaccination and label the blood. Anyone collecting blood for transfusion would have had to ask each donor whether they had ever received a COVID-19 or mRNA vaccine, and mark the blood bag conspicuously if so, without printing the donor's identity. A patient needing a transfusion that was not an emergency could have made a request about the donor's vaccination status. The South Dakota House rejected it, 23-42. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1171, which would have required blood banks to ask donors about COVID-19 and mRNA vaccination and label the blood. Anyone collecting blood for transfusion would have had to ask each donor whether they had ever received a COVID-19 or mRNA vaccine, and mark the blood bag conspicuously if so, without printing the donor's identity. A patient needing a transfusion that was not an emergency could have made a request about the donor's vaccination status. The South Dakota House rejected it, 23-42. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1636205,
+      "measure_id": "HB 1173",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1173, which would have made carbon dioxide pipeline companies prepare and pay for an environmental impact statement. The Public Utilities Commission may order an environmental impact statement before issuing a permit but does not have to. The bill would have required every applicant for a carbon dioxide pipeline permit to prepare one, at its own expense, before a permit could issue. The South Dakota House passed it, 44-22. A South Dakota Senate committee killed it, so the full Senate never voted on it and the bill did not become law.",
+      "nay_description": "Voted against House Bill 1173, which would have made carbon dioxide pipeline companies prepare and pay for an environmental impact statement. The Public Utilities Commission may order an environmental impact statement before issuing a permit but does not have to. The bill would have required every applicant for a carbon dioxide pipeline permit to prepare one, at its own expense, before a permit could issue. The South Dakota House passed it, 44-22. A South Dakota Senate committee killed it, so the full Senate never voted on it and the bill did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "SD",
+      "chamber": "house",
+      "session": "2231",
+      "roll": 1637293,
+      "measure_id": "HB 1182",
+      "vote_date": "2026-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1182, which would have required fertility clinics to report yearly counts of embryos created and destroyed. The Department of Health would have collected, every year, how many embryos were created through in vitro fertilization and similar treatment, how many were genetically tested, implanted, frozen, donated or sent out of state, and how many were destroyed accidentally or deliberately. Each clinic would have had to report, facing a civil penalty of up to one thousand dollars, and the totals would have been published online. The South Dakota House rejected it, 25-42. The bill did not become law.",
+      "nay_description": "Voted against House Bill 1182, which would have required fertility clinics to report yearly counts of embryos created and destroyed. The Department of Health would have collected, every year, how many embryos were created through in vitro fertilization and similar treatment, how many were genetically tested, implanted, frozen, donated or sent out of state, and how many were destroyed accidentally or deliberately. Each clinic would have had to report, facing a civil penalty of up to one thousand dollars, and the totals would have been published online. The South Dakota House rejected it, 25-42. The bill did not become law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

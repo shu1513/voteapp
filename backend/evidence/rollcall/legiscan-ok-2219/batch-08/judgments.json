@@ -1,0 +1,76 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1607941,
+      "measure_id": "SB 20",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 20. It adds immigration and English language checks for commercial truck drivers. The act is called the Oklahoma Secure Roads and Safe Trucking Act of 2025. Anyone driving a commercial vehicle in the state must hold a commercial license from a U.S. state or territory. A license from Canada, Mexico or another country with a matching agreement also counts. But the driver must also carry a valid work visa and proof of citizenship of the country that issued it. A license Oklahoma gives to a driver who is not a U.S. resident now runs out when the driver's visa does. Every commercial driver must also know enough English to talk with the public, read road signs, answer officials and fill in records. A company whose driver breaks these rules is fined $3,000 each time. Its truck is held until it pays and sends a driver who qualifies. The driver may not drive commercially until the problem is fixed, and doing so anyway is a misdemeanor. The act took effect as soon as it was signed. The Oklahoma Senate passed it 36-10. The Governor signed it.",
+      "nay_description": "Voted against Senate Bill 20. It adds immigration and English language checks for commercial truck drivers. The act is called the Oklahoma Secure Roads and Safe Trucking Act of 2025. Anyone driving a commercial vehicle in the state must hold a commercial license from a U.S. state or territory. A license from Canada, Mexico or another country with a matching agreement also counts. But the driver must also carry a valid work visa and proof of citizenship of the country that issued it. A license Oklahoma gives to a driver who is not a U.S. resident now runs out when the driver's visa does. Every commercial driver must also know enough English to talk with the public, read road signs, answer officials and fill in records. A company whose driver breaks these rules is fined $3,000 each time. Its truck is held until it pays and sends a driver who qualifies. The driver may not drive commercially until the problem is fixed, and doing so anyway is a misdemeanor. The act took effect as soon as it was signed. The Oklahoma Senate passed it 36-10. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1685459,
+      "measure_id": "SB 1847",
+      "vote_date": "2026-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1847. It widens who can get Medicaid care at home instead of in a nursing home. The ADvantage program is part of Medicaid. It pays for care at home for people who would otherwise need a nursing home. It was open to people aged 65 and over. It was also open to adults aged 21 and over with a physical disability, but not to those with an intellectual disability or cognitive impairment. For adults with a physical disability, the act lowers the age to 19 and drops that bar. It also adds two groups aged 19 to 64. One is people with a developmental disability but no related intellectual disability. The other is people with a worsening disease that once needed hospital or nursing home care. Care may now be given in an assisted living center that works with the program, as well as at home. People must still qualify for Medicaid and need nursing home level care. The Oklahoma Senate passed it 35-11. It became law without the Governor's signature.",
+      "nay_description": "Voted against Senate Bill 1847. It widens who can get Medicaid care at home instead of in a nursing home. The ADvantage program is part of Medicaid. It pays for care at home for people who would otherwise need a nursing home. It was open to people aged 65 and over. It was also open to adults aged 21 and over with a physical disability, but not to those with an intellectual disability or cognitive impairment. For adults with a physical disability, the act lowers the age to 19 and drops that bar. It also adds two groups aged 19 to 64. One is people with a developmental disability but no related intellectual disability. The other is people with a worsening disease that once needed hospital or nursing home care. Care may now be given in an assisted living center that works with the program, as well as at home. People must still qualify for Medicaid and need nursing home level care. The Oklahoma Senate passed it 35-11. It became law without the Governor's signature.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1606467,
+      "measure_id": "SB 54",
+      "vote_date": "2025-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to override the Governor's veto of Senate Bill 54. It widens the crime of aggravated drunk driving and makes it a felony. Aggravated driving under the influence used to mean driving with a blood or breath alcohol level of 0.15 or more. The act adds other ways to commit it while impaired. They are causing a crash that must be reported, breaking certain lane and turning rules, fleeing police, speeding 20 miles an hour over the limit or 10 over in an active school zone, carrying a passenger under 18, or driving recklessly. The act says aggravated driving under the influence is a felony. A first offense means at least ten days behind bars, which may be served on nights or weekends. A second means at least thirty days in county jail. An alcohol test no longer has to be taken within two hours of the arrest to count. The Oklahoma Senate voted 33-14 to override the veto. The House did the same, so the bill became law.",
+      "nay_description": "Voted against overriding the Governor's veto of Senate Bill 54. It widens the crime of aggravated drunk driving and makes it a felony. Aggravated driving under the influence used to mean driving with a blood or breath alcohol level of 0.15 or more. The act adds other ways to commit it while impaired. They are causing a crash that must be reported, breaking certain lane and turning rules, fleeing police, speeding 20 miles an hour over the limit or 10 over in an active school zone, carrying a passenger under 18, or driving recklessly. The act says aggravated driving under the influence is a felony. A first offense means at least ten days behind bars, which may be served on nights or weekends. A second means at least thirty days in county jail. An alcohol test no longer has to be taken within two hours of the arrest to count. The Oklahoma Senate voted 33-14 to override the veto. The House did the same, so the bill became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OK",
+      "chamber": "senate",
+      "session": "2219",
+      "roll": 1698160,
+      "measure_id": "SB 259",
+      "vote_date": "2026-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 259. It tightens the rules on wasting groundwater and bars data centers from cooling with groundwater that evaporates. Groundwater permit holders must report how much water they use. Willfully failing to report used to risk losing the permit. Now it can bring fines, penalties or a suspension. Using less water than a permit allows no longer shrinks the holder's future share. A new rule covers data centers. They may not cool their equipment with groundwater that is lost to evaporation or discharge. A permit for a data center is issued only if its cooling system recycles the water and uses little of it. Anyone may complain about waste to the Oklahoma Water Resources Board. The Board must then act to stop the waste. It may order it stopped, impose rising fines, demand more frequent reports or suspend the permit. The Oklahoma Senate passed it 38-10. The Governor signed it.",
+      "nay_description": "Voted against Senate Bill 259. It tightens the rules on wasting groundwater and bars data centers from cooling with groundwater that evaporates. Groundwater permit holders must report how much water they use. Willfully failing to report used to risk losing the permit. Now it can bring fines, penalties or a suspension. Using less water than a permit allows no longer shrinks the holder's future share. A new rule covers data centers. They may not cool their equipment with groundwater that is lost to evaporation or discharge. A permit for a data center is issued only if its cooling system recycles the water and uses little of it. Anyone may complain about waste to the Oklahoma Water Resources Board. The Board must then act to stop the waste. It may order it stopped, impose rising fines, demand more frequent reports or suspend the permit. The Oklahoma Senate passed it 38-10. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

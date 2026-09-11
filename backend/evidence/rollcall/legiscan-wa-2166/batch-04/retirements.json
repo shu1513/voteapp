@@ -1,0 +1,42 @@
+[
+  {
+    "recordId": "ebe867b6-27d0-433b-942e-8bc1063b7f41",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 29-18, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "b83a79d0-1232-45d0-b5fc-e5c7c1d3b357",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "cc1eb95b-5fab-494a-9e89-2016a5ee14dc",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "bce6f6ba-dac7-4e13-b822-bca5eabb56ef",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "2c0944fc-51f0-4d66-a37e-78bc0b60643d",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "ad9c18ed-58bf-4bac-8b10-8615d4bf28cf",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "f8c1475a-9097-4009-b80e-f4884fadd6cd",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "a83dc761-1547-4974-b855-ae864c3bb874",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "834833f9-2ccf-4b38-9291-31d61c01dc82",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 58-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "128afeaf-84f7-4f79-a4aa-a3e0714452a7",
+    "reason": "Duplicate of the imported roll-call record for bill 2320. This hand-written record describes the same vote, the one Washington recorded 29-18, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  }
+]

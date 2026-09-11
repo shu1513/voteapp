@@ -63,6 +63,10 @@ export type AuthenticatedElectionChoicesResult = UserElectionChoicesResult;
 
 export type AuthenticatedPickCardShareResult = { share: UserPickCardShare };
 
+export type AuthenticatedPickCardSharesResult = { shares: UserPickCardShare[] };
+
+export type AuthenticatedPickCardShareDeleteResult = { deleted: boolean };
+
 export type PublicPickCardResult = PublicPickCard;
 
 export type AuthenticatedElectionChoiceUpdateResult = UserElectionChoiceUpdateResult;
@@ -172,6 +176,14 @@ export type AddressApiServerOptions = {
   /** POST /api/me/pick-card-shares — mint (or return) the share token for one
    * date's pick card. Auth-gated, not verification-gated. */
   createAuthenticatedPickCardShare?: (userId: string, electionDate: string) => Promise<AuthenticatedPickCardShareResult>;
+  /** GET /api/me/pick-card-shares — every live share link the user holds. */
+  listAuthenticatedPickCardShares?: (userId: string) => Promise<AuthenticatedPickCardSharesResult>;
+  /** DELETE /api/me/pick-card-shares?election_date= — revoke one date's
+   * link; the public URL stops resolving. Same auth posture as minting. */
+  deleteAuthenticatedPickCardShare?: (
+    userId: string,
+    electionDate: string
+  ) => Promise<AuthenticatedPickCardShareDeleteResult>;
   /** GET /api/pick-cards/:token — public tokenized read; null = 404. */
   lookupPublicPickCard?: (token: string) => Promise<PublicPickCardResult | null>;
   // [ballot-personalized-ordering]

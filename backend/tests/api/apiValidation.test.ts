@@ -32,6 +32,7 @@ import {
   parseChatbotFeedbackBodyValue,
   parseElectionChoiceBodyValue,
   parsePickCardShareBodyValue,
+  parsePickCardShareDeleteQuery,
   parseMeEmailBodyValue,
   parseMeUpdateBodyValue,
   parseResearchAreaPreferencesBodyValue,
@@ -270,6 +271,18 @@ describe("pick card share API contract", () => {
     expect(() => parsePickCardShareBodyValue({ election_date: "2026-02-29" })).toThrow(
       /valid YYYY-MM-DD date/
     );
+  });
+
+  it("parses the revoke query's election_date and rejects a missing or bad one", () => {
+    expect(
+      parsePickCardShareDeleteQuery(new URL("http://localhost/api/me/pick-card-shares?election_date=2026-11-03"))
+    ).toBe("2026-11-03");
+    expect(() => parsePickCardShareDeleteQuery(new URL("http://localhost/api/me/pick-card-shares"))).toThrow(
+      RequestValidationError
+    );
+    expect(() =>
+      parsePickCardShareDeleteQuery(new URL("http://localhost/api/me/pick-card-shares?election_date=2026-02-30"))
+    ).toThrow(/valid YYYY-MM-DD date/);
   });
 });
 

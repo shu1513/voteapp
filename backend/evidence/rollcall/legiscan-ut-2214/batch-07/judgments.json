@@ -1,0 +1,187 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1628445,
+   "measure_id": "SB 60",
+   "vote_date": "2026-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 60, which cuts Utah's income tax rate for people and for companies from 4.5 percent to 4.45 percent, starting with the 2026 tax year. The Utah Senate passed it 22-7 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 60, which cuts Utah's income tax rate for people and for companies from 4.5 percent to 4.45 percent, starting with the 2026 tax year. The Utah Senate passed it 22-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1639742,
+   "measure_id": "HB 222",
+   "vote_date": "2026-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 222, which shields people and companies from lawsuits over climate change. No one may be held liable, in a civil or a criminal case, for harm from any effect on the climate caused by greenhouse gas emissions. The only exception is when a court finds clear and convincing evidence that they broke a state limit on emissions or the terms of their permit. Before, a narrower shield covered only people living or doing business in Utah. Now it covers anyone, and bars every kind of court remedy. The Utah Senate passed it 20-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 222, which shields people and companies from lawsuits over climate change. No one may be held liable, in a civil or a criminal case, for harm from any effect on the climate caused by greenhouse gas emissions. The only exception is when a court finds clear and convincing evidence that they broke a state limit on emissions or the terms of their permit. Before, a narrower shield covered only people living or doing business in Utah. Now it covers anyone, and bars every kind of court remedy. The Utah Senate passed it 20-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1656422,
+   "measure_id": "HB 84",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 84, which lets adults 21 and older carry a hidden gun at a college without a permit, if they may lawfully own a gun. It also bars carrying a gun in the open on a campus. People with a permit may not carry in the open at a school either, unless they are responding to an active threat. The crime of carrying a weapon at a college now covers only open carry, and the penalty drops from a class A to a class C misdemeanor. The Utah Senate passed it 18-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 84, which lets adults 21 and older carry a hidden gun at a college without a permit, if they may lawfully own a gun. It also bars carrying a gun in the open on a campus. People with a permit may not carry in the open at a school either, unless they are responding to an active threat. The crime of carrying a weapon at a college now covers only open carry, and the penalty drops from a class A to a class C misdemeanor. The Utah Senate passed it 18-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1640863,
+   "measure_id": "SB 234",
+   "vote_date": "2026-02-23",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 234, which limits how strict Utah's environmental health rules can be. A state agency may not start a rule that sets a number limit on a pollutant in drinking water, air, or waste that is stricter than a federal standard on the same subject. Where there is no federal standard, the limit must rest on the best available science. Such a rule, if meant to protect health, must also show a direct link between exposure and a present illness or injury in people. A higher risk of disease is not enough. Emergency rules, rules that federal law requires, and site-specific rules that state law requires are exempt. The Utah Senate passed it 20-7 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 234, which limits how strict Utah's environmental health rules can be. A state agency may not start a rule that sets a number limit on a pollutant in drinking water, air, or waste that is stricter than a federal standard on the same subject. Where there is no federal standard, the limit must rest on the best available science. Such a rule, if meant to protect health, must also show a direct link between exposure and a present illness or injury in people. A higher risk of disease is not enough. Emergency rules, rules that federal law requires, and site-specific rules that state law requires are exempt. The Utah Senate passed it 20-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1639779,
+   "measure_id": "HB 214",
+   "vote_date": "2026-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 214, which makes it harder to sue gun makers and sellers when someone misuses a gun. A claim must fit one of a short list of exceptions and must spell out in detail what the company knew and how it caused the harm. A claim that a company broke a gun law now works only if that was the sole direct cause of the harm. A company that wins dismissal gets its legal fees paid. Cities and counties may not create their own liability for gun misuse, and the shield now covers gun accessories too. The Utah Senate passed it 19-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 214, which makes it harder to sue gun makers and sellers when someone misuses a gun. A claim must fit one of a short list of exceptions and must spell out in detail what the company knew and how it caused the harm. A claim that a company broke a gun law now works only if that was the sole direct cause of the harm. A company that wins dismissal gets its legal fees paid. Cities and counties may not create their own liability for gun misuse, and the shield now covers gun accessories too. The Utah Senate passed it 19-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1652723,
+   "measure_id": "HB 471",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 471, which tightens who can get and keep Medicaid in Utah. Starting January 1, 2027, adults covered by the Medicaid expansion must prove they met federal work rules for the month before they apply, and again before each renewal. Their own word is not enough proof. People who qualify for an exemption, such as those who are medically frail, are excused, but the state must verify the exemption. Expansion coverage must be rechecked every six months. From October 1, 2026, the state may not give medical help to anyone who is not a citizen or a qualifying legal immigrant, unless federal law requires it. The state must also check enrollees against death records, address changes, and other states' lists. The Utah Senate passed it 20-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 471, which tightens who can get and keep Medicaid in Utah. Starting January 1, 2027, adults covered by the Medicaid expansion must prove they met federal work rules for the month before they apply, and again before each renewal. Their own word is not enough proof. People who qualify for an exemption, such as those who are medically frail, are excused, but the state must verify the exemption. Expansion coverage must be rechecked every six months. From October 1, 2026, the state may not give medical help to anyone who is not a citizen or a qualifying legal immigrant, unless federal law requires it. The state must also check enrollees against death records, address changes, and other states' lists. The Utah Senate passed it 20-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1656764,
+   "measure_id": "HB 357",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 357, which extends Utah's consumer privacy law to carmakers. For model year 2030 and later, a carmaker must give owners controls inside the car to manage what personal data it collects and shares, unless a model is not able to. A carmaker may also offer an app or a website, but may not make owners use one. Data needed for safety, such as airbags and crash avoidance, can still be collected without consent. The state's motor vehicle office must post owners' privacy rights online. The Utah Senate passed it 19-10 and it was signed into law.",
+   "nay_description": "Voted against House Bill 357, which extends Utah's consumer privacy law to carmakers. For model year 2030 and later, a carmaker must give owners controls inside the car to manage what personal data it collects and shares, unless a model is not able to. A carmaker may also offer an app or a website, but may not make owners use one. Data needed for safety, such as airbags and crash avoidance, can still be collected without consent. The state's motor vehicle office must post owners' privacy rights online. The Utah Senate passed it 19-10 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1654376,
+   "measure_id": "HB 76",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 76, which requires large data centers to report their water use. The law covers a data center that draws 75 acre-feet of water a year or more. Before a city or county approves a new one, it must notify the water suppliers that would serve it. From July 1, 2026, the operator of a new large data center must report its water use to the state before building and every year after. Some details may be kept private as business secrets, and an operator that fails to report can be penalized. The Utah Senate passed it 19-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 76, which requires large data centers to report their water use. The law covers a data center that draws 75 acre-feet of water a year or more. Before a city or county approves a new one, it must notify the water suppliers that would serve it. From July 1, 2026, the operator of a new large data center must report its water use to the state before building and every year after. Some details may be kept private as business secrets, and an operator that fails to report can be penalized. The Utah Senate passed it 19-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1654375
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1622172,
+   "measure_id": "HB 60",
+   "vote_date": "2026-02-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 60, which narrows the reasons Utah's state engineer may use to turn down a request for a new water right. To judge harm to the public, the engineer may now look only at how the plan affects the use, amount, quality, or supply of water, plus factors a law names. The engineer may not turn down a request over a harm that another agency is better placed to handle, or one that is small. Protests count only if they speak to those points. Only a person who would be hurt in a direct, personal way may ask a court to review a decision. The Utah House passed it 54-17 and it was signed into law.",
+   "nay_description": "Voted against House Bill 60, which narrows the reasons Utah's state engineer may use to turn down a request for a new water right. To judge harm to the public, the engineer may now look only at how the plan affects the use, amount, quality, or supply of water, plus factors a law names. The engineer may not turn down a request over a harm that another agency is better placed to handle, or one that is small. Protests count only if they speak to those points. Only a person who would be hurt in a direct, personal way may ask a court to review a decision. The Utah House passed it 54-17 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1639860,
+   "measure_id": "HB 60",
+   "vote_date": "2026-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 60, which narrows the reasons Utah's state engineer may use to turn down a request for a new water right. To judge harm to the public, the engineer may now look only at how the plan affects the use, amount, quality, or supply of water, plus factors a law names. The engineer may not turn down a request over a harm that another agency is better placed to handle, or one that is small. Protests count only if they speak to those points. Only a person who would be hurt in a direct, personal way may ask a court to review a decision. The Utah Senate passed it 18-7 and it was signed into law.",
+   "nay_description": "Voted against House Bill 60, which narrows the reasons Utah's state engineer may use to turn down a request for a new water right. To judge harm to the public, the engineer may now look only at how the plan affects the use, amount, quality, or supply of water, plus factors a law names. The engineer may not turn down a request over a harm that another agency is better placed to handle, or one that is small. Protests count only if they speak to those points. Only a person who would be hurt in a direct, personal way may ask a court to review a decision. The Utah Senate passed it 18-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -164,8 +164,15 @@ const PINNED_DOCUMENTS = [
     // per-tab identifier, 90-day retention, /privacy opt-out. Required
     // BEFORE USAGE_ANALYTICS_ENABLED in prod. Like 1.2, a disclosure that
     // identifies nobody — TERMS_VERSION stays 1.4, no re-acceptance.
-    version: "1.5",
-    sha256: "efa036c6eed3959c3fff82ab113412ab7f160d7ac0e3987528a5686bff799eff",
+    // 1.5 → 1.6 (2026-09-10, open-source readiness): names the stored picks
+    // and shared pick cards (first name, live view, "Stop sharing" on
+    // /me/picks); scopes any future promotional email content to
+    // research-area interests only, never picks or follows (the 1.5 wording
+    // read as pick-targeted); adds section-into-view to the analytics list.
+    // Clarifications of existing practice, nothing new collected —
+    // TERMS_VERSION stays 1.4, no re-acceptance.
+    version: "1.6",
+    sha256: "01043ef6113fded9a558901ee19d7a4d6ff09eab7b383ca970babffb7200c2aa",
   },
   {
     filename: "disclaimer.md",

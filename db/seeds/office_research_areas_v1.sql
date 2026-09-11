@@ -82,6 +82,7 @@ BEGIN
       ('presidential', 'President of the United States', 'womens_reproductive_rights'),
       ('presidential', 'President of the United States', 'gun_control'),
       ('presidential', 'President of the United States', 'ai_regulation'),
+      ('presidential', 'President of the United States', 'labor_rights'),
       ('presidential', 'President of the United States', 'corporate_accountability'),
       ('presidential', 'President of the United States', 'data_privacy'),
       ('presidential', 'President of the United States', 'anti_corruption'),
@@ -110,6 +111,7 @@ BEGIN
       ('presidential', 'Vice President of the United States', 'womens_reproductive_rights'),
       ('presidential', 'Vice President of the United States', 'gun_control'),
       ('presidential', 'Vice President of the United States', 'ai_regulation'),
+      ('presidential', 'Vice President of the United States', 'labor_rights'),
       ('presidential', 'Vice President of the United States', 'housing_affordability'),
       ('presidential', 'Vice President of the United States', 'public_education_quality')
   )
@@ -135,6 +137,7 @@ BEGIN
       ('presidential', 'President of the United States', 'womens_reproductive_rights'),
       ('presidential', 'President of the United States', 'gun_control'),
       ('presidential', 'President of the United States', 'ai_regulation'),
+      ('presidential', 'President of the United States', 'labor_rights'),
       ('presidential', 'President of the United States', 'corporate_accountability'),
       ('presidential', 'President of the United States', 'data_privacy'),
       ('presidential', 'President of the United States', 'anti_corruption'),
@@ -163,6 +166,7 @@ BEGIN
       ('presidential', 'Vice President of the United States', 'womens_reproductive_rights'),
       ('presidential', 'Vice President of the United States', 'gun_control'),
       ('presidential', 'Vice President of the United States', 'ai_regulation'),
+      ('presidential', 'Vice President of the United States', 'labor_rights'),
       ('presidential', 'Vice President of the United States', 'housing_affordability'),
       ('presidential', 'Vice President of the United States', 'public_education_quality')
   )
@@ -200,6 +204,7 @@ BEGIN
       ('presidential', 'President of the United States', 'womens_reproductive_rights'),
       ('presidential', 'President of the United States', 'gun_control'),
       ('presidential', 'President of the United States', 'ai_regulation'),
+      ('presidential', 'President of the United States', 'labor_rights'),
       ('presidential', 'President of the United States', 'corporate_accountability'),
       ('presidential', 'President of the United States', 'data_privacy'),
       ('presidential', 'President of the United States', 'anti_corruption'),
@@ -228,6 +233,7 @@ BEGIN
       ('presidential', 'Vice President of the United States', 'womens_reproductive_rights'),
       ('presidential', 'Vice President of the United States', 'gun_control'),
       ('presidential', 'Vice President of the United States', 'ai_regulation'),
+      ('presidential', 'Vice President of the United States', 'labor_rights'),
       ('presidential', 'Vice President of the United States', 'housing_affordability'),
       ('presidential', 'Vice President of the United States', 'public_education_quality')
   )
@@ -2611,6 +2617,7 @@ DECLARE
   desired_slugs text[] := ARRAY[
     'gun_control',
     'ai_regulation',
+    'labor_rights',
     'national_defense',
     'peaceful_foreign_policy',
     'foreign_trade',
@@ -2681,6 +2688,7 @@ DECLARE
   desired_slugs text[] := ARRAY[
     'gun_control',
     'ai_regulation',
+    'labor_rights',
     'government_spending_reduction',
     'personal_income_tax_reduction',
     'public_education_quality',
@@ -2752,6 +2760,7 @@ DECLARE
   desired_slugs text[] := ARRAY[
     'gun_control',
     'ai_regulation',
+    'labor_rights',
     'government_spending_reduction',
     'personal_income_tax_reduction',
     'public_education_quality',
@@ -2823,6 +2832,7 @@ DECLARE
   desired_slugs text[] := ARRAY[
     'gun_control',
     'ai_regulation',
+    'labor_rights',
     'public_education_quality',
     'public_safety_and_crime_control',
     'healthcare_affordability',
@@ -2900,6 +2910,7 @@ DECLARE
   desired_slugs text[] := ARRAY[
     'gun_control',
     'ai_regulation',
+    'labor_rights',
     'government_spending_reduction',
     'personal_income_tax_reduction',
     'healthcare_affordability',
@@ -3247,14 +3258,14 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('school_elementary', 'School Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
     ('school_secondary', 'School Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
     ('school_unified', 'School Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
-    ('statewide', 'Attorney General', ARRAY['ai_regulation', 'anti_corruption', 'civil_rights', 'corporate_accountability', 'data_privacy', 'election_integrity', 'environment_and_public_health', 'gun_control', 'healthcare_affordability', 'immigration', 'public_safety_and_crime_control', 'womens_reproductive_rights']::text[]),
+    ('statewide', 'Attorney General', ARRAY['ai_regulation', 'anti_corruption', 'civil_rights', 'corporate_accountability', 'data_privacy', 'election_integrity', 'environment_and_public_health', 'gun_control', 'healthcare_affordability', 'immigration', 'labor_rights', 'public_safety_and_crime_control', 'womens_reproductive_rights']::text[]),
     ('statewide', 'Commissioner of Agriculture', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'foreign_trade', 'social_programs_and_welfare']::text[]),
     ('statewide', 'Commissioner of Insurance', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'healthcare_affordability', 'housing_affordability']::text[]),
     ('statewide', 'Comptroller', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('statewide', 'Corporation Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
-    ('statewide', 'Labor Commissioner', ARRAY['civil_rights', 'corporate_accountability', 'reduce_wealth_gap', 'social_programs_and_welfare']::text[]),
+    ('statewide', 'Labor Commissioner', ARRAY['civil_rights', 'corporate_accountability', 'labor_rights', 'reduce_wealth_gap', 'social_programs_and_welfare']::text[]),
     ('statewide', 'Land Commissioner', ARRAY['corporate_accountability', 'environment_and_public_health', 'government_spending_reduction', 'housing_affordability']::text[]),
-    ('statewide', 'Lieutenant Governor', ARRAY['ai_regulation', 'anti_corruption', 'civil_rights', 'corporate_accountability', 'data_privacy', 'election_integrity', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'gun_control', 'healthcare_affordability', 'housing_affordability', 'personal_income_tax_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control', 'reduce_wealth_gap', 'social_programs_and_welfare', 'womens_reproductive_rights']::text[]),
+    ('statewide', 'Lieutenant Governor', ARRAY['ai_regulation', 'anti_corruption', 'civil_rights', 'corporate_accountability', 'data_privacy', 'election_integrity', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'gun_control', 'healthcare_affordability', 'housing_affordability', 'labor_rights', 'personal_income_tax_reduction', 'public_education_quality', 'public_infrastructure', 'public_safety_and_crime_control', 'reduce_wealth_gap', 'social_programs_and_welfare', 'womens_reproductive_rights']::text[]),
     ('statewide', 'Public Service Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
     ('statewide', 'Railroad Commissioner', ARRAY['corporate_accountability', 'cost_of_living_reduction', 'environment_and_public_health', 'public_infrastructure']::text[]),
     ('statewide', 'Secretary of State', ARRAY['anti_corruption', 'civil_rights', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),

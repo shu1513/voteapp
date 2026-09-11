@@ -913,7 +913,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0001	H		1619453	2026-01-29	71	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Higher Education Base Budget
 2214	SB0001	S		1618834	2026-01-28	27	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Higher Education Base Budget
 2214	SB0002	H		1652480	2026-03-04	70	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Public Education Budget Amendments
-2214	SB0002	S		1650484	2026-03-03	23	6	1	4	signed	dropped:not-recognizable	education budget reporting	Senate/ passed 2nd & 3rd readings/ suspension	Public Education Budget Amendments
+2214	SB0002	S		1650484	2026-03-03	23	6	1	4	signed	dropped:mixed	annual public education appropriations act; adds $24.8M at-risk WPUs and moves CTE add-on money to counseling, but repeals the $18.4M Digital Teaching and Learning grant and cuts transportation and salary lines; runs both ways, no state imports budget acts (CT 7 appropriations dropped, IN HB 1001 held)	Senate/ passed 2nd & 3rd readings/ suspension	Public Education Budget Amendments
 2214	SB0003	H		1652671	2026-03-04	69	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Current Fiscal Year Supplemental Appropriations
 2214	SB0003	S		1650421	2026-03-03	27	1	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Current Fiscal Year Supplemental Appropriations
 2214	SB0004	H		1619359	2026-01-29	71	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Economic and Community Development Base Budget
