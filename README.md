@@ -16,7 +16,7 @@ These are deliberate. If you are reading the code and wondering "why", this is w
 
 **Not a nonprofit.** A nonprofit is a legal structure, not a guarantee of good behavior. It comes with a board, formal governance, and a steady stream of paperwork, and the board seats and donor relationships are exactly where an organization can be captured over time. We run as a small company instead: simpler to operate, harder to infiltrate, and the accountability comes from this repository being public, not from a legal form. Every prompt, every algorithm, and every data pipeline is here for anyone to inspect.
 
-**Open source for transparency, not for reuse.** The code is MIT licensed, but the point of publishing it is so voters can check how the information was produced. If a claim in the app looks wrong, you can trace it to the pipeline that wrote it.
+**Open source for transparency, and as a template.** Publishing the code lets voters check how the information was produced: if a claim in the app looks wrong, you can trace it to the pipeline that wrote it. It is also MIT licensed on purpose. If you want to build the same thing for your own country, fork it. The data pipelines are US-specific, but the model (records with sources, no photos, no ratings, user-chosen priorities) travels.
 
 **No AI calls unless a human says so.** AI models are used to research and summarize public sources, but every model call is behind a default-deny guard (`backend/src/ai/aiCallGuard.ts`). Nothing calls a model on a timer or as a side effect. Research runs are started by a person, and results are validated across methods and models before they are written.
 
