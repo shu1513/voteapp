@@ -83,7 +83,7 @@ export default function MissionPage() {
           different methods and models before it’s written, and run quality passes with both humans
           and AI. For full transparency, our source code is open and public{" "}
           <a
-            href="https://github.com/shu1513/voteapp"
+            href="https://github.com/shu1513/electionssimplified"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold underline hover:text-ink"

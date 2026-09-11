@@ -94,8 +94,8 @@ force-pushing this one, so the old commit hashes never become reachable on
 the public side:
 
 ```bash
-git clone --no-local git@github.com:shu1513/voteapp.git voteapp-public
-cd voteapp-public
+git clone --no-local git@github.com:shu1513/electionssimplified.git electionssimplified-public
+cd electionssimplified-public
 git filter-repo --invert-paths \
   --path tmp_voteapp_backup_before_live_ai_20260511.sql \
   --path backend/node_modules \

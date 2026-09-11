@@ -46,7 +46,7 @@ export function FullAddressExplanation({ onOpen }: { onOpen?: () => void } = {})
                 <p>
                   {ADDRESS_FIELD_PRIVACY_NOTE} You can verify that in our public source code{" "}
                   <a
-                    href="https://github.com/shu1513/voteapp"
+                    href="https://github.com/shu1513/electionssimplified"
                     target="_blank"
                     rel="noreferrer"
                     className="text-ink underline hover:text-rausch"
