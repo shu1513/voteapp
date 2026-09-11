@@ -343,6 +343,9 @@ function WhyThisPickPanel({
   );
 }
 
+const FILL_DESCRIPTION =
+  "Picks the best match for your ranked issues in each race you haven't decided. Your own picks are never changed.";
+
 /**
  * Per-date fill + clear for the My Draft date cards: "Auto-fill empty picks
  * by my issues" runs fill_empty over THAT date's undecided races only. Once
@@ -352,8 +355,8 @@ function WhyThisPickPanel({
  * left open repeats the same "not enough evidence", so Clear → fill again is
  * the useful path (same rule as the web control). No result list
  * here: the caller gets the per-election results via onResults and
- * annotates its own race rows; per-race "why" details live on each election
- * screen's panel.
+ * renders its own one-line run summary; per-race "why" details live on each
+ * election screen's panel.
  */
 export function AutoPickFillControl({
   date,
@@ -405,11 +408,17 @@ export function AutoPickFillControl({
     <View className="mt-2">
       <View className="flex-row flex-wrap items-center gap-2">
         {fillable ? (
+          // The one-line explanation rides as the button's accessibility
+          // hint, not visible copy (the web moved it to a tooltip +
+          // sr-only): the label already says what the button does, and the
+          // card stays uncluttered. The Auto chips on the rows say what
+          // Clear removes.
           <Pressable
             disabled={fillDisabled}
             onPress={onFill}
             accessibilityRole="button"
             accessibilityState={{ disabled: fillDisabled }}
+            accessibilityHint={FILL_DESCRIPTION}
             className={`rounded-full border border-autopick-border bg-autopick px-3 py-1.5 active:bg-autopick-dark${fillDisabled ? " opacity-50" : ""}`}
           >
             <Text className="text-sm font-semibold text-autopick-ink">
@@ -431,14 +440,6 @@ export function AutoPickFillControl({
           </Pressable>
         ) : null}
       </View>
-      {fillable ? (
-        // Describes the fill button, so it leaves with it; the Auto chips on
-        // the rows say what Clear removes.
-        <Text className="mt-1 text-xs text-ink-soft">
-          Picks the best match for your ranked issues in each race you haven&apos;t decided. Your own picks are never
-          changed.
-        </Text>
-      ) : null}
       {prompt ? (
         <View className="mt-2">
           <RankIssuesPrompt plural />
