@@ -90,3 +90,14 @@ carrying that date. One of them, HF 2694, reached batch-05 and was imported befo
 warning was acted on. It was re-judged with an `official_vote_date` override and re-imported
 for real; the ledger is `batch-05/import-date-override-report.json`. The audit script now
 stops the run instead of printing a warning.
+
+## Not-enacted scope (batches 07-09, 2026-09-11)
+
+Bills that did not become law. The 91st General Assembly adjourned for good on 2026-05-03, so
+each description is conditional ("would have") and ends with a fate sentence derived from the
+dataset: the other chamber never voted, the chambers never agreed on the same text, or the
+Governor vetoed it. Pool and dispositions: `survey/not-enacted-worklist.json` (90 slots on 85
+measures, each chamber's final kept roll, kept if divided). 25 measures imported on 26 rolls;
+60 dropped with written reasons, including three whose substance became law through another bill
+(HF 2336, HF 2716, SF 507). Tools outside the repo: `ia_notenacted.py` (pool), `ia_build_ne.py`
+(conditional builder, refuses enacted bills), `ia_finish_ne.py` (audit gate).
