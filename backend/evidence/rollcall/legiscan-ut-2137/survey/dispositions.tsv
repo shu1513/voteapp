@@ -343,7 +343,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0195	H		1512971	2025-02-11	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Firearm Retention Amendments
 2137	HB0195	H		1512976	2025-03-05	65	5	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Firearm Retention Amendments
 2137	HB0195	S		1512974	2025-03-03	20	6	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	Firearm Retention Amendments
-2137	HB0195	S		1512975	2025-03-03	21	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Firearm Retention Amendments
+2137	HB0195	S		1512975	2025-03-03	21	6	1	4	signed	batch-04	imported 2026-09-10, run 06:31:36.630Z	Senate/ passed 3rd reading	Firearm Retention Amendments
 2137	HB0196	H		1511538	2025-02-05	34	37	0	6	signed	screened	not-the-chambers-final-roll	House/ failed	Vehicle Traction Amendments
 2137	HB0196	H		1511539	2025-02-06	48	24	1	6	signed	screened	not-enacted-status-6	House/ passed 3rd reading	Vehicle Traction Amendments
 2137	HB0196	S		1511542	2025-02-28	20	5	1	6	signed	screened	not-enacted-status-6	Senate/ passed 3rd reading	Vehicle Traction Amendments
@@ -446,7 +446,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0255	H		1510679	2025-02-12	73	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Local Land Use Modifications
 2137	HB0255	S		1510682	2025-02-27	24	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Local Land Use Modifications
 2137	HB0256	H		1513974	2025-02-10	48	23	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Municipal and County Zoning Amendments
-2137	HB0256	H		1513978	2025-03-06	47	22	1	4	signed	candidate	divided-enacted-final	House/ concurs with Senate amendment	Municipal and County Zoning Amendments
+2137	HB0256	H		1513978	2025-03-06	47	22	1	4	signed	dropped:no-direction	short-term rental enforcement tools; any housing effect depends on what each city chooses, so no honest direction	House/ concurs with Senate amendment	Municipal and County Zoning Amendments
 2137	HB0256	S		1513977	2025-03-06	27	1	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Municipal and County Zoning Amendments
 2137	HB0257	H		1512299	2025-02-13	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Pharmacy Benefit Amendments
 2137	HB0257	S		1512301	2025-03-06	23	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Pharmacy Benefit Amendments
@@ -517,7 +517,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0292	H		1514056	2025-02-18	69	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Political Signs Amendments
 2137	HB0293	H		1512197	2025-02-21	68	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Vehicle Sales Tax Amendments
 2137	HB0294	H		1510779	2025-02-11	74	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Infectious Disease Procedures Amendments
-2137	HB0294	S		1510782	2025-02-27	18	5	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Infectious Disease Procedures Amendments
+2137	HB0294	S		1510782	2025-02-27	18	5	1	4	signed	batch-04	imported 2026-09-10, run 06:31:36.630Z	Senate/ passed 3rd reading	Infectious Disease Procedures Amendments
 2137	HB0295	H		1512622	2025-02-25	44	20	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Municipal Services Fees and Political Subdivision Lien Amendments
 2137	HB0296	H		1513933	2025-02-19	65	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Recovery Residence Services Amendments
 2137	HB0296	S		1513935	2025-03-07	27	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Recovery Residence Services Amendments
@@ -528,8 +528,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0298	S		1510787	2025-03-05	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Volunteer Emergency Medical Service Personnel Insurance Program Amendments
 2137	HB0299	H		1513445	2025-02-18	73	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Election Code Time Computation Revisions
 2137	HB0300	H		1512096	2025-02-25	57	15	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Amendments to Election Law
-2137	HB0300	H		1512100	2025-03-06	56	15	1	4	signed	candidate	batch-02: 68 code sections and 10,303 words of change, an election omnibus needing its own read	House/ concurs with Senate amendment	Amendments to Election Law
-2137	HB0300	S		1512099	2025-03-06	19	10	1	4	signed	candidate	batch-02: 68 code sections and 10,303 words of change, an election omnibus needing its own read	Senate/ passed 2nd & 3rd readings/ suspension	Amendments to Election Law
+2137	HB0300	H		1512100	2025-03-06	56	15	1	4	signed	deferred:operator-direction	vote-by-mail overhaul: ID digits on return envelopes plus opt-in mail ballots from 2029; election_integrity direction contested	House/ concurs with Senate amendment	Amendments to Election Law
+2137	HB0300	S		1512099	2025-03-06	19	10	1	4	signed	deferred:operator-direction	vote-by-mail overhaul: ID digits on return envelopes plus opt-in mail ballots from 2029; election_integrity direction contested	Senate/ passed 2nd & 3rd readings/ suspension	Amendments to Election Law
 2137	HB0301	H		1511480	2025-02-21	66	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Ambulance Provider Payment Amendments
 2137	HB0301	S		1511482	2025-03-06	26	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Ambulance Provider Payment Amendments
 2137	HB0302	H		1510790	2025-02-14	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Minors in State Custody Amendments
@@ -555,8 +555,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0311	H		1513507	2025-03-07	69	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Watershed Amendments
 2137	HB0311	S		1513506	2025-03-07	21	4	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Watershed Amendments
 2137	HB0312	H		1514641	2025-02-12	60	12	1	4	signed	screened	not-divided	House/ passed 3rd reading	Criminal Justice Amendments
-2137	HB0312	H		1514646	2025-03-05	57	15	1	4	signed	candidate	divided-enacted-final	House/ concurs with Senate amendment	Criminal Justice Amendments
-2137	HB0312	S		1514645	2025-03-05	19	5	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Justice Amendments
+2137	HB0312	H		1514646	2025-03-05	57	15	1	4	signed	dropped:omnibus-opposite-strands	tightens pretrial and overcrowding release, bans state money for syringe exchanges, bars private prisons; strands point different ways	House/ concurs with Senate amendment	Criminal Justice Amendments
+2137	HB0312	S		1514645	2025-03-05	19	5	1	4	signed	dropped:omnibus-opposite-strands	tightens pretrial and overcrowding release, bans state money for syringe exchanges, bars private prisons; strands point different ways	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Justice Amendments
 2137	HB0313	H		1515208	2025-02-18	69	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Construction Industry Amendments
 2137	HB0313	H		1515211	2025-03-07	55	12	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Construction Industry Amendments
 2137	HB0313	S		1515210	2025-03-07	22	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Construction Industry Amendments
@@ -628,8 +628,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0354	H		1510940	2025-03-05	69	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Criminal Justice Revisions
 2137	HB0354	S		1510939	2025-03-05	27	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Justice Revisions
 2137	HB0355	H		1511406	2025-02-25	43	26	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Mining and Critical Infrastructure Materials Amendments
-2137	HB0355	H		1511410	2025-03-07	41	29	1	4	signed	candidate	divided-enacted-final	House/ concurs with Senate amendment	Mining and Critical Infrastructure Materials Amendments
-2137	HB0355	S		1511409	2025-03-07	17	7	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Mining and Critical Infrastructure Materials Amendments
+2137	HB0355	H		1511410	2025-03-07	41	29	1	4	signed	batch-04	imported 2026-09-10, run 06:31:36.630Z	House/ concurs with Senate amendment	Mining and Critical Infrastructure Materials Amendments
+2137	HB0355	S		1511409	2025-03-07	17	7	1	4	signed	batch-04	imported 2026-09-10, run 06:31:36.630Z	Senate/ passed 2nd & 3rd readings/ suspension	Mining and Critical Infrastructure Materials Amendments
 2137	HB0356	H		1514567	2025-02-28	60	5	1	4	signed	screened	not-divided	House/ passed 3rd reading	County Governance Amendments
 2137	HB0356	H		1514569	2025-03-07	56	15	1	4	signed	candidate	divided-enacted-final	House/ concurs with Senate amendment	County Governance Amendments
 2137	HB0356	S		1514568	2025-03-07	21	7	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	County Governance Amendments
@@ -1421,7 +1421,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	SB0265	S		1513214	2025-02-24	22	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Utah Constitutional Sovereignty Act Amendments
 2137	SB0266	H		1514137	2025-03-07	59	7	1	4	signed	screened	not-divided	House/ passed 3rd reading	Ethylene Oxide Litigation Amendments
 2137	SB0266	S		1514135	2025-02-24	21	2	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Ethylene Oxide Litigation Amendments
-2137	SB0268	H		1513150	2025-03-05	39	32	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Rules Review and General Oversight Committee Amendments
+2137	SB0268	H		1513150	2025-03-05	39	32	1	4	signed	dropped:no-area	closed meetings are narrow child-welfare privacy; main strand is a legislature-vs-State-Board-of-Education rule delay with no research area	House/ passed 3rd reading	Rules Review and General Oversight Committee Amendments
 2137	SB0268	S		1513148	2025-02-24	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Rules Review and General Oversight Committee Amendments
 2137	SB0268	S		1513151	2025-03-06	18	4	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Rules Review and General Oversight Committee Amendments
 2137	SB0269	H		1512535	2025-03-03	68	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Telecommunications Amendments
@@ -1436,9 +1436,9 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	SB0275	S		1511271	2025-02-25	23	0	1	6	none	screened	not-divided	Senate/ passed 3rd reading	Placental Tissue Amendments
 2137	SB0276	H		1513283	2025-03-07	52	16	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Utah Horse Racing Commission Amendments
 2137	SB0276	S		1513281	2025-02-25	22	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Utah Horse Racing Commission Amendments
-2137	SB0277	H		1514324	2025-03-05	44	23	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Government Records Management Amendments
+2137	SB0277	H		1514324	2025-03-05	44	23	1	4	signed	batch-04	imported 2026-09-10, run 06:31:36.630Z	House/ passed 3rd reading	Government Records Management Amendments
 2137	SB0277	S		1514321	2025-02-27	21	8	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	Government Records Management Amendments
-2137	SB0277	S		1514325	2025-03-06	18	6	1	4	signed	candidate	divided-enacted-final	Senate/ concurs with House amendment	Government Records Management Amendments
+2137	SB0277	S		1514325	2025-03-06	18	6	1	4	signed	batch-04	imported 2026-09-10, run 06:31:36.630Z	Senate/ concurs with House amendment	Government Records Management Amendments
 2137	SB0278	H		1511155	2025-03-05	70	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	State Debt Collection Amendments
 2137	SB0278	S		1511154	2025-02-27	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	State Debt Collection Amendments
 2137	SB0279	H		1512192	2025-03-07	62	5	1	4	signed	screened	not-divided	House/ passed 3rd reading	High School Rodeo Amendments
