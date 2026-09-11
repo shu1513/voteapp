@@ -1,0 +1,80 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1509593,
+      "measure_id": "SF 472",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 472, which tightens Iowa's rule that public employee unions must win a new election before each contract ends to stay certified. A public employer must send the state labor board a list of the workers in the unit within 10 days of notice. Any Iowa resident may sue to force an employer that fails to send the list. The Iowa Senate passed it 32-15, and it became law.",
+      "nay_description": "Voted against Senate File 472, which tightens Iowa's rule that public employee unions must win a new election before each contract ends to stay certified. A public employer must send the state labor board a list of the workers in the unit within 10 days of notice. Any Iowa resident may sue to force an employer that fails to send the list. The Iowa Senate passed it 32-15, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1693734,
+      "measure_id": "SF 472",
+      "vote_date": "2026-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 472, which tightens Iowa's rule that public employee unions must win a new election before each contract ends to stay certified. A public employer must send the state labor board a list of the workers in the unit within 10 days of notice. Any Iowa resident may sue to force an employer that fails to send the list. The Iowa House passed it 56-34, and it became law.",
+      "nay_description": "Voted against Senate File 472, which tightens Iowa's rule that public employee unions must win a new election before each contract ends to stay certified. A public employer must send the state labor board a list of the workers in the unit within 10 days of notice. Any Iowa resident may sue to force an employer that fails to send the list. The Iowa House passed it 56-34, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1520698,
+      "measure_id": "SF 603",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 603, which reorganizes Iowa's workforce agency and bars cities and counties from setting pay or training rules for contractors. A city or county may not require developers or contractors to pay their workers more, or train them, beyond what state law allows, or tie incentives to such terms. It also makes apprenticeship training voluntary unless state law requires it. The Iowa House passed it 64-34, and it became law.",
+      "nay_description": "Voted against Senate File 603, which reorganizes Iowa's workforce agency and bars cities and counties from setting pay or training rules for contractors. A city or county may not require developers or contractors to pay their workers more, or train them, beyond what state law allows, or tie incentives to such terms. It also makes apprenticeship training voluntary unless state law requires it. The Iowa House passed it 64-34, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1524540,
+      "measure_id": "SF 603",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 603, which reorganizes Iowa's workforce agency and bars cities and counties from setting pay or training rules for contractors. A city or county may not require developers or contractors to pay their workers more, or train them, beyond what state law allows, or tie incentives to such terms. It also makes apprenticeship training voluntary unless state law requires it. The Iowa Senate passed the final version 32-15, and it became law.",
+      "nay_description": "Voted against Senate File 603, which reorganizes Iowa's workforce agency and bars cities and counties from setting pay or training rules for contractors. A city or county may not require developers or contractors to pay their workers more, or train them, beyond what state law allows, or tie incentives to such terms. It also makes apprenticeship training voluntary unless state law requires it. The Iowa Senate passed the final version 32-15, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1521855
+      ],
+      "note": "Roll 1521855 is the same-day motion to concur in House amendment S-3030 (32-15); roll 1524540 is final passage."
+    }
+  ]
+}
