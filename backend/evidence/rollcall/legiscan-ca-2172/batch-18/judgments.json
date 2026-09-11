@@ -51,6 +51,11 @@
      "slug": "civil_rights",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ]
   },
@@ -67,6 +72,11 @@
    "labels": [
     {
      "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }
@@ -92,6 +102,16 @@
      "slug": "data_privacy",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "ai_regulation",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ]
   },
@@ -113,6 +133,16 @@
     },
     {
      "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "ai_regulation",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }

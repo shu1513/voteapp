@@ -123,6 +123,11 @@
      "slug": "reduce_wealth_gap",
      "yea": "against",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -139,6 +144,11 @@
    "labels": [
     {
      "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "against",
      "nay": null
     }

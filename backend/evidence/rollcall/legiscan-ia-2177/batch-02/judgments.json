@@ -123,6 +123,11 @@
           "slug": "corporate_accountability",
           "yea": "against",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
         }
       ]
     },
@@ -139,6 +144,11 @@
       "labels": [
         {
           "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "against",
           "nay": null
         }
@@ -306,6 +316,11 @@
       "labels": [
         {
           "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "for",
           "nay": null
         }

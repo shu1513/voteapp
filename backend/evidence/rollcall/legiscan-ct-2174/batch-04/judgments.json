@@ -72,6 +72,11 @@
           "slug": "corporate_accountability",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ],
       "acknowledge_later_rolls": [
@@ -251,6 +256,11 @@
           "slug": "reduce_wealth_gap",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -291,6 +301,11 @@
           "slug": "social_programs_and_welfare",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ],
       "acknowledge_later_rolls": [
@@ -329,6 +344,11 @@
       "labels": [
         {
           "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "for",
           "nay": null
         }
