@@ -189,7 +189,7 @@ function logAddressResolutionDiagnostics(diagnostics: AddressResolutionDiagnosti
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  // Dark unless SENTRY_DSN is set (plan-error-monitoring.md Phase 2).
+  // Dark unless SENTRY_DSN is set (docs/plans/plan-error-monitoring.md Phase 2).
   if (initSentryFromEnv("api")) {
     console.log("error monitoring enabled (sentry)");
   }

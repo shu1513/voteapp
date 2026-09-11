@@ -5,7 +5,7 @@ export type OhioFinanceEligibleOfficeKey = `${string}::${string}`;
 // State. Lieutenant Governor is deliberately absent: Ohio elects it on a
 // joint ticket with Governor, so no separate election rows exist. Judicial
 // offices (canonical name "State Level Judge") and county/municipal offices
-// are deferred; see ohio_plan.md decision 2.
+// are deferred; see docs/plans/ohio_plan.md decision 2.
 export const OHIO_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "statewide::Governor",
   "statewide::Attorney General",

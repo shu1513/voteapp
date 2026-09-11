@@ -9,7 +9,7 @@ import {
 import type { NcsbeDocumentRow, NcsbeExpenditureRow } from "./northCarolinaNcsbeParsers.js";
 
 // Outside-spending aggregation over the IE doc-type inventories
-// (north_carolina_plan.md decisions 3–6). Single-source rule (decision 3):
+// (docs/plans/north_carolina_plan.md decisions 3–6). Single-source rule (decision 3):
 // outside totals come ONLY from reports discovered via the IRIEX/IRCIX/RPIER
 // inventories — the same IE row can be mirrored verbatim into a registered
 // committee's regular quarterly, so regular-report rows are a cross-check

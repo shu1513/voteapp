@@ -1,6 +1,6 @@
 BEGIN;
 
--- Georgia cross-system filer identity map (georgia_plan.md D3, shape pinned
+-- Georgia cross-system filer identity map (docs/plans/georgia_plan.md D3, shape pinned
 -- by spike result A6). One row per (source system, registration): a canonical
 -- PeachFile entity maps to the SAME registration chain re-keyed across the
 -- two portals (archive 757274 <-> PeachFile 100035), never to a legally

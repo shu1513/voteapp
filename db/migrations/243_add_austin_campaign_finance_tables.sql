@@ -1,4 +1,4 @@
--- Austin (TX) city campaign-finance tables (plan-austin-finance.md Phase 1).
+-- Austin (TX) city campaign-finance tables (docs/plans/plan-austin-finance.md Phase 1).
 -- Standard five-table shape — migration 237 (Denver) is the direct template,
 -- itself the Houston-172 shape — so Phase 3 reads through
 -- standardStateFinanceBallotLookupLoader / standardStateFinanceDueListQuery

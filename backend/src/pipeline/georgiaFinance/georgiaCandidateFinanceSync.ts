@@ -50,7 +50,7 @@ import {
   type GeorgiaFinanceOutsideGroupBreakdownInput,
 } from "./georgiaFinanceWriter.js";
 
-// Per-candidate finance sync for Georgia (georgia_plan.md PR 4 direct leg,
+// Per-candidate finance sync for Georgia (docs/plans/georgia_plan.md PR 4 direct leg,
 // PR 5 outside leg): per-filer PeachFile TCON pull with D8 report-group row
 // selection, D5 aggregation, the official candidate-index summary (D4), the
 // guard that keeps the previous good snapshot when the pull looks broken,

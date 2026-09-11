@@ -26,7 +26,7 @@ import {
   type ErtsFilingRow,
 } from "./rhodeIslandErtsParsers.js";
 
-// Acquisition for ERTS portal artifacts (rhode_island_plan.md "Required
+// Acquisition for ERTS portal artifacts (docs/plans/rhode_island_plan.md "Required
 // artifacts per sync"). Retrieval only — nothing here writes to the database;
 // the finance sync reads the cache only. Per organization, everything is
 // fetched first and installed only after every fetch and every integrity gate

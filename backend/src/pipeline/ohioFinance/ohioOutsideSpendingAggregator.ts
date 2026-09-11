@@ -12,7 +12,7 @@ import {
 } from "./ohioSosBulkFiles.js";
 
 // Form 31-U outside-spending aggregation, the two-stage model of
-// ohio_plan.md decision 4. Stage one reads the annual expenditure bulk
+// docs/plans/ohio_plan.md decision 4. Stage one reads the annual expenditure bulk
 // rows (candidate, PAC, AND party committees all file 31-U) to discover
 // report keys and pin each report's spender identity — the detail export
 // has no MASTER_KEY, so the spender is always carried in from the annual

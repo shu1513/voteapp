@@ -1,4 +1,4 @@
-// Delaware cover reconciliation (plan-delaware-finance.md fact 6).
+// Delaware cover reconciliation (docs/plans/plan-delaware-finance.md fact 6).
 //
 // Two identities, both mandatory before anything is published:
 // - Per-report cash identity (beginning + receipts − expenditures = ending)

@@ -29,7 +29,7 @@ import {
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 // The loader body below moved verbatim from ballotLookup.ts
-// (plan-ballot-lookup.md Phase 2); these aliases keep its signature and row
+// (docs/plans/plan-ballot-lookup.md Phase 2); these aliases keep its signature and row
 // references byte-identical while the shapes live in the shared module.
 // Phase 3 replaced the dynamic integration-module loading with the static
 // imports above -- flags and eligibility are plain sibling/repo modules, so

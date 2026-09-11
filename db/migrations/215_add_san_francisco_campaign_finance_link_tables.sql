@@ -1,4 +1,4 @@
--- San Francisco campaign-finance identity tables (plan-san-francisco-finance.md
+-- San Francisco campaign-finance identity tables (docs/plans/plan-san-francisco-finance.md
 -- Phase 3). Only the two link tables ship here; summaries/breakdowns/outside
 -- group amounts follow in Phase 5. Modeled on the Los Angeles City tables
 -- (migration 173), with the committee identity swapped for the SFEC dashboard

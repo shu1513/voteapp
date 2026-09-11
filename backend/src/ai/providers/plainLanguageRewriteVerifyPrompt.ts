@@ -2,7 +2,7 @@ import type { PlainLanguageRewriteKind } from "./plainLanguageRewritePrompt.js";
 
 /**
  * Independent fact-consistency check for the Phase 2 plain-language backfill
- * (plan-content-wording.md). The verifier is never the rewriter judging
+ * (docs/plans/plan-content-wording.md). The verifier is never the rewriter judging
  * itself: it receives only the original and the rewrite, in a separate call,
  * and answers whether they state the same facts. Any doubt is a mismatch —
  * for civic data, a silently changed fact is worse than ugly wording, so a

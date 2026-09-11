@@ -1,4 +1,4 @@
-// Delaware direct-contribution aggregation (plan-delaware-finance.md fact 2).
+// Delaware direct-contribution aggregation (docs/plans/plan-delaware-finance.md fact 2).
 //
 // Money model, pinned against the live per-period reconciliation evidence
 // (every period's CSV rows sum cent-exact to the cover's 2E subtotal, which

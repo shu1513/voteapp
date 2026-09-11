@@ -9,7 +9,7 @@ import {
 // Who funds an outside group. Organization donors only: individuals (and
 // candidate/family money) are never presented as company backing, and NYSBOE
 // has no occupation/employer fields to classify them with anyway
-// (plan-new-york-finance.md). Receipts are already cycle-scoped by the client
+// (docs/plans/plan-new-york-finance.md). Receipts are already cycle-scoped by the client
 // (sched_date window) so historical funding never counts toward a current
 // race.
 

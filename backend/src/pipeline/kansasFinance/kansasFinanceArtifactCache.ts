@@ -1,4 +1,4 @@
-// Kansas finance artifact cache (plan-kansas-finance.md, Phase 1).
+// Kansas finance artifact cache (docs/plans/plan-kansas-finance.md, Phase 1).
 //
 // Follows the Missouri/Montana filesystem cache pattern (sha256 manifests,
 // atomic tmp-rename writes, 0700/0600 modes, gitignored scratch dir) with

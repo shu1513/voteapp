@@ -180,7 +180,7 @@ is always null). Verified 2026-08-26 against statute + FAQ + live API:
 - **Product consequence**: eligible population is only $5k+ donors — publish
   the occupation chart behind a coverage gate with a threshold disclosure, and
   exclude sub-$5k donors from any Unknown bucket (their occupation was never
-  required). See `plan-north-dakota-finance.md` hard fact 3.
+  required). See `docs/plans/plan-north-dakota-finance.md` hard fact 3.
 
 ## Portal chart endpoints (reconciliation controls)
 

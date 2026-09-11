@@ -1,4 +1,4 @@
-// Arkansas per-candidate finance sync (plan-arkansas-finance.md, Phase 3).
+// Arkansas per-candidate finance sync (docs/plans/plan-arkansas-finance.md, Phase 3).
 // The link is the input (auto-link or an operator wrote it); this locates the
 // linked filer's registration for the cycle in the registry sweep, pulls the
 // registration-scoped receipts, aggregates, and replaces the snapshot. Any

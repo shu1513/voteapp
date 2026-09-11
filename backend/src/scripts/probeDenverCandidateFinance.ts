@@ -1,4 +1,4 @@
-// Phase 0 probe for the Denver city finance module (plan-denver-finance.md).
+// Phase 0 probe for the Denver city finance module (docs/plans/plan-denver-finance.md).
 // NO schema, NO writes, NO persisted artifacts: exercises the SearchLight
 // JSON API live through denverSearchlightClient and checks the plan's
 // hand-verified gates. Every pinned number was derived by hand from live

@@ -1,4 +1,4 @@
-// Arkansas CFIS Phase 0 probe (plan-arkansas-finance.md). Validates the
+// Arkansas CFIS Phase 0 probe (docs/plans/plan-arkansas-finance.md). Validates the
 // acquisition contracts and computes the seven Phase 0 gates. No database, no
 // cache promotion, no published snapshot.
 

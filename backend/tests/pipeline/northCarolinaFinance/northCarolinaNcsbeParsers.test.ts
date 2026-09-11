@@ -20,7 +20,7 @@ import {
 } from "../../../src/pipeline/northCarolinaFinance/northCarolinaNcsbeParsers.js";
 
 // Fixtures are real portal bytes captured during the 2026-08-07 acquisition
-// spike (see north_carolina_plan.md "Acquisition spike results"); the pinned
+// spike (see docs/plans/north_carolina_plan.md "Acquisition spike results"); the pinned
 // numbers below reproduce the spike's verified money numbers. One deliberate
 // deviation: individual contributors' street addresses (Street1/Street2, and
 // the +4 zip suffix) are redacted from the receipts fixture — they are public

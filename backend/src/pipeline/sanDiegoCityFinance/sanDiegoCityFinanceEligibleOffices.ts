@@ -1,5 +1,5 @@
 // Eligibility for San Diego city campaign finance (Phase 2 of
-// plan-san-diego-finance.md), copy-adapted from sanJoseFinanceEligibleOffices.
+// docs/plans/plan-san-diego-finance.md), copy-adapted from sanJoseFinanceEligibleOffices.
 // San Diego city offices only: Mayor and the nine council districts, all on
 // the place row (GEOID 0666000). Municipal Attorney is a city office too but
 // stays out of the whitelist until a cycle actually has the contest — the

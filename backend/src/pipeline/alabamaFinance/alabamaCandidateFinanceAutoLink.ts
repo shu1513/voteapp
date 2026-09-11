@@ -5,7 +5,7 @@
 // district-confirmed matches with linkSource "fcpa_race_search" — the
 // writer's manual-link protection guarantees operator links always win.
 // Ambiguity, missing jurisdiction, and district conflicts are reported,
-// never linked (plan-alabama-finance.md, Phase 3).
+// never linked (docs/plans/plan-alabama-finance.md, Phase 3).
 
 import type { Pool, PoolClient } from "pg";
 

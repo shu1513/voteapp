@@ -1,6 +1,6 @@
 BEGIN;
 
--- Kansas transcribed independent-expenditure rows (plan-kansas-finance.md,
+-- Kansas transcribed independent-expenditure rows (docs/plans/plan-kansas-finance.md,
 -- Phase 5 — outside spending, path 1: dedicated IE statements, K.S.A.
 -- 25-4150). The statements are scanned PDFs on the KPDC "Others" tree, so
 -- each printed row is transcribed by hand and the candidate sync reads the

@@ -1,6 +1,6 @@
 import type { Pool, PoolClient } from "pg";
 
-// Access module for ga_finance_filer_identity_map (georgia_plan.md D3).
+// Access module for ga_finance_filer_identity_map (docs/plans/georgia_plan.md D3).
 // The map ties one canonical PeachFile entity to its per-host registrations —
 // the SAME registration chain re-keyed across the two portals, never a
 // legally separate committee. Sync legs (PR 4+) read the map to know which

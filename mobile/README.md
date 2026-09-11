@@ -49,4 +49,4 @@ hooks safe to share.
 
 ## Project docs
 
-The phased mobile plan lives in the repo root (`plan-mobile-expo.md`).
+Mobile plan docs live in `docs/plans/` (see `mobile-feature-parity.md`).

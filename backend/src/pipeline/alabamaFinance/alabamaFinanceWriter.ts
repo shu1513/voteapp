@@ -1,4 +1,4 @@
-// Alabama finance snapshot writer (plan-alabama-finance.md, Phase 3). Thin
+// Alabama finance snapshot writer (docs/plans/plan-alabama-finance.md, Phase 3). Thin
 // wrapper over the standard state-finance writer. Identity: the FCPA
 // portal's internal numeric committee id (race-row COMMITTEEID) in
 // committee_id. The public FCPA committee number (extract CommitteeId) lives

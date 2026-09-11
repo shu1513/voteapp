@@ -1,7 +1,7 @@
 BEGIN;
 
 -- Kansas outside rows: allow a viewer-sourced artifact as a row's source
--- (plan-kansas-finance.md, Phase 5).
+-- (docs/plans/plan-kansas-finance.md, Phase 5).
 --
 -- The KPDC archive splits a multi-page IE filing into one scanned PDF per
 -- page, and a page can simply be missing: American Conservative Fund's

@@ -336,7 +336,7 @@ describe("georgiaFinanceWriter", () => {
 
     // Archive-only 2022–2025 cycles are out of v1 link scope because the
     // PeachFile filerEntityId identity does not exist for them
-    // (georgia_plan.md D7).
+    // (docs/plans/georgia_plan.md D7).
     await expect(
       upsertGeorgiaFinanceLink({
         db,

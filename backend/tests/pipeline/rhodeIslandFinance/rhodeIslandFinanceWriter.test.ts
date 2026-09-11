@@ -222,7 +222,7 @@ describe("rhodeIslandFinanceWriter", () => {
 
     // RI CF-2s carry liabilities; an indebted campaign's official ending
     // balance is negative and must be written as-is, never as NULL
-    // (rhode_island_plan.md, migration 236 relaxed amounts check).
+    // (docs/plans/rhode_island_plan.md, migration 236 relaxed amounts check).
     await replaceRhodeIslandCandidateFinanceSnapshot({
       db,
       link: baseLink(),
@@ -367,7 +367,7 @@ describe("rhodeIslandFinanceWriter", () => {
 
     // v1 is the current (2026) cycle only: no statewide export exists, so
     // historical cycles are a separate, separately tested expansion
-    // (rhode_island_plan.md).
+    // (docs/plans/rhode_island_plan.md).
     await expect(
       upsertRhodeIslandFinanceLink({
         db,

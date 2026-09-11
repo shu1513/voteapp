@@ -1,6 +1,6 @@
 BEGIN;
 
--- Audit log for the one-off plain-language backfill (plan-content-wording.md
+-- Audit log for the one-off plain-language backfill (docs/plans/plan-content-wording.md
 -- Phase 2). One row per (table, row, column) the backfill touched:
 --   applied — the rewrite passed mechanical checks and the independent
 --             fact-consistency verifier, and the target column was updated;

@@ -1,7 +1,7 @@
 export type SouthCarolinaFinanceEligibleOfficeKey = `${string}::${string}`;
 
 // V1 scope: statewide constitutional offices plus SC Senate and SC House
-// (plan-south-carolina-finance.md, Phase 2). United States Senator and
+// (docs/plans/plan-south-carolina-finance.md, Phase 2). United States Senator and
 // United States Representative are federal races filed with the FEC, not the
 // State Ethics Commission. Lieutenant Governor runs on a joint ticket with
 // Governor (since 2018) and has no separate campaign account. County and

@@ -1,4 +1,4 @@
-// Direct-finance aggregation for South Carolina (plan-south-carolina-finance.md
+// Direct-finance aggregation for South Carolina (docs/plans/plan-south-carolina-finance.md
 // Phase 3). Totals come from the authoritative report-detail summaries of each
 // accepted run's final report; breakdowns come from Contribution/Search rows.
 // All arithmetic in integer cents; dollars only at the output boundary (the

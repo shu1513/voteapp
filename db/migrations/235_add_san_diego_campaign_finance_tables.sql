@@ -1,4 +1,4 @@
--- San Diego city campaign-finance tables (plan-san-diego-finance.md Phase 1).
+-- San Diego city campaign-finance tables (docs/plans/plan-san-diego-finance.md Phase 1).
 -- Mirrors the San José tables (migration 233) — same vendor portal
 -- (efile.systems), same CAL 2.20 export shape, same accounting model:
 -- committee identity is the FPPC id alone; one donor-money raised figure

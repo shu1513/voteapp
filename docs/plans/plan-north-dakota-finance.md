@@ -73,7 +73,7 @@ Legacy archive `cf.sos.nd.gov` (2014–2024) — historical adapter only on dema
 
 ## Architecture
 
-New module `backend/src/pipeline/northDakotaFinance/`, tables prefixed `nd_candidate_finance_*` (well under 63 chars). Standard five-table shape via `createStandardStateFinanceSnapshotWriter` ([standardStateFinanceSnapshotWriter.ts](backend/src/pipeline/finance/standardStateFinanceSnapshotWriter.ts) — summary money fields already nullable, breakdowns/outside components already optional); identity = CFRS `orgID`/`entityID` + `orgName`. Closest structural analog: `newHampshireFinance/` (the other Civix-family API state — phase-zero script, artifact cache/reader, CSV parser, no scheduler wiring).
+New module `backend/src/pipeline/northDakotaFinance/`, tables prefixed `nd_candidate_finance_*` (well under 63 chars). Standard five-table shape via `createStandardStateFinanceSnapshotWriter` ([standardStateFinanceSnapshotWriter.ts](../../backend/src/pipeline/finance/standardStateFinanceSnapshotWriter.ts) — summary money fields already nullable, breakdowns/outside components already optional); identity = CFRS `orgID`/`entityID` + `orgName`. Closest structural analog: `newHampshireFinance/` (the other Civix-family API state — phase-zero script, artifact cache/reader, CSV parser, no scheduler wiring).
 
 Candidate coverage and source universe are separate concerns: district parties and PACs are ingested as funders/spenders, never as candidate auto-link targets.
 
@@ -101,9 +101,9 @@ Direct breakdowns: `contribution_size` always; `occupation` per hard fact 3. Lin
 ### Repo wiring (launch checklist, all verified in this tree)
 
 - Flags: code defaults false in `backend/src/config/featureFlags.ts`. NH-pattern flag names — `NORTH_DAKOTA_CAMPAIGN_FINANCE_ENABLED` (read side) + `NORTH_DAKOTA_CFRS_RAW_DATA_REFRESH_ENABLED` + cache-dir var — in `backend/.env` AND `backend/.env.example` (NH precedent lines 249–251). **Deliberate deviation from the generic checklist's `_SYNC_ENABLED`:** no scheduler/worker wiring exists in v1, so no sync flag until a recurring sync does; the read flag goes into `render.yaml` at prod-promotion time (NH is likewise absent from render.yaml until promoted).
-- Source enum: `NORTH_DAKOTA_CFRS` in the `FINANCE_SUMMARY_SOURCES` runtime list + union ([ballotLookupFinanceShared.ts:183](backend/src/pipeline/address/ballotLookupFinanceShared.ts) — the `FinanceSourceListIsComplete` check fails compilation if missed).
-- Loader wiring: import + state-adapter entry `{ state: "ND", load: ... }` in the registry in [ballotLookup.ts:1070](backend/src/pipeline/address/ballotLookup.ts).
-- api-client: `FINANCE_SOURCE_LABELS["NORTH_DAKOTA_CFRS"]` in `packages/api-client/src/format.ts` (alphabetical) + `financeSourceLabel` test; source-home URL in `FINANCE_SOURCE_HOME_URLS` ([finance.ts:3](packages/api-client/src/finance.ts)).
+- Source enum: `NORTH_DAKOTA_CFRS` in the `FINANCE_SUMMARY_SOURCES` runtime list + union ([ballotLookupFinanceShared.ts:183](../../backend/src/pipeline/address/ballotLookupFinanceShared.ts) — the `FinanceSourceListIsComplete` check fails compilation if missed).
+- Loader wiring: import + state-adapter entry `{ state: "ND", load: ... }` in the registry in [ballotLookup.ts:1070](../../backend/src/pipeline/address/ballotLookup.ts).
+- api-client: `FINANCE_SOURCE_LABELS["NORTH_DAKOTA_CFRS"]` in `packages/api-client/src/format.ts` (alphabetical) + `financeSourceLabel` test; source-home URL in `FINANCE_SOURCE_HOME_URLS` ([finance.ts:3](../../packages/api-client/src/finance.ts)).
 - `backend/package.json` scripts: `north-dakota-candidates:finance:phase-zero`, `:raw:refresh`, `:sync` (NH naming).
 - Tests: loader, source-exhaustiveness, feature-flag, migration, parser-contract.
 

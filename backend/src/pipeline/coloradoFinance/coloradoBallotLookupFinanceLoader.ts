@@ -18,7 +18,7 @@ const GENERIC_COLORADO_TRACER_SOURCE_URL = "https://tracer.sos.colorado.gov/Publ
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 // The loader body below moved verbatim from ballotLookup.ts
-// (plan-ballot-lookup.md Phase 2); these aliases keep its signature and row
+// (docs/plans/plan-ballot-lookup.md Phase 2); these aliases keep its signature and row
 // references byte-identical while the shapes live in the shared module.
 type CandidateRow = StateFinanceRequestCandidateRow;
 type ElectionRow = StateFinanceRequestElectionRow;

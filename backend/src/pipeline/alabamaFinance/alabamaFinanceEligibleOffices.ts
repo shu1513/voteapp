@@ -1,7 +1,7 @@
 export type AlabamaFinanceEligibleOfficeKey = `${string}::${string}`;
 
 // V1 scope: statewide constitutional offices, both legislative chambers, and
-// the statewide appellate courts (plan-alabama-finance.md, Phase 3). United
+// the statewide appellate courts (docs/plans/plan-alabama-finance.md, Phase 3). United
 // States Senator and Representative are federal races filed with the FEC.
 // County and municipal filers use the same FCPA portal and can be enabled
 // later by widening this list (and the office-label map below) only.

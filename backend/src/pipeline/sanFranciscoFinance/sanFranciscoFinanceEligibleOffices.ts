@@ -1,5 +1,5 @@
 // Eligibility and contest-code mapping for San Francisco campaign finance
-// (Phase 2 of plan-san-francisco-finance.md). San Francisco is a
+// (Phase 2 of docs/plans/plan-san-francisco-finance.md). San Francisco is a
 // consolidated city-county, so its offices are split across three catalog
 // scopes — the pairs below were confirmed against the office catalog, the
 // elections validator, and the live SFEC dashboard repo (2026-08-07):

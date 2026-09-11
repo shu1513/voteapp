@@ -1,5 +1,5 @@
 // Paper (scanned) report inventory from the KPDC link trees
-// (plan-kansas-finance.md, Phase 2 — paper inventory).
+// (docs/plans/plan-kansas-finance.md, Phase 2 — paper inventory).
 //
 // The viewer lists a paper filer's reports with file dates but no period
 // (kansasFilingSearch.ts); the KPDC candidate tree lists the same filer's

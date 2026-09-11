@@ -1,4 +1,4 @@
-// Kansas direct-side aggregation (plan-kansas-finance.md, Phase 4).
+// Kansas direct-side aggregation (docs/plans/plan-kansas-finance.md, Phase 4).
 //
 // Step 1 — cover-sourced totals. The Receipts and Expenditures cover
 // (K.S.A. 25-4148 form; parseKansasReportCover) carries seven lines:

@@ -3,7 +3,7 @@ import type { OhioFinanceOutsideGroup } from "./ohioOutsideSpendingAggregator.js
 import type { OhioFinanceOutsideGroupBreakdownInput } from "./ohioFinanceWriter.js";
 import type { OhioSosContributionRow } from "./ohioSosBulkFiles.js";
 
-// Outside-group funder aggregation for Ohio (ohio_plan.md PR 8, #3):
+// Outside-group funder aggregation for Ohio (docs/plans/ohio_plan.md PR 8, #3):
 // who funds the committees behind a candidate's outside spending. The
 // maryland pattern (marylandOutsideGroupContributionAggregator.ts), adapted
 // to the Ohio SoS bulk rows: matching is by the spender committee's numeric

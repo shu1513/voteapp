@@ -14,7 +14,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 const GENERIC_OHIO_SOS_SOURCE_URL = "https://www.ohiosos.gov/campaign-finance/search/";
 
-// ohio_plan.md decision 13: Ohio's outside-spending totals come from Form
+// docs/plans/ohio_plan.md decision 13: Ohio's outside-spending totals come from Form
 // 31-U filings by REGISTERED committees in the SoS bulk exports. Spenders
 // that never register (issue-advocacy groups and the like) disclose through
 // the Miscellaneous Filings PDFs instead, which the pipeline does not parse

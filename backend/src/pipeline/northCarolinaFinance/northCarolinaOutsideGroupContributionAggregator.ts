@@ -3,7 +3,7 @@ import type { NorthCarolinaFinanceOutsideGroup } from "./northCarolinaOutsideSpe
 import type { NorthCarolinaFinanceOutsideGroupBreakdownInput } from "./northCarolinaFinanceWriter.js";
 import type { NcsbeReceiptRow } from "./northCarolinaNcsbeParsers.js";
 
-// Outside-group funder aggregation for North Carolina (north_carolina_plan.md
+// Outside-group funder aggregation for North Carolina (docs/plans/north_carolina_plan.md
 // PR 8, #3): who funds the committees behind a candidate's outside spending.
 // The tennessee/ohio pattern over NCSBE receipt rows. The batch layer owns
 // the artifact cache and passes each spender's receipt rows keyed by the

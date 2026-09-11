@@ -1,4 +1,4 @@
-// Delaware CFRS portal client (plan-delaware-finance.md).
+// Delaware CFRS portal client (docs/plans/plan-delaware-finance.md).
 //
 // cfrs.elections.delaware.gov is a classic ASP.NET MVC + Telerik app (the old
 // PCC/CRIS platform Maryland ran before moving to the Civix bulk API). All

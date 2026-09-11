@@ -1,4 +1,4 @@
-// Candidate -> Kansas CFR viewer filer resolution (plan-kansas-finance.md,
+// Candidate -> Kansas CFR viewer filer resolution (docs/plans/plan-kansas-finance.md,
 // Phase 3). Pure functions: the auto-link enumerates an office's filings
 // from the viewer and calls these.
 //

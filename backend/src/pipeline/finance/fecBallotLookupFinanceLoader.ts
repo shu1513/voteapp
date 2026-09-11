@@ -21,7 +21,7 @@ import {
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 // The loader, its office gate, and its request builder moved verbatim from
-// ballotLookup.ts (plan-ballot-lookup.md Phase 2). The row aliases keep the
+// ballotLookup.ts (docs/plans/plan-ballot-lookup.md Phase 2). The row aliases keep the
 // bodies byte-identical: unlike the state loaders, the FEC loader reads the
 // candidate's fec_ids and gates on the election's office identity, so its
 // input rows carry more than the shared request shape.

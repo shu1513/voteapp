@@ -6,7 +6,7 @@ import {
 import { GEORGIA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./georgiaFinanceEligibleOffices.js";
 import type { GeorgiaFinanceLinkSource } from "./georgiaFinanceWriter.js";
 
-// Georgia due-list query on the shared factory (georgia_plan.md PR 3):
+// Georgia due-list query on the shared factory (docs/plans/georgia_plan.md PR 3):
 // canonical link columns (committee_id = PeachFile filerEntityId), stalest
 // first, bounded to the election window. PR 4's batch sync consumes this.
 // link_source rides along so the sync writes the link back with its original

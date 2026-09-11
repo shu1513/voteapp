@@ -8,7 +8,7 @@ import {
 import type { ErtsOrganizationSearchRow } from "./rhodeIslandErtsParsers.js";
 import { isRhodeIslandFinanceEligibleOffice } from "./rhodeIslandFinanceEligibleOffices.js";
 
-// Committee resolver for Rhode Island (rhode_island_plan.md PR 5). ERTS has
+// Committee resolver for Rhode Island (docs/plans/rhode_island_plan.md PR 5). ERTS has
 // no bulk registry export: the only committee evidence is the portal's own
 // organization search, whose result grid carries a person-style organization
 // name ("DANIEL J MCKEE"), an address, and the Board's Active/Inactive status

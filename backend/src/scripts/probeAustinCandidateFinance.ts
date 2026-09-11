@@ -1,4 +1,4 @@
-// Phase 0 probe for the Austin city finance module (plan-austin-finance.md).
+// Phase 0 probe for the Austin city finance module (docs/plans/plan-austin-finance.md).
 // NO schema, NO writes, NO persisted artifacts: exercises the City of Austin
 // Socrata datasets live through austinSocrataClient and checks the plan's
 // hand-verified gates. Every pinned number was derived by hand from live

@@ -1,5 +1,5 @@
 // Direct-contribution formula for San Francisco controlled committees, as
-// proven to the cent by the Phase 4 entry gate (plan-san-francisco-finance.md,
+// proven to the cent by the Phase 4 entry gate (docs/plans/plan-san-francisco-finance.md,
 // verified live 2026-08-08 against all 15 committees of the 2024 Mayor and
 // June 2026 D4 races; the probe re-validates it on every run):
 //

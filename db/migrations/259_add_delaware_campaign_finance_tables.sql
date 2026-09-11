@@ -1,4 +1,4 @@
--- Delaware campaign finance (plan-delaware-finance.md, Phase 1).
+-- Delaware campaign finance (docs/plans/plan-delaware-finance.md, Phase 1).
 --
 -- Five-table standard state-finance family. Identity: committee_id holds the
 -- public CF_ID (8 digits, e.g. 01005311) — Phase 0 proved it canonical

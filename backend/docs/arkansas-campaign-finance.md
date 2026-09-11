@@ -142,7 +142,7 @@ registration-scoped `GetTransactionDetails` (TCON) path:
 ## Phase 4 live run (2026-09-02, local)
 
 163 eligible Nov-2026 candidates → 141 auto-linked + 18 manual links (see
-plan-arkansas-finance.md Phase 4 for the evidence list) + 3 with no
+docs/plans/plan-arkansas-finance.md Phase 4 for the evidence list) + 3 with no
 registration (two Libertarians, one Democrat) + 1 withheld (Dean Hunter,
 legal name unconfirmed). 159/159 syncs succeeded: $17.45M raised, $11.16M
 spent, 7 negative balances, 143 reconciled to the cent, 16 quarantined
@@ -182,7 +182,7 @@ also usable.
   filerEntityID looks straightforward (office/district match like NH rules).
 - Amended: CSV has explicit Amended Y/N (149 of 304k rows in 2026), but the
   flag is not version semantics. **Pinned by the Phase 0 run (2026-08-27; see
-  the Phase 0 results in `plan-arkansas-finance.md`, the authoritative
+  the Phase 0 results in `docs/plans/plan-arkansas-finance.md`, the authoritative
   record):** the CSV under-reports amended filers (Burkes $16.5k vs $33.9k
   registration total) while the transaction search over-reports them
   (superseded versions included, no per-row marker). Version-safe machinery:

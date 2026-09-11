@@ -53,7 +53,7 @@ Columns (verified against files; layout PDFs at `page=getResource&resource=cashC
 
 ## Suggested v1 scope
 
-**Superseded — final contract (per Addenda 2–3 + §Phase 0 results and `plan-alabama-finance.md`):** totals-only adapter; roster = VoteApp Nov-2026 candidates matched to political-race-search rows (committee search is metadata fallback only); totals authority = race API, validated cent-exact against filed report covers (`totalReceipts` = `MONETARYCONTRIB + NONMONETARYCONTRIB + OTHERSOURCES`; `directContributionTotal` excludes `OTHERSOURCES`; extracts can undercount and are never the totals source); size buckets from itemized cash extract rows with a reported coverage ratio; occupation null; outside null.
+**Superseded — final contract (per Addenda 2–3 + §Phase 0 results and `docs/plans/plan-alabama-finance.md`):** totals-only adapter; roster = VoteApp Nov-2026 candidates matched to political-race-search rows (committee search is metadata fallback only); totals authority = race API, validated cent-exact against filed report covers (`totalReceipts` = `MONETARYCONTRIB + NONMONETARYCONTRIB + OTHERSOURCES`; `directContributionTotal` excludes `OTHERSOURCES`; extracts can undercount and are never the totals source); size buckets from itemized cash extract rows with a reported coverage ratio; occupation null; outside null.
 
 Original suggestion (kept for the record, do not implement): candidate committees via committee search (office/party/status), raised = cash + in-kind + other receipts from extracts (dedupe in-kind rows in cash file), spent = expenditures extract, verify against financialSummaryData covers; occupation null; outside null.
 

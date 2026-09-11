@@ -20,7 +20,7 @@ import {
 } from "./ohioSosBulkFiles.js";
 
 // Artifact cache for the Ohio SoS bulk downloads. Retrieval and parsing stay
-// separate (ohio_plan.md decision 9): the acquisition script hands each
+// separate (docs/plans/ohio_plan.md decision 9): the acquisition script hands each
 // downloaded file to this module, which validates it against its pinned
 // schema, hashes it, and atomically replaces the cached snapshot plus its
 // manifest. The finance sync reads the cache only and never touches the
@@ -165,7 +165,7 @@ export function ohioSosArtifactFileName(input: {
 }
 
 // A cycle needs the current and prior transaction year: Ohio reports span the
-// two-year cycle (ohio_plan.md "Required artifacts per cycle Y").
+// two-year cycle (docs/plans/ohio_plan.md "Required artifacts per cycle Y").
 export function ohioSosCycleArtifacts(cycleYear: number): Array<{
   productKey: OhioSosProductKey;
   transactionYear?: number;

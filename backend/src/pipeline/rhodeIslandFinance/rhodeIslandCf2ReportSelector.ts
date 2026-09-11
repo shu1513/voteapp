@@ -16,7 +16,7 @@ import {
   ERTS_CF2_SUMMARY_LABELS,
 } from "./rhodeIslandErtsParsers.js";
 
-// CF-2 report selection for Rhode Island (rhode_island_plan.md decisions 2
+// CF-2 report selection for Rhode Island (docs/plans/rhode_island_plan.md decisions 2
 // and 4). Cycle totals are per-period CF-2 sums, never "the latest CF-2":
 // this module picks the authoritative (in-force) version of every CF-2 family
 // whose reporting period overlaps the cycle, reads the pinned summary labels

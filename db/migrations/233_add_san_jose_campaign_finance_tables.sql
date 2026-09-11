@@ -1,4 +1,4 @@
--- San José campaign-finance tables (plan-san-jose-finance.md Phase 4).
+-- San José campaign-finance tables (docs/plans/plan-san-jose-finance.md Phase 4).
 -- Modeled on the San Francisco tables (migrations 215 + 229), with SJ's
 -- differences: committee identity is the FPPC id alone (the efile.systems
 -- export has no contest code or filer nid); one donor-money raised figure

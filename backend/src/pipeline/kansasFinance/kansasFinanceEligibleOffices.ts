@@ -1,5 +1,5 @@
 // Kansas finance office eligibility + viewer office mapping
-// (plan-kansas-finance.md, Phase 3).
+// (docs/plans/plan-kansas-finance.md, Phase 3).
 //
 // Scope is the plan's v1 list where VoteApp carries the race today: the five
 // statewide constitutional offices, State House, and State Senate (2026 has

@@ -1,4 +1,4 @@
-// West Virginia v1 finance scope (plan-west-virginia-finance.md, Phase 1):
+// West Virginia v1 finance scope (docs/plans/plan-west-virginia-finance.md, Phase 1):
 // the two legislative chambers, the only state races on the November 2026
 // ballot that CFRS covers. Statewide executive offices run in presidential
 // years, judicial races are decided at the May primary, and county/municipal

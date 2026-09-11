@@ -1,5 +1,5 @@
 // PR 3 acquisition spike for the Rhode Island finance module
-// (rhode_island_plan.md, "PR sequence" step 3).
+// (docs/plans/rhode_island_plan.md, "PR sequence" step 3).
 //
 // NO migration, NO database, NO writes: this script only reads the public ERTS
 // portal (ricampaignfinance.com), writes every fetched artifact to the

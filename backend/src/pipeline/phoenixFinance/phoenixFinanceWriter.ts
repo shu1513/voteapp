@@ -1,4 +1,4 @@
-// Link writes and the all-or-nothing snapshot writer (plan-phoenix-finance.md
+// Link writes and the all-or-nothing snapshot writer (docs/plans/plan-phoenix-finance.md
 // Phase 1). Upsert semantics mirror the San José writer: one active link per
 // (candidate, election); a manual active link is protected — a matching
 // automatic link reuses it, a conflicting one errors; an active upsert

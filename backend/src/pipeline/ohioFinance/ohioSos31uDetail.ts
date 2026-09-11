@@ -8,7 +8,7 @@ import {
 } from "./ohioSosCsv.js";
 
 // Form 31-U detail rows — the second stage of the two-stage independent
-// expenditure model (ohio_plan.md decision 4). The annual bulk files carry
+// expenditure model (docs/plans/ohio_plan.md decision 4). The annual bulk files carry
 // 31-U rows with the spender and amount but no target candidate, office, or
 // direction; those live only in each report's own detail view at
 // `f?p=CFDISCLOSURE:48:::::P48_LISTTYPE,P48_REPORT_ID,P48_TYPE:simple,<REPORT_KEY>,31U`.

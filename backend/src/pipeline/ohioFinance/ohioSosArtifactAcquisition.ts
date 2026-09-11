@@ -39,7 +39,7 @@ import {
 // discovered by label, downloaded through the user's own Chrome, validated,
 // hashed, and installed in the cache. Nothing here writes to the database.
 //
-// Operational rules from the 2026-08-04 spike (ohio_plan.md decision 9):
+// Operational rules from the 2026-08-04 spike (docs/plans/ohio_plan.md decision 9):
 // downloads must be strictly sequential with a delay — rapid requests get
 // HTTP 429 — and the `P72_GETID` download ids are non-sequential and get
 // reissued, so they are always rediscovered from the file labels.

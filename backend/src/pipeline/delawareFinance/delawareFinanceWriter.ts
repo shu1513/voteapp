@@ -1,4 +1,4 @@
-// Delaware finance snapshot writer (plan-delaware-finance.md, Phase 1).
+// Delaware finance snapshot writer (docs/plans/plan-delaware-finance.md, Phase 1).
 // Thin wrapper over the standard state-finance writer. Identity: the public
 // CF_ID (8 digits) is canonical — Phase 0 proved zero conflicts across the
 // full registry. The portal's MemberID is an acquisition key only and never

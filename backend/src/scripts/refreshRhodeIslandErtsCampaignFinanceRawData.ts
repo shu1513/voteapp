@@ -18,7 +18,7 @@ import {
 import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 // Downloads one cycle of Rhode Island ERTS campaign-finance artifacts into
-// the local cache (rhode_island_plan.md PR 4): per-organization filing lists,
+// the local cache (docs/plans/rhode_island_plan.md PR 4): per-organization filing lists,
 // per-CF-2-period contribution/expenditure report pages and detail exports
 // (each export reconciled against its summary groupings — the only
 // silent-truncation control the portal offers), the in-force CF-2 version

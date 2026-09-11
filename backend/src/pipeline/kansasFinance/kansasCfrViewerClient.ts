@@ -1,4 +1,4 @@
-// Kansas SOS CFR viewer client (plan-kansas-finance.md, Phase 0+).
+// Kansas SOS CFR viewer client (docs/plans/plan-kansas-finance.md, Phase 0+).
 //
 // The viewer (sos.ks.gov/elections/cfr_viewer/) is an ASP.NET WebForms app.
 // Everything below was verified live 2026-08-26:

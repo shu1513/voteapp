@@ -1,4 +1,4 @@
-// Phase 0 probe (plan-san-francisco-finance.md): validates the SFEC
+// Phase 0 probe (docs/plans/plan-san-francisco-finance.md): validates the SFEC
 // dashboard-manifest path (0A) against the raw DataSF reconstruction (0B)
 // for real contests, and quantifies every residual difference. Kept as a
 // live smoke test after Phase 0: any candidate-level failure (fetch,

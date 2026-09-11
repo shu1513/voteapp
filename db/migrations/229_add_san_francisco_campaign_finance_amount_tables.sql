@@ -1,4 +1,4 @@
--- San Francisco campaign-finance amount tables (plan-san-francisco-finance.md
+-- San Francisco campaign-finance amount tables (docs/plans/plan-san-francisco-finance.md
 -- Phase 5), completing the identity tables of migration 215. Modeled on the
 -- Los Angeles City tables (migration 173) with SF's extras: debts_owed,
 -- loans_received, public_funds_received (SF's public-financing program plays

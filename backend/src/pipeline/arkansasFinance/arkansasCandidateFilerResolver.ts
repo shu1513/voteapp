@@ -2,7 +2,7 @@
 //
 // Pure functions over the full registration sweep
 // (PublicFilerDetails/GetCandidateCommitteDetails, every page). A match
-// needs exact evidence on every axis (plan-arkansas-finance.md, Phase 2):
+// needs exact evidence on every axis (docs/plans/plan-arkansas-finance.md, Phase 2):
 // candidate filer type, cycle `electionYear`, CFIS office name from the
 // enumerated vocabulary, statewide-numbered district, state jurisdiction,
 // and the person name with the shared middle-name / suffix gate. Party is

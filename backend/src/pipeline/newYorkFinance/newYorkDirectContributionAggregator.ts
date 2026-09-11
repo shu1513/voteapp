@@ -12,7 +12,7 @@ import {
 } from "./newYorkSodaClient.js";
 
 // Direct-campaign receipts for the candidate's own authorized committee
-// (Phase 2 of plan-new-york-finance.md). NYSBOE never collects donor
+// (Phase 2 of docs/plans/plan-new-york-finance.md). NYSBOE never collects donor
 // occupation/employer, so New York's direct breakdowns are size buckets,
 // contributor types, and organization donors only. "Unitemized" lumps appear
 // as itemized Schedule A rows with no contributor identity (verified live:

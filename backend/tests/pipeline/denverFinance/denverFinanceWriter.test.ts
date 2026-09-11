@@ -29,7 +29,7 @@ const link = {
   committeeName: "Mike For Denver",
 };
 
-// Johnston cycle-26 fixtures (plan-denver-finance.md): receipts include FEF,
+// Johnston cycle-26 fixtures (docs/plans/plan-denver-finance.md): receipts include FEF,
 // direct is private donor money only, cash can be negative.
 const summary = {
   totalReceiptsCents: 201_626_363,

@@ -1,6 +1,6 @@
 BEGIN;
 
--- Arkansas campaign finance (plan-arkansas-finance.md, Phase 1).
+-- Arkansas campaign finance (docs/plans/plan-arkansas-finance.md, Phase 1).
 -- Same Civix CFIS build as New Hampshire (migration 249); mirrors that shape
 -- with the plan's adaptations:
 --   * filing_entity_id holds the CFIS filer entity ID (registration-row

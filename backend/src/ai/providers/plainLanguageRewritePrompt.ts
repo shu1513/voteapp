@@ -1,7 +1,7 @@
 import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
 
 /**
- * One-off Phase 2 backfill (plan-content-wording.md): rewrite existing
+ * One-off Phase 2 backfill (docs/plans/plan-content-wording.md): rewrite existing
  * user-facing text to the plain-language style the Phase 1 prompts now demand
  * at generation time. The input text is authoritative — the model rewrites
  * wording only, never facts. A separate verifier prompt

@@ -7,7 +7,7 @@ import {
 
 // Resolves a VoteApp candidate election to exactly one NCSBE candidate
 // committee (SBoEID) from committee-search result rows, ohio/maryland
-// resolver pattern. Matching is fail-closed (north_carolina_plan.md decision
+// resolver pattern. Matching is fail-closed (docs/plans/north_carolina_plan.md decision
 // 5): strict normalized-name equality against the structured `CandName`
 // field, restricted to active non-exempt state-board-filed committees —
 // never fuzzy, never OrgName token matching, never a guess. The search rows

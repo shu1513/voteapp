@@ -413,7 +413,7 @@ services:
   # The San Francisco finance cron below stays COMMENTED OUT (separate
   # decision); the notification prune cron is live.
   #
-  # San Francisco finance v1 scheduling choice (plan-san-francisco-finance.md
+  # San Francisco finance v1 scheduling choice (docs/plans/plan-san-francisco-finance.md
   # Phase 7): a one-shot daily cron at 16:30 UTC (09:30 PDT / 08:30 PST —
   # after DataSF's nightly refresh year-round), NOT the resident BullMQ
   # worker. The *_SYNC_ENABLED flag lives on this cron service ONLY, so no

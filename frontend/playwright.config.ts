@@ -1,6 +1,6 @@
 import { defineConfig } from "@playwright/test";
 
-// Local full-stack smoke tests (plan.md Phase 5): they drive the real dev
+// Local full-stack smoke tests (docs/plans/plan.md Phase 5): they drive the real dev
 // server against the real backend and local database, so they live outside
 // vitest and run on demand via `npm run test:e2e`.
 //

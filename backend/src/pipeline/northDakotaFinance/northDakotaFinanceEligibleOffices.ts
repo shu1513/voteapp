@@ -1,4 +1,4 @@
-// North Dakota v1 finance scope (plan-north-dakota-finance.md, Phase 1):
+// North Dakota v1 finance scope (docs/plans/plan-north-dakota-finance.md, Phase 1):
 // the VoteApp races on the November 2026 ballot whose filers are in CFRS,
 // mapped to the registry's exact `office` labels. Labels pinned live
 // 2026-09-01 from the 376 "2026 Election - Statewide" candidate committees

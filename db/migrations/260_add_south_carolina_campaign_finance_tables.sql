@@ -1,4 +1,4 @@
--- South Carolina campaign finance (plan-south-carolina-finance.md, Phase 4).
+-- South Carolina campaign finance (docs/plans/plan-south-carolina-finance.md, Phase 4).
 --
 -- Five-table standard state-finance family over the SC Ethics Commission
 -- filing API. Identity: candidate_filer_id holds the API's positive integer

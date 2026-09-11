@@ -14,7 +14,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 const GENERIC_NORTH_CAROLINA_SBE_SOURCE_URL = "https://cf.ncsbe.gov/CFOrgLkup/";
 
-// north_carolina_plan.md decision 13: a share of NCSBE filings (23 of 95
+// docs/plans/north_carolina_plan.md decision 13: a share of NCSBE filings (23 of 95
 // independent-expenditure filings in the 2026 inventory) exist only as
 // scanned images with no structured data view, and the pipeline never OCRs
 // images into production totals. That is a systematic gap, not a rounding

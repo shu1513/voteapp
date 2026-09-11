@@ -1,4 +1,4 @@
--- Phoenix city campaign-finance tables (plan-phoenix-finance.md Phase 1).
+-- Phoenix city campaign-finance tables (docs/plans/plan-phoenix-finance.md Phase 1).
 -- Four tables in the shipped San José shape (migration 233), with Phoenix's
 -- differences:
 -- * Committee identity is the City of Phoenix COP ID (e.g. CAN-25-4). A

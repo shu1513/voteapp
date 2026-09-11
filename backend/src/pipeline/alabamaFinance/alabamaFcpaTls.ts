@@ -1,6 +1,6 @@
 // TLS support for fcpa.alabamavotes.gov, which serves its leaf certificate
 // without the intermediate. We complete the chain ourselves instead of
-// disabling verification (plan-alabama-finance.md, gotcha 11).
+// disabling verification (docs/plans/plan-alabama-finance.md, gotcha 11).
 
 import { rootCertificates } from "node:tls";
 import { Agent } from "undici";

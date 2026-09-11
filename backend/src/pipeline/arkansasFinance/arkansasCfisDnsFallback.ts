@@ -1,5 +1,5 @@
 // The CFIS hostnames return NXDOMAIN on some DNS resolvers while public
-// resolvers answer (plan-arkansas-finance.md, gate 1). This fetch resolves
+// resolvers answer (docs/plans/plan-arkansas-finance.md, gate 1). This fetch resolves
 // the hostnames through 8.8.8.8 / 1.1.1.1 for a CLI run that opts in with
 // --dns-fallback; production fixes the host resolver instead of pinning
 // Azure Front Door IPs (they rotate).

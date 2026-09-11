@@ -1,4 +1,4 @@
-// Identity keys for the Austin finance tables (plan-austin-finance.md Phase 1).
+// Identity keys for the Austin finance tables (docs/plans/plan-austin-finance.md Phase 1).
 //
 // The City Clerk's Socrata datasets carry no filer or spender ids — Report
 // Detail keys candidate reports by the `filer_name` string, Direct Campaign

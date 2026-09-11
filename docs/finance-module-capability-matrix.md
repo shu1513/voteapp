@@ -1,6 +1,6 @@
 # Finance module capability matrix
 
-Phase 0 deliverable of the finance consolidation plan (see `plan.md`). Extracted mechanically from the writers, loaders, and test tree on 2026-08-01; spot-verified by hand. This matrix decides migration cohorts — cite the relevant row in every migration PR.
+Phase 0 deliverable of the finance consolidation plan (see `docs/plans/plan.md`). Extracted mechanically from the writers, loaders, and test tree on 2026-08-01; spot-verified by hand. This matrix decides migration cohorts — cite the relevant row in every migration PR.
 
 ## Legend
 

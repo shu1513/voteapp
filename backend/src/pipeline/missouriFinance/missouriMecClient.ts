@@ -1,4 +1,4 @@
-// Missouri Ethics Commission (MEC) portal client (plan-missouri-finance.md).
+// Missouri Ethics Commission (MEC) portal client (docs/plans/plan-missouri-finance.md).
 //
 // The MEC campaign-finance searches are ASP.NET WebForms pages on
 // www.mec.mo.gov: every interaction is a form POST carrying the page's

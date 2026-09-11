@@ -1,5 +1,5 @@
 // City of Austin campaign-finance client over the city's Socrata portal
-// (plan-austin-finance.md). The City Clerk publishes every schedule of the
+// (docs/plans/plan-austin-finance.md). The City Clerk publishes every schedule of the
 // e-filing system as datasets on data.austintexas.gov; this module reads the
 // four the module needs through narrow SoQL queries (filtered $where, stable
 // $order, bounded paging) — never a bulk download.

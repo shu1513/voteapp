@@ -1,5 +1,5 @@
 // Finance types and helpers shared by ballotLookup.ts and the per-state
-// ballot-lookup finance loaders (plan-ballot-lookup.md Phase 1). Lives in its
+// ballot-lookup finance loaders (docs/plans/plan-ballot-lookup.md Phase 1). Lives in its
 // own module so state loaders can import these without importing — or being
 // imported by — the ballot lookup itself; everything here moved verbatim
 // from ballotLookup.ts.

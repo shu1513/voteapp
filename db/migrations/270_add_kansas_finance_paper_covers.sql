@@ -1,6 +1,6 @@
 BEGIN;
 
--- Kansas transcribed paper covers (plan-kansas-finance.md, Phase 4 — paper
+-- Kansas transcribed paper covers (docs/plans/plan-kansas-finance.md, Phase 4 — paper
 -- filers). A paper (scanned) report has no viewer cover to open, and OCR of
 -- the KPDC scans recovered 2 of 5 covers in Phase 0 — below the plan's gate —
 -- so a paper cover's seven lines are transcribed by hand from the scan and

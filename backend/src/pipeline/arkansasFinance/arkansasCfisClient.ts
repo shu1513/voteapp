@@ -75,7 +75,7 @@ export type ArkansasCfisBulkDownloadResult = {
 
 // PublicFilerDetails/GetCandidateCommitteDetails row. One row per per-cycle
 // registration; totalRaised/totalSpent/balanceofFunds are server-computed
-// cycle cumulatives (plan-arkansas-finance.md hard fact 1).
+// cycle cumulatives (docs/plans/plan-arkansas-finance.md hard fact 1).
 export type ArkansasFilerRegistrationRow = {
   registrationGuid: string;
   filerEntityId: number;

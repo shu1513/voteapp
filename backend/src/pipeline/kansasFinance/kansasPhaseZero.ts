@@ -1,4 +1,4 @@
-// Phase 0 reconciliation logic for Kansas (plan-kansas-finance.md).
+// Phase 0 reconciliation logic for Kansas (docs/plans/plan-kansas-finance.md).
 // Pure functions only — the probe script wires them to live pages/PDFs.
 
 import type { KansasContributionExportRow, KansasReportCover, KansasScheduleATotals, KansasScheduleCTotals } from "./kansasCfrViewerParsers.js";

@@ -20,7 +20,7 @@ describe("ohioBallotLookupFinanceLoader", () => {
     // so no separate election rows exist and the office is deliberately absent
     // from the eligible-office allowlist.
     ineligibleOffice: { office_scope: "statewide", office_canonical_name: "Lieutenant Governor" },
-    // ohio_plan.md decision 13: the totals cover registered committees only
+    // docs/plans/ohio_plan.md decision 13: the totals cover registered committees only
     // until the Miscellaneous-Filings PDF path ships. Pinned so the
     // disclosure cannot quietly disappear while the gap remains.
     outsideCoverageNote:

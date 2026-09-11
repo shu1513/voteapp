@@ -1,6 +1,6 @@
 BEGIN;
 
--- West Virginia campaign finance (plan-west-virginia-finance.md, Phase 1).
+-- West Virginia campaign finance (docs/plans/plan-west-virginia-finance.md, Phase 1).
 -- Mirrors Alabama migration 263 with the plan's adaptations:
 --   * committee_id holds the CFRS registry entityId (10 digits, e.g.
 --     1010003610), which equals the RegistrantID column of the nightly bulk

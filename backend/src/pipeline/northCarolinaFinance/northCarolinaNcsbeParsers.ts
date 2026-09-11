@@ -1,5 +1,5 @@
 // Parsers for the NCSBE campaign-finance portal (cf.ncsbe.gov). Every parser
-// is fail-closed (north_carolina_plan.md decision 9): a page or payload that
+// is fail-closed (docs/plans/north_carolina_plan.md decision 9): a page or payload that
 // does not match the pinned shape throws instead of yielding partial rows.
 // The portal is an early-2000s ASP.NET app that renders result pages by
 // inlining JSON into script blocks (`var data = [...]`, `SetupGrid([...])`),

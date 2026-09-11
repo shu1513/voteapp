@@ -1,5 +1,5 @@
 // Minimal Chrome DevTools Protocol client for the Ohio SoS acquisition
-// script (ohio_plan.md decision 9 + the PR 4 acquisition-script decision).
+// script (docs/plans/ohio_plan.md decision 9 + the PR 4 acquisition-script decision).
 //
 // Why a real browser at all: the portal sits behind Cloudflare. Plain HTTP is
 // 403 even with a descriptive user-agent, and the 2026-08-04 probes showed

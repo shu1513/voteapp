@@ -1,7 +1,7 @@
 // Tolerant parsing for the Alabama FCPA annual bulk extracts. Roughly 2.5% of
 // expenditure-extract lines are malformed (unescaped quotes/newlines), so the
 // parser quarantines defective records instead of aborting or guessing — and
-// nothing downstream may aggregate quarantined rows (plan-alabama-finance.md,
+// nothing downstream may aggregate quarantined rows (docs/plans/plan-alabama-finance.md,
 // gotchas 8 and 13).
 
 export const ALABAMA_CASH_EXTRACT_COLUMNS = [

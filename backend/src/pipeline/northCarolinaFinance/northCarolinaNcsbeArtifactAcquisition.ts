@@ -19,7 +19,7 @@ import {
   type NcsbeDocumentRow,
 } from "./northCarolinaNcsbeParsers.js";
 
-// Acquisition for NCSBE portal artifacts (north_carolina_plan.md "Required
+// Acquisition for NCSBE portal artifacts (docs/plans/north_carolina_plan.md "Required
 // artifacts per cycle Y"). Retrieval only: report ids are discovered from the
 // inventories each run — never hardcoded (decision 10) — fetched
 // sequentially through the paced transport, validated, hashed, and installed

@@ -1,4 +1,4 @@
-// Per-candidate period ledger from the live viewer (plan-kansas-finance.md,
+// Per-candidate period ledger from the live viewer (docs/plans/plan-kansas-finance.md,
 // Phase 2 — ledger wiring). For one linked candidate: re-run the identity
 // from the link's search recipe against the office's enumerated filings,
 // open every e-filed report's cover for its period, take the Appointment of

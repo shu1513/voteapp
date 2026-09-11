@@ -5,7 +5,7 @@ import {
 } from "./georgiaEthicsClient.js";
 
 // Outside-spending (independent expenditure) aggregation for Georgia
-// (georgia_plan.md F5/F6, decision D6). Attribution is an ID join — a
+// (docs/plans/georgia_plan.md F5/F6, decision D6). Attribution is an ID join — a
 // target's filerRegistrationGuid against the candidate's PeachFile
 // registration guid — never a name match.
 //

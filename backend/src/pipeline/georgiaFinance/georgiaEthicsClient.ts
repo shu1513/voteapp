@@ -1,4 +1,4 @@
-// HTTP client for the two Georgia ethics-commission systems (georgia_plan.md
+// HTTP client for the two Georgia ethics-commission systems (docs/plans/georgia_plan.md
 // D1/D8, spike results A1–A4). Every route lives here and nowhere else.
 //
 // Two hosts serve the same endpoint shapes with disjoint vocabularies:

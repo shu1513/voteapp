@@ -12,7 +12,7 @@ import {
 } from "./northCarolinaNcsbeParsers.js";
 
 // Artifact cache for NCSBE portal fetches. Retrieval and parsing stay
-// separate (north_carolina_plan.md decision 10): the acquisition hands each
+// separate (docs/plans/north_carolina_plan.md decision 10): the acquisition hands each
 // fetched body to this module, which re-validates it against the pinned
 // parser for its artifact type, hashes it, and atomically installs it with a
 // manifest (decision 15). The finance sync reads the cache only and never

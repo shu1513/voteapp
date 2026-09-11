@@ -1,5 +1,5 @@
 // Eligibility for Phoenix city campaign finance (Phase 2 of
-// plan-phoenix-finance.md), modeled on sanJoseFinanceEligibleOffices.
+// docs/plans/plan-phoenix-finance.md), modeled on sanJoseFinanceEligibleOffices.
 // Phoenix city offices only: Mayor (dormant until the next mayoral cycle —
 // whitelisted so no code change is needed then) and the eight council
 // districts. Sync is additionally gated to roster candidates — eligibility
