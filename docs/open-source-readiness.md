@@ -115,7 +115,7 @@ Still to decide before publishing, none of it a scrub:
 
 - A read-through of the internal planning notes (`plan-*.md` at the root,
   `docs/plans`, `docs/research`) for tone. They are not secrets.
-- License (AGPL suggested, so a tilted fork must publish its changes) and a
+- ~~License~~ decided 2026-09-11: AGPL-3.0-only, so a tilted fork must publish its changes. Still open: a
   trademark on the app name.
 - A public "how we decide" methodology page, published before the code so the
   framing is ours first.
