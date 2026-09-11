@@ -1,0 +1,6 @@
+[
+ {
+  "recordId": "83e85ea1-df51-4db3-93dd-7c1b0201fc39",
+  "reason": "Duplicate of the canonical roll-call record imported by the Wisconsin 2197 session batch-10 run: this hand-written record describes the same vote as AB 226 roll 1614194 on 2026-01-15, which the Assembly passed 53-43. It also says the bill restricted food additives, but the Senate never voted on it and it never became law. The imported record d1faf97d-be4e-4822-920c-8a5ba3624d0a cites the roll call and states how the bill died. See backend/evidence/rollcall/legiscan-wi-2197/batch-10/JUDGING.md."
+ }
+]
