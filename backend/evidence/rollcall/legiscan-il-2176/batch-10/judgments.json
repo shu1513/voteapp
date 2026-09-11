@@ -1,0 +1,112 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1541083,
+      "measure_id": "HB 3046",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3046. It adds to the State Universities Civil Service Act that nothing in that law or its rules stops a university and its employees' union from agreeing to a contract term that gives workers more rights than the civil service rules do. The House passed it 83-30, and it became law.",
+      "nay_description": "Voted against House Bill 3046. It adds to the State Universities Civil Service Act that nothing in that law or its rules stops a university and its employees' union from agreeing to a contract term that gives workers more rights than the civil service rules do. The House passed it 83-30, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1545366,
+      "measure_id": "HB 3309",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3309. Schools and colleges must already give a teachers' or school workers' union information about the employees it represents. This law makes them also send a copy to the statewide union the local union belongs to. The House passed it 75-37, and it became law.",
+      "nay_description": "Voted against House Bill 3309. Schools and colleges must already give a teachers' or school workers' union information about the employees it represents. This law makes them also send a copy to the statewide union the local union belongs to. The House passed it 75-37, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718374,
+      "measure_id": "HB 4491",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4491. Police officers, firefighters, paramedics and prison and state hospital workers hurt in the line of duty keep their pay for up to a year. This law sets that pay at their full gross pay, including all pay that counts toward a pension, and lets their sick leave, vacation and pension service credits keep building while they are out. The House passed it 81-30, and it became law.",
+      "nay_description": "Voted against House Bill 4491. Police officers, firefighters, paramedics and prison and state hospital workers hurt in the line of duty keep their pay for up to a year. This law sets that pay at their full gross pay, including all pay that counts toward a pension, and lets their sick leave, vacation and pension service credits keep building while they are out. The House passed it 81-30, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1580076,
+      "measure_id": "SB 453",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 453. It extends Illinois's fast-track rules for a newly certified public employee union's first contract to every size of bargaining unit, not only units of fewer than 35 workers. The parties must start bargaining within 10 days of a request and can seek mediation after 90 days. Police, firefighters and security staff are not covered. The Senate passed it 39-16, and it became law.",
+      "nay_description": "Voted against Senate Bill 453. It extends Illinois's fast-track rules for a newly certified public employee union's first contract to every size of bargaining unit, not only units of fewer than 35 workers. The parties must start bargaining within 10 days of a request and can seek mediation after 90 days. Police, firefighters and security staff are not covered. The Senate passed it 39-16, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582370,
+      "measure_id": "SB 453",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 453. It extends Illinois's fast-track rules for a newly certified public employee union's first contract to every size of bargaining unit, not only units of fewer than 35 workers. The parties must start bargaining within 10 days of a request and can seek mediation after 90 days. Police, firefighters and security staff are not covered. The House passed it 82-33, and it became law.",
+      "nay_description": "Voted against Senate Bill 453. It extends Illinois's fast-track rules for a newly certified public employee union's first contract to every size of bargaining unit, not only units of fewer than 35 workers. The parties must start bargaining within 10 days of a request and can seek mediation after 90 days. Police, firefighters and security staff are not covered. The House passed it 82-33, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1721514,
+      "measure_id": "SB 2914",
+      "vote_date": "2026-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 2914. It changes the written warning a school board must give a tenured teacher before dismissal charges. The warning must spell out the misconduct to be fixed, the teacher may answer it in person or in writing before the board votes, and the teacher or union may take it to binding arbitration. The House passed it 83-25, and it became law.",
+      "nay_description": "Voted against Senate Bill 2914. It changes the written warning a school board must give a tenured teacher before dismissal charges. The warning must spell out the misconduct to be fixed, the teacher may answer it in person or in writing before the board votes, and the teacher or union may take it to binding arbitration. The House passed it 83-25, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
