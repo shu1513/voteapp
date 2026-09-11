@@ -186,8 +186,8 @@
    "measure_id": "HB 259",
    "vote_date": "2026-03-06",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah House passed it 56-14 and it was signed into law.",
-   "nay_description": "Voted against House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah House passed it 56-14 and it was signed into law.",
+   "yea_description": "Voted for House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. They face a $1,000 fine for each record not handed over within five business days, and starting in 2028 a $1,000 fine for each day they block online access. The Utah House passed it 56-14 and it was signed into law.",
+   "nay_description": "Voted against House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. They face a $1,000 fine for each record not handed over within five business days, and starting in 2028 a $1,000 fine for each day they block online access. The Utah House passed it 56-14 and it was signed into law.",
    "labels": [
     {
      "slug": "data_privacy",
@@ -204,8 +204,8 @@
    "measure_id": "HB 259",
    "vote_date": "2026-03-05",
    "review_status": "approved",
-   "yea_description": "Voted for House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah Senate passed it 22-6 and it was signed into law.",
-   "nay_description": "Voted against House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah Senate passed it 22-6 and it was signed into law.",
+   "yea_description": "Voted for House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. They face a $1,000 fine for each record not handed over within five business days, and starting in 2028 a $1,000 fine for each day they block online access. The Utah Senate passed it 22-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. They face a $1,000 fine for each record not handed over within five business days, and starting in 2028 a $1,000 fine for each day they block online access. The Utah Senate passed it 22-6 and it was signed into law.",
    "labels": [
     {
      "slug": "data_privacy",

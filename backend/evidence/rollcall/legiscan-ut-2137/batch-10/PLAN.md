@@ -45,3 +45,13 @@ roll now has a final disposition; none is held.**
 - Database on that stamp: 234 rows, 69 candidates, 164 area tags.
 - Convergence dry run: 234 unchanged. The first dry-run stamp
   `2026-09-11T06:23:36.442Z` matches 0 rows.
+
+## Review fixes (2026-09-11)
+
+- HB 233: "performs abortions" → "performs elective abortions", matching
+  53G-10-409(2). HB 269: "only an original birth certificate now counts" was
+  true for school privacy spaces (63G-31-301(4)) but not for public changing
+  rooms, where 63G-31-302(5)(b) keeps the amended-certificate-plus-surgery
+  defense; the sentence now says both.
+- Re-judged and re-imported: `import-rerun-report.json` rewrote 70 rows in
+  place (HB 233 52 + 9, HB 269 9), 164 unchanged, 0 lint warnings.

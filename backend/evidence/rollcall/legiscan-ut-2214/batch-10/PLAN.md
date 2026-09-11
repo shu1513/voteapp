@@ -44,3 +44,12 @@ candidate roll now has a final disposition; none is held.**
 - Database on that stamp: 421 rows, 72 candidates, 348 area tags.
 - Convergence dry run: 421 unchanged. The first dry-run stamp
   `2026-09-11T06:23:43.367Z` matches 0 rows.
+
+## Review fixes (2026-09-11)
+
+- HB 259: only the $1,000 daily electronic-access fine waits until after
+  December 31, 2027 (26B-2-244(5)); the $1,000 per-record fine for missing the
+  five-business-day deadline (26B-2-244(6)) applies from the May 6, 2026
+  effective date. The sentence now separates the two.
+- Re-judged and re-imported: `import-rerun-report.json` rewrote 68 rows in
+  place (House 58, Senate 10), 353 unchanged, 0 lint warnings.
