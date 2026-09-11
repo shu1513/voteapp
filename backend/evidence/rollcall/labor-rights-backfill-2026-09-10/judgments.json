@@ -1107,11 +1107,6 @@
           "yea": "for",
           "slug": "corporate_accountability",
           "nay": null
-        },
-        {
-          "yea": "for",
-          "slug": "labor_rights",
-          "nay": null
         }
       ],
       "chamber": "house",
@@ -1275,11 +1270,6 @@
         {
           "yea": "for",
           "slug": "corporate_accountability",
-          "nay": null
-        },
-        {
-          "yea": "for",
-          "slug": "labor_rights",
           "nay": null
         }
       ],
@@ -4276,11 +4266,6 @@
         {
           "yea": "against",
           "slug": "corporate_accountability",
-          "nay": null
-        },
-        {
-          "yea": "for",
-          "slug": "labor_rights",
           "nay": null
         }
       ],

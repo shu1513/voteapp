@@ -23,7 +23,11 @@ social programs), E-Verify, workplace diversity programs, public pension and
 health plan costs, job-training grants, apprenticeship offices, and taxes on
 tips or overtime.
 
-## Roll calls (199 rolls, 38 state sessions plus federal)
+## Roll calls (196 rolls tagged, 38 state sessions plus federal)
+
+`judgments.json` lists 199 rolls. Three of them (Colorado SB 121, both
+chambers, and Pennsylvania SB 908) keep only their original labels after the
+2026-09-10 review below, so a re-run of the file leaves them untagged.
 
 - `nay` is null on every new label, except where the roll's other labels
   already give nay voters a stance. There the labor label mirrors them (15
@@ -52,6 +56,21 @@ tips or overtime.
   directions at once (see `legiscan-mi-2183/batch-01/PLAN.md`), so there is no
   honest single stance. Hand-written records about these votes were not tagged
   either.
+- Colorado SB 121 (2026) raises the farm overtime threshold from 48 hours a
+  week to 56 for most agricultural workers from 2027 and repeals the labor
+  division's overtime rulemaking, but also raises wage-theft and
+  misclassification penalties for repeat offenders. Removed after review on
+  2026-09-10 (28 records: 21 House, 7 Senate). The final fiscal note confirms
+  both halves.
+- Pennsylvania SB 908 (2025 session, Senate-passed text PN 1804) extends
+  prevailing wage to custom fabrication but drops residential rehabilitation
+  under eight units, school safety work up to $50,000 and HVAC duct cleaning.
+  Removed after the same review (9 records). Its existing
+  `corporate_accountability/against` label already read the bill as a
+  narrowing, so a `labor_rights/for` label contradicted it.
+- Both removals were applied locally with `rollcall:judge` on the trimmed
+  file and a re-import of `co-2243` and `pa-2192`; see the
+  `import-rerun-report.json` files there.
 - Arkansas HB 1017 widens paid maternity leave but narrows who qualifies.
   Connecticut SB 1312 mixes unemployment administration with one reporting
   duty. Illinois SB 2339 both adds and removes worker protections.
@@ -72,4 +91,5 @@ day, and it was left as it is.
 
 ## Result (local database)
 
-7,940 live `labor_rights` tags: 6,600 for and 1,340 against.
+7,903 live `labor_rights` tags: 6,563 for and 1,340 against (7,940 before the
+SB 121 / SB 908 review removed 37).
