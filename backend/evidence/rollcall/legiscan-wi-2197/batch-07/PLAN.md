@@ -17,8 +17,8 @@ Selected: AB 211, AB 385, AB 793, SB 16, SB 184, SB 420.
 That is **8 roll calls**.
 
 The drop rate is the highest of any batch, and JUDGING.md explains why: four of
-the drops are one package of administrative-rules bills, and two more are the
-subject of open operator questions from Wyoming.
+the drops are one package of administrative-rules bills. AB 595 was dropped to
+wait for a Wyoming decision; it has since been imported in batch-09.
 
 ## The vetoed pool, closed
 

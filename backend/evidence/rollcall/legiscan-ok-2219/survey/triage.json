@@ -410,9 +410,9 @@
   "reason": "A pilot programme or study at a single institution. Too narrow to be a subject a voter would recognise."
  },
  "HB3127": {
-  "class": "batch-02",
-  "disposition": "imported",
-  "reason": "Read in full from the enrolled act and imported in batch-02."
+  "class": "failed vote",
+  "disposition": "dropped",
+  "reason": "Imported in batch-02, then retracted on PR #1316 review. The 47-46 House roll failed (Oklahoma needs 51 of 101) and the House passed an amended bill 68-27 on 2026-03-24, a vote the feed does not carry. Records retired; roll back to pending."
  },
  "HB3151": {
   "class": "batch-02",
@@ -680,9 +680,9 @@
   "reason": "A joint resolution approving an agency's proposed permanent rules. It is administrative machinery covering dozens of unrelated rules at once, so it names no single subject."
  },
  "SB1027": {
-  "class": "read and dropped",
-  "disposition": "dropped",
-  "reason": "Read in full. The act mixes rules that test the honesty of a petition, such as a plain and neutral summary and spending reports, with rules that limit who may take part, such as county signature caps and a ban on out-of-state money. Both strands fall in election_integrity and run opposite ways, so no single direction is honest."
+  "class": "batch-09",
+  "disposition": "imported",
+  "reason": "Read in full and first dropped as mixed. Review on 2026-09-11 found every strand has a precedent under election_integrity, yes = for, such as Florida HB 1205 and Colorado HB 1320. The limits on who may take part have no area of their own, so the no side is null. Imported in batch-09."
  },
  "SB1028": {
   "class": "sunset or agency housekeeping",

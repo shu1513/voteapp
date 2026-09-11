@@ -1,0 +1,274 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1503658,
+      "measure_id": "HB 1177",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1177. The state's Child Welfare Housing Assistance Program gives housing vouchers, rent help and support services to families whose lack of housing keeps a child in foster care or puts a child at risk of it. This law requires the Department of Children, Youth, and Families to serve the families on the program's waiting list, with the aim of ending that list, within the money the Legislature provides. Help may go on after the department stops working with the family on child welfare. The department must set formal rules for the program. Its yearly report must now show the waiting list and how the money is spent. It became law as chapter 163 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 62-35.",
+      "nay_description": "Voted against passing House Bill 1177. The state's Child Welfare Housing Assistance Program gives housing vouchers, rent help and support services to families whose lack of housing keeps a child in foster care or puts a child at risk of it. This law requires the Department of Children, Youth, and Families to serve the families on the program's waiting list, with the aim of ending that list, within the money the Legislature provides. Help may go on after the department stops working with the family on child welfare. The department must set formal rules for the program. Its yearly report must now show the waiting list and how the money is spent. It became law as chapter 163 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 62-35.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1549219,
+      "measure_id": "HB 1177",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1177. The state's Child Welfare Housing Assistance Program gives housing vouchers, rent help and support services to families whose lack of housing keeps a child in foster care or puts a child at risk of it. This law requires the Department of Children, Youth, and Families to serve the families on the program's waiting list, with the aim of ending that list, within the money the Legislature provides. Help may go on after the department stops working with the family on child welfare. The department must set formal rules for the program. Its yearly report must now show the waiting list and how the money is spent. It became law as chapter 163 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "nay_description": "Voted against passing House Bill 1177. The state's Child Welfare Housing Assistance Program gives housing vouchers, rent help and support services to families whose lack of housing keeps a child in foster care or puts a child at risk of it. This law requires the Department of Children, Youth, and Families to serve the families on the program's waiting list, with the aim of ending that list, within the money the Legislature provides. Help may go on after the department stops working with the family on child welfare. The department must set formal rules for the program. Its yearly report must now show the waiting list and how the money is spent. It became law as chapter 163 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-18.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1489418,
+      "measure_id": "HB 1215",
+      "vote_date": "2025-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1215. Washington law offers a suggested form for a living will. This is a document that says whether a person wants life support withheld if they are dying or permanently unconscious. The form said that if the person had been found to be pregnant, and the doctor knew it, the directive had no effect during the pregnancy. This law removes that line from the suggested form. It became law as chapter 56 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 57-36.",
+      "nay_description": "Voted against passing House Bill 1215. Washington law offers a suggested form for a living will. This is a document that says whether a person wants life support withheld if they are dying or permanently unconscious. The form said that if the person had been found to be pregnant, and the doctor knew it, the directive had no effect during the pregnancy. This law removes that line from the suggested form. It became law as chapter 56 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 57-36.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1538541,
+      "measure_id": "HB 1215",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1215. Washington law offers a suggested form for a living will. This is a document that says whether a person wants life support withheld if they are dying or permanently unconscious. The form said that if the person had been found to be pregnant, and the doctor knew it, the directive had no effect during the pregnancy. This law removes that line from the suggested form. It became law as chapter 56 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 1215. Washington law offers a suggested form for a living will. This is a document that says whether a person wants life support withheld if they are dying or permanently unconscious. The form said that if the person had been found to be pregnant, and the doctor knew it, the directive had no effect during the pregnancy. This law removes that line from the suggested form. It became law as chapter 56 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1551830,
+      "measure_id": "HB 1308",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1308. This law sets what a worker's personnel file includes, where the employer keeps such records. The list is job application records, performance reviews, closed discipline records, leave and accommodation records, payroll records and employment agreements. A private employer must give a current or former worker a free copy of the file within 21 days of a request. When a former worker asks in writing, it must also give a signed statement of the date the job ended, whether the employer had a reason for the firing, and if so what it was. A worker may sue after giving five days' notice. Damages run from $250 if the file is late to $1,000 if it comes more than 35 days after the request. Public employers must provide the file under the public records law. It became law as chapter 273 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 56-40.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1308. This law sets what a worker's personnel file includes, where the employer keeps such records. The list is job application records, performance reviews, closed discipline records, leave and accommodation records, payroll records and employment agreements. A private employer must give a current or former worker a free copy of the file within 21 days of a request. When a former worker asks in writing, it must also give a signed statement of the date the job ended, whether the employer had a reason for the firing, and if so what it was. A worker may sue after giving five days' notice. Damages run from $250 if the file is late to $1,000 if it comes more than 35 days after the request. Public employers must provide the file under the public records law. It became law as chapter 273 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 56-40.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1542482,
+      "measure_id": "HB 1308",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1308. This law sets what a worker's personnel file includes, where the employer keeps such records. The list is job application records, performance reviews, closed discipline records, leave and accommodation records, payroll records and employment agreements. A private employer must give a current or former worker a free copy of the file within 21 days of a request. When a former worker asks in writing, it must also give a signed statement of the date the job ended, whether the employer had a reason for the firing, and if so what it was. A worker may sue after giving five days' notice. Damages run from $250 if the file is late to $1,000 if it comes more than 35 days after the request. Public employers must provide the file under the public records law. It became law as chapter 273 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 32-17.",
+      "nay_description": "Voted against passing House Bill 1308. This law sets what a worker's personnel file includes, where the employer keeps such records. The list is job application records, performance reviews, closed discipline records, leave and accommodation records, payroll records and employment agreements. A private employer must give a current or former worker a free copy of the file within 21 days of a request. When a former worker asks in writing, it must also give a signed statement of the date the job ended, whether the employer had a reason for the firing, and if so what it was. A worker may sue after giving five days' notice. Damages run from $250 if the file is late to $1,000 if it comes more than 35 days after the request. Public employers must provide the file under the public records law. It became law as chapter 273 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 32-17.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1551948,
+      "measure_id": "HB 1332",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1332. Washington already requires ride-hailing companies to give drivers a receipt for each trip. This law replaces the rule on showing price multipliers with a rule to show any bonus or incentive paid for that trip. Weekly summaries must show all bonuses paid. On request, a company must give a driver a searchable file of all trip receipts from the past 24 months within three days. Companies must tell drivers which vehicles qualify for each ride class, such as premium rides. They must give 120 days' written notice before changing the vehicle age or model rules for a class. Vehicles dropped from a class for age or model in the 12 months before September 1, 2025, must be let back in for at least 12 months. It became law as chapter 229 of the 2025 session laws, and most of it took effect on September 1, 2025. The Washington House approved it 59-37.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1332. Washington already requires ride-hailing companies to give drivers a receipt for each trip. This law replaces the rule on showing price multipliers with a rule to show any bonus or incentive paid for that trip. Weekly summaries must show all bonuses paid. On request, a company must give a driver a searchable file of all trip receipts from the past 24 months within three days. Companies must tell drivers which vehicles qualify for each ride class, such as premium rides. They must give 120 days' written notice before changing the vehicle age or model rules for a class. Vehicles dropped from a class for age or model in the 12 months before September 1, 2025, must be let back in for at least 12 months. It became law as chapter 229 of the 2025 session laws, and most of it took effect on September 1, 2025. The Washington House approved it 59-37.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1547963,
+      "measure_id": "HB 1332",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1332. Washington already requires ride-hailing companies to give drivers a receipt for each trip. This law replaces the rule on showing price multipliers with a rule to show any bonus or incentive paid for that trip. Weekly summaries must show all bonuses paid. On request, a company must give a driver a searchable file of all trip receipts from the past 24 months within three days. Companies must tell drivers which vehicles qualify for each ride class, such as premium rides. They must give 120 days' written notice before changing the vehicle age or model rules for a class. Vehicles dropped from a class for age or model in the 12 months before September 1, 2025, must be let back in for at least 12 months. It became law as chapter 229 of the 2025 session laws, and most of it took effect on September 1, 2025. The Washington Senate approved it 27-21.",
+      "nay_description": "Voted against passing House Bill 1332. Washington already requires ride-hailing companies to give drivers a receipt for each trip. This law replaces the rule on showing price multipliers with a rule to show any bonus or incentive paid for that trip. Weekly summaries must show all bonuses paid. On request, a company must give a driver a searchable file of all trip receipts from the past 24 months within three days. Companies must tell drivers which vehicles qualify for each ride class, such as premium rides. They must give 120 days' written notice before changing the vehicle age or model rules for a class. Vehicles dropped from a class for age or model in the 12 months before September 1, 2025, must be let back in for at least 12 months. It became law as chapter 229 of the 2025 session laws, and most of it took effect on September 1, 2025. The Washington Senate approved it 27-21.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1537323,
+      "measure_id": "HB 1524",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1524. State law already required hotels, motels, stores, security companies and janitorial contractors to give panic buttons and sexual harassment training to isolated workers. These are janitors, security guards, housekeepers and room service attendants who work alone much of the time. This law redefines who counts as isolated, adding anyone who works where coworkers cannot respond at once to an emergency. It sets standards for the panic buttons, which must be easy to carry and set off and must show where the worker is. Employers must keep records of training and of panic button purchases and use. The state Department of Labor and Industries must enforce the rules and look into complaints. It may fine an employer $1,000 for each willful violation, and $2,000 to $10,000 for each repeat willful one. It became law as chapter 47 of the 2025 session laws and took effect on January 1, 2026. The Washington Senate approved it 37-12.",
+      "nay_description": "Voted against passing House Bill 1524. State law already required hotels, motels, stores, security companies and janitorial contractors to give panic buttons and sexual harassment training to isolated workers. These are janitors, security guards, housekeepers and room service attendants who work alone much of the time. This law redefines who counts as isolated, adding anyone who works where coworkers cannot respond at once to an emergency. It sets standards for the panic buttons, which must be easy to carry and set off and must show where the worker is. Employers must keep records of training and of panic button purchases and use. The state Department of Labor and Industries must enforce the rules and look into complaints. It may fine an employer $1,000 for each willful violation, and $2,000 to $10,000 for each repeat willful one. It became law as chapter 47 of the 2025 session laws and took effect on January 1, 2026. The Washington Senate approved it 37-12.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1508988,
+      "measure_id": "HB 1531",
+      "vote_date": "2025-03-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1531. This law makes it state policy that public health responses to contagious disease follow the best available science on measures such as vaccines. State and local officials must carry out and promote such measures, within available resources. No state or local law, rule or policy may ban carrying out or promoting them, and any that does is void. The law says it does not create or change any requirement for a person to get a vaccine. It became law as chapter 105 of the 2025 session laws and took effect on April 21, 2025. The Washington House approved it 58-35.",
+      "nay_description": "Voted against passing House Bill 1531. This law makes it state policy that public health responses to contagious disease follow the best available science on measures such as vaccines. State and local officials must carry out and promote such measures, within available resources. No state or local law, rule or policy may ban carrying out or promoting them, and any that does is void. The law says it does not create or change any requirement for a person to get a vaccine. It became law as chapter 105 of the 2025 session laws and took effect on April 21, 2025. The Washington House approved it 58-35.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1543690,
+      "measure_id": "HB 1531",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1531. This law makes it state policy that public health responses to contagious disease follow the best available science on measures such as vaccines. State and local officials must carry out and promote such measures, within available resources. No state or local law, rule or policy may ban carrying out or promoting them, and any that does is void. The law says it does not create or change any requirement for a person to get a vaccine. It became law as chapter 105 of the 2025 session laws and took effect on April 21, 2025. The Washington Senate approved it 31-18.",
+      "nay_description": "Voted against passing House Bill 1531. This law makes it state policy that public health responses to contagious disease follow the best available science on measures such as vaccines. State and local officials must carry out and promote such measures, within available resources. No state or local law, rule or policy may ban carrying out or promoting them, and any that does is void. The law says it does not create or change any requirement for a person to get a vaccine. It became law as chapter 105 of the 2025 session laws and took effect on April 21, 2025. The Washington Senate approved it 31-18.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1511981,
+      "measure_id": "HB 1644",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1644. This law toughens enforcement of child labor rules. Farms now face the same citations and fines as other employers for breaking the rules on working minors. Fines are set by type of violation. They start at $100 for a missing work permit or missing records. They are at least $15,000 for a violation that seriously hurts a minor and at least $71,000 for one that kills a minor, and those two may be doubled for willful or repeat violations. The state must take away an employer's permit to hire minors for at least 12 months after a violation that seriously hurts or kills a minor. Before letting a student learner do work usually barred at their age, the state must first check safety at the worksite. Fines rise with inflation from 2027. It became law as chapter 173 of the 2025 session laws and took effect on July 1, 2026. The Washington House approved it 60-35.",
+      "nay_description": "Voted against passing House Bill 1644. This law toughens enforcement of child labor rules. Farms now face the same citations and fines as other employers for breaking the rules on working minors. Fines are set by type of violation. They start at $100 for a missing work permit or missing records. They are at least $15,000 for a violation that seriously hurts a minor and at least $71,000 for one that kills a minor, and those two may be doubled for willful or repeat violations. The state must take away an employer's permit to hire minors for at least 12 months after a violation that seriously hurts or kills a minor. Before letting a student learner do work usually barred at their age, the state must first check safety at the worksite. Fines rise with inflation from 2027. It became law as chapter 173 of the 2025 session laws and took effect on July 1, 2026. The Washington House approved it 60-35.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1541869,
+      "measure_id": "HB 1644",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1644. This law toughens enforcement of child labor rules. Farms now face the same citations and fines as other employers for breaking the rules on working minors. Fines are set by type of violation. They start at $100 for a missing work permit or missing records. They are at least $15,000 for a violation that seriously hurts a minor and at least $71,000 for one that kills a minor, and those two may be doubled for willful or repeat violations. The state must take away an employer's permit to hire minors for at least 12 months after a violation that seriously hurts or kills a minor. Before letting a student learner do work usually barred at their age, the state must first check safety at the worksite. Fines rise with inflation from 2027. It became law as chapter 173 of the 2025 session laws and took effect on July 1, 2026. The Washington Senate approved it 37-12.",
+      "nay_description": "Voted against passing House Bill 1644. This law toughens enforcement of child labor rules. Farms now face the same citations and fines as other employers for breaking the rules on working minors. Fines are set by type of violation. They start at $100 for a missing work permit or missing records. They are at least $15,000 for a violation that seriously hurts a minor and at least $71,000 for one that kills a minor, and those two may be doubled for willful or repeat violations. The state must take away an employer's permit to hire minors for at least 12 months after a violation that seriously hurts or kills a minor. Before letting a student learner do work usually barred at their age, the state must first check safety at the worksite. Fines rise with inflation from 2027. It became law as chapter 173 of the 2025 session laws and took effect on July 1, 2026. The Washington Senate approved it 37-12.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1508327,
+      "measure_id": "HB 1696",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1696. The Covenant Homeownership Program helps first-time buyers with down payment and closing costs. It serves groups that a state study found were shut out of owning homes by racially restrictive deeds, which were recorded in Washington until 1968. This law raises the income limit from 100 to 120 percent of the county's median income. For buyers at or below 80 percent of median when the loan was made, the program may fully forgive the loan once it has been owed for five years. It became law as chapter 143 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 57-39.",
+      "nay_description": "Voted against passing House Bill 1696. The Covenant Homeownership Program helps first-time buyers with down payment and closing costs. It serves groups that a state study found were shut out of owning homes by racially restrictive deeds, which were recorded in Washington until 1968. This law raises the income limit from 100 to 120 percent of the county's median income. For buyers at or below 80 percent of median when the loan was made, the program may fully forgive the loan once it has been owed for five years. It became law as chapter 143 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 57-39.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1547959,
+      "measure_id": "HB 1696",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1696. The Covenant Homeownership Program helps first-time buyers with down payment and closing costs. It serves groups that a state study found were shut out of owning homes by racially restrictive deeds, which were recorded in Washington until 1968. This law raises the income limit from 100 to 120 percent of the county's median income. For buyers at or below 80 percent of median when the loan was made, the program may fully forgive the loan once it has been owed for five years. It became law as chapter 143 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 1696. The Covenant Homeownership Program helps first-time buyers with down payment and closing costs. It serves groups that a state study found were shut out of owning homes by racially restrictive deeds, which were recorded in Washington until 1968. This law raises the income limit from 100 to 120 percent of the county's median income. For buyers at or below 80 percent of median when the loan was made, the program may fully forgive the loan once it has been owed for five years. It became law as chapter 143 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

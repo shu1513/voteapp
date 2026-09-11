@@ -702,7 +702,9 @@ export function ElectionPage() {
 
         {measure ? (
           <section className="mt-6 rounded-xl border border-line bg-surface p-4">
-            <h2 ref={measureSummaryRef} className="text-heading font-semibold text-dem-blue">Ballot Measure</h2>
+            {/* Same green as the ballot card's "Ballot Measure" label (user
+                decision 2026-09-11) — not party blue. */}
+            <h2 ref={measureSummaryRef} className="text-heading font-semibold text-nudge-deep">Ballot Measure</h2>
             {measure.research_area_tags.length > 0 ? (
               // Comma-separated colored text, not boxed chips (boxes read as
               // buttons). Tags group by stance under a leading verb
@@ -712,8 +714,10 @@ export function ElectionPage() {
               // opposes), but the verb carries the meaning — color alone would
               // be invisible to color-blind readers. Stanceless tags keep the
               // ballot cards' "Affects:" label and saved/muted styling, and
-              // saved areas keep the sr-only cue used elsewhere.
-              <div className="mt-2 space-y-1 text-xs">
+              // saved areas keep the sr-only cue used elsewhere. text-sm, not
+              // the cards' text-xs: under the green heading the tags need
+              // size to read as their own line, not a caption on it.
+              <div className="mt-2 space-y-1 text-sm">
                 {(
                   [
                     ["Supports:", "for", "font-medium text-green-900"],

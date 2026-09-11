@@ -63,24 +63,6 @@
       "jurisdiction": "OK",
       "chamber": "house",
       "session": "2219",
-      "roll": 1662879,
-      "measure_id": "HB 3127",
-      "vote_date": "2026-03-12",
-      "review_status": "approved",
-      "yea_description": "Voted for House Bill 3127. It narrows the job protection that medical marijuana patients have. Oklahoma law stops an employer refusing to hire, disciplining or sacking someone just for holding a medical marijuana license, or just for a positive test. That rule had exceptions, and the act widens one of them. Before, an employer could act on a positive test where the job involved safety-sensitive duties. Now an employer may act whenever it does so under a written drug and alcohol testing policy that meets the state testing law. The act also sets a zero-tolerance standard for anyone in a safety-sensitive job, whatever the employer's own policy says. It spells out that an employer may keep and enforce a written policy barring marijuana use at work or while doing the job. The Oklahoma House passed it 47-46. The Governor signed it.",
-      "nay_description": "Voted against House Bill 3127. It narrows the job protection that medical marijuana patients have. Oklahoma law stops an employer refusing to hire, disciplining or sacking someone just for holding a medical marijuana license, or just for a positive test. That rule had exceptions, and the act widens one of them. Before, an employer could act on a positive test where the job involved safety-sensitive duties. Now an employer may act whenever it does so under a written drug and alcohol testing policy that meets the state testing law. The act also sets a zero-tolerance standard for anyone in a safety-sensitive job, whatever the employer's own policy says. It spells out that an employer may keep and enforce a written policy barring marijuana use at work or while doing the job. The Oklahoma House passed it 47-46. The Governor signed it.",
-      "labels": [
-        {
-          "slug": "civil_rights",
-          "yea": "against",
-          "nay": null
-        }
-      ]
-    },
-    {
-      "jurisdiction": "OK",
-      "chamber": "house",
-      "session": "2219",
       "roll": 1661140,
       "measure_id": "HB 3151",
       "vote_date": "2026-03-11",

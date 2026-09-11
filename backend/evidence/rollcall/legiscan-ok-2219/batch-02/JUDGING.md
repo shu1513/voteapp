@@ -30,7 +30,14 @@ unless a doctor certifies more, to a combined twelve weeks under federal family 
 The description says so plainly. `social_programs_and_welfare`, yes = for, following the
 Maryland paid-leave line.
 
-**HB 3127, medical marijuana at work.** Read from the marks, this act runs one way: it
+**HB 3127, medical marijuana at work: retracted on PR #1316 review.** The 47-46 House roll
+of 2026-03-12 failed, since Oklahoma needs 51 of 101 votes, and the House later amended the
+bill and passed it 68-27 on 2026-03-24, a vote the feed does not carry. The description had
+called the failed vote a passage. Its 43 records are retired and the roll is back to pending;
+PLAN.md has the full note. The reading of the act below stays on file, should a roll on the
+enacted text ever reach the feed.
+
+**HB 3127 as judged before retraction.** Read from the marks, this act runs one way: it
 narrows a protection. Oklahoma law bars an employer from refusing to hire, disciplining or
 sacking someone merely for holding a medical marijuana licence or merely for a positive test.
 The exception used to be that the employer could act where the job involved safety-sensitive
@@ -40,6 +47,10 @@ imposes zero tolerance on safety-sensitive jobs whatever the employer's policy s
 `civil_rights`, yes = **against**, because the act removes a protection against being sacked
 for a lawful medical status. The employer-side reading — that a workplace should be able to
 keep its own drug policy — runs on a different axis, so the no side is null.
+Review on 2026-09-11 added `labor_rights`, yes = **against** (see batch-09). The act narrows
+a job protection, which is the core of that area, and Iowa HF 767, which widened employer drug
+testing, carries the same label. The civil rights label stays because Maryland SB 439, which
+protected medical cannabis users at work, is recorded there. Both labels point the same way.
 
 This is not the campaign's cannabis question. The standing rule that a cannabis measure
 carries no honest direction is about legalising or regulating the drug. This act is about

@@ -8,7 +8,7 @@ no Oklahoma roll-call records.
 | SB 942 discrimination in schools and colleges | House, Senate | 56-29, 31-15 | civil_rights | for |
 | SB 991 state definition of anti-Semitism | House, Senate | 62-24, 27-15 | civil_rights | for |
 | SB 250 tips counted toward the minimum wage | House | 74-19 | reduce_wealth_gap | against |
-| SB 2084 cap on wrongful firing settlements at state colleges | House | 70-21 | government_spending_reduction | for |
+| SB 2084 cap on wrongful firing settlements at state colleges | House | 70-21 | labor_rights | against |
 | SB 998 electric plant costs charged to customers | House, Senate | 51-39, 26-20 | corporate_accountability | against |
 | SB 658 foster and adoptive parents' religious beliefs | House | 68-19 | civil_rights | against |
 

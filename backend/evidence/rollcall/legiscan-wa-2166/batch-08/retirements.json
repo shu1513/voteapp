@@ -1,0 +1,6 @@
+[
+  {
+    "recordId": "8a72e89c-f1b0-4e3d-b981-ab1fca9a342d",
+    "reason": "Duplicate of the imported roll-call record for Senate Bill 5041. This hand-written record describes the same vote, the House's 51-45 vote on the conference committee report, which the roll-call pipeline now imports from the official roll call itself. The House took only one conference vote on this bill, so the match is exact. The imported record cites the roll call as its source; this one does not."
+  }
+]
