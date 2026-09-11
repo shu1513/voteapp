@@ -90,7 +90,12 @@ import { createContentReport } from "../pipeline/reports/contentReports.js";
 import { listUserCandidateFollows, setUserCandidateFollow } from "../pipeline/users/userCandidateFollows.js";
 import { applyAutoPicks, clearAutoPicks } from "../pipeline/users/autoPick.js";
 import { listUserElectionChoices, setUserElectionChoice } from "../pipeline/users/userElectionChoices.js";
-import { getOrCreateUserPickCardShare, lookupPublicPickCard } from "../pipeline/users/userPickCardShares.js";
+import {
+  deleteUserPickCardShare,
+  getOrCreateUserPickCardShare,
+  listUserPickCardShares,
+  lookupPublicPickCard,
+} from "../pipeline/users/userPickCardShares.js";
 import { getStateVotingResources } from "../api/stateVotingResources.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
@@ -807,6 +812,8 @@ async function main(): Promise<void> {
     clearAuthenticatedAutoPicks: (userId, electionDate) => clearAutoPicks(pool, userId, electionDate),
     createAuthenticatedPickCardShare: (userId, electionDate) =>
       getOrCreateUserPickCardShare(pool, userId, electionDate),
+    listAuthenticatedPickCardShares: (userId) => listUserPickCardShares(pool, userId),
+    deleteAuthenticatedPickCardShare: (userId, electionDate) => deleteUserPickCardShare(pool, userId, electionDate),
     lookupPublicPickCard: (token) => lookupPublicPickCard(pool, token),
     // [ballot-personalized-ordering]
     getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),

@@ -63,6 +63,7 @@ import {
   parsePickCardToken,
   parsePickCardImageToken,
   parsePickCardShareBodyValue,
+  parsePickCardShareDeleteQuery,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_DISTRICTS_PATH,
   ME_EMAIL_PREFERENCES_PATH,
@@ -1761,12 +1762,12 @@ async function dispatchApiRequest(
   }
 
   if (url.pathname === ME_PICK_CARD_SHARES_PATH) {
-    if (request.method !== "POST") {
+    if (request.method !== "GET" && request.method !== "POST" && request.method !== "DELETE") {
       sendApiResponse(
         response,
-        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/pick-card-shares", {
+        toErrorResponse(405, "method_not_allowed", "Use GET, POST, or DELETE /api/me/pick-card-shares", {
           ...corsHeaders,
-          allow: "POST",
+          allow: "GET, POST, DELETE",
         })
       );
       return;
@@ -1778,6 +1779,35 @@ async function dispatchApiRequest(
       sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
+
+    if (request.method === "GET") {
+      if (!options.listAuthenticatedPickCardShares) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Pick card share storage is not configured", corsHeaders)
+        );
+        return;
+      }
+      const result = await options.listAuthenticatedPickCardShares(userId);
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
+    if (request.method === "DELETE") {
+      // Body-less revoke of one date's link, scoped by query so the request
+      // needs no JSON content type (mirrors DELETE /api/me/auto-picks).
+      if (!options.deleteAuthenticatedPickCardShare) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Pick card share storage is not configured", corsHeaders)
+        );
+        return;
+      }
+      const result = await options.deleteAuthenticatedPickCardShare(userId, parsePickCardShareDeleteQuery(url));
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
     if (!options.createAuthenticatedPickCardShare) {
       sendApiResponse(
         response,

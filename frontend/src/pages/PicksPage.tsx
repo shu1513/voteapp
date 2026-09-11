@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest, formatElectionDate, useElectionChoices, useMe, useMintPickCardShare } from "@voteapp/api-client";
+import {
+  apiRequest,
+  formatElectionDate,
+  useElectionChoices,
+  useMe,
+  useMintPickCardShare,
+  useMyPickCardShares,
+  useRevokePickCardShare,
+} from "@voteapp/api-client";
 import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
@@ -218,16 +226,29 @@ function hasRenderablePick(choice: ElectionChoice | undefined): choice is Electi
   return choice !== undefined && (choice.picks.length > 0 || choice.measure_position !== null);
 }
 
-function ShareCardControl({ electionDate }: { electionDate: string }) {
+// canMint: the card has picks to share. A live link renders (with its Stop
+// control) regardless — a card whose picks were since cleared, or a date
+// listed under Shared links below the cards, still owns a public URL that
+// only this control can revoke.
+function ShareCardControl({ electionDate, canMint }: { electionDate: string; canMint: boolean }) {
   // Every date card renders its own "Share"; sighted users read the card
   // heading for context, but a screen reader's button list needs the date
   // in the name itself. Same label on both control shapes (mint button,
   // then ShareButton) so the control keeps one identity across the swap.
   const shareLabel = `Share my ${formatElectionDate(electionDate)} picks`;
+  const stopLabel = `Stop sharing my ${formatElectionDate(electionDate)} picks`;
+  const { shares } = useMyPickCardShares();
   const mint = useMintPickCardShare();
+  const revoke = useRevokePickCardShare();
+  // The server's list is the only truth: a link minted on another device or
+  // before a reload shows here with its Stop control, and a revoke from
+  // another tab takes effect on the next refetch. The mint hook writes its
+  // result into that same list, so no mutation state is consulted here — a
+  // stale mint result would otherwise resurrect a dead link.
+  const token = shares?.find((share) => share.election_date === electionDate)?.token ?? null;
 
-  if (mint.isSuccess) {
-    const path = `/picks/${mint.data.share.token}`;
+  if (token) {
+    const path = `/picks/${token}`;
     return (
       <span className="flex flex-wrap items-center gap-2">
         {/* The minted URL is the deliverable — it renders here, visibly,
@@ -263,8 +284,28 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         <span className="text-xs text-ink-soft">
           Anyone with the link can see this card and your first name.
         </span>
+        {/* The way back: revoking kills the URL for everyone who has it.
+            Sits with the link and the name disclosure so the sharer sees
+            the exit in the same glance as the exposure. */}
+        <button
+          type="button"
+          disabled={revoke.isPending}
+          onClick={() => revoke.mutate(electionDate)}
+          aria-label={stopLabel}
+          className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
+        >
+          {revoke.isPending ? "…" : "Stop sharing"}
+        </button>
+        {revoke.isError ? (
+          <span role="alert" className="text-xs font-medium text-red-800">
+            Couldn't stop sharing — try again.
+          </span>
+        ) : null}
       </span>
     );
+  }
+  if (!canMint) {
+    return null;
   }
   return (
     <span className="flex flex-wrap items-center gap-2">
@@ -360,9 +401,10 @@ export function PickDateCard({
         {/* Date only: the page h1 already says "My Election Draft". */}
         <h3 className="text-heading font-semibold text-ink">{formatElectionDate(date)}</h3>
         {/* Mint-on-demand: no share row (and no live public URL) exists until
-            the user asks for one. Hidden entirely while the card has zero
-            picks — the backend refuses to mint for an empty card anyway. */}
-        {share && pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
+            the user asks for one. The mint button hides while the card has
+            zero picks (the backend refuses to mint for an empty card), but a
+            link minted earlier still shows, with Stop sharing. */}
+        {share ? <ShareCardControl electionDate={date} canMint={pickedCount > 0} /> : null}
       </div>
       {/* Progress bar + "N / M" instead of a grey sentence: the count is a
           status, and a bar is the shape people already read as one. The
@@ -539,6 +581,34 @@ function PastPicks({
   );
 }
 
+// Live share links whose date has no card on this page: the election dropped
+// off the ballot, the address changed, or (unverified) no ballot loads at
+// all. The public URL keeps serving — results, and the owner's first name —
+// so the owner needs a way back to it. Dates WITH a card carry their own
+// control inside the card; listing those here too would show one link twice.
+function SharedLinks({ cardedDates }: { cardedDates: Set<string> }) {
+  const { shares } = useMyPickCardShares();
+  const uncarded = (shares ?? []).filter((share) => !cardedDates.has(share.election_date));
+  if (uncarded.length === 0) {
+    return null;
+  }
+  return (
+    <details className="mt-4">
+      <summary className="cursor-pointer select-none text-sm font-medium text-ink-soft hover:text-ink">
+        Shared links ({uncarded.length})
+      </summary>
+      <ul className="mt-3 space-y-3">
+        {uncarded.map((share) => (
+          <li key={share.election_date} className="text-sm">
+            <span className="text-ink-soft">{formatElectionDate(share.election_date)} · </span>
+            <ShareCardControl electionDate={share.election_date} canMint={false} />
+          </li>
+        ))}
+      </ul>
+    </details>
+  );
+}
+
 // The logged-out wall, its own component so the signup_prompt "shown" usage
 // event rides a mount effect (no hooks after PicksPage's early returns).
 function PicksLoginWall() {
@@ -675,6 +745,9 @@ export function PicksPage() {
             cardedElectionIds={nothingCarded}
           />
           <PastPicks choices={choices ?? []} today={unverifiedToday} cardedElectionIds={nothingCarded} />
+          {/* No cards here, so every live link lists — the share API is not
+              verification-gated and neither is revoking. */}
+          <SharedLinks cardedDates={new Set()} />
         </div>
       </>
     );
@@ -780,6 +853,7 @@ export function PicksPage() {
               cardedElectionIds={cardedElectionIds}
             />
             <PastPicks choices={choices ?? []} today={today} cardedElectionIds={cardedElectionIds} />
+            <SharedLinks cardedDates={new Set(dates)} />
           </>
         ) : null}
       </section>

@@ -200,6 +200,53 @@ export async function getOrCreateUserPickCardShare(
   }
 }
 
+/**
+ * Every live share link the user holds, newest first. Lets the picks page
+ * show "Stop sharing" for a date whose link already exists (after a reload,
+ * or on another device) instead of only for links minted in this session.
+ */
+export async function listUserPickCardShares(
+  db: Queryable,
+  userId: string
+): Promise<{ shares: UserPickCardShare[] }> {
+  const normalizedUserId = normalizeUserId(userId);
+  const result = await db.query<{ token: string; election_date: string }>(
+    `
+      SELECT token, election_date::text AS election_date
+      FROM public.user_pick_card_shares
+      WHERE user_id = $1::uuid
+      ORDER BY election_date DESC
+    `,
+    [normalizedUserId]
+  );
+  return { shares: result.rows.map((row) => ({ token: row.token, election_date: row.election_date })) };
+}
+
+/**
+ * Revoke one date's share link. The row goes away, so /picks/<token> 404s
+ * from the next request on; a later Share click mints a fresh token rather
+ * than reviving the old URL. Idempotent: deleting a share that does not
+ * exist reports deleted=false instead of failing, so a double click or a
+ * stale second tab cannot surface an error for an outcome that already
+ * holds.
+ */
+export async function deleteUserPickCardShare(
+  db: Queryable,
+  userId: string,
+  electionDate: string
+): Promise<{ deleted: boolean }> {
+  const normalizedUserId = normalizeUserId(userId);
+  const normalizedDate = normalizeElectionDate(electionDate);
+  const result = await db.query(
+    `
+      DELETE FROM public.user_pick_card_shares
+      WHERE user_id = $1::uuid AND election_date = $2::date
+    `,
+    [normalizedUserId, normalizedDate]
+  );
+  return { deleted: (result.rowCount ?? 0) > 0 };
+}
+
 type PickCardRow = {
   first_name: string | null;
   election_date: string;

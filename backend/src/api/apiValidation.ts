@@ -1436,6 +1436,17 @@ export function parsePickCardShareBodyValue(parsed: unknown): PickCardSharePaylo
   return { electionDate: assertValidElectionDate(payload.election_date.trim()) };
 }
 
+/** Required ?election_date= on DELETE /api/me/pick-card-shares: a revoke
+ * names exactly one date's link. Body-less, so no JSON content type is
+ * demanded of the request. */
+export function parsePickCardShareDeleteQuery(url: URL): string {
+  const electionDate = url.searchParams.get("election_date");
+  if (electionDate === null || electionDate.trim().length === 0) {
+    throw new RequestValidationError("Query must include election_date");
+  }
+  return assertValidElectionDate(electionDate.trim());
+}
+
 function assertValidElectionDate(electionDate: string): string {
   // Round-trip through UTC instead of trusting Date.parse alone: V8 rolls
   // impossible days over ("2026-02-30" parses as March 2), which would pass
