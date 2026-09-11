@@ -27,7 +27,10 @@ with a fate sentence derived from the dataset.
 - **HF 2584** (reprint, House 70-21) public_safety_and_crime_control, yea for. 300-foot
   drug-free zones around funded homeless services, one added year, no probation, $2,000 fine.
 - **HF 2624** (reprint, House 64-30) public_safety_and_crime_control, yea for. DNA at arrest for
-  a felony or violent aggravated misdemeanor, with automatic expungement.
+  a felony or violent aggravated misdemeanor, with automatic expungement. Review fix
+  2026-09-11: the description now names the two retention exceptions the bill keeps from
+  current 81.9 (a sample owed for another case; evidence in another investigation, the bill's
+  own addition). 80 records rewritten; ledger `import-review-fix-rerun-report.json`.
 - **HF 2718** (House 67-29) gun_control, yea against. Anti-red-flag act with a $50,000 civil
   penalty per case.
 - **HF 546** (House 64-31) public_safety_and_crime_control, yea for. $100,000 minimum initial

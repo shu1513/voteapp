@@ -1,0 +1,386 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-11T06:18:44.057Z",
+  "finishedAt": "2026-09-11T06:18:47.147Z",
+  "jurisdiction": "IA",
+  "sessionId": 2177,
+  "evidenceDir": "evidence/rollcall/legiscan-ia-2177/batch-07",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ia-2177/crosswalk.json",
+  "crosswalkEntries": 155,
+  "peopleFile": "evidence/rollcall/legiscan-ia-2177/legiscan-people-ia-2177.json",
+  "peopleMembers": 155,
+  "files": 12,
+  "outcomes": {
+    "imported": 12
+  },
+  "actions": {
+    "unchanged": 863,
+    "rewrite": 80
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ia-house-2177-roll1516307.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1516307,
+      "outcome": "imported",
+      "legislativeVoteId": "8990ff90-4db0-4a47-aee2-8e9f1cd9f2d1",
+      "reviewStatus": "approved",
+      "bill": "HF546",
+      "voteDate": "2025-03-12",
+      "officialVoteDate": null,
+      "measureId": "HF 546",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1516307:2026-09-11T06:18:44.057Z",
+      "members": 95,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "matched": 79,
+        "unmatched_reviewed": 16
+      },
+      "actions": {
+        "unchanged": 79
+      },
+      "notified": 0,
+      "candidates": 79,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ia-house-2177-roll1520505.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1520505,
+      "outcome": "imported",
+      "legislativeVoteId": "ddfe9759-72d8-40b3-b07f-9c7c12b1bd7f",
+      "reviewStatus": "approved",
+      "bill": "HF269",
+      "voteDate": "2025-03-18",
+      "officialVoteDate": null,
+      "measureId": "HF 269",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1520505:2026-09-11T06:18:44.057Z",
+      "members": 97,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "matched": 80,
+        "unmatched_reviewed": 17
+      },
+      "actions": {
+        "unchanged": 80
+      },
+      "notified": 0,
+      "candidates": 80,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ia-house-2177-roll1643695.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1643695,
+      "outcome": "imported",
+      "legislativeVoteId": "537de5a1-265e-4864-8b71-3974eb66526c",
+      "reviewStatus": "approved",
+      "bill": "HF2488",
+      "voteDate": "2026-02-24",
+      "officialVoteDate": null,
+      "measureId": "HF 2488",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1643695:2026-09-11T06:18:44.057Z",
+      "members": 91,
+      "notVoting": 0,
+      "absent": 9,
+      "resolution": {
+        "matched": 77,
+        "unmatched_reviewed": 14
+      },
+      "actions": {
+        "unchanged": 77
+      },
+      "notified": 0,
+      "candidates": 77,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ia-house-2177-roll1645757.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1645757,
+      "outcome": "imported",
+      "legislativeVoteId": "29d0e971-d1b3-4049-9513-aba236cf9ed1",
+      "reviewStatus": "approved",
+      "bill": "HF2584",
+      "voteDate": "2026-02-25",
+      "officialVoteDate": null,
+      "measureId": "HF 2584",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1645757:2026-09-11T06:18:44.057Z",
+      "members": 91,
+      "notVoting": 0,
+      "absent": 9,
+      "resolution": {
+        "matched": 77,
+        "unmatched_reviewed": 14
+      },
+      "actions": {
+        "unchanged": 77
+      },
+      "notified": 0,
+      "candidates": 77,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ia-house-2177-roll1647078.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1647078,
+      "outcome": "imported",
+      "legislativeVoteId": "5cc9728a-9b4b-4cf6-9a87-d386e7435227",
+      "reviewStatus": "approved",
+      "bill": "HF2102",
+      "voteDate": "2026-02-26",
+      "officialVoteDate": null,
+      "measureId": "HF 2102",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1647078:2026-09-11T06:18:44.057Z",
+      "members": 88,
+      "notVoting": 0,
+      "absent": 12,
+      "resolution": {
+        "matched": 76,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 76
+      },
+      "notified": 0,
+      "candidates": 76,
+      "error": null,
+      "related": 2
+    },
+    {
+      "file": "ls-ia-house-2177-roll1650108.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1650108,
+      "outcome": "imported",
+      "legislativeVoteId": "b08cc426-66e0-4491-88f1-493f41456e09",
+      "reviewStatus": "approved",
+      "bill": "HF2529",
+      "voteDate": "2026-03-02",
+      "officialVoteDate": null,
+      "measureId": "HF 2529",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1650108:2026-09-11T06:18:44.057Z",
+      "members": 90,
+      "notVoting": 0,
+      "absent": 10,
+      "resolution": {
+        "matched": 76,
+        "unmatched_reviewed": 14
+      },
+      "actions": {
+        "unchanged": 76
+      },
+      "notified": 0,
+      "candidates": 76,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ia-house-2177-roll1651942.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1651942,
+      "outcome": "imported",
+      "legislativeVoteId": "7d1514ce-3ba2-4aa2-bdfb-a7026ebf048d",
+      "reviewStatus": "approved",
+      "bill": "HF2513",
+      "voteDate": "2026-03-03",
+      "officialVoteDate": null,
+      "measureId": "HF 2513",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1651942:2026-09-11T06:18:44.057Z",
+      "members": 95,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "matched": 80,
+        "unmatched_reviewed": 15
+      },
+      "actions": {
+        "unchanged": 80
+      },
+      "notified": 0,
+      "candidates": 80,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ia-house-2177-roll1653641.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1653641,
+      "outcome": "imported",
+      "legislativeVoteId": "cc76a628-35ea-46d1-b75a-427a254ee47a",
+      "reviewStatus": "approved",
+      "bill": "HF2718",
+      "voteDate": "2026-03-04",
+      "officialVoteDate": null,
+      "measureId": "HF 2718",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1653641:2026-09-11T06:18:44.057Z",
+      "members": 96,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "matched": 80,
+        "unmatched_reviewed": 16
+      },
+      "actions": {
+        "unchanged": 80
+      },
+      "notified": 0,
+      "candidates": 80,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ia-house-2177-roll1654101.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1654101,
+      "outcome": "imported",
+      "legislativeVoteId": "e33f2c46-b3be-4f4b-abba-8f3c56005893",
+      "reviewStatus": "approved",
+      "bill": "HF2557",
+      "voteDate": "2026-03-04",
+      "officialVoteDate": null,
+      "measureId": "HF 2557",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1654101:2026-09-11T06:18:44.057Z",
+      "members": 96,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "matched": 80,
+        "unmatched_reviewed": 16
+      },
+      "actions": {
+        "unchanged": 80
+      },
+      "notified": 0,
+      "candidates": 80,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ia-house-2177-roll1659491.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1659491,
+      "outcome": "imported",
+      "legislativeVoteId": "275a154a-13a6-4364-b21e-af77565bbb58",
+      "reviewStatus": "approved",
+      "bill": "HF2624",
+      "voteDate": "2026-03-10",
+      "officialVoteDate": null,
+      "measureId": "HF 2624",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1659491:2026-09-11T06:18:44.057Z",
+      "members": 94,
+      "notVoting": 0,
+      "absent": 6,
+      "resolution": {
+        "matched": 80,
+        "unmatched_reviewed": 14
+      },
+      "actions": {
+        "rewrite": 80
+      },
+      "notified": 0,
+      "candidates": 80,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ia-house-2177-roll1661951.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1661951,
+      "outcome": "imported",
+      "legislativeVoteId": "2676b9eb-3853-43fd-8fe9-103b953fee14",
+      "reviewStatus": "approved",
+      "bill": "HF2487",
+      "voteDate": "2026-03-12",
+      "officialVoteDate": null,
+      "measureId": "HF 2487",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1661951:2026-09-11T06:18:44.057Z",
+      "members": 89,
+      "notVoting": 0,
+      "absent": 11,
+      "resolution": {
+        "matched": 77,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "unchanged": 77
+      },
+      "notified": 0,
+      "candidates": 77,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ia-house-2177-roll1664687.json",
+      "state": "IA",
+      "chamber": "house",
+      "sessionId": 2177,
+      "roll": 1664687,
+      "outcome": "imported",
+      "legislativeVoteId": "654784e7-f586-4865-8d90-71d4c2fbbc63",
+      "reviewStatus": "approved",
+      "bill": "HF2133",
+      "voteDate": "2026-03-17",
+      "officialVoteDate": null,
+      "measureId": "HF 2133",
+      "question": "Shall the bill pass?",
+      "originRunId": "rollcall:IA:house:2177:1664687:2026-09-11T06:18:44.057Z",
+      "members": 95,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "matched": 81,
+        "unmatched_reviewed": 14
+      },
+      "actions": {
+        "unchanged": 81
+      },
+      "notified": 0,
+      "candidates": 81,
+      "error": null,
+      "related": 0
+    }
+  ]
+}

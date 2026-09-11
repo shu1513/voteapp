@@ -14,9 +14,14 @@ Sources as in batch-07, plus Iowa Code chapter 27A and section 724.29 (current t
 - **SF 2274** (Senate 28-16) gun_control, yea against. Repeals section 724.29, the ban on selling
   trigger devices that raise a gun's rate of fire.
 - **SF 2442** (Senate 28-16) housing_affordability, yea for. Counties may not restrict home
-  construction beyond what life or property safety requires.
+  construction beyond what life or property safety requires. Review fix 2026-09-11: the
+  description now states the 414.1(1)(h)(2) scope, houses, townhouses, and apartment or condo
+  buildings of up to 12 units; larger buildings are not covered. 17 records rewritten.
 - **SF 2444** (reprint, Senate 27-18) environment_and_public_health, yea against. Cigar bars
-  exempt from the smokefree air act.
+  exempt from the smokefree air act. Review fix 2026-09-11: the 35 percent test counts
+  premium cigars and cigar-related products, not premium cigars alone; "sell only premium
+  cigars" became "sell no other kind of cigar" to match 453F.1(2)(h). 16 records rewritten.
+  Ledger for both fixes: `import-review-fix-rerun-report.json`.
 - **SF 394** (reprint, Senate 26-21) corporate_accountability, yea against. An EPA-approved or
   EPA-consistent pesticide label satisfies every state duty to warn.
 - **HF 2763** (reprint, House 70-18) corporate_accountability for and data_privacy for. Division I
