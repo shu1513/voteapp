@@ -21,10 +21,15 @@ No measure carries an authored nay. Senate Bills 5662 and 5714 are House-only (S
 
 ## Checked against later court action
 
-- **Senate Bill 5375.** A federal court entered a stipulated permanent injunction on 10
-  October 2025 barring enforcement against Catholic priests for what they hear in
-  confession (Etienne v. Ferguson; the Attorney General's news release says the duty is
-  otherwise intact). The description states this in two sentences.
+- **Senate Bill 5375.** A federal court entered a stipulated permanent injunction on 14
+  October 2025 (Etienne v. Ferguson, No. 3:25-cv-05461). The order bars enforcement "as
+  to the Catholic Sacrament of Confession and/or any other privileged communication under
+  RCW 5.60.060(3)", the clergy-penitent privilege, which covers clergy of any faith and
+  Christian Science practitioners. The Attorney General's release puts it as information
+  clergy learn "solely through confession or its equivalent in other faiths" and says the
+  duty is otherwise intact. The description states this in two sentences. A first draft
+  limited the carve-out to Catholic priests; review caught it and the 103 records were
+  refreshed.
 - **Senate Bill 5855.** No court action found as of September 2026.
 - **Senate Bill 5974** (police chief and sheriff qualifications) was a planned keep and was
   **dropped**: a state court preliminarily blocked its qualification and certification

@@ -10,7 +10,9 @@ Adds clergy, broadly defined, to mandatory reporters of child abuse and neglect,
 clergy the one group that may not withhold a report because the knowledge came from a
 privileged communication. Protecting children through reporting is prevention, which the
 area names. The confession injunction is stated because a reader would otherwise think the
-whole duty is in force.
+whole duty is in force. The carve-out is not Catholic-only: the order covers any privileged
+communication under RCW 5.60.060(3), so the text says "clergy of any faith" and
+"confession or its equivalent".
 
 ### Senate Bill 5662 — connection charge waivers, `housing_affordability` yes = for, no = null
 
