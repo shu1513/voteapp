@@ -1,0 +1,274 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1600111,
+      "measure_id": "SB 246",
+      "vote_date": "2025-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 246. It would pause new commercial hazardous waste treatment, storage and disposal licenses and expansions for 5 years or until the state adopts an updated waste plan, whichever is later. Afterward, new sites and disposal wells could not go in a community that already has one or had one within the past 25 years, with limited exceptions. It would also raise the landfill fee on waste with raised natural radioactivity from $5 to $12.50 a ton. The Senate passed it 19-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 246. It would pause new commercial hazardous waste treatment, storage and disposal licenses and expansions for 5 years or until the state adopts an updated waste plan, whichever is later. Afterward, new sites and disposal wells could not go in a community that already has one or had one within the past 25 years, with limited exceptions. It would also raise the landfill fee on waste with raised natural radioactivity from $5 to $12.50 a ton. The Senate passed it 19-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1600100,
+      "measure_id": "SB 247",
+      "vote_date": "2025-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 247. It would charge commercial hazardous waste disposal wells a fee of 0.417 cents per gallon of waste injected, adjusted for inflation, with waste from government cleanups exempt. The money would go to a fund that makes grants to the communities that host these wells. The Senate passed it 19-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 247. It would charge commercial hazardous waste disposal wells a fee of 0.417 cents per gallon of waste injected, adjusted for inflation, with waste from government cleanups exempt. The money would go to a fund that makes grants to the communities that host these wells. The Senate passed it 19-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1595924,
+      "measure_id": "SB 46",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 46. It would let the state environment department enter mobile home parks and seasonal mobile home parks whose water runs through the park's own pipes, to investigate complaints that the water reaching a home is unsafe or fails state drinking water standards. The Senate passed it 28-9. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 46. It would let the state environment department enter mobile home parks and seasonal mobile home parks whose water runs through the park's own pipes, to investigate complaints that the water reaching a home is unsafe or fails state drinking water standards. The Senate passed it 28-9. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1603118,
+      "measure_id": "SB 576",
+      "vote_date": "2025-09-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 576. It would create an energy efficiency revolving fund to pay for energy-saving projects in state facilities, giving priority to projects that cut the state's carbon footprint. The state budget office would set terms with agencies tied to the energy savings each project produces. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 576. It would create an energy efficiency revolving fund to pay for energy-saving projects in state facilities, giving priority to projects that cut the state's carbon footprint. The state budget office would set terms with agencies tied to the energy savings each project produces. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1612946,
+      "measure_id": "SB 462",
+      "vote_date": "2025-12-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 462. It would require a state license to sell tobacco and nicotine products at retail, including vapes, and a license for delivery and other third-party sellers. Sellers would have to check photo ID for every sale, and a licensee that sells to someone under 21 would face fines from $250 for a first sale up to $10,000 and loss of the license for a fourth sale within three years. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 462. It would require a state license to sell tobacco and nicotine products at retail, including vapes, and a license for delivery and other third-party sellers. Sellers would have to check photo ID for every sale, and a licensee that sells to someone under 21 would face fines from $250 for a first sale up to $10,000 and loss of the license for a fourth sale within three years. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1713892,
+      "measure_id": "SB 947",
+      "vote_date": "2026-07-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 947. It would overhaul Michigan's dam safety law. Owners would have to register every dam with the state environment department in rounds over about 10 years and keep current inspection, monitoring, maintenance and safety plans. It would also bring federally licensed hydropower dams under state review and require engineers on dam projects to have experience with similar work. The Senate passed it 22-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 947. It would overhaul Michigan's dam safety law. Owners would have to register every dam with the state environment department in rounds over about 10 years and keep current inspection, monitoring, maintenance and safety plans. It would also bring federally licensed hydropower dams under state review and require engineers on dam projects to have experience with similar work. The Senate passed it 22-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1713929,
+      "measure_id": "SB 373",
+      "vote_date": "2026-07-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 373. It would bar leases that charge an extra fee on every allowed way of paying rent. If a lease allows more than one payment method, at least one would have to be free for the tenant. The Senate passed it 24-12 and the House passed it 99-5. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against Senate Bill 373. It would bar leases that charge an extra fee on every allowed way of paying rent. If a lease allows more than one payment method, at least one would have to be free for the tenant. The Senate passed it 24-12 and the House passed it 99-5. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1608965,
+      "measure_id": "SB 515",
+      "vote_date": "2025-10-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 515. It would require landlords to install at least one working carbon monoxide detector in every rental unit that has a landlord-provided fuel-burning appliance or is next to an enclosed garage. A landlord who does not could be fined up to $500. The Senate passed it 23-12. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 515. It would require landlords to install at least one working carbon monoxide detector in every rental unit that has a landlord-provided fuel-burning appliance or is next to an enclosed garage. A landlord who does not could be fined up to $500. The Senate passed it 23-12. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1710020,
+      "measure_id": "SB 962",
+      "vote_date": "2026-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 962. It would direct the Secretary of State to partner with one or more public universities to create a Michigan voting and elections database and institute by November 5, 2027. It would keep a free public archive of election, voter registration and ballot access data from every local government, and support research and training on running elections. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 962. It would direct the Secretary of State to partner with one or more public universities to create a Michigan voting and elections database and institute by November 5, 2027. It would keep a free public archive of election, voter registration and ballot access data from every local government, and support research and training on running elections. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1612977,
+      "measure_id": "SB 232",
+      "vote_date": "2025-12-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 232. It would let the state lower the minimum age for Michigan Reconnect community college grants from 25 to as low as 21, if enough money is set aside to expand the program. A lower age could not be used after September 30, 2032. The Senate passed it 25-10. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 232. It would let the state lower the minimum age for Michigan Reconnect community college grants from 25 to as low as 21, if enough money is set aside to expand the program. A lower age could not be used after September 30, 2032. The Senate passed it 25-10. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1710576,
+      "measure_id": "SB 967",
+      "vote_date": "2026-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 967. It would let developers awarded a new state low-income housing tax credit, given alongside the federal credit, claim it against the state income tax starting in 2027. The state would take back a matching share if the federal credit for the same project is taken back. The Senate passed it 23-13. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 967. It would let developers awarded a new state low-income housing tax credit, given alongside the federal credit, claim it against the state income tax starting in 2027. The state would take back a matching share if the federal credit for the same project is taken back. The Senate passed it 23-13. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1709955,
+      "measure_id": "SB 807",
+      "vote_date": "2026-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 807. It would create a state-run retirement savings program for workers whose employers offer no retirement plan. Workers would be enrolled automatically through payroll unless they opt out, could change or stop contributions at any time, and the state would not guarantee returns. Employers could offer their own plan instead. The Senate passed it 20-18. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 807. It would create a state-run retirement savings program for workers whose employers offer no retirement plan. Workers would be enrolled automatically through payroll unless they opt out, could change or stop contributions at any time, and the state would not guarantee returns. Employers could offer their own plan instead. The Senate passed it 20-18. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1575335,
+      "measure_id": "SB 234",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 234. Starting with the 2025-2026 school year, it would require every school district and charter school to adopt a policy limiting student cellphone use during school hours. Policies would need exceptions for emergencies, medical needs and disability accommodations. The Senate passed it 28-9. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 234. Starting with the 2025-2026 school year, it would require every school district and charter school to adopt a policy limiting student cellphone use during school hours. Policies would need exceptions for emergencies, medical needs and disability accommodations. The Senate passed it 28-9. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1702766,
+      "measure_id": "SB 310",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 310. It would write Michigan's Tri-Share child care program, now a pilot funded year to year in the state budget, into law. It would create a state fund to run the program and recruit employers to take part in each region. The Senate passed it 22-13. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 310. It would write Michigan's Tri-Share child care program, now a pilot funded year to year in the state budget, into law. It would create a state fund to run the program and recruit employers to take part in each region. The Senate passed it 22-13. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1702706,
+      "measure_id": "SB 311",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 311. It would require the state to raise child care subsidy payments to providers each year by the Detroit-area inflation rate, starting October 1, 2027, unless it has already adjusted the rates for that year. The Senate passed it 21-14. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 311. It would require the state to raise child care subsidy payments to providers each year by the Detroit-area inflation rate, starting October 1, 2027, unless it has already adjusted the rates for that year. The Senate passed it 21-14. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
