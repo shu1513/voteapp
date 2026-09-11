@@ -16,9 +16,14 @@ lets a resident sue or complain to the attorney general, requires the attorney
 general to sue, and orders an injunction, amendment or repeal, damages, costs
 and fees when a court finds a violation. Both passed on the same floor
 substitute adopted the day before. HB 4342 adds section 21(4) to the revenue
-sharing act: the state treasurer withholds all payments from a unit that
-enforces a rule violating either act, for each fiscal year beginning on and
-after October 1, 2025.
+sharing act: the state treasurer withholds "any payment" under the act from a
+unit that enforces a rule violating either act, for each fiscal year beginning
+on and after October 1, 2025. The House Fiscal Agency analysis of the adopted
+H-1 reads that as the statutory payments only: Treasury does not withhold the
+share the state constitution requires, and withheld money is paid once the
+unit complies. Review caught that the first descriptions said "all
+revenue-sharing payments"; they now say the Legislature-set payments are
+withheld and the constitutional share is still paid.
 
 ### HB 4340 and HB 4341 — citizenship for state programs
 Two one-section bills with the same sentence: no services, grants or program

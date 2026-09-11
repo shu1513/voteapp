@@ -45,3 +45,10 @@ denying help), and the description says so.
   limits the state must adopt under federal law.
 - **HB 4468**, insurance coverage of care after a gender transition (see
   batch-11 PLAN).
+
+## Review fix
+
+HB 4342 re-judged (1 updated) and the batch re-imported in place; the re-run, stamp
+2026-09-11T19:05:40.287Z, reports 94 rewrites and 742 unchanged, ledger
+`import-hb4342-fix-rerun-report.json` (dry run alongside). The 94 HB 4342 records carry the
+re-run stamp.
