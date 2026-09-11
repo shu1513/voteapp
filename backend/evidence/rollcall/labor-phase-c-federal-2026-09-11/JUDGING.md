@@ -76,7 +76,7 @@ heart attacks and strokes; provisions enacted in the FY2023 defense bill), so
 records in place (`import-rerun-report.json`, stamp
 `2026-09-11T20:19:12.270Z`). The rerun also inserted one record on H.R. 2550:
 Maggie Goodlander (NH), whose candidate row gained its FEC id after the first
-run. Totals now 1,219 records, 247 candidates.
+run. Totals now 1,219 records, 247 candidates, 732 area tags.
 
 ## Duplicates
 

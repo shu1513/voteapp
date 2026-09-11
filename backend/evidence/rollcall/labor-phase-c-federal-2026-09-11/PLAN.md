@@ -1,6 +1,6 @@
 # Federal labor measures reopened (labor phase C)
 
-**9 roll calls, 9 measures, 1,219 records, 247 candidates, 731 area tags.**
+**9 roll calls, 9 measures, 1,219 records, 247 candidates, 732 area tags.**
 
 These federal votes were left pending in earlier runs because no research area
 covered labor or union rights. H.R. 2550 carries the note "no labor research
