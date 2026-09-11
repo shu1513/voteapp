@@ -1,0 +1,39 @@
+{
+  "runId": "rollcall-fetch-senate-117-1-20260911T075548Z",
+  "importerVersion": "rollcall-fetch-v1",
+  "chamber": "senate",
+  "congress": 117,
+  "session": 1,
+  "dryRun": false,
+  "startedAt": "2026-09-11T07:55:48.226Z",
+  "finishedAt": "2026-09-11T07:55:48.692Z",
+  "evidenceDir": "evidence/rollcall/labor-phase-c-federal-2026-09-11",
+  "requestedRolls": 1,
+  "floorVotes": 1,
+  "counts": {
+    "unchanged": 1
+  },
+  "rows": [
+    {
+      "chamber": "senate",
+      "congress": 117,
+      "session": 1,
+      "roll": 489,
+      "machineUrl": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1171/vote_117_1_00489.xml",
+      "outcome": "unchanged",
+      "evidenceFile": "senate-117-1-roll00489.xml",
+      "voteDate": "2021-12-08",
+      "measureId": "S.J.Res. 29",
+      "question": "On the Joint Resolution",
+      "result": "Joint Resolution Passed",
+      "yeas": 52,
+      "nays": 48,
+      "memberVoteCount": 100,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    }
+  ]
+}

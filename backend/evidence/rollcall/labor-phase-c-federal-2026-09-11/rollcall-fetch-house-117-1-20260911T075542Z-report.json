@@ -1,0 +1,60 @@
+{
+  "runId": "rollcall-fetch-house-117-1-20260911T075542Z",
+  "importerVersion": "rollcall-fetch-v1",
+  "chamber": "house",
+  "congress": 117,
+  "session": 1,
+  "dryRun": false,
+  "startedAt": "2026-09-11T07:55:42.891Z",
+  "finishedAt": "2026-09-11T07:55:44.150Z",
+  "evidenceDir": "evidence/rollcall/labor-phase-c-federal-2026-09-11",
+  "requestedRolls": 2,
+  "floorVotes": 2,
+  "counts": {
+    "unchanged": 2
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 70,
+      "machineUrl": "https://clerk.house.gov/evs/2021/roll070.xml",
+      "outcome": "unchanged",
+      "evidenceFile": "house-117-1-roll00070.xml",
+      "voteDate": "2021-03-09",
+      "measureId": "H R 842",
+      "question": "On Passage",
+      "result": "Passed",
+      "yeas": 225,
+      "nays": 206,
+      "memberVoteCount": 432,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    },
+    {
+      "chamber": "house",
+      "congress": 117,
+      "session": 1,
+      "roll": 118,
+      "machineUrl": "https://clerk.house.gov/evs/2021/roll118.xml",
+      "outcome": "unchanged",
+      "evidenceFile": "house-117-1-roll00118.xml",
+      "voteDate": "2021-04-16",
+      "measureId": "H R 1195",
+      "question": "On Passage",
+      "result": "Passed",
+      "yeas": 254,
+      "nays": 166,
+      "memberVoteCount": 429,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    }
+  ]
+}

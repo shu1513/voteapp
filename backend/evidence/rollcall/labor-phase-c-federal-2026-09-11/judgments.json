@@ -1,0 +1,166 @@
+{
+ "judgments": [
+  {
+   "chamber": "house",
+   "congress": 117,
+   "session": 1,
+   "roll": 70,
+   "measure_id": "H R 842",
+   "vote_date": "2021-03-09",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 842, the PRO Act, which would have strengthened workers' right to form unions. It would have barred employers from permanently replacing strikers, fined employers up to $10,000 per violation of labor board orders, and overridden state right-to-work laws for union fees. Many independent contractors would have counted as employees. The House passed it 225-206, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against H.R. 842, the PRO Act, which would have strengthened workers' right to form unions. It would have barred employers from permanently replacing strikers, fined employers up to $10,000 per violation of labor board orders, and overridden state right-to-work laws for union fees. Many independent contractors would have counted as employees. The House passed it 225-206, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "house",
+   "congress": 117,
+   "session": 1,
+   "roll": 118,
+   "measure_id": "H R 1195",
+   "vote_date": "2021-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1195, the Workplace Violence Prevention for Health Care and Social Service Workers Act, which would have required a federal workplace safety standard against violence in hospitals, nursing homes, clinics and social service settings. Employers would have had to write and follow violence prevention plans with input from their workers. The House passed it 254-166, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against H.R. 1195, the Workplace Violence Prevention for Health Care and Social Service Workers Act, which would have required a federal workplace safety standard against violence in hospitals, nursing homes, clinics and social service settings. Employers would have had to write and follow violence prevention plans with input from their workers. The House passed it 254-166, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "senate",
+   "congress": 117,
+   "session": 1,
+   "roll": 489,
+   "measure_id": "S.J.Res. 29",
+   "vote_date": "2021-12-08",
+   "review_status": "approved",
+   "yea_description": "Voted for S.J.Res. 29, which would cancel the federal workplace safety rule requiring large employers to have workers vaccinated against COVID-19 or tested weekly. The Senate passed it 52-48, but the House never voted on it, so it did not become law.",
+   "nay_description": "Voted against S.J.Res. 29, which would cancel the federal workplace safety rule requiring large employers to have workers vaccinated against COVID-19 or tested weekly. The Senate passed it 52-48, but the House never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "house",
+   "congress": 117,
+   "session": 2,
+   "roll": 149,
+   "measure_id": "H R 2499",
+   "vote_date": "2022-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2499, the Federal Firefighters Fairness Act, which presumes that certain cancers and chronic lung disease in federal firefighters with at least five years of service were caused by the job, and does the same for a heart attack or stroke suffered during, or within 24 hours after, firefighting or emergency response. That makes it easier for them and their families to get workers' compensation. The House passed it 288-131. The Senate never voted on this bill, but Congress enacted the same provisions in December 2022 as part of the annual defense bill.",
+   "nay_description": "Voted against H.R. 2499, the Federal Firefighters Fairness Act, which presumes that certain cancers and chronic lung disease in federal firefighters with at least five years of service were caused by the job, and does the same for a heart attack or stroke suffered during, or within 24 hours after, firefighting or emergency response. That makes it easier for them and their families to get workers' compensation. The House passed it 288-131. The Senate never voted on this bill, but Congress enacted the same provisions in December 2022 as part of the annual defense bill.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "house",
+   "congress": 117,
+   "session": 2,
+   "roll": 172,
+   "measure_id": "H R 903",
+   "vote_date": "2022-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 903, the Rights for the TSA Workforce Act, which would have moved airport security screeners into the regular federal personnel system. That would have given them the same union bargaining rights and appeal rights as most federal workers, though still no right to strike. The House passed it 220-201, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against H.R. 903, the Rights for the TSA Workforce Act, which would have moved airport security screeners into the regular federal personnel system. That would have given them the same union bargaining rights and appeal rights as most federal workers, though still no right to strike. The House passed it 220-201, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "house",
+   "congress": 117,
+   "session": 2,
+   "roll": 233,
+   "measure_id": "H R 6087",
+   "vote_date": "2022-06-07",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 6087, the Improving Access to Workers' Compensation for Injured Federal Workers Act, which would have let injured federal workers be treated by nurse practitioners and physician assistants under the federal workers' compensation program, not only by doctors. The House passed it 325-83, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against H.R. 6087, the Improving Access to Workers' Compensation for Injured Federal Workers Act, which would have let injured federal workers be treated by nurse practitioners and physician assistants under the federal workers' compensation program, not only by doctors. The House passed it 325-83, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "house",
+   "congress": 117,
+   "session": 2,
+   "roll": 432,
+   "measure_id": "H R 302",
+   "vote_date": "2022-09-15",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 302, the Preventing a Patronage System Act, which would have barred moving federal civil service jobs into new categories outside the merit system. It would have limited such moves to the job categories that existed in September 2020. The House passed it 225-204, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against H.R. 302, the Preventing a Patronage System Act, which would have barred moving federal civil service jobs into new categories outside the merit system. It would have limited such moves to the job categories that existed in September 2020. The House passed it 225-204, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "house",
+   "congress": 117,
+   "session": 2,
+   "roll": 530,
+   "measure_id": "H R 1948",
+   "vote_date": "2022-12-15",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1948, the VA Employee Fairness Act, which would have let doctors, nurses and other clinical staff at veterans' hospitals bargain and file grievances over matters the Veterans Affairs Secretary can now exclude, such as patient care and pay. The House passed it 219-201, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against H.R. 1948, the VA Employee Fairness Act, which would have let doctors, nurses and other clinical staff at veterans' hospitals bargain and file grievances over matters the Veterans Affairs Secretary can now exclude, such as patient care and pay. The House passed it 219-201, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "chamber": "house",
+   "congress": 119,
+   "session": 1,
+   "roll": 332,
+   "measure_id": "H R 2550",
+   "vote_date": "2025-12-11",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2550, the Protect America's Workforce Act, which would cancel the March 2025 executive order that removed union bargaining rights from most federal workers. Union contracts in effect before the order would stay in force for their full terms. The House passed it 231-195, and the Senate has not voted on it.",
+   "nay_description": "Voted against H.R. 2550, the Protect America's Workforce Act, which would cancel the March 2025 executive order that removed union bargaining rights from most federal workers. Union contracts in effect before the order would stay in force for their full terms. The House passed it 231-195, and the Senate has not voted on it.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
