@@ -1,0 +1,296 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1648857,
+   "measure_id": "HB 174",
+   "vote_date": "2026-03-02",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 174, which ends the path that let some minors start cross-sex hormones under a state approval process. Starting in January 2027, doctors may not give the hormones to a minor who was under 16 when the law took effect or who had not already started them. Doctors may still help a minor stop treatment. The Utah House passed it 53-15 and it was signed into law.",
+   "nay_description": "Voted against House Bill 174, which ends the path that let some minors start cross-sex hormones under a state approval process. Starting in January 2027, doctors may not give the hormones to a minor who was under 16 when the law took effect or who had not already started them. Doctors may still help a minor stop treatment. The Utah House passed it 53-15 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1648856
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1647737,
+   "measure_id": "HB 174",
+   "vote_date": "2026-02-27",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 174, which ends the path that let some minors start cross-sex hormones under a state approval process. Starting in January 2027, doctors may not give the hormones to a minor who was under 16 when the law took effect or who had not already started them. Doctors may still help a minor stop treatment. The Utah Senate passed it 20-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 174, which ends the path that let some minors start cross-sex hormones under a state approval process. Starting in January 2027, doctors may not give the hormones to a minor who was under 16 when the law took effect or who had not already started them. Doctors may still help a minor stop treatment. The Utah Senate passed it 20-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1624770,
+   "measure_id": "HB 258",
+   "vote_date": "2026-02-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 258, which requires a health plan that covers hormones or surgery for a sex transition to also cover the hormones or surgery needed to reverse one. It applies to plans that start or renew in 2027 or later. The Utah House passed it 53-16 and it was signed into law.",
+   "nay_description": "Voted against House Bill 258, which requires a health plan that covers hormones or surgery for a sex transition to also cover the hormones or surgery needed to reverse one. It applies to plans that start or renew in 2027 or later. The Utah House passed it 53-16 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1652163,
+   "measure_id": "HB 258",
+   "vote_date": "2026-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 258, which requires a health plan that covers hormones or surgery for a sex transition to also cover the hormones or surgery needed to reverse one. It applies to plans that start or renew in 2027 or later. The Utah Senate passed it 17-9 and it was signed into law.",
+   "nay_description": "Voted against House Bill 258, which requires a health plan that covers hormones or surgery for a sex transition to also cover the hormones or surgery needed to reverse one. It applies to plans that start or renew in 2027 or later. The Utah Senate passed it 17-9 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1628414,
+   "measure_id": "HB 404",
+   "vote_date": "2026-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 404, which lets landlords, including private owners of dorms, boarding houses, and shared rentals, set aside housing for one sex where tenants share a bedroom or bathroom. They may limit it to people of that sex at birth, and Utah's fair housing law no longer counts this as unlawful bias. The rule does not cover housing run by state or local governments. The Utah House passed it 50-20 and it was signed into law.",
+   "nay_description": "Voted against House Bill 404, which lets landlords, including private owners of dorms, boarding houses, and shared rentals, set aside housing for one sex where tenants share a bedroom or bathroom. They may limit it to people of that sex at birth, and Utah's fair housing law no longer counts this as unlawful bias. The rule does not cover housing run by state or local governments. The Utah House passed it 50-20 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1639755,
+   "measure_id": "HB 404",
+   "vote_date": "2026-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 404, which lets landlords, including private owners of dorms, boarding houses, and shared rentals, set aside housing for one sex where tenants share a bedroom or bathroom. They may limit it to people of that sex at birth, and Utah's fair housing law no longer counts this as unlawful bias. The rule does not cover housing run by state or local governments. The Utah Senate passed it 19-7 and it was signed into law.",
+   "nay_description": "Voted against House Bill 404, which lets landlords, including private owners of dorms, boarding houses, and shared rentals, set aside housing for one sex where tenants share a bedroom or bathroom. They may limit it to people of that sex at birth, and Utah's fair housing law no longer counts this as unlawful bias. The rule does not cover housing run by state or local governments. The Utah Senate passed it 19-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1654849,
+   "measure_id": "HB 209",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 209, which sets up a split ballot for elections starting in November 2026. A voter who has not given papers proving U.S. citizenship may vote only in races for federal office, such as Congress. It also has election officers check voter rolls for people who are not citizens. A voter gets notice and 30 days to dispute before being removed. The Utah House passed it 51-16 and it was signed into law.",
+   "nay_description": "Voted against House Bill 209, which sets up a split ballot for elections starting in November 2026. A voter who has not given papers proving U.S. citizenship may vote only in races for federal office, such as Congress. It also has election officers check voter rolls for people who are not citizens. A voter gets notice and 30 days to dispute before being removed. The Utah House passed it 51-16 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1652526,
+   "measure_id": "HB 209",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 209, which sets up a split ballot for elections starting in November 2026. A voter who has not given papers proving U.S. citizenship may vote only in races for federal office, such as Congress. It also has election officers check voter rolls for people who are not citizens. A voter gets notice and 30 days to dispute before being removed. The Utah Senate passed it 17-8 and it was signed into law.",
+   "nay_description": "Voted against House Bill 209, which sets up a split ballot for elections starting in November 2026. A voter who has not given papers proving U.S. citizenship may vote only in races for federal office, such as Congress. It also has election officers check voter rolls for people who are not citizens. A voter gets notice and 30 days to dispute before being removed. The Utah Senate passed it 17-8 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1656569,
+   "measure_id": "SB 295",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 295, which applies Utah's ban on diversity, equity, and inclusion programs to school clubs. A school may not approve a class-linked club whose purpose centers on a trait such as race, sex, or religion, and no club may limit who joins by such traits. Public colleges must also host debates and events that show differing views on public issues. The Utah House passed it 48-16 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 295, which applies Utah's ban on diversity, equity, and inclusion programs to school clubs. A school may not approve a class-linked club whose purpose centers on a trait such as race, sex, or religion, and no club may limit who joins by such traits. Public colleges must also host debates and events that show differing views on public issues. The Utah House passed it 48-16 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1656568
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2214",
+   "roll": 1656217,
+   "measure_id": "HB 259",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah House passed it 56-14 and it was signed into law.",
+   "nay_description": "Voted against House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah House passed it 56-14 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1655887,
+   "measure_id": "HB 259",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah Senate passed it 22-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 259, which gives parents the right to see all of their minor child's medical records, with a few exceptions such as sexual assault counseling. Hospitals and clinics may not block parents from a child's online records. Starting in 2028 they face a $1,000 fine for each day they fail to comply, and $1,000 for each record not handed over within five business days. The Utah Senate passed it 22-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1656310,
+   "measure_id": "HB 204",
+   "vote_date": "2026-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 204, which requires public colleges to excuse a student from a test or task in a required course when it clashes with the student's sincere religious or moral beliefs. The only exception is when the change would undercut the course's core goals. A neutral reviewer decides when a teacher says no. Teachers also may not make students publicly take a side on a political or social issue as their own. The Utah Senate passed it 17-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 204, which requires public colleges to excuse a student from a test or task in a required course when it clashes with the student's sincere religious or moral beliefs. The only exception is when the change would undercut the course's core goals. A neutral reviewer decides when a teacher says no. Teachers also may not make students publicly take a side on a political or social issue as their own. The Utah Senate passed it 17-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1649359,
+   "measure_id": "SB 174",
+   "vote_date": "2026-03-02",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 174, which lets health care workers refuse to take part in any service that goes against their religious beliefs or conscience, such as birth control, abortion, or gender transition care. Employers may not punish them for it. A provider who refuses must post a notice that points patients to a state list of others who offer the service. Emergency care rules still apply. The Utah Senate passed it 22-7 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 174, which lets health care workers refuse to take part in any service that goes against their religious beliefs or conscience, such as birth control, abortion, or gender transition care. Employers may not punish them for it. A provider who refuses must post a notice that points patients to a state list of others who offer the service. Emergency care rules still apply. The Utah Senate passed it 22-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1655846,
+   "measure_id": "HB 136",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 136, which requires police to tow a car when the driver has no license and the officer cannot confirm one was issued, with some exceptions. Officers must take a quick fingerprint of a driver they cannot identify. A second offense of driving without a license becomes a misdemeanor. The state's fee to get back a towed car rises from $425 to $600. The Utah Senate passed it 20-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 136, which requires police to tow a car when the driver has no license and the officer cannot confirm one was issued, with some exceptions. Officers must take a quick fingerprint of a driver they cannot identify. A second offense of driving without a license becomes a misdemeanor. The state's fee to get back a towed car rises from $425 to $600. The Utah Senate passed it 20-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1655065
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2214",
+   "roll": 1653450,
+   "measure_id": "SB 153",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 153, which made most voter records that had been private become public on May 25, 2026. A voter can keep a record private only by proving they are at risk, such as a victim of domestic violence or a police officer. The voter list may be used only for political and other lawful purposes, and misuse is a crime. Clerks must also remove dead voters within five work days of notice. The Utah Senate passed it 22-7 and it was signed into law.",
+   "nay_description": "Voted against Senate Bill 153, which made most voter records that had been private become public on May 25, 2026. A voter can keep a record private only by proving they are at risk, such as a victim of domestic violence or a police officer. The voter list may be used only for political and other lawful purposes, and misuse is a crime. Clerks must also remove dead voters within five work days of notice. The Utah Senate passed it 22-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1653449
+   ]
+  }
+ ]
+}

@@ -210,8 +210,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0117	H		1628977	2026-02-10	59	10	1	4	signed	screened	not-divided	House/ passed 3rd reading	Organ Donation Amendments
 2214	HB0117	S		1646002	2026-02-26	19	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Organ Donation Amendments
 2214	HB0118	H		1631419	2026-02-12	58	13	1	4	signed	screened	not-divided	House/ passed 3rd reading	Driver Training Schools for Commercial Driver License Amendments
-2214	HB0118	H		1656689	2026-03-06	46	14	1	4	signed	deferred:operator-direction	CDL applicants attest to English ability	House/ concurs with Senate amendment	Driver Training Schools for Commercial Driver License Amendments
-2214	HB0118	S		1656688	2026-03-06	21	6	1	4	signed	deferred:operator-direction	CDL applicants attest to English ability	Senate/ passed 2nd & 3rd readings/ suspension	Driver Training Schools for Commercial Driver License Amendments
+2214	HB0118	H		1656689	2026-03-06	46	14	1	4	signed	dropped:no-area	CDL English-ability acknowledgment and failure tracking; narrow licensing	House/ concurs with Senate amendment	Driver Training Schools for Commercial Driver License Amendments
+2214	HB0118	S		1656688	2026-03-06	21	6	1	4	signed	dropped:no-area	CDL English-ability acknowledgment and failure tracking; narrow licensing	Senate/ passed 2nd & 3rd readings/ suspension	Driver Training Schools for Commercial Driver License Amendments
 2214	HB0119	H		1644361	2026-02-25	67	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Automotive Repair Business Amendments
 2214	HB0119	H		1656683	2026-03-06	68	1	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Automotive Repair Business Amendments
 2214	HB0119	S		1656682	2026-03-06	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Automotive Repair Business Amendments
@@ -243,7 +243,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0136	H		1626290	2026-02-09	55	12	1	4	signed	screened	not-divided	House/ passed 3rd reading	Unlicensed Driver Amendments
 2214	HB0136	H		1656105	2026-03-06	57	13	1	4	signed	screened	not-divided	House Conference Committee - Final Passage	Unlicensed Driver Amendments
 2214	HB0136	S		1655065	2026-03-05	20	7	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 2nd & 3rd readings/ suspension	Unlicensed Driver Amendments
-2214	HB0136	S		1655846	2026-03-05	20	6	1	4	signed	deferred:operator-direction	vehicle impound and identification for drivers without a valid credential	Senate Conference Committee - Final Passage	Unlicensed Driver Amendments
+2214	HB0136	S		1655846	2026-03-05	20	6	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate Conference Committee - Final Passage	Unlicensed Driver Amendments
 2214	HB0137	H		1639527	2026-02-19	63	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Violent Crime Clearance Rate Amendments
 2214	HB0137	S		1656472	2026-03-06	26	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Violent Crime Clearance Rate Amendments
 2214	HB0138	H		1640671	2026-02-23	70	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Child Abuse Homicide Amendments
@@ -295,8 +295,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0172	S		1639798	2026-02-20	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Food Safety Amendments
 2214	HB0174	H		1624797	2026-02-05	54	15	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Sex Characteristic Change Treatment Amendments
 2214	HB0174	H		1648856	2026-03-02	48	16	1	4	signed	screened	not-the-chambers-final-roll	House/ concurs with Senate amendment	Sex Characteristic Change Treatment Amendments
-2214	HB0174	H		1648857	2026-03-02	53	15	1	4	signed	deferred:operator-direction	bars cross-sex hormones and puberty blockers for minors	House/ concurs with Senate amendment	Sex Characteristic Change Treatment Amendments
-2214	HB0174	S		1647737	2026-02-27	20	6	1	4	signed	deferred:operator-direction	bars cross-sex hormones and puberty blockers for minors	Senate/ passed 3rd reading	Sex Characteristic Change Treatment Amendments
+2214	HB0174	H		1648857	2026-03-02	53	15	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	House/ concurs with Senate amendment	Sex Characteristic Change Treatment Amendments
+2214	HB0174	S		1647737	2026-02-27	20	6	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ passed 3rd reading	Sex Characteristic Change Treatment Amendments
 2214	HB0176	H		1648045	2026-02-27	65	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Trust Business Modifications
 2214	HB0176	S		1656743	2026-03-06	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Trust Business Modifications
 2214	HB0177	H		1629060	2026-02-10	69	2	1	4	signed	screened	not-divided	House/ passed 3rd reading	ROTC Resident Student Status
@@ -338,7 +338,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0199	S		1631668	2026-02-12	29	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Health Data Amendments
 2214	HB0204	H		1634954	2026-02-17	54	14	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Higher Education Student Belief Accommodation
 2214	HB0204	H		1656757	2026-03-06	57	14	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Higher Education Student Belief Accommodation
-2214	HB0204	S		1656310	2026-03-06	17	5	1	4	signed	deferred:operator-direction	broadens religious and conscience accommodation for college students	Senate/ passed 2nd & 3rd readings/ suspension	Higher Education Student Belief Accommodation
+2214	HB0204	S		1656310	2026-03-06	17	5	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ passed 2nd & 3rd readings/ suspension	Higher Education Student Belief Accommodation
 2214	HB0205	H		1630032	2026-02-11	71	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Substance Use Intervention Amendments
 2214	HB0205	H		1656385	2026-03-06	69	1	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Substance Use Intervention Amendments
 2214	HB0205	S		1655901	2026-03-05	28	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Substance Use Intervention Amendments
@@ -347,8 +347,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0207	H		1655914	2026-03-05	67	1	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Competency Amendments
 2214	HB0207	S		1655371	2026-03-05	23	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Competency Amendments
 2214	HB0209	H		1616956	2026-01-26	62	13	1	4	signed	screened	not-divided	House/ passed 3rd reading	Voting Amendments
-2214	HB0209	H		1654849	2026-03-05	51	16	1	4	signed	deferred:operator-direction	election officers may independently find a registered voter is not a citizen; same class as HB 300 (2025)	House/ concurs with Senate amendment	Voting Amendments
-2214	HB0209	S		1652526	2026-03-04	17	8	1	4	signed	deferred:operator-direction	election officers may independently find a registered voter is not a citizen; same class as HB 300 (2025)	Senate/ passed 2nd & 3rd readings/ suspension	Voting Amendments
+2214	HB0209	H		1654849	2026-03-05	51	16	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	House/ concurs with Senate amendment	Voting Amendments
+2214	HB0209	S		1652526	2026-03-04	17	8	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ passed 2nd & 3rd readings/ suspension	Voting Amendments
 2214	HB0210	H		1648833	2026-03-02	31	42	0	6	none	screened	not-enacted-status-6	House/ failed	Tax Penalties Amendments
 2214	HB0211	H		1619611	2026-01-29	70	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Real Property Recording Amendments
 2214	HB0211	S		1629999	2026-02-11	24	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Real Property Recording Amendments
@@ -415,11 +415,11 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0251	S		1646759	2026-02-26	19	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Diligence Claims Water Amendments
 2214	HB0255	H		1637023	2026-02-18	65	1	1	6	none	screened	not-divided	House/ passed 3rd reading	Health Care Sharing Ministry Amendments
 2214	HB0257	H		1647336	2026-02-26	26	45	0	6	none	screened	not-enacted-status-6	House/ failed	Opiate Information Amendments
-2214	HB0258	H		1624770	2026-02-05	53	16	1	4	signed	deferred:operator-direction	requires coverage to reverse a sex transition where a plan covers transition	House/ passed 3rd reading	Insurance Coverage Amendments
-2214	HB0258	S		1652163	2026-03-03	17	9	1	4	signed	deferred:operator-direction	requires coverage to reverse a sex transition where a plan covers transition	Senate/ passed 3rd reading	Insurance Coverage Amendments
+2214	HB0258	H		1624770	2026-02-05	53	16	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	House/ passed 3rd reading	Insurance Coverage Amendments
+2214	HB0258	S		1652163	2026-03-03	17	9	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ passed 3rd reading	Insurance Coverage Amendments
 2214	HB0259	H		1638320	2026-02-19	61	11	1	4	signed	screened	not-divided	House/ passed 3rd reading	Parental Access to Children's Medical Records Amendments
-2214	HB0259	H		1656217	2026-03-06	56	14	1	4	signed	deferred:operator-direction	parents' access to a child's medical records	House/ concurs with Senate amendment	Parental Access to Children's Medical Records Amendments
-2214	HB0259	S		1655887	2026-03-05	22	6	1	4	signed	deferred:operator-direction	parents' access to a child's medical records	Senate/ passed 2nd & 3rd readings/ suspension	Parental Access to Children's Medical Records Amendments
+2214	HB0259	H		1656217	2026-03-06	56	14	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	House/ concurs with Senate amendment	Parental Access to Children's Medical Records Amendments
+2214	HB0259	S		1655887	2026-03-05	22	6	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ passed 2nd & 3rd readings/ suspension	Parental Access to Children's Medical Records Amendments
 2214	HB0260	H		1625587	2026-02-06	62	4	1	4	signed	screened	not-divided	House/ passed 3rd reading	Unauthorized Practice of Law Amendments
 2214	HB0260	H		1656744	2026-03-06	71	1	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Unauthorized Practice of Law Amendments
 2214	HB0260	S		1656557	2026-03-06	25	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Unauthorized Practice of Law Amendments
@@ -471,7 +471,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0291	S		1639768	2026-02-20	23	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Security and Land Restriction Amendments
 2214	HB0293	H		1628520	2026-02-10	57	8	1	4	signed	screened	not-divided	House/ passed 3rd reading	Public Education Student Athlete Protections
 2214	HB0293	H		1648565	2026-03-02	57	7	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Public Education Student Athlete Protections
-2214	HB0293	S		1647921	2026-02-27	17	10	1	4	signed	deferred:operator-direction	schools may not join an athletics association lacking certain eligibility policies	Senate/ passed 3rd reading	Public Education Student Athlete Protections
+2214	HB0293	S		1647921	2026-02-27	17	10	1	4	signed	dropped:no-area	enacted change is sports moratoriums and penalty enforcement; eligibility rules already law	Senate/ passed 3rd reading	Public Education Student Athlete Protections
 2214	HB0294	H		1643354	2026-02-24	55	14	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Employer Verification Amendments
 2214	HB0295	H		1647435	2026-02-26	59	2	1	6	none	screened	not-divided	House/ passed 3rd reading	Overdose Amendments
 2214	HB0296	H		1625738	2026-02-06	48	19	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ passed 3rd reading	Water Commitment Amendments
@@ -648,8 +648,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0401	S		1655729	2026-03-05	26	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Geothermal Study Amendments
 2214	HB0402	H		1642965	2026-02-24	66	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	EMS Controlled Substance Licensing Amendments
 2214	HB0402	S		1652591	2026-03-04	23	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	EMS Controlled Substance Licensing Amendments
-2214	HB0404	H		1628414	2026-02-10	50	20	1	4	signed	deferred:operator-direction	lets landlords restrict single-sex housing by biological sex	House/ passed 3rd reading	Sex-Designated Housing Amendments
-2214	HB0404	S		1639755	2026-02-20	19	7	1	4	signed	deferred:operator-direction	lets landlords restrict single-sex housing by biological sex	Senate/ passed 3rd reading	Sex-Designated Housing Amendments
+2214	HB0404	H		1628414	2026-02-10	50	20	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	House/ passed 3rd reading	Sex-Designated Housing Amendments
+2214	HB0404	S		1639755	2026-02-20	19	7	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ passed 3rd reading	Sex-Designated Housing Amendments
 2214	HB0405	H		1640233	2026-02-20	42	23	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	State Purchasing Reserve Funding
 2214	HB0407	H		1651930	2026-03-03	72	1	1	6	none	screened	not-divided	House/ passed 3rd reading	Public Education Information System
 2214	HB0408	H		1648595	2026-03-02	66	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Data Sharing Amendments
@@ -1181,7 +1181,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0153	H		1652242	2026-03-04	56	12	1	4	signed	screened	not-divided	House/ passed 3rd reading	Election Amendments
 2214	SB0153	S		1642280	2026-02-24	24	4	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Election Amendments
 2214	SB0153	S		1653449	2026-03-04	19	5	1	4	signed	screened	not-the-chambers-final-roll	Senate/ concurs with House amendment	Election Amendments
-2214	SB0153	S		1653450	2026-03-04	22	7	1	4	signed	deferred:operator-direction	makes most private voter records public but limits use of the voter list with new crimes; privacy runs both ways	Senate/ concurs with House amendment	Election Amendments
+2214	SB0153	S		1653450	2026-03-04	22	7	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ concurs with House amendment	Election Amendments
 2214	SB0154	H		1656739	2026-03-06	66	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Protection and Advocacy Agency Reporting
 2214	SB0154	S		1643014	2026-02-24	24	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Protection and Advocacy Agency Reporting
 2214	SB0154	S		1656740	2026-03-06	26	2	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Protection and Advocacy Agency Reporting
@@ -1212,13 +1212,13 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0167	S		1639893	2026-02-20	22	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Reintegration for Disciplined Students
 2214	SB0167	S		1654255	2026-03-05	21	0	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Reintegration for Disciplined Students
 2214	SB0169	S		1647805	2026-02-27	13	12	0	6	none	screened	not-enacted-status-6	Senate/ failed	High School Graduation Amendments
-2214	SB0170	H		1656753	2026-03-06	45	14	1	4	signed	deferred:operator-direction	parents may decline vitamin K for newborns; same class as the fluoride call	House/ passed 3rd reading	Vitamin K Amendments
+2214	SB0170	H		1656753	2026-03-06	45	14	1	4	signed	dropped:mixed	duty to explain vitamin K risks plus parent's right to decline; pulls both ways	House/ passed 3rd reading	Vitamin K Amendments
 2214	SB0170	S		1646633	2026-02-26	15	5	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	Vitamin K Amendments
-2214	SB0170	S		1656754	2026-03-06	22	6	1	4	signed	deferred:operator-direction	parents may decline vitamin K for newborns; same class as the fluoride call	Senate/ concurs with House amendment	Vitamin K Amendments
+2214	SB0170	S		1656754	2026-03-06	22	6	1	4	signed	dropped:mixed	duty to explain vitamin K risks plus parent's right to decline; pulls both ways	Senate/ concurs with House amendment	Vitamin K Amendments
 2214	SB0172	H		1655150	2026-03-05	64	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Airport and Air Amendments
 2214	SB0172	S		1635763	2026-02-17	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Airport and Air Amendments
 2214	SB0174	H		1653965	2026-03-04	54	13	1	4	signed	screened	not-divided	House/ passed 3rd reading	Exercise of Religious Beliefs and Conscience Amendments
-2214	SB0174	S		1649359	2026-03-02	22	7	1	4	signed	deferred:operator-direction	health care provider right to refuse services on religious or conscience grounds	Senate/ passed 3rd reading	Exercise of Religious Beliefs and Conscience Amendments
+2214	SB0174	S		1649359	2026-03-02	22	7	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	Senate/ passed 3rd reading	Exercise of Religious Beliefs and Conscience Amendments
 2214	SB0175	H		1652240	2026-03-04	66	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Health Insurance Revisions
 2214	SB0175	S		1644343	2026-02-25	22	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Health Insurance Revisions
 2214	SB0176	H		1656635	2026-03-06	35	34	0	6	none	screened	not-enacted-status-6	House/ failed	Landscaping Procurement Amendments
@@ -1376,9 +1376,9 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0267	S		1650891	2026-03-03	24	3	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Software in Education Amendments
 2214	SB0267	S		1655976	2026-03-06	28	1	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Software in Education Amendments
 2214	SB0268	H		1655784	2026-03-05	57	15	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Religious Curriculum in Schools
-2214	SB0268	H		1656500	2026-03-06	45	14	1	4	signed	deferred:operator-direction	religious liberty in curricula	House Conference Committee - Final Passage	Religious Curriculum in Schools
+2214	SB0268	H		1656500	2026-03-06	45	14	1	4	signed	dropped:mixed	student religious-expression shield beside a required 'primacy of religious liberty' standard (TX SB 11 shape)	House Conference Committee - Final Passage	Religious Curriculum in Schools
 2214	SB0268	S		1644060	2026-02-25	20	6	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	Religious Curriculum in Schools
-2214	SB0268	S		1656501	2026-03-06	19	5	1	4	signed	deferred:operator-direction	religious liberty in curricula	Senate/ concurs with House amendment	Religious Curriculum in Schools
+2214	SB0268	S		1656501	2026-03-06	19	5	1	4	signed	dropped:mixed	student religious-expression shield beside a required 'primacy of religious liberty' standard (TX SB 11 shape)	Senate/ concurs with House amendment	Religious Curriculum in Schools
 2214	SB0269	S		1644565	2026-02-25	13	10	0	6	none	screened	not-the-chambers-final-roll	Senate/ failed	School Board Meeting Notification Requirements
 2214	SB0269	S		1644566	2026-02-25	20	9	1	6	none	screened	not-enacted-status-6	Senate/ passed 3rd reading	School Board Meeting Notification Requirements
 2214	SB0270	H		1653186	2026-03-04	66	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	State Court Amendments
@@ -1416,7 +1416,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0292	S		1649998	2026-03-02	21	5	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Autonomous Systems Amendments
 2214	SB0292	S		1656376	2026-03-06	24	2	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Autonomous Systems Amendments
 2214	SB0295	H		1656568	2026-03-06	48	23	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Intellectual Diversity in Education and Government
-2214	SB0295	H		1656569	2026-03-06	48	16	1	4	signed	deferred:operator-direction	intellectual diversity rules for schools, universities and state government	House/ passed 3rd reading	Intellectual Diversity in Education and Government
+2214	SB0295	H		1656569	2026-03-06	48	16	1	4	signed	batch-10	imported 2026-09-11, run 06:24:21.375Z	House/ passed 3rd reading	Intellectual Diversity in Education and Government
 2214	SB0295	S		1648202	2026-02-27	22	3	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Intellectual Diversity in Education and Government
 2214	SB0295	S		1656763	2026-03-06	27	2	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Intellectual Diversity in Education and Government
 2214	SB0296	H		1656484	2026-03-06	63	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Student Consent Amendments

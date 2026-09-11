@@ -165,8 +165,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0076	H		1510101	2025-03-03	71	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Public Education Revisions
 2137	HB0076	S		1510100	2025-02-28	23	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Public Education Revisions
 2137	HB0077	H		1510085	2025-02-21	49	20	1	3	became-law-without-signature	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Flag Display Amendments
-2137	HB0077	H		1510089	2025-03-06	53	20	1	3	became-law-without-signature	deferred	user-direction: flag display on government property, contested direction and general is barred	House/ concurs with Senate amendment	Flag Display Amendments
-2137	HB0077	S		1510088	2025-03-06	21	8	1	3	became-law-without-signature	deferred	user-direction: flag display on government property, contested direction and general is barred	Senate/ passed 2nd & 3rd readings/ suspension	Flag Display Amendments
+2137	HB0077	H		1510089	2025-03-06	53	20	1	3	became-law-without-signature	dropped:no-direction	facially neutral rule on flags government may display; no area measures government speech	House/ concurs with Senate amendment	Flag Display Amendments
+2137	HB0077	S		1510088	2025-03-06	21	8	1	3	became-law-without-signature	dropped:no-direction	facially neutral rule on flags government may display; no area measures government speech	Senate/ passed 2nd & 3rd readings/ suspension	Flag Display Amendments
 2137	HB0078	H		1510115	2025-02-11	73	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Criminal Offenses Amendments
 2137	HB0078	H		1510119	2025-03-05	72	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Criminal Offenses Amendments
 2137	HB0078	S		1510118	2025-03-05	20	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Offenses Amendments
@@ -175,8 +175,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0080	H		1512001	2025-02-04	64	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Disorderly Conduct Amendments
 2137	HB0080	H		1512005	2025-03-07	65	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Disorderly Conduct Amendments
 2137	HB0080	S		1512004	2025-03-07	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Disorderly Conduct Amendments
-2137	HB0081	H		1510110	2025-02-07	51	19	1	4	signed	deferred	user-direction: fluoride ban, the operator does not accept the mainstream-consensus tiebreak on fluoride	House/ passed 3rd reading	Fluoride Amendments
-2137	HB0081	S		1510113	2025-02-21	18	8	1	4	signed	deferred	user-direction: fluoride ban, the operator does not accept the mainstream-consensus tiebreak on fluoride	Senate/ passed 3rd reading	Fluoride Amendments
+2137	HB0081	H		1510110	2025-02-07	51	19	1	4	signed	dropped:no-direction	fluoride ban; user does not accept the consensus tiebreak on fluoride (FL SB 700), no other strand	House/ passed 3rd reading	Fluoride Amendments
+2137	HB0081	S		1510113	2025-02-21	18	8	1	4	signed	dropped:no-direction	fluoride ban; user does not accept the consensus tiebreak on fluoride (FL SB 700), no other strand	Senate/ passed 3rd reading	Fluoride Amendments
 2137	HB0082	H		1510128	2025-01-31	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Law Enforcement Modifications
 2137	HB0082	S		1510131	2025-02-27	22	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Law Enforcement Modifications
 2137	HB0084	H		1510134	2025-02-10	73	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Vaccine Amendments
@@ -372,7 +372,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0208	S		1513671	2025-03-04	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Urban Farming Assessment Modifications
 2137	HB0209	H		1511873	2025-02-06	69	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Homeschool Amendments
 2137	HB0209	H		1511879	2025-03-05	62	13	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Homeschool Amendments
-2137	HB0209	S		1511878	2025-03-03	20	5	1	4	signed	deferred:operator-direction	removes homeschool affidavit and criminal-record attestation steps; parental-rights versus accountability direction is contested	Senate/ passed 3rd reading	Homeschool Amendments
+2137	HB0209	S		1511878	2025-03-03	20	5	1	4	signed	dropped:no-area	homeschool affidavit replaced by notice (also drops the child-abuser bar); no area covers home education	Senate/ passed 3rd reading	Homeschool Amendments
 2137	HB0210	H		1513574	2025-02-19	73	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Higher Education Board of Trustees Amendments
 2137	HB0212	H		1513531	2025-02-10	74	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Advanced Transmission Technologies
 2137	HB0212	S		1513534	2025-02-21	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Advanced Transmission Technologies
@@ -393,7 +393,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0225	H		1512841	2025-02-19	45	26	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	School Zone Speeding Amendments
 2137	HB0226	H		1514201	2025-02-12	62	9	1	4	signed	screened	not-divided	House/ passed 3rd reading	Criminal Amendments
 2137	HB0226	H		1514208	2025-03-06	56	11	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Criminal Amendments
-2137	HB0226	S		1514207	2025-03-06	21	8	1	4	signed	deferred:operator-direction	sheriff and prison must alert federal immigration authorities before releasing an unlawfully present person after a sentence; the immigration area scores lawful immigration, so direction is an operator call	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Amendments
+2137	HB0226	S		1514207	2025-03-06	21	8	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ passed 2nd & 3rd readings/ suspension	Criminal Amendments
 2137	HB0227	H		1513927	2025-02-25	44	20	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Restricted Person Amendments
 2137	HB0228	H		1510562	2025-02-06	70	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Public Education Immunization Amendments
 2137	HB0228	S		1510565	2025-02-28	24	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Public Education Immunization Amendments
@@ -404,8 +404,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0230	S		1511967	2025-03-07	19	7	1	4	signed	dropped:no-direction	digital asset and blockchain rights; Ohio HB 116 precedent, no honest direction	Senate/ passed 2nd & 3rd readings/ suspension	Blockchain and Digital Innovation Amendments
 2137	HB0231	H		1512048	2025-03-04	50	20	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Primary Election Amendments
 2137	HB0233	H		1511505	2025-02-21	51	14	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	School Curriculum Amendments
-2137	HB0233	H		1511508	2025-03-07	52	13	1	4	signed	deferred	user-direction: bars abortion providers from school health instruction, area and direction both arguable	House/ concurs with Senate amendment	School Curriculum Amendments
-2137	HB0233	S		1511507	2025-03-07	18	8	1	4	signed	deferred	user-direction: bars abortion providers from school health instruction, area and direction both arguable	Senate/ passed 2nd & 3rd readings/ suspension	School Curriculum Amendments
+2137	HB0233	H		1511508	2025-03-07	52	13	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	House/ concurs with Senate amendment	School Curriculum Amendments
+2137	HB0233	S		1511507	2025-03-07	18	8	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ passed 2nd & 3rd readings/ suspension	School Curriculum Amendments
 2137	HB0234	H		1510582	2025-02-10	73	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Motorcycle Safety Amendments
 2137	HB0234	S		1510585	2025-02-21	17	10	1	4	signed	dropped:not-recognizable	fine for riding a motorcycle without an endorsement	Senate/ passed 3rd reading	Motorcycle Safety Amendments
 2137	HB0235	H		1510551	2025-02-05	74	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	County Auditor Modifications
@@ -438,7 +438,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0251	H		1511363	2025-02-11	52	21	1	4	signed	batch-02	imported	House/ passed 3rd reading	Pollinator Program Amendments
 2137	HB0251	S		1511366	2025-03-05	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Pollinator Program Amendments
 2137	HB0252	H		1510619	2025-02-03	60	14	1	4	signed	screened	not-divided	House/ passed 3rd reading	State Custody Amendments
-2137	HB0252	S		1510622	2025-02-20	19	6	1	4	signed	deferred:operator-direction	bars starting cross-sex hormones or sex-change surgery for prisoners and youth in state custody; same contested class as HB 77	Senate/ passed 3rd reading	State Custody Amendments
+2137	HB0252	S		1510622	2025-02-20	19	6	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ passed 3rd reading	State Custody Amendments
 2137	HB0253	H		1510632	2025-02-06	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Agriculture and Food Amendments
 2137	HB0253	S		1510635	2025-02-20	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Agriculture and Food Amendments
 2137	HB0254	H		1512963	2025-02-10	58	14	1	4	signed	screened	not-divided	House/ passed 3rd reading	Waste Classification Amendments
@@ -472,13 +472,13 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0265	S		1511561	2025-03-04	21	5	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Higher Education Strategic Reinvestment
 2137	HB0266	H		1510690	2025-02-11	74	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Veteran Housing Amendments
 2137	HB0266	S		1510693	2025-02-21	22	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Veteran Housing Amendments
-2137	HB0267	H		1510685	2025-01-27	42	32	1	4	signed	deferred	user-direction: public sector union bargaining ban, no research area reaches a public employer and the 2025 Second Special Session repealed it by HB 2001	House/ passed 3rd reading	Public Sector Labor Union Amendments
-2137	HB0267	S		1510688	2025-02-06	16	13	1	4	signed	deferred	user-direction: public sector union bargaining ban, no research area reaches a public employer and the 2025 Second Special Session repealed it by HB 2001	Senate/ passed 3rd reading	Public Sector Labor Union Amendments
+2137	HB0267	H		1510685	2025-01-27	42	32	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	House/ passed 3rd reading	Public Sector Labor Union Amendments
+2137	HB0267	S		1510688	2025-02-06	16	13	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ passed 3rd reading	Public Sector Labor Union Amendments
 2137	HB0268	H		1513023	2025-02-27	67	2	1	4	signed	screened	not-divided	House/ passed 3rd reading	Nonresident Online School Amendments
 2137	HB0268	S		1513025	2025-03-07	23	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Nonresident Online School Amendments
 2137	HB0269	H		1510696	2025-01-28	59	13	1	4	signed	screened	not-divided	House/ passed 3rd reading	Privacy Protections in Sex-designated Areas
 2137	HB0269	H		1510700	2025-02-10	59	14	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Privacy Protections in Sex-designated Areas
-2137	HB0269	S		1510699	2025-02-06	20	7	1	4	signed	deferred:operator-direction	privacy in sex-designated areas including campus housing; same contested class as HB 77	Senate/ passed 3rd reading	Privacy Protections in Sex-designated Areas
+2137	HB0269	S		1510699	2025-02-06	20	7	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ passed 3rd reading	Privacy Protections in Sex-designated Areas
 2137	HB0270	H		1514034	2025-02-27	70	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Voter Registration Records Amendments
 2137	HB0271	H		1514119	2025-02-11	69	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Meeting or Procession Disruption Amendments
 2137	HB0272	H		1510710	2025-02-14	73	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Vehicle Assessment Amendments
@@ -500,8 +500,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0279	H		1511750	2025-02-24	67	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Earned Wage Access Services Act
 2137	HB0279	S		1511752	2025-03-04	26	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Earned Wage Access Services Act
 2137	HB0281	H		1511783	2025-02-11	48	19	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Health Curriculum and Procedures Amendments
-2137	HB0281	H		1511788	2025-03-07	53	16	1	4	signed	deferred	user-direction: parental consent for school health services, area and direction both arguable	House/ concurs with Senate amendment	Health Curriculum and Procedures Amendments
-2137	HB0281	S		1511787	2025-03-07	21	7	1	4	signed	deferred	user-direction: parental consent for school health services, area and direction both arguable	Senate/ passed 2nd & 3rd readings/ suspension	Health Curriculum and Procedures Amendments
+2137	HB0281	H		1511788	2025-03-07	53	16	1	4	signed	dropped:mixed	parental consent and topic control for school mental health plus abstinence-centered curriculum rewrite; strands pull different ways	House/ concurs with Senate amendment	Health Curriculum and Procedures Amendments
+2137	HB0281	S		1511787	2025-03-07	21	7	1	4	signed	dropped:mixed	parental consent and topic control for school mental health plus abstinence-centered curriculum rewrite; strands pull different ways	Senate/ passed 2nd & 3rd readings/ suspension	Health Curriculum and Procedures Amendments
 2137	HB0282	H		1510703	2025-02-10	69	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Health and Human Services Modifications
 2137	HB0282	S		1510707	2025-02-27	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Health and Human Services Modifications
 2137	HB0283	H		1512117	2025-02-13	69	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Child and Family Services Amendments
@@ -528,8 +528,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0298	S		1510787	2025-03-05	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Volunteer Emergency Medical Service Personnel Insurance Program Amendments
 2137	HB0299	H		1513445	2025-02-18	73	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Election Code Time Computation Revisions
 2137	HB0300	H		1512096	2025-02-25	57	15	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Amendments to Election Law
-2137	HB0300	H		1512100	2025-03-06	56	15	1	4	signed	deferred:operator-direction	vote-by-mail overhaul: ID digits on return envelopes plus opt-in mail ballots from 2029; election_integrity direction contested	House/ concurs with Senate amendment	Amendments to Election Law
-2137	HB0300	S		1512099	2025-03-06	19	10	1	4	signed	deferred:operator-direction	vote-by-mail overhaul: ID digits on return envelopes plus opt-in mail ballots from 2029; election_integrity direction contested	Senate/ passed 2nd & 3rd readings/ suspension	Amendments to Election Law
+2137	HB0300	H		1512100	2025-03-06	56	15	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	House/ concurs with Senate amendment	Amendments to Election Law
+2137	HB0300	S		1512099	2025-03-06	19	10	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ passed 2nd & 3rd readings/ suspension	Amendments to Election Law
 2137	HB0301	H		1511480	2025-02-21	66	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Ambulance Provider Payment Amendments
 2137	HB0301	S		1511482	2025-03-06	26	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Ambulance Provider Payment Amendments
 2137	HB0302	H		1510790	2025-02-14	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Minors in State Custody Amendments
@@ -681,7 +681,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0388	S		1511225	2025-03-05	10	17	0	4	signed	screened	not-the-chambers-final-roll	Senate/ 2nd & 3rd readings/ suspension	Antiquities Protection Amendments
 2137	HB0388	S		1511226	2025-03-06	17	8	1	4	signed	dropped:not-recognizable	antiquities awareness campaign	Senate/ passed 2nd & 3rd readings/ suspension	Antiquities Protection Amendments
 2137	HB0390	H		1512072	2025-02-24	64	3	1	4	signed	screened	not-divided	House/ passed 3rd reading	Religious Expression in Higher Education
-2137	HB0390	S		1512074	2025-03-07	21	6	1	4	signed	deferred:operator-direction	religious student organization protections in higher education; civil_rights direction contested	Senate/ passed 2nd & 3rd readings/ suspension	Religious Expression in Higher Education
+2137	HB0390	S		1512074	2025-03-07	21	6	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ passed 2nd & 3rd readings/ suspension	Religious Expression in Higher Education
 2137	HB0391	H		1512876	2025-02-21	68	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Emergency Medical Services Revisions
 2137	HB0391	H		1512879	2025-03-07	71	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Emergency Medical Services Revisions
 2137	HB0391	S		1512878	2025-03-06	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Emergency Medical Services Revisions
@@ -821,7 +821,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	HB0478	H		1513314	2025-03-07	68	1	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Brine Mining Amendments
 2137	HB0478	S		1513313	2025-03-07	23	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Brine Mining Amendments
 2137	HB0479	H		1511632	2025-02-25	50	14	1	4	signed	screened	not-the-chambers-final-roll	House/ passed 3rd reading	Student Athlete Revisions
-2137	HB0479	H		1511636	2025-03-07	50	15	1	4	signed	deferred:operator-direction	lets universities pay athletes directly for name, image and likeness; same open question as Wyoming SF 44	House/ concurs with Senate amendment	Student Athlete Revisions
+2137	HB0479	H		1511636	2025-03-07	50	15	1	4	signed	dropped:mixed	colleges may pay athletes directly but athletes are declared not employees; labor strands pull both ways	House/ concurs with Senate amendment	Student Athlete Revisions
 2137	HB0479	S		1511635	2025-03-07	25	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Student Athlete Revisions
 2137	HB0480	H		1511650	2025-02-25	53	15	1	4	signed	dropped	filter-5-two-directions and area-fit: an eviction procedure act, which the Maryland HB 767 line puts outside housing_affordability; it eases some tenant steps but also requires a bad-faith finding before an owner pays a tenant's fees and speeds removal	House/ passed 3rd reading	Landlord Communication Amendments
 2137	HB0480	S		1511652	2025-03-07	23	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Landlord Communication Amendments
@@ -1087,9 +1087,9 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	SB0070	S		1510260	2025-02-07	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Consumer Reporting Amendments
 2137	SB0071	H		1510305	2025-03-05	71	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Social Security Tax Revisions
 2137	SB0071	S		1510304	2025-03-04	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Social Security Tax Revisions
-2137	SB0073	H		1512937	2025-03-06	50	19	1	4	signed	deferred	user-direction: statewide initiative requirements, the Arkansas line says burdens on who may take part in lawmaking carry no honest direction	House/ passed 3rd reading	Statewide Initiatives Amendments
+2137	SB0073	H		1512937	2025-03-06	50	19	1	4	signed	dropped:no-direction	initiative funding and publication rules are not verification; Arkansas line (FL HB 1205 test not met)	House/ passed 3rd reading	Statewide Initiatives Amendments
 2137	SB0073	S		1512934	2025-01-24	21	7	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	Statewide Initiatives Amendments
-2137	SB0073	S		1512938	2025-03-06	21	6	1	4	signed	deferred	user-direction: statewide initiative requirements, the Arkansas line says burdens on who may take part in lawmaking carry no honest direction	Senate/ concurs with House amendment	Statewide Initiatives Amendments
+2137	SB0073	S		1512938	2025-03-06	21	6	1	4	signed	dropped:no-direction	initiative funding and publication rules are not verification; Arkansas line (FL HB 1205 test not met)	Senate/ concurs with House amendment	Statewide Initiatives Amendments
 2137	SB0074	H		1510336	2025-02-26	67	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Corrections Modifications
 2137	SB0074	S		1510333	2025-02-10	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Corrections Modifications
 2137	SB0074	S		1510337	2025-02-27	25	0	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Corrections Modifications
@@ -1509,7 +1509,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2137	SB0326	S		1514621	2025-03-04	27	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Judgment Renewal Modifications
 2137	SB0327	H		1513180	2025-03-07	55	9	1	4	signed	screened	not-divided	House/ passed 3rd reading	Public Sector Labor Organization Amendments
 2137	SB0327	S		1513177	2025-02-28	18	10	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	Public Sector Labor Organization Amendments
-2137	SB0327	S		1513181	2025-03-07	19	5	1	4	signed	deferred	user-direction: public sector labor organization amendments, same labor gap and same repeal as HB 267	Senate/ concurs with House amendment	Public Sector Labor Organization Amendments
+2137	SB0327	S		1513181	2025-03-07	19	5	1	4	signed	batch-10	imported 2026-09-11, run 06:24:17.632Z	Senate/ concurs with House amendment	Public Sector Labor Organization Amendments
 2137	SB0328	H		1512418	2025-03-07	66	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Alcohol Amendments
 2137	SB0328	S		1512416	2025-03-04	13	15	0	4	signed	screened	not-the-chambers-final-roll	Senate/ failed	Alcohol Amendments
 2137	SB0328	S		1512417	2025-03-05	24	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Alcohol Amendments
