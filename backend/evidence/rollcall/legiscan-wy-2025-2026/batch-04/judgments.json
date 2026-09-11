@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WY",
+      "chamber": "house",
+      "session": "2157",
+      "roll": 1488229,
+      "measure_id": "HB 318",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted to widen the checks Wyoming uses to confirm that people on its voter rolls are eligible. The state already matched voter records against driver's license records. That match must now also look for signs that a voter is not a US citizen, and for voters who later got a license in another state, including through a national state-to-state service. The secretary of state may also check voters' citizenship with the federal SAVE program. The transportation department must send the secretary of state a monthly list of people who gave a noncitizen status when getting a license or ID card. The list may go to county clerks and stays confidential. When there is evidence a voter moved to another state, officials may look into it and the county clerk may mail a notice of intent to cancel. The protection before removal does not change: the voter still gets that notice and 20 days to ask to stay on the list. The House passed the bill 47-13 and it became law as chapter 152 of the 2025 session laws.",
+      "nay_description": "Voted against widening the checks Wyoming uses to confirm that people on its voter rolls are eligible. The state already matched voter records against driver's license records. That match must now also look for signs that a voter is not a US citizen, and for voters who later got a license in another state, including through a national state-to-state service. The secretary of state may also check voters' citizenship with the federal SAVE program. The transportation department must send the secretary of state a monthly list of people who gave a noncitizen status when getting a license or ID card. The list may go to county clerks and stays confidential. When there is evidence a voter moved to another state, officials may look into it and the county clerk may mail a notice of intent to cancel. The protection before removal does not change: the voter still gets that notice and 20 days to ask to stay on the list. The House passed the bill 47-13 and it became law as chapter 152 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WY",
+      "chamber": "senate",
+      "session": "2157",
+      "roll": 1505869,
+      "measure_id": "SF 44",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to require students at the University of Wyoming and the state's community colleges to play college sports based on their biological sex. The act defines male and female by reproductive system. A birth certificate counts as correct only if the sex was entered at or near birth or changed to fix a clerical error. A male student may not play on a women's team or in a women's position on a mixed team. A women's team may not play a team the school knows has a male student on it. In individual sports, a woman may not face a known male student if the school finds that unsafe or unfair. A female student may play on a men's team when no women's team is offered. Anyone may sue a school over a violation, with damages capped at $50,000, and a court may order the school to comply and award legal fees. Schools may not punish people for reporting a violation. The Senate agreed to the House changes 23-8 and the bill became law as chapter 144 of the 2025 session laws.",
+      "nay_description": "Voted against requiring students at the University of Wyoming and the state's community colleges to play college sports based on their biological sex. The act defines male and female by reproductive system. A birth certificate counts as correct only if the sex was entered at or near birth or changed to fix a clerical error. A male student may not play on a women's team or in a women's position on a mixed team. A women's team may not play a team the school knows has a male student on it. In individual sports, a woman may not face a known male student if the school finds that unsafe or unfair. A female student may play on a men's team when no women's team is offered. Anyone may sue a school over a violation, with damages capped at $50,000, and a court may order the school to comply and award legal fees. Schools may not punish people for reporting a violation. The Senate agreed to the House changes 23-8 and the bill became law as chapter 144 of the 2025 session laws.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
