@@ -39,6 +39,10 @@ the date, division, and same-chamber text changes after the vote. Audit: none fa
 Lint: 0 warnings over 24 descriptions; longest sentence 43 words.
 Judge 12 updated. Import dry run 12 rolls / 943 inserts, real run the same, no errors.
 Stamp 2026-09-11T05:33:17.521Z: 943 records, 84 candidates, 670 tags.
+Review fix: HF 2624 re-judged (1 updated) and the batch re-imported in place; the re-run, stamp
+2026-09-11T06:18:44.057Z, reports 80 rewrites and 863 unchanged, ledger
+`import-review-fix-rerun-report.json` (dry run alongside). The 80 HF 2624 records carry the
+re-run stamp.
 Same-day sweep: 12 hand-written records share a date with these votes; each names a different
 bill and tally (HF 602, HF 190, HF 2502, HF 2292, HF 2643, HF 2245, a sentencing bill), so none
 is a duplicate and nothing was retired.

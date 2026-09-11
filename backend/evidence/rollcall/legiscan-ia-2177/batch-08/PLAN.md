@@ -17,5 +17,8 @@ Each is one chamber's vote on a bill the other chamber never took up. Pool, scre
 Audit: none failed. Lint: 0 warnings over 22 descriptions; longest sentence 44 words.
 Judge 11 updated. Import dry run 11 rolls / 491 inserts, real run the same, no errors.
 Stamp 2026-09-11T05:35:17.874Z: 491 records, 102 candidates, 384 tags.
+Review fix: SF 2442 and SF 2444 re-judged (2 updated) and the batch re-imported in place; the
+re-run, stamp 2026-09-11T06:18:50.682Z, reports 33 rewrites (17 + 16) and 458 unchanged, ledger
+`import-review-fix-rerun-report.json` (dry run alongside). Those 33 records carry the re-run stamp.
 Same-day sweep: 3 hand-written records share a date; they concern HF 190 and HF 644, so none is
 a duplicate.
