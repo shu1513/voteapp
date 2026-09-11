@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OK",
+      "chamber": "house",
+      "session": "2219",
+      "roll": 1606294,
+      "measure_id": "SB 1027",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1027. It adds rules for citizen petitions that put a new law or a change to the state constitution on the ballot. Each signature page carries a short summary of the measure. That summary must now use plain words. It may not use trade terms, code words or wording meant to mislead, and it may not argue for or against the measure. It must say whether the measure would cost the state money and where the money would come from. The Secretary of State checks each summary and may reject it. Anyone gathering signatures must be a registered Oklahoma voter. They must post a notice saying whether they are paid and by whom. They may not be paid by the signature. Only people and groups who live or do business in Oklahoma may pay for signature gathering. Those who spend money on it must report every week, and the state posts the reports online. A signature now counts as a promise that the signer read the summary in full or had it read to them. Signers may ask to have their names taken off. Signatures from any one county count only up to a limit. The limit is 11.5 percent of that county's votes for Governor for a new law, and 20.8 percent for a change to the constitution. So a petition needs signers spread across the state. The act took effect as soon as it was signed. The Oklahoma House passed it 69-23. The Governor signed it.",
+      "nay_description": "Voted against Senate Bill 1027. It adds rules for citizen petitions that put a new law or a change to the state constitution on the ballot. Each signature page carries a short summary of the measure. That summary must now use plain words. It may not use trade terms, code words or wording meant to mislead, and it may not argue for or against the measure. It must say whether the measure would cost the state money and where the money would come from. The Secretary of State checks each summary and may reject it. Anyone gathering signatures must be a registered Oklahoma voter. They must post a notice saying whether they are paid and by whom. They may not be paid by the signature. Only people and groups who live or do business in Oklahoma may pay for signature gathering. Those who spend money on it must report every week, and the state posts the reports online. A signature now counts as a promise that the signer read the summary in full or had it read to them. Signers may ask to have their names taken off. Signatures from any one county count only up to a limit. The limit is 11.5 percent of that county's votes for Governor for a new law, and 20.8 percent for a change to the constitution. So a petition needs signers spread across the state. The act took effect as soon as it was signed. The Oklahoma House passed it 69-23. The Governor signed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

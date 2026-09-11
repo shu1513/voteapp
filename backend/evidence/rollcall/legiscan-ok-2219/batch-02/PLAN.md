@@ -8,7 +8,7 @@ no Oklahoma roll-call records.
 | HB 1003 age of consent and close-in-age rule | House | 60-21 | public_safety_and_crime_control | for |
 | HB 1393 parental consent for alternate testing | House | 71-23 | public_education_quality | for |
 | HB 1601 ARCHER Act, extending maternity leave | House | 58-27 | social_programs_and_welfare | for |
-| HB 3127 medical marijuana at work | House | 47-46 | civil_rights | against |
+| HB 3127 medical marijuana at work | House | 47-46 | civil_rights, labor_rights | against, against |
 | HB 3151 minimum school days | House, Senate | 62-28, 30-17 | public_education_quality | for |
 | HB 1576 Medicaid gene testing for very ill children | Senate veto override | 36-9 | healthcare_affordability | for |
 
