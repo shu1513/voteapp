@@ -37,7 +37,11 @@ agencies covering energy savings.
 ### SB 462 — tobacco retail licenses
 Retail and third-party facilitator licenses, photo identification for every
 sale, and escalating administrative fines for sales to people under 21 of $250,
-$500 and $2,500, with suspension at the third violation in 3 years.
+$500 and $2,500 with a 7-day suspension at the third violation, and $10,000 with
+revocation at the fourth violation in 3 years (section 1(3)(d) of the
+Senate-passed S-1). Review fix: the first description gave the range as $250 to
+$2,500 and left out the fourth tier. Re-judged and the 15 records rewritten in
+place (import-rerun-report.json).
 
 ### SB 947 — dam safety
 Strikes the exemption for projects licensed under the Federal Power Act, adds a
@@ -46,7 +50,11 @@ inspection, evaluation, monitoring, maintenance and safety plans, and requires
 engineers who have completed or consulted on 5 similar projects.
 
 ### SB 373, SB 515, SB 967 — housing
-SB 373 adds 3(1)(o) to the Truth in Renting Act. SB 515 adds section 1e to the
+SB 373 adds 3(1)(o) to the Truth in Renting Act. Review fix: the House passed
+SB 373 99-5 on 2026-08-25 (House Roll Call 345, no substitute) and the Senate
+ordered it enrolled on 2026-09-09; the first description said the House had not
+voted. Re-judged as awaiting the governor and the 17 records rewritten in place
+(import-rerun-report.json). SB 515 adds section 1e to the
 landlord-tenant act, with a civil infraction of up to $500. SB 967 adds section
 279 to the Income Tax Act, for tax years from January 1, 2027, with
 proportionate recapture when the federal credit is recaptured.

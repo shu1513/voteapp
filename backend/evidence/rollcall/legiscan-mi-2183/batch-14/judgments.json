@@ -80,8 +80,8 @@
       "measure_id": "SB 462",
       "vote_date": "2025-12-18",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 462. It would require a state license to sell tobacco and nicotine products at retail, including vapes, and a license for delivery and other third-party sellers. Sellers would have to check photo ID for every sale, and a licensee that sells to someone under 21 would face fines of $250 to $2,500 and, after repeat sales, suspension or loss of the license. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
-      "nay_description": "Voted against Senate Bill 462. It would require a state license to sell tobacco and nicotine products at retail, including vapes, and a license for delivery and other third-party sellers. Sellers would have to check photo ID for every sale, and a licensee that sells to someone under 21 would face fines of $250 to $2,500 and, after repeat sales, suspension or loss of the license. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
+      "yea_description": "Voted for Senate Bill 462. It would require a state license to sell tobacco and nicotine products at retail, including vapes, and a license for delivery and other third-party sellers. Sellers would have to check photo ID for every sale, and a licensee that sells to someone under 21 would face fines from $250 for a first sale up to $10,000 and loss of the license for a fourth sale within three years. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 462. It would require a state license to sell tobacco and nicotine products at retail, including vapes, and a license for delivery and other third-party sellers. Sellers would have to check photo ID for every sale, and a licensee that sells to someone under 21 would face fines from $250 for a first sale up to $10,000 and loss of the license for a fourth sale within three years. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -116,8 +116,8 @@
       "measure_id": "SB 373",
       "vote_date": "2026-07-03",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 373. It would bar leases that charge an extra fee on every allowed way of paying rent. If a lease allows more than one payment method, at least one would have to be free for the tenant. The Senate passed it 24-12. The House has not voted on it, so it is not law.",
-      "nay_description": "Voted against Senate Bill 373. It would bar leases that charge an extra fee on every allowed way of paying rent. If a lease allows more than one payment method, at least one would have to be free for the tenant. The Senate passed it 24-12. The House has not voted on it, so it is not law.",
+      "yea_description": "Voted for Senate Bill 373. It would bar leases that charge an extra fee on every allowed way of paying rent. If a lease allows more than one payment method, at least one would have to be free for the tenant. The Senate passed it 24-12 and the House passed it 99-5. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against Senate Bill 373. It would bar leases that charge an extra fee on every allowed way of paying rent. If a lease allows more than one payment method, at least one would have to be free for the tenant. The Senate passed it 24-12 and the House passed it 99-5. The bill has passed the Legislature and is awaiting the governor's decision.",
       "labels": [
         {
           "slug": "housing_affordability",
