@@ -694,12 +694,14 @@ function MyDraftBody({ me }: { me: Me }) {
             cardedElectionIds={cardedElectionIds}
           />
           <PastPicks choices={choices ?? []} today={today} cardedElectionIds={cardedElectionIds} />
-          {/* Dates with a card above own their link inside the card; with
-              no cards (ballot failed, so dates is empty) every live link
-              lists here. */}
-          <SharedLinks cardedDates={new Set(dates)} />
         </>
       ) : null}
+      {/* Outside both gates: the share API needs neither the ballot nor the
+          picks, and a live link stays public through either failure, so
+          the way to revoke it must too. Exclude exactly the dates whose
+          cards render (picksSettled) — a failed ballot refetch keeps the
+          cached dates but drops the cards, and those links must list here. */}
+      <SharedLinks cardedDates={new Set(picksSettled ? dates : [])} />
     </ScrollView>
   );
 }
