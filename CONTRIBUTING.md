@@ -22,12 +22,13 @@ Please open an issue before starting anything larger than a small fix. It saves 
 
 1. Fork the repo and branch from `main`.
 2. Make the change. Keep one topic per pull request.
-3. Run the checks for whatever you touched:
+3. Run the checks for whatever you touched (each line is its own subshell, so the block can be pasted whole):
 
    ```bash
-   cd backend && npm run typecheck && npm test
-   cd frontend && npm run typecheck && npm run lint && npm test
-   cd mobile && npm run typecheck && npm run lint
+   (cd backend && npm run typecheck && npm test)
+   (cd frontend && npm run typecheck && npm run lint && npm test)
+   (cd mobile && npm run typecheck && npm run lint)
+   (cd infra/cloudflare && npm test)
    ```
 
 4. Commit with a Conventional Commits prefix: `feat(scope):`, `fix(scope):`, `chore(scope):`, `docs:`.

@@ -4,7 +4,7 @@
 
 ## Checks
 
-- [ ] `npm run typecheck` and `npm test` pass in every package I touched (`frontend/` also `npm run lint`)
+- [ ] The checks listed in [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md#pull-request-flow) pass for every package I touched
 - [ ] No automatic AI provider calls added; `aiCallGuard.ts` untouched
 - [ ] Any new migration is a new numbered file in `db/migrations/`, no existing file renumbered or edited
 - [ ] New candidate data has a primary source
