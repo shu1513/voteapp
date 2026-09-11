@@ -1,0 +1,60 @@
+{
+  "runId": "rollcall-fetch-house-119-2-20260911T024130Z",
+  "importerVersion": "rollcall-fetch-v1",
+  "chamber": "house",
+  "congress": 119,
+  "session": 2,
+  "dryRun": false,
+  "startedAt": "2026-09-11T02:41:30.155Z",
+  "finishedAt": "2026-09-11T02:41:31.830Z",
+  "evidenceDir": "evidence/rollcall/labor-rights-backfill-2026-09-10/us-119-2",
+  "requestedRolls": 2,
+  "floorVotes": 2,
+  "counts": {
+    "unchanged": 2
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 2,
+      "roll": 19,
+      "machineUrl": "https://clerk.house.gov/evs/2026/roll019.xml",
+      "outcome": "unchanged",
+      "evidenceFile": "house-119-2-roll00019.xml",
+      "voteDate": "2026-01-13",
+      "measureId": "H R 2262",
+      "question": "On Passage",
+      "result": "Failed",
+      "yeas": 209,
+      "nays": 215,
+      "memberVoteCount": 431,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    },
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 2,
+      "roll": 216,
+      "machineUrl": "https://clerk.house.gov/evs/2026/roll216.xml",
+      "outcome": "unchanged",
+      "evidenceFile": "house-119-2-roll00216.xml",
+      "voteDate": "2026-06-09",
+      "measureId": "H R 5408",
+      "question": "On Passage",
+      "result": "Passed",
+      "yeas": 230,
+      "nays": 193,
+      "memberVoteCount": 430,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    }
+  ]
+}
