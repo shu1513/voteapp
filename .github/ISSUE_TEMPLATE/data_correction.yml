@@ -1,0 +1,31 @@
+name: Data correction
+description: A candidate, election, race, or record shown in the app is wrong or missing.
+labels: [data]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page URL in the app
+      placeholder: https://electionssimplified.com/...
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: Quote the text or name as it appears now.
+    validations:
+      required: true
+  - type: textarea
+    id: right
+    attributes:
+      label: What it should say
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: Link to an official or primary source (election office, legislature record, court filing, campaign finance filing). We cannot change data without one.
+    validations:
+      required: true

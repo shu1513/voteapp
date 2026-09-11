@@ -52,6 +52,10 @@ cd frontend && npm install && npm run dev
 
 Checks: `npm run typecheck` and `npm test` in `backend/` and `frontend/`; `npm run lint` in `frontend/`.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Wrong data in the app? File a [data correction](https://github.com/shu1513/electionssimplified/issues/new?template=data_correction.yml) with a source link.
+
 ## Contact
 
 contact@electionssimplified.com
