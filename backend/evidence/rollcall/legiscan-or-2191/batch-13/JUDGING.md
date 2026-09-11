@@ -21,8 +21,11 @@ excuse for natural disasters, computer crimes and catastrophic fires. ORS
 New section 2 of ORS 658.705 to 658.850 makes a landowner who knew or should
 have known of a farmworker camp on the land jointly liable with the operator,
 with a rebuttable presumption for a written lease that bars unregistered camps.
-ORS 658.805 lets any aggrieved person sue over any violation of the camp laws
-and raises minimum damages from $500 to $2,000. Farmworker camps are
+ORS 658.805(3) keeps its defendant limit: the suit runs against a person
+violating ORS 658.715(1) (not eligible to operate a camp) or 658.755(2)(a)
+(operating an unregistered camp), over any violation of the camp laws, and now
+recovers damages as well as an injunction. Minimum damages rise from $500 to
+$2,000. The landowner's joint liability inherits that scope. Farmworker camps are
 employer-linked worker housing under the labor bureau, so the change widens
 worker protections.
 
@@ -32,6 +35,23 @@ Judge: 6 updated. Dry run: 167 planned inserts, 0 errors, stamp
 `2026-09-11T07:39:15.650Z`, which matches zero rows. Real run: 6 files imported,
 **167 inserts**, 0 notified, stamp `2026-09-11T07:39:17.646Z`, 60 candidates,
 117 area tags.
+
+### Review re-run
+
+PR review found two overstatements, both checked against the enrolled text and
+fixed in `judgments.json`:
+
+- HB 3194: "any harmed person may sue over any camp violation" dropped the
+  defendant limit in ORS 658.805(3). The sentence now names the target: an
+  unlicensed or unregistered camp operator.
+- HB 2688: "starts with contracts from July 1, 2026" used the wrong trigger.
+  Section 2 keys on the solicitation date, with contract date only where
+  nothing was solicited. The sentence now says so.
+
+Judge: 4 updated. Real re-import (`import-rerun-report.json`, stamp
+`2026-09-11T19:58:02.333Z`): 110 rewritten (54 HB 3194 + 56 HB 2688), 57
+unchanged (HB 2944), 0 errors, 0 notified. Local database only; prod has none
+of this batch.
 
 ## Duplicates
 
