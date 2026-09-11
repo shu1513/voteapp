@@ -1,0 +1,112 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510231,
+   "measure_id": "HB 106",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 106, which cuts Utah's income tax rate for people and for companies from 4.55 percent to 4.5 percent, starting with the 2025 tax year. It widens the state's $1,000 child tax credit to cover every child under six. Before, it covered only children aged one through four. It also gives employers a tax credit worth 20 percent of the cost of building child care for their workers, plus 10 percent of running costs once they have claimed the building credit. An employer must pay back some or all of it if the center closes within five years. The Utah Senate passed it 23-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 106, which cuts Utah's income tax rate for people and for companies from 4.55 percent to 4.5 percent, starting with the 2025 tax year. It widens the state's $1,000 child tax credit to cover every child under six. Before, it covered only children aged one through four. It also gives employers a tax credit worth 20 percent of the cost of building child care for their workers, plus 10 percent of running costs once they have claimed the building credit. An employer must pay back some or all of it if the center closes within five years. The Utah Senate passed it 23-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1512040,
+   "measure_id": "HB 418",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 418, which gives people in Utah more control over their own social media data, starting July 1, 2026. A person may ask a company to fix wrong data about them. A social media company must hand over a user's data, such as their friends, their posts, and the replies to them, in a form the user can take to another site. Each company must also let users share that data with other sites they pick, through an open system, and only with the user's consent. The state can fine a company up to $2,500 for each violation. The Utah Senate passed it 20-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 418, which gives people in Utah more control over their own social media data, starting July 1, 2026. A person may ask a company to fix wrong data about them. A social media company must hand over a user's data, such as their friends, their posts, and the replies to them, in a form the user can take to another site. Each company must also let users share that data with other sites they pick, through an open system, and only with the user's consent. The state can fine a company up to $2,500 for each violation. The Utah Senate passed it 20-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1512982,
+   "measure_id": "HB 207",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 207, which toughens sentences for repeat sex offenders. When a person with an earlier sex crime conviction is convicted again, both the minimum and the maximum sentence now rise by five years for each earlier conviction. The whole sentence must be served in prison, with no probation. The act also ends the lower penalty for sharing child sexual abuse material that shows a teen 14 or older, so it is a first degree felony in every case. And it makes it a crime to access such material, or to keep access to it, with the intent to view it. The Utah Senate passed it 16-10 and it was signed into law.",
+   "nay_description": "Voted against House Bill 207, which toughens sentences for repeat sex offenders. When a person with an earlier sex crime conviction is convicted again, both the minimum and the maximum sentence now rise by five years for each earlier conviction. The whole sentence must be served in prison, with no probation. The act also ends the lower penalty for sharing child sexual abuse material that shows a teen 14 or older, so it is a first degree felony in every case. And it makes it a crime to access such material, or to keep access to it, with the intent to view it. The Utah Senate passed it 16-10 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1513693,
+   "measure_id": "HB 274",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 274, which pushes water suppliers to charge more for heavy use, to save water. By July 1, 2027, a supplier of drinking water to homes must build a conservation charge into the price of its highest block of use. By 2030, suppliers of untreated secondary water, used on lawns and gardens, must bill with rates that rise as use rises, and must charge the lowest rate for water used to grow food. Suppliers that do not have to meter every connection are exempt. A supplier that fails to comply loses state water money and can be fined. The Utah Senate passed it 17-10 and it was signed into law.",
+   "nay_description": "Voted against House Bill 274, which pushes water suppliers to charge more for heavy use, to save water. By July 1, 2027, a supplier of drinking water to homes must build a conservation charge into the price of its highest block of use. By 2030, suppliers of untreated secondary water, used on lawns and gardens, must bill with rates that rise as use rises, and must charge the lowest rate for water used to grow food. Suppliers that do not have to meter every connection are exempt. A supplier that fails to comply loses state water money and can be fined. The Utah Senate passed it 17-10 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510668,
+   "measure_id": "HB 264",
+   "vote_date": "2025-02-21",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 264, which cuts back Utah's tax credits for clean energy. The state income tax credit for home and business energy systems, such as solar panels, wind, and geothermal, now goes only to systems put in service before January 1, 2028. The act also ends a separate credit for buying into large solar projects, and the credits for other new energy projects. The repeals reach back to the 2025 tax year. The Utah Senate passed it 16-7 and it was signed into law.",
+   "nay_description": "Voted against House Bill 264, which cuts back Utah's tax credits for clean energy. The state income tax credit for home and business energy systems, such as solar panels, wind, and geothermal, now goes only to systems put in service before January 1, 2028. The act also ends a separate credit for buying into large solar projects, and the credits for other new energy projects. The repeals reach back to the 2025 tax year. The Utah Senate passed it 16-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510294,
+   "measure_id": "HB 124",
+   "vote_date": "2025-02-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 124, which protects the privacy of teachers and other school staff. A school district, a charter school, or the state school board may not sell or hand over staff members' work phone numbers, email addresses, and other work contact details to an outside party as a one-off deal. It must make public any records request for that information. A school may not make staff put a work app on their own phone if the app can reach data outside itself, and must offer another way, such as a school device, to a worker who objects. A school may not punish staff for using these rights. The Utah Senate passed it 16-5 and it was signed into law.",
+   "nay_description": "Voted against House Bill 124, which protects the privacy of teachers and other school staff. A school district, a charter school, or the state school board may not sell or hand over staff members' work phone numbers, email addresses, and other work contact details to an outside party as a one-off deal. It must make public any records request for that information. A school may not make staff put a work app on their own phone if the app can reach data outside itself, and must offer another way, such as a school device, to a worker who objects. A school may not punish staff for using these rights. The Utah Senate passed it 16-5 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
