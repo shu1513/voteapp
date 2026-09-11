@@ -83,6 +83,11 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
 
   const areaNames = new Map(preferences.map((preference) => [preference.research_area_id, preference.name]));
   const areaName = (researchAreaId: string) => areaNames.get(researchAreaId) ?? "one of your issues";
+  // Highest priority first (explicit ranks, then legacy unranked) — the
+  // same order the engine scores in.
+  const issueOrder = [...preferences]
+    .sort((a, b) => (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER))
+    .map((preference) => preference.research_area_id);
 
   // Signed-out (null) and still-resolving (undefined) sessions render
   // nothing — same rule as the web control (callers also gate on
@@ -138,6 +143,7 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
           result={result}
           seatsToFill={seatsToFill}
           areaName={areaName}
+          issueOrder={issueOrder}
           onDismiss={() => setResult(null)}
         />
       ) : null}
@@ -145,36 +151,103 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false }: Au
   );
 }
 
-function PerIssueChips({
+/** Up to this many aligned issues are named in the headline itself. */
+const INLINE_ISSUE_LIMIT = 3;
+
+// Per-issue alignment, summarized (port of the web IssueAlignment): "aligned
+// on 13 of your 16 issues", the exceptions (conflicts / mixed) named right
+// away because that is what a voter needs to check, and the full grouped
+// list behind a toggle. The old form listed every issue with its own
+// "· aligned" — sixteen repeats of the same word was a wall. Every list
+// keeps the user's priority order. Text can only nest Text in React Native,
+// so the headline toggle is a Pressable Text rather than a button with an
+// svg chevron; the glyph flips to show state.
+function IssueAlignment({
   perIssue,
+  issueOrder,
   areaName,
 }: {
   perIssue: { research_area_id: string; net: number }[];
+  issueOrder: string[];
   areaName: (id: string) => string;
 }) {
-  if (perIssue.length === 0) {
-    return null;
-  }
+  const [open, setOpen] = useState(false);
+  const rank = new Map(issueOrder.map((id, index) => [id, index]));
+  const byRank = (a: { research_area_id: string }, b: { research_area_id: string }) =>
+    (rank.get(a.research_area_id) ?? issueOrder.length) - (rank.get(b.research_area_id) ?? issueOrder.length);
+  const names = (issues: { research_area_id: string }[]) =>
+    [...issues].sort(byRank).map((issue) => areaName(issue.research_area_id));
+  const aligned = names(perIssue.filter((issue) => issue.net > 0));
+  const conflicts = names(perIssue.filter((issue) => issue.net < 0));
+  const mixed = names(perIssue.filter((issue) => issue.net === 0));
+  const total = issueOrder.length;
+  // Few aligned issues (1–3): name them in the headline — shorter than a
+  // count, and nothing is left to expand since conflicts/mixed are always
+  // named below. More: the count, with the names behind the chevron.
+  const nameInline = aligned.length > 0 && aligned.length <= INLINE_ISSUE_LIMIT;
+  const headline = nameInline
+    ? `aligned on ${joinNames(aligned)}`
+    : total === 0
+      ? `aligned on ${aligned.length} issue${aligned.length === 1 ? "" : "s"}`
+      : aligned.length === total
+        ? `aligned on all ${total} of your issues`
+        : `aligned on ${aligned.length} of your ${total} issues`;
+  // Same rule for the exceptions: a short list is named, a long one is
+  // counted with the names behind the chevron.
+  const inline = (label: string, names: string[]) =>
+    names.length <= INLINE_ISSUE_LIMIT ? `${label}: ${joinNames(names)}` : `${label} on ${names.length} issues`;
+  const expandable = [aligned, conflicts, mixed].some((names) => names.length > INLINE_ISSUE_LIMIT);
   return (
-    <Text>
-      {perIssue.map((issue, index) => (
-        <Text key={issue.research_area_id}>
-          <Text
-            className={
-              issue.net > 0
-                ? "font-medium text-green-900"
-                : issue.net < 0
-                  ? "font-medium text-red-900"
-                  : "font-medium text-amber-900"
-            }
-          >
-            {areaName(issue.research_area_id)}{" "}
-            {issue.net > 0 ? "· aligned" : issue.net < 0 ? "· conflicts" : "· mixed"}
-          </Text>
-          {index < perIssue.length - 1 ? ", " : null}
+    <>
+      {/* The headline is the toggle: tap it to see the issue names. One
+          target, no orphan "Show issues" line. */}
+      {expandable ? (
+        <Text
+          accessibilityRole="button"
+          accessibilityState={{ expanded: open }}
+          onPress={() => setOpen((previous) => !previous)}
+          className="font-semibold text-green-900"
+        >
+          {headline} {open ? "▴" : "▾"}
         </Text>
-      ))}
-    </Text>
+      ) : (
+        <Text className="font-semibold text-green-900">{headline}</Text>
+      )}
+      {conflicts.length > 0 || mixed.length > 0 ? (
+        <Text>
+          {"\n"}
+          {conflicts.length > 0 ? (
+            <Text className="font-medium text-red-900">{inline("Conflicts", conflicts)}</Text>
+          ) : null}
+          {conflicts.length > 0 && mixed.length > 0 ? <Text className="text-ink-soft"> · </Text> : null}
+          {mixed.length > 0 ? <Text className="font-medium text-amber-900">{inline("Mixed", mixed)}</Text> : null}
+        </Text>
+      ) : null}
+      {expandable && open ? (
+        // Each group in its own color, same tier as the headline — the names
+        // are the payload here, not a footnote.
+        <Text className="font-medium">
+          {aligned.length > 0 ? (
+            <Text className="text-green-700">
+              {"\n"}
+              <Text className="font-semibold text-green-900">Aligned:</Text> {aligned.join(", ")}
+            </Text>
+          ) : null}
+          {conflicts.length > 0 ? (
+            <Text className="text-red-700">
+              {"\n"}
+              <Text className="font-semibold text-red-900">Conflicts:</Text> {conflicts.join(", ")}
+            </Text>
+          ) : null}
+          {mixed.length > 0 ? (
+            <Text className="text-amber-700">
+              {"\n"}
+              <Text className="font-semibold text-amber-900">Mixed:</Text> {mixed.join(", ")}
+            </Text>
+          ) : null}
+        </Text>
+      ) : null}
+    </>
   );
 }
 
@@ -182,11 +255,15 @@ function WhyThisPickPanel({
   result,
   seatsToFill,
   areaName,
+  issueOrder,
   onDismiss,
 }: {
   result: AutoPickElectionResult;
   seatsToFill: number | null;
   areaName: (researchAreaId: string) => string;
+  /** The user's ranked issue ids, highest priority first. Orders every
+   * list in the panel and supplies the "of your N issues" denominator. */
+  issueOrder: string[];
   onDismiss: () => void;
 }) {
   const pickedReports = result.picked_candidate_ids
@@ -219,7 +296,7 @@ function WhyThisPickPanel({
             {result.race_type === "ballot_measure" && result.measure_per_issue.length > 0 ? (
               <Text className="text-sm text-ink">
                 <Text className="font-medium text-ink-soft">On your issues: </Text>
-                <PerIssueChips perIssue={result.measure_per_issue} areaName={areaName} />
+                <IssueAlignment perIssue={result.measure_per_issue} issueOrder={issueOrder} areaName={areaName} />
               </Text>
             ) : null}
             {pickedReports.map((report) => (
@@ -228,7 +305,7 @@ function WhyThisPickPanel({
                 {report.per_issue.length > 0 ? (
                   <>
                     {" — "}
-                    <PerIssueChips perIssue={report.per_issue} areaName={areaName} />
+                    <IssueAlignment perIssue={report.per_issue} issueOrder={issueOrder} areaName={areaName} />
                   </>
                 ) : (
                   <Text className="text-ink-soft"> — no records on your issues (picked by elimination)</Text>
@@ -266,6 +343,9 @@ function WhyThisPickPanel({
   );
 }
 
+const FILL_DESCRIPTION =
+  "Picks the best match for your ranked issues in each race you haven't decided. Your own picks are never changed.";
+
 /**
  * Per-date fill + clear for the My Draft date cards: "Auto-fill empty picks
  * by my issues" runs fill_empty over THAT date's undecided races only. Once
@@ -275,8 +355,8 @@ function WhyThisPickPanel({
  * left open repeats the same "not enough evidence", so Clear → fill again is
  * the useful path (same rule as the web control). No result list
  * here: the caller gets the per-election results via onResults and
- * annotates its own race rows; per-race "why" details live on each election
- * screen's panel.
+ * renders its own one-line run summary; per-race "why" details live on each
+ * election screen's panel.
  */
 export function AutoPickFillControl({
   date,
@@ -328,11 +408,17 @@ export function AutoPickFillControl({
     <View className="mt-2">
       <View className="flex-row flex-wrap items-center gap-2">
         {fillable ? (
+          // The one-line explanation rides as the button's accessibility
+          // hint, not visible copy (the web moved it to a tooltip +
+          // sr-only): the label already says what the button does, and the
+          // card stays uncluttered. The Auto chips on the rows say what
+          // Clear removes.
           <Pressable
             disabled={fillDisabled}
             onPress={onFill}
             accessibilityRole="button"
             accessibilityState={{ disabled: fillDisabled }}
+            accessibilityHint={FILL_DESCRIPTION}
             className={`rounded-full border border-autopick-border bg-autopick px-3 py-1.5 active:bg-autopick-dark${fillDisabled ? " opacity-50" : ""}`}
           >
             <Text className="text-sm font-semibold text-autopick-ink">
@@ -354,14 +440,6 @@ export function AutoPickFillControl({
           </Pressable>
         ) : null}
       </View>
-      {fillable ? (
-        // Describes the fill button, so it leaves with it; the Auto chips on
-        // the rows say what Clear removes.
-        <Text className="mt-1 text-xs text-ink-soft">
-          Picks the best match for your ranked issues in each race you haven&apos;t decided. Your own picks are never
-          changed.
-        </Text>
-      ) : null}
       {prompt ? (
         <View className="mt-2">
           <RankIssuesPrompt plural />

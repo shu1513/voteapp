@@ -8,8 +8,8 @@ import { hasDraftCompleteBeenSeen, markDraftCompleteSeen } from "../lib/draftCom
 // draft-completion-moment.md, section 2): the My Draft screen's finish
 // line, above the date cards, once every race on the nearest upcoming
 // election day has a pick — and shown ONCE per day per device (owner's
-// rule: persistent = nag). Same counting rule as the card's "N of M races
-// decided" line (isDecidedChoice) and the same one-line wording as the
+// rule: persistent = nag). Same counting rule as the card's "N / M"
+// progress bar (isDecidedChoice) and the same one-line wording as the
 // notice. The seen state is read on each focus (AsyncStorage, async) and
 // held, so the box stays for this visit even though it marks the day right
 // away; the next focus finds the marker and shows nothing. Marking also
