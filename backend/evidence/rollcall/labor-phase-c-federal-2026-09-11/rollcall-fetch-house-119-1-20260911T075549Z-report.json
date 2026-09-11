@@ -1,0 +1,39 @@
+{
+  "runId": "rollcall-fetch-house-119-1-20260911T075549Z",
+  "importerVersion": "rollcall-fetch-v1",
+  "chamber": "house",
+  "congress": 119,
+  "session": 1,
+  "dryRun": false,
+  "startedAt": "2026-09-11T07:55:49.085Z",
+  "finishedAt": "2026-09-11T07:55:49.451Z",
+  "evidenceDir": "evidence/rollcall/labor-phase-c-federal-2026-09-11",
+  "requestedRolls": 1,
+  "floorVotes": 1,
+  "counts": {
+    "unchanged": 1
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "congress": 119,
+      "session": 1,
+      "roll": 332,
+      "machineUrl": "https://clerk.house.gov/evs/2025/roll332.xml",
+      "outcome": "unchanged",
+      "evidenceFile": "house-119-1-roll00332.xml",
+      "voteDate": "2025-12-11",
+      "measureId": "H R 2550",
+      "question": "On Passage",
+      "result": "Passed",
+      "yeas": 231,
+      "nays": 195,
+      "memberVoteCount": 433,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    }
+  ]
+}
