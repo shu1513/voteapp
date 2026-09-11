@@ -82,8 +82,8 @@ negotiated transition, which runs on a cost axis rather than an environmental on
 From 1 July 2027 a continuing care retirement community that offers life care contracts
 must file an actuarial analysis at its second registration renewal and every other renewal
 after that, showing it can meet its obligations under moderately adverse conditions. The
-Office of the Insurance Commissioner reviews it, registration waits on that review, and the
-result is linked from the state's public list. Only a registered community may call itself
+Office of the Insurance Commissioner reviews it, full registration waits on that review (a provisional
+one may issue meanwhile), and the result is linked from the state's public list. Only a registered community may call itself
 a life care community.
 
 Actuary and life care contract are both glossed. **Senate-only**: the House votes were
@@ -109,3 +109,14 @@ the Connecticut rule that a plan is not a program. Filter-5 drop.
 - One duplicate retired before importing. The office-scoped sweep and the tally sweep
   agreed on it independently. Every other hit was a sponsorship record, a different vote
   on the same bill, or an older Washington act that reuses the number.
+
+## Review response (2026-09-10) — HB 2384 provisional registration
+
+**The finding (P2, true).** RCW 18.390.030(3) as amended lets the department issue a
+provisional registration while the actuarial review is pending, once every other part of
+the application is sufficient. The description said the state may not register the
+community until the review is done. Now: full registration waits on the review, but the
+state may register provisionally in the meantime.
+
+Judge: 1 `updated` / 10 `unchanged`. Import rewrote 19 records in place. Dry-run re-run
+547 `unchanged`, 0 errors. Row count unchanged at 547.

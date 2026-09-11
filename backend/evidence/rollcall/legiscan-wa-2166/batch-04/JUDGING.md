@@ -11,8 +11,9 @@ Cities and counties planning under the Growth Management Act must allow an insul
 exterior wall to project up to 8 inches into a setback, a roof to exceed its height limit
 by 8 inches for insulation and by at least 48 inches for solar panels, and floor area to
 be measured from the interior face of the exterior wall. They may not require facade
-modulation, upper-level setbacks, or off-street parking for affordable housing, passive
-house construction, conversions, modular construction or mass timber construction. The
+modulation or upper-level setbacks for affordable housing, passive house construction,
+conversions, modular construction or mass timber construction, and may not require
+off-street parking for that same list minus conversions. The
 parking limit yields only to a study by credentialed planners showing a significant
 safety loss. Minimum unit sizes for low-income and very low-income housing are capped.
 
@@ -69,12 +70,14 @@ because the act's reach is otherwise easy to misread as covering one use only.
 Transitional and permanent supportive housing must be allowed in any zone inside an urban
 growth area where dwelling units or hotels are allowed; indoor emergency shelters and
 emergency housing must be allowed wherever hotels are, and in further zones where the
-comprehensive plan shows a projected need. None may be sited on industrial land. A local
+comprehensive plan shows a projected need. None may be forced onto industrial land. A local
 government may not impose standards more restrictive than those for other lodging or
 residential development in the same zone, though objective regulations such as height,
 setback, lot coverage and stormwater still apply. Design review must be administrative
 and objective, with no public predecision hearing. The operator certification a city may
-require is a closed list, and the city may ask for nothing beyond it.
+require is a closed list, and the city may ask for no other certification. The one further
+lever is the 500-foot school or shelter proximity negotiation, which may end in a denial
+after 180 days.
 
 The closed list matters and is stated as a limit, because it is what stops the
 certification becoming an open-ended veto.
@@ -111,3 +114,27 @@ as a candidate in the worklist rather than rushed into this batch.
 - No measure in this batch sits on a partially vetoed act.
 - Ten duplicates retired before importing. Three further records naming these bill
   numbers describe older Washington acts that reuse the number, and were left alone.
+
+## Review response (2026-09-10) — HB 2266 two findings, HB 1183 one finding
+
+All three checked against the session-law text on lawfilesext.leg.wa.gov, all three true.
+
+**HB 2266, industrial land (P2, true).** Section 2(1)(b) says a county or city "may not
+require" these housing types to be located in an industrial zone. The description had
+turned that into a ban on siting there. Now "may not force these buildings onto
+industrial land".
+
+**HB 2266, nothing further (P2, true).** Section 2(5)(b) closes the certification list,
+but section 2(7) lets a city negotiate extra health-and-safety rules for a shelter within
+500 feet of a school or another shelter, and deny the permit if no agreement is reached
+within 180 days. Both descriptions now carry that exception after the closed-list
+sentence.
+
+**HB 1183, merged exemption lists (P2, true).** Section 6 exempts conversions from
+facade modulation and upper-level setbacks; section 7's parking exemption does not list
+conversions. The description had one list for both. Now two sentences, conversions only
+in the first.
+
+Judge: 4 `updated` / 7 `unchanged`. Import rewrote 212 records in place (HB 1183 87
+House + 19 Senate, HB 2266 87 House + 19 Senate). Dry-run re-run 616 `unchanged`, 0
+errors. Row count unchanged at 616.
