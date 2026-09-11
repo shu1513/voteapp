@@ -97,6 +97,11 @@
           "slug": "environment_and_public_health",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -113,6 +118,11 @@
       "labels": [
         {
           "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "for",
           "nay": null
         }

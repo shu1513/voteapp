@@ -286,6 +286,11 @@
      "slug": "environment_and_public_health",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Senate Bill 260, which starts state rules on wildfire smoke at work. It orders the head of the Division of Industrial Relations to write those rules. They must say what employers do to check air quality and cut workers' exposure when the air quality index reaches 150, and again at 200. The regulator, not the bill, picks the level at which outdoor work must stop. From January 2026 a covered employer must run a system that warns workers when the index reaches 150 and tells them what protection is available. Workers must be able to report symptoms such as trouble breathing or chest pain. Mines, trucking employers, emergency services and employers with ten or fewer workers are left out. The Nevada Assembly passed it 32-10, and the bill was signed into law.",
@@ -302,6 +307,11 @@
    "labels": [
     {
      "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }

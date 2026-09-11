@@ -51,6 +51,11 @@
           "slug": "reduce_wealth_gap",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -67,6 +72,11 @@
       "labels": [
         {
           "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "for",
           "nay": null
         }
@@ -169,6 +179,11 @@
           "slug": "corporate_accountability",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -185,6 +200,11 @@
       "labels": [
         {
           "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "for",
           "nay": null
         }

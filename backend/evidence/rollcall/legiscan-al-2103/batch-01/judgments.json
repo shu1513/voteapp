@@ -156,8 +156,8 @@
       "nay_description": "Voted against the final, conference committee version of Senate Bill 231, which cut off state and local business incentives for employers that recognize a union without a secret ballot. A firm that accepts a union on signed cards alone, or gives a worker's home contact details to a union without written consent, may not take a grant, loan or tax break for that project. A firm that already took one must pay it all back, and deals signed before January 2025, or workplaces that already have a union contract or a secret ballot, are not covered. The House agreed 73-29 over these votes and it became law.",
       "labels": [
         {
-          "slug": "general",
-          "yea": null,
+          "slug": "labor_rights",
+          "yea": "against",
           "nay": null
         }
       ]

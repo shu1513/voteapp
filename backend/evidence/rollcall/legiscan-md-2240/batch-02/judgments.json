@@ -159,6 +159,11 @@
      "slug": "corporate_accountability",
      "yea": "for",
      "nay": "against"
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": "against"
     }
    ]
   },
@@ -175,6 +180,11 @@
    "labels": [
     {
      "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": "against"
     }
@@ -285,6 +295,11 @@
      "slug": "corporate_accountability",
      "yea": "for",
      "nay": "against"
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": "against"
     }
    ]
   },
@@ -301,6 +316,11 @@
    "labels": [
     {
      "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": "against"
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": "against"
     }

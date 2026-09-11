@@ -294,6 +294,11 @@
           "slug": "data_privacy",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
         }
       ],
       "chamber": "house",
@@ -511,6 +516,11 @@
       "labels": [
         {
           "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        },
+        {
+          "slug": "labor_rights",
           "yea": "against",
           "nay": "for"
         }

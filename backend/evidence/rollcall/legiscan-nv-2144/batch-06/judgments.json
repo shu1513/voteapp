@@ -121,6 +121,11 @@
      "slug": "healthcare_affordability",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "ai_regulation",
+     "yea": "for",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Assembly voted barred an insurer from relying on artificial intelligence alone to deny, cut back or end approved care, so the software could still be part of a denial. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Assembly passed it 23-16, but the governor vetoed the bill, so it never became law.",
@@ -137,6 +142,11 @@
    "labels": [
     {
      "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "ai_regulation",
      "yea": "for",
      "nay": null
     }

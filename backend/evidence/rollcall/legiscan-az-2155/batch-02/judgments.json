@@ -451,6 +451,11 @@
           "slug": "public_safety_and_crime_control",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
         }
       ]
     },

@@ -218,6 +218,11 @@
         {
           "slug": "corporate_accountability",
           "yea": "for"
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -235,6 +240,11 @@
         {
           "slug": "corporate_accountability",
           "yea": "for"
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -320,6 +330,11 @@
         {
           "slug": "healthcare_affordability",
           "yea": "for"
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -337,6 +352,11 @@
         {
           "slug": "healthcare_affordability",
           "yea": "for"
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },

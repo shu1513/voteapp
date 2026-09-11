@@ -128,6 +128,11 @@
      "slug": "corporate_accountability",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ]
   },
@@ -167,6 +172,11 @@
     },
     {
      "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "ai_regulation",
      "yea": "for",
      "nay": null
     }

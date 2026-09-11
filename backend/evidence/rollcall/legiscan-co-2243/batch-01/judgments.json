@@ -127,6 +127,11 @@
      "slug": "healthcare_affordability",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "ai_regulation",
+     "yea": "for",
+     "nay": null
     }
    ]
   },
@@ -185,6 +190,11 @@
      "slug": "data_privacy",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "ai_regulation",
+     "yea": "for",
+     "nay": null
     }
    ],
    "acknowledge_later_rolls": [
@@ -205,6 +215,11 @@
    "labels": [
     {
      "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "ai_regulation",
      "yea": "for",
      "nay": null
     }
@@ -265,6 +280,11 @@
      "slug": "immigration",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ],
    "acknowledge_later_rolls": [
@@ -285,6 +305,11 @@
    "labels": [
     {
      "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }

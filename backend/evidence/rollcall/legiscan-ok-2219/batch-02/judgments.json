@@ -51,6 +51,11 @@
           "slug": "social_programs_and_welfare",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
