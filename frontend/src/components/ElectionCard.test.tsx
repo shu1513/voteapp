@@ -176,8 +176,8 @@ describe("ElectionCard", () => {
     renderCard(electionSummary({ race_type: "ballot_measure", candidate_count: 0 }));
 
     const label = screen.getByText("Ballot Measure");
-    // Democratic-party blue on the letters only — no chip background.
-    expect(label.className).toContain("text-dem-blue");
+    // Green on the letters only — no chip background, and not party blue.
+    expect(label.className).toContain("text-nudge-deep");
     expect(label.className).not.toContain("bg-");
     expect(screen.queryByText(/candidates?/)).not.toBeInTheDocument();
   });
