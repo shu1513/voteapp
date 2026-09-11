@@ -95,7 +95,7 @@ the public side:
 
 ```bash
 git clone --no-local git@github.com:shu1513/electionssimplified.git electionssimplified-public
-cd voteapp-public
+cd electionssimplified-public
 git filter-repo --invert-paths \
   --path tmp_voteapp_backup_before_live_ai_20260511.sql \
   --path backend/node_modules \
