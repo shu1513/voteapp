@@ -31,7 +31,9 @@ Same brief, sources and precedents as `legiscan-ut-2137/batch-10/JUDGING.md`.
     center its purpose on a personal identity characteristic, and no club may
     limit membership by one.
   - Its college debate and event duties and its guest-lecturer exception do not
-    offset that in the same area. They are named in the description.
+    offset that in the same area. The debate and event duties are named in the
+    description; the guest-lecturer exception (53H-1-504(6)(a)(iv), a
+    safe-harbor for invited speakers) is too narrow to earn a sentence there.
 - **HB 259 Parental Access to Children's Medical Records**, House 56-14
   (concurrence) and Senate 22-6: `data_privacy` / against. It forces facilities
   to open a minor's records to parents, with daily and per-record fines. The

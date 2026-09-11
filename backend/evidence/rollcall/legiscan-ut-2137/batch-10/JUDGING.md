@@ -62,7 +62,10 @@ summary as an index only. The 2026 measures are in `legiscan-ut-2214/batch-10`.
   `civil_rights` / against.
   - College sex-designated dwelling units follow sex at birth, with an original
     birth certificate as the defense.
-  - The medical-treatment defense for privacy spaces is deleted.
+  - The medical-treatment defense is deleted from both school privacy spaces
+    (63G-31-301) and public changing rooms (63G-31-302). Changing rooms keep
+    the separate amended-certificate-plus-surgery defense; schools are left
+    with the original birth certificate only.
 - **HB 300 Amendments to Election Law**, House 56-15 (concurrence) and Senate
   19-10: `election_integrity` / for.
   - The ID digits on return envelopes and the opt-in mail ballot from 2029 are
