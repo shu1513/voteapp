@@ -8,7 +8,7 @@ import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { pageMeta } from "../lib/pageMeta";
 
 /** The one-line claim under the hero; also the share card's second line. */
-const TAGLINE = "Independent, nonpartisan, AI-assisted election research with linked sources.";
+const TAGLINE = "Factual, nonpartisan, AI-assisted research with linked sources";
 
 // Server-rendered head for the home page: the same title useDocumentTitle
 // sets after hydration, so crawlers see it in the HTML rather than the root's
@@ -309,8 +309,7 @@ export function HomePage() {
             a clear step below the wordmark; text-balance stops the centred
             wrap from ragging into a one-word last line. */}
         <h1 className="mt-6 text-balance text-title font-bold">
-          See how much power your vote has and who the candidates really are by their track
-          records instead of their marketing.
+          See who the candidates really are by their track records
         </h1>
         {/* What the service is, where a first-time visitor actually looks.
             Centred with the rest of the masthead — one alignment axis for

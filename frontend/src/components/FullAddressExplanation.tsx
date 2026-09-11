@@ -43,7 +43,18 @@ export function FullAddressExplanation({ onOpen }: { onOpen?: () => void } = {})
                   you’ll get a partial ballot for that area. You can enter your street address
                   later to see the remaining races.
                 </p>
-                <p>{ADDRESS_FIELD_PRIVACY_NOTE}</p>
+                <p>
+                  {ADDRESS_FIELD_PRIVACY_NOTE} You can verify that in our public source code{" "}
+                  <a
+                    href="https://github.com/shu1513/voteapp"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-ink underline hover:text-rausch"
+                  >
+                    here
+                  </a>
+                  .
+                </p>
                 <p>
                   <a
                     href="/privacy"

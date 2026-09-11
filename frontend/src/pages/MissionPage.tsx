@@ -35,7 +35,7 @@ export default function MissionPage() {
         <h1 className="text-title font-bold">Mission</h1>
 
         <h2 className="pt-2 text-heading font-semibold">Why do we do what we do?</h2>
-        <p>When we go voting, two problems show up immediately:</p>
+        <p>When we go voting, two problems show up:</p>
         <ol className="list-decimal space-y-1 pl-6">
           <li>We don’t know if our votes actually matter.</li>
           <li>We don’t know who most of these candidates are.</li>
@@ -45,15 +45,19 @@ export default function MissionPage() {
         <p>
           In a presidential election, unless we live in a key district in a swing state, our vote is
           one among more than 150 million. But in a city council or school board race, a few hundred
-          votes can decide the outcome. Ironically, these local offices affect our daily lives far
-          more: our schools, our street safety, our water quality, our local taxes.
+          votes may decide the outcome. Ironically, these local offices could affect our daily lives
+          far more.
         </p>
 
         <h2 className="pt-2 text-heading font-semibold">Who are these candidates?</h2>
         <p>
-          The bigger the election (think presidential), the more media coverage it gets. Smaller
-          elections, the local races where our vote is most powerful, usually get almost none. And
-          what little information we do get is usually marketing written by the campaigns themselves.
+          The bigger the election, such as the presidential election, the more media coverage it
+          gets. So we know only about the candidates our votes have the least power over, but
+          nothing about the candidates our votes matter the most for.
+        </p>
+        <p>
+          The little information we do get about candidates is usually heavily biased with an
+          agenda behind it, if not outright marketing or propaganda.
         </p>
 
         <h2 className="pt-2 text-heading font-semibold">What {APP_NAME} does</h2>
@@ -63,11 +67,33 @@ export default function MissionPage() {
           who to pick based on the issues that matter to us, not on their ads.
         </p>
 
+        <h2 className="pt-2 text-heading font-semibold">
+          Why must we stay neutral?
+        </h2>
+        <p>
+          Because we believe that no single person or small group knows best what everyone else
+          should think and do. What I believe is good is not necessarily what is good for you.
+        </p>
+        <p>Only people themselves can decide what’s best for them.</p>
+        <p>So the best thing to do is to lay out the facts so we can decide for ourselves.</p>
+
         <h2 className="pt-2 text-heading font-semibold">How we do it</h2>
         <p>
-          We use AI (from American companies only) to research public sources, validate everything
-          against multiple methods before it’s written, and run quality passes with both humans and
-          AI. Keeping this information current (new elections, new candidates, new records) takes
+          We use multiple American AI models to research public sources, validate everything across
+          different methods and models before it’s written, and run quality passes with both humans
+          and AI. For full transparency, our source code is open and public{" "}
+          <a
+            href="https://github.com/shu1513/voteapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold underline hover:text-ink"
+          >
+            here
+          </a>
+          , where you can see every algorithm and prompt we use.
+        </p>
+        <p>
+          Keeping this information current (new elections, new candidates, new records) takes
           constant effort from our staff and money for AI usage.
         </p>
 
@@ -89,7 +115,7 @@ export default function MissionPage() {
           </li>
           <li>
             <span className="font-semibold">Make a one-time contribution</span>
-            <p className="mt-1">If you’d rather make a one-time contribution.</p>
+            <p className="mt-1">If you want to make a one-time contribution to help us.</p>
             <p className="mt-2">
               <Link to="/support/once" className={onceCtaClass}>
                 See how to contribute
@@ -112,9 +138,10 @@ export default function MissionPage() {
         </ol>
 
         <p>
-          We understand that life is hard. And life has been hard. So we don’t expect this
-          contribution from anyone, and we will keep this site running for as long as we can
-          financially keep it, regardless. But if you believe as we believe, join us.
+          We understand that life is hard. And life has been hard. So we don’t expect
+          contributions from anyone. We will keep this site running for as long as we can afford
+          to with our own money. But if you believe as we believe, join us, and we will keep
+          bringing you quality content.
         </p>
 
         <p className="text-ink-soft">
