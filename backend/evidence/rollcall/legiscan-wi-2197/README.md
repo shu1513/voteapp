@@ -74,10 +74,11 @@ divided government showing up in the data. The operator chose to work both scope
 | batch-06 | vetoed pool, labor, unemployment insurance and taxes | 9 kept of 13 | 17 | 840 |
 | batch-07 | vetoed pool, elections, environment and state operations | 6 kept of 17 | 8 | 388 |
 | batch-08 | AB 100 and AB 102, added after the SF0044 decision | 2 kept of 2 | 4 | 189 |
+| batch-09 | AB 595, added after the HB0318 decision | 1 kept of 1 | 1 | 11 |
 
 **The enacted pool and the vetoed pool are both closed.** Every one of the 24
 enacted measures and 74 vetoed measures has a written disposition. Wisconsin holds
-5,225 roll-call records over 102 roll calls, all local.
+5,236 roll-call records over 103 roll calls, all local.
 
 Not worked, by decision: the 46 measures that died without a veto (the operator
 has not asked for that scope), and the adopted joint and senate resolutions
@@ -86,6 +87,11 @@ has not asked for that scope), and the adopted joint and senate resolutions
 AB 100 and AB 102 (sports designated by biological sex) were dropped in batch-05
 pending the campaign-wide decision on Wyoming SF0044. Wyoming batch-04 made it
 (`civil_rights`, yes = against), and batch-08 imports them.
+
+AB 595 (voter list maintenance) was dropped in batch-07 pending the Wyoming
+HB0318 decision. Wyoming batch-04 made it (`election_integrity`, yes = for), and
+batch-09 imports it. The four administrative-rules bills (SB 275, 276, 277 and
+289) stay dropped; batch-07 JUDGING.md gives the ruling.
 
 Nine of the passage rolls are the first chamber accepting the other chamber's
 amendment (`Senate: Assembly Substitute Amendment 7 concurred in`). When the
