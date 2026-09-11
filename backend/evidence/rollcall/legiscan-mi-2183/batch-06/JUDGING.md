@@ -43,9 +43,15 @@ had been spent. Both passed 58-48 on the same day.
 HB 5711's enacting section repeals subpart A of part 2 (the clean energy and
 renewable energy standards), sections 71 to 99 (energy waste reduction), part 3
 (state government energy conservation), section 179, and section 17 of the
-property assessed clean energy act. The text lowers the customer generation cap
-from 110% to 100% of past-year use and adds municipal solid waste, landfill gas
-from it, and waste-derived fuel to the renewable resource list. The standards'
+property assessed clean energy act. In section 173, the distributed generation
+program, it lowers the per-customer generation cap from 110% to 100% of
+past-year use (subsection 2) and lowers the program size a utility must allow
+from 10% to 1% of its average in-state peak load (subsection 3). Both caps
+apply inside that program, not to all customer-owned generation; the first
+description said "limit customer-owned generation such as rooftop solar" and
+skipped the 10% to 1% change, and review caught it. It also adds municipal
+solid waste, landfill gas from it, and waste-derived fuel to the renewable
+resource list. The standards'
 targets quoted in the description (80% clean by 2035 and 100% by 2040; 50%
 renewable by 2030 and 60% by 2035) are the current-law numbers being repealed.
 
@@ -75,6 +81,11 @@ Judge: 7 updated. Dry run: 648 planned inserts, 0 errors, stamp
 **648 inserts**, 0 notified, stamp `2026-09-11T06:42:23.750Z`, 96 candidates,
 400 area tags. Michigan roll-call records went 2,416 to 3,064, which reconciles
 with the import report and the stamp query.
+
+**HB 5711 review fix.** Judge: 1 updated (HB 5711), 6 unchanged. Re-import:
+93 rewrites on roll 1698058, 555 unchanged elsewhere, 0 notified. Reports are
+`import-hb5711-fix-dry-run-report.json` and `import-hb5711-fix-rerun-report.json`;
+the originals are kept. Local database only.
 
 ## Duplicates
 
