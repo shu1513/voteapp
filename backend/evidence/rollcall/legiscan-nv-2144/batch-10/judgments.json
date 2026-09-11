@@ -1,0 +1,76 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "NV",
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1576988,
+      "measure_id": "SB 443",
+      "vote_date": "2025-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 443, which requires contractors building certain large utility projects to pay prevailing wages, as on public works. It covers state-approved natural gas pipeline replacements and new power plants of at least 50 megawatts. Electric utility work done by contractors that already have a union contract, a project labor agreement or a worksite agreement is exempt. The Nevada Assembly passed it 27-15, and the bill was signed into law.",
+      "nay_description": "Voted against Senate Bill 443, which requires contractors building certain large utility projects to pay prevailing wages, as on public works. It covers state-approved natural gas pipeline replacements and new power plants of at least 50 megawatts. Electric utility work done by contractors that already have a union contract, a project labor agreement or a worksite agreement is exempt. The Nevada Assembly passed it 27-15, and the bill was signed into law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NV",
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1573177,
+      "measure_id": "SB 161",
+      "vote_date": "2025-05-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 161, which gives teachers' unions and school districts a new binding arbitration option when a contract has expired or is about to expire near the start of the school year. While an expired contract stays in force, a district cannot push teachers to work longer than it required. In an illegal strike, penalties fall only on the union and its officers, not on individual teachers, and action at one or a few schools is not a strike unless it is district-wide. The Nevada Senate passed it 14-6, and the bill was signed into law.",
+      "nay_description": "Voted against Senate Bill 161, which gives teachers' unions and school districts a new binding arbitration option when a contract has expired or is about to expire near the start of the school year. While an expired contract stays in force, a district cannot push teachers to work longer than it required. In an illegal strike, penalties fall only on the union and its officers, not on individual teachers, and action at one or a few schools is not a strike unless it is district-wide. The Nevada Senate passed it 14-6, and the bill was signed into law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NV",
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1576923,
+      "measure_id": "SB 161",
+      "vote_date": "2025-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 161, which gives teachers' unions and school districts a new binding arbitration option when a contract has expired or is about to expire near the start of the school year. While an expired contract stays in force, a district cannot push teachers to work longer than it required. In an illegal strike, penalties fall only on the union and its officers, not on individual teachers, and action at one or a few schools is not a strike unless it is district-wide. The Nevada Assembly passed it 33-9, and the bill was signed into law.",
+      "nay_description": "Voted against Senate Bill 161, which gives teachers' unions and school districts a new binding arbitration option when a contract has expired or is about to expire near the start of the school year. While an expired contract stays in force, a district cannot push teachers to work longer than it required. In an illegal strike, penalties fall only on the union and its officers, not on individual teachers, and action at one or a few schools is not a strike unless it is district-wide. The Nevada Assembly passed it 33-9, and the bill was signed into law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NV",
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1577015,
+      "measure_id": "SB 298",
+      "vote_date": "2025-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 298, which adds denying a police officer a raise or a seniority increase as punishment to the actions that trigger officers' disciplinary protections. During an investigation, an agency cannot deny an officer a raise or seniority increase unless the investigation could lead to firing or demotion, except as a union contract provides. The Nevada Assembly passed it 28-14, and the bill was signed into law.",
+      "nay_description": "Voted against Senate Bill 298, which adds denying a police officer a raise or a seniority increase as punishment to the actions that trigger officers' disciplinary protections. During an investigation, an agency cannot deny an officer a raise or seniority increase unless the investigation could lead to firing or demotion, except as a union contract provides. The Nevada Assembly passed it 28-14, and the bill was signed into law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
