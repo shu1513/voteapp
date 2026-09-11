@@ -101,7 +101,8 @@ treatment arguments. Contested worth is fine and contested direction is not,
 and no other research area fits the act at all. **This one is raised for the
 operator.** It is a salient Wyoming measure and dropping it loses real
 information; if the project wants a settled direction for this class of
-measure, that is a decision to make once rather than per state.
+measure, that is a decision to make once rather than per state. Later settled and
+imported in batch 04.
 
 **SF 69, homeowner property tax exemption.** Dropped on filter 4. The Senate
 passed it 23-8 and the House 42-19, both closely divided, but the Senate then

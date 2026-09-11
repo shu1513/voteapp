@@ -28,6 +28,9 @@ here on the same reasoning so the campaign stays consistent, and they are ready
 to be added the moment the operator rules the other way. See JUDGING.md for why
 the other three gender-related measures do not fall under the same question.
 
+**Update:** the operator ruled in Wyoming batch-04 (`civil_rights`, yes =
+against). AB 100 and AB 102 are imported in batch-08.
+
 ## Progress through the vetoed pool
 
 | | measures | slots |

@@ -182,9 +182,10 @@ unaffected, because all three of its vetoes were sustained.
 | 01 | 10 | 10 | 281 | 214 |
 | 02 | 8 | 12 | 224 | 164 |
 | 03 | 11 | 11 | 246 | 190 |
-| total | 29 | 33 | 751 | 568 |
+| 04 | 2 | 2 | 41 | 24 |
+| total | 31 | 35 | 792 | 592 |
 
-The 751 records cover 44 candidates. Each batch has its own JUDGING.md.
+The 792 records cover 44 candidates. Each batch has its own JUDGING.md.
 
 ## Wyoming is finished
 
@@ -193,17 +194,17 @@ in `divided-enacted-worklist.tsv`. None is left unworked.
 
 | disposition | roll calls |
 |---|---|
-| imported | 33 |
+| imported | 35 |
 | superseded by a later vote in the same chamber | 22 |
 | dropped on filter 3, subject not recognisable | 29 |
 | dropped on filter 4, no divided vote on the enacted text | 2 |
-| dropped on filter 5, no defensible direction | 40 |
+| dropped on filter 5, no defensible direction | 38 |
 
-Two drops are open questions for the operator rather than settled calls. SF 44
-in 2025, on college sports and biological sex, and HB 318 in 2025, on voter
-list maintenance, both clear filters 1 through 4 and fail only on direction,
-where two research areas point opposite ways. Each is a class of measure that
-will recur in other states, so both are worth deciding once.
+Two drops were first raised as open questions for the operator: SF 44 in
+2025, on college sports and biological sex, and HB 318 in 2025, on voter list
+maintenance. Batch 04 settled both by following how the campaign had already
+judged the same kind of measure in other states, and imported them. See
+`batch-04/JUDGING.md`.
 
 Yield fell as the campaign expects: 10 measures in the first pass, 8 in the
 second, 11 in the third, and then nothing left clearing all five filters.

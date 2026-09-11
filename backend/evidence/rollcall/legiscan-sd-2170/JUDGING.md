@@ -149,11 +149,15 @@ their titles say least. Worth recording:
 
 **Senate Bill 21 was dropped after the act was read in full, not before.** Its
 title says it modifies tax refunds for elderly and disabled people. It repeals
-chapter 10-18A, the property tax refund, and folds the benefit into the sales
-tax refund, where a claimant now receives a pro rata share of a fixed
-appropriation capped at $500 for one person and $1,000 for a larger household.
-Whether a claimant ends up better or worse off depends on what is appropriated
-each year, so the direction cannot be established from the act itself.
+twenty sections, including all of chapter 10-18A, the property tax refund, and
+folds the benefit into the sales tax refund. That refund used to be a fixed sum
+set by formula, at most $258 for one person and $581 for a larger household.
+Now each claimant gets a pro rata share of whatever is appropriated, capped at
+$500 and $1,000, and the income limits rise to $17,215 for one person and
+$23,265 for a household. The caps came from the Senate amendment adopted just
+before the 18-16 roll. More people qualify, but whether a claimant ends up
+better or worse off depends on what is appropriated each year, so the direction
+cannot be established from the act itself.
 
 **House Bill 1062 shows why a renumbering is not a change.** Most of the marked
 text is subsections being renumbered and two subsections repealed years ago being

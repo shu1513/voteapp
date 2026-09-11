@@ -6,7 +6,7 @@
 - `survey/survey-2157.json`, `survey/survey-2213.json` — the written survey reports the configuration was read from.
 - `crosswalk-2157.json`, `crosswalk-2213.json` — the committed member crosswalks, one entry per seated member.
 - `legiscan-people-wy-2157.json`, `legiscan-people-wy-2213.json` — the people snapshots the crosswalks were written against.
-- `batch-01/judgments.json`, `batch-02/judgments.json`, `batch-03/judgments.json` — the judgments as applied.
+- `batch-01/judgments.json`, `batch-02/judgments.json`, `batch-03/judgments.json`, `batch-04/judgments.json` — the judgments as applied. Batch 04 is the two operator questions, SF 44 and HB 318.
 - `batch-NN/s2157`, `batch-NN/s2213` — the per-roll evidence files and the import ledgers for each session of each batch.
 - `wy_text.py` — extracts an enrolled act with Wyoming's struck and underlined text labelled. Needs PyMuPDF.
 
