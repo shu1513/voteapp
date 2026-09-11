@@ -1,0 +1,76 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1614247,
+      "measure_id": "HB 4492",
+      "vote_date": "2026-01-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4492. It would change the rules for workers paid Michigan's lower tipped wage. An employer could require these workers to share their tips with other employees, as long as each worker's tipped wage plus kept tips still reaches the full minimum wage. It would drop the rules that tips stay with the worker unless shared by choice, and that the employer explain the tipped wage in writing and get the worker's written consent. It would also remove the rule that tips and service charges do not count toward the wages an employer owes. The House passed it 57-52. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4492. It would change the rules for workers paid Michigan's lower tipped wage. An employer could require these workers to share their tips with other employees, as long as each worker's tipped wage plus kept tips still reaches the full minimum wage. It would drop the rules that tips stay with the worker unless shared by choice, and that the employer explain the tipped wage in writing and get the worker's written consent. It would also remove the rule that tips and service charges do not count toward the wages an employer owes. The House passed it 57-52. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1688698,
+      "measure_id": "SB 145",
+      "vote_date": "2026-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 145. It would bar employers from asking job applicants about their past pay, past benefits, credit score or credit history, or from seeking that information in other ways. Employers that a law or a securities industry regulator requires to use this information would be exempt, as would banks that take federally insured deposits and registered securities brokers and investment advisers. It would also bar written policies or practices that stop or discourage workers from sharing their own pay. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 145. It would bar employers from asking job applicants about their past pay, past benefits, credit score or credit history, or from seeking that information in other ways. Employers that a law or a securities industry regulator requires to use this information would be exempt, as would banks that take federally insured deposits and registered securities brokers and investment advisers. It would also bar written policies or practices that stop or discourage workers from sharing their own pay. The Senate passed it 19-16. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1595821,
+      "measure_id": "SB 319",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 319. It would make minimum staffing levels a required topic of union bargaining for police, firefighters and other public safety workers covered by Michigan's binding arbitration law for those jobs. An employer could decline to bargain over staffing in a year after its state revenue-sharing payments, or its property tax collections because of lower property values, fell below the year before. For other public workers, it would say nothing bars bargaining over staffing. The Senate passed it 19-18. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 319. It would make minimum staffing levels a required topic of union bargaining for police, firefighters and other public safety workers covered by Michigan's binding arbitration law for those jobs. An employer could decline to bargain over staffing in a year after its state revenue-sharing payments, or its property tax collections because of lower property values, fell below the year before. For other public workers, it would say nothing bars bargaining over staffing. The Senate passed it 19-18. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1711422,
+      "measure_id": "SB 49",
+      "vote_date": "2026-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 49. It would raise Michigan's workplace safety fines to match the federal fines for the same violations. Today a serious violation can cost up to $7,000 and a willful or repeated one up to $70,000. The state labor department would have to start updating the fines within 10 working days after a federal change. It would also formally put the labor department in charge of the safety law, and keep reports from its safety advice program for employers out of public records requests. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 49. It would raise Michigan's workplace safety fines to match the federal fines for the same violations. Today a serious violation can cost up to $7,000 and a willful or repeated one up to $70,000. The state labor department would have to start updating the fines within 10 working days after a federal change. It would also formally put the labor department in charge of the safety law, and keep reports from its safety advice program for employers out of public records requests. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
