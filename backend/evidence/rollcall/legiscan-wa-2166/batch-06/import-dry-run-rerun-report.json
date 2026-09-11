@@ -1,0 +1,475 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-09-11T05:30:20.889Z",
+  "finishedAt": "2026-09-11T05:30:23.753Z",
+  "jurisdiction": "WA",
+  "sessionId": 2166,
+  "evidenceDir": "evidence/rollcall/legiscan-wa-2166/batch-06",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-wa-2166/crosswalk.json",
+  "crosswalkEntries": 151,
+  "peopleFile": "evidence/rollcall/legiscan-wa-2166/legiscan-people-wa-2166.json",
+  "peopleMembers": 151,
+  "files": 15,
+  "outcomes": {
+    "dry_run": 15
+  },
+  "actions": {
+    "unchanged": 753
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-wa-house-2166-roll1489418.json",
+      "state": "WA",
+      "chamber": "house",
+      "sessionId": 2166,
+      "roll": 1489418,
+      "outcome": "dry_run",
+      "legislativeVoteId": "391ea0f4-217b-427a-84e9-ae5667172f76",
+      "reviewStatus": "approved",
+      "bill": "HB1215",
+      "voteDate": "2025-02-13",
+      "officialVoteDate": null,
+      "measureId": "HB 1215",
+      "question": "House 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:house:2166:1489418:2026-09-11T05:30:20.889Z",
+      "members": 93,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 85
+      },
+      "actions": {
+        "unchanged": 85
+      },
+      "notified": 0,
+      "candidates": 85,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-house-2166-roll1503658.json",
+      "state": "WA",
+      "chamber": "house",
+      "sessionId": 2166,
+      "roll": 1503658,
+      "outcome": "dry_run",
+      "legislativeVoteId": "37cacd99-8424-4ebb-816c-e3b015ce8a83",
+      "reviewStatus": "approved",
+      "bill": "HB1177",
+      "voteDate": "2025-03-03",
+      "officialVoteDate": null,
+      "measureId": "HB 1177",
+      "question": "House 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:house:2166:1503658:2026-09-11T05:30:20.889Z",
+      "members": 97,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 87
+      },
+      "actions": {
+        "unchanged": 87
+      },
+      "notified": 0,
+      "candidates": 87,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-house-2166-roll1508327.json",
+      "state": "WA",
+      "chamber": "house",
+      "sessionId": 2166,
+      "roll": 1508327,
+      "outcome": "dry_run",
+      "legislativeVoteId": "62b6168a-049e-4db4-b45f-ddc8b9cd9eea",
+      "reviewStatus": "approved",
+      "bill": "HB1696",
+      "voteDate": "2025-03-06",
+      "officialVoteDate": null,
+      "measureId": "HB 1696",
+      "question": "House 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:house:2166:1508327:2026-09-11T05:30:20.889Z",
+      "members": 96,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 86
+      },
+      "actions": {
+        "unchanged": 86
+      },
+      "notified": 0,
+      "candidates": 86,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-house-2166-roll1508988.json",
+      "state": "WA",
+      "chamber": "house",
+      "sessionId": 2166,
+      "roll": 1508988,
+      "outcome": "dry_run",
+      "legislativeVoteId": "9e6215bf-db84-45f7-8484-46d767e91681",
+      "reviewStatus": "approved",
+      "bill": "HB1531",
+      "voteDate": "2025-03-08",
+      "officialVoteDate": null,
+      "measureId": "HB 1531",
+      "question": "House 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:house:2166:1508988:2026-09-11T05:30:20.889Z",
+      "members": 93,
+      "notVoting": 0,
+      "absent": 5,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 85
+      },
+      "actions": {
+        "unchanged": 85
+      },
+      "notified": 0,
+      "candidates": 85,
+      "error": null,
+      "related": 16
+    },
+    {
+      "file": "ls-wa-house-2166-roll1511981.json",
+      "state": "WA",
+      "chamber": "house",
+      "sessionId": 2166,
+      "roll": 1511981,
+      "outcome": "dry_run",
+      "legislativeVoteId": "96711dab-8883-4d06-97de-ed1ad2982393",
+      "reviewStatus": "approved",
+      "bill": "HB1644",
+      "voteDate": "2025-03-10",
+      "officialVoteDate": null,
+      "measureId": "HB 1644",
+      "question": "House 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:house:2166:1511981:2026-09-11T05:30:20.889Z",
+      "members": 95,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 8,
+        "matched": 87
+      },
+      "actions": {
+        "unchanged": 87
+      },
+      "notified": 0,
+      "candidates": 87,
+      "error": null,
+      "related": 19
+    },
+    {
+      "file": "ls-wa-house-2166-roll1551830.json",
+      "state": "WA",
+      "chamber": "house",
+      "sessionId": 2166,
+      "roll": 1551830,
+      "outcome": "dry_run",
+      "legislativeVoteId": "f2268365-8fc4-4a87-9f80-d9bbe8991bea",
+      "reviewStatus": "approved",
+      "bill": "HB1308",
+      "voteDate": "2025-04-17",
+      "officialVoteDate": null,
+      "measureId": "HB 1308",
+      "question": "House Final Passage as Amended by the Senate",
+      "originRunId": "rollcall:WA:house:2166:1551830:2026-09-11T05:30:20.889Z",
+      "members": 96,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 86
+      },
+      "actions": {
+        "unchanged": 86
+      },
+      "notified": 0,
+      "candidates": 86,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-house-2166-roll1551948.json",
+      "state": "WA",
+      "chamber": "house",
+      "sessionId": 2166,
+      "roll": 1551948,
+      "outcome": "dry_run",
+      "legislativeVoteId": "34282136-011d-47bf-a2c5-74c8b2b57e6e",
+      "reviewStatus": "approved",
+      "bill": "HB1332",
+      "voteDate": "2025-04-17",
+      "officialVoteDate": null,
+      "measureId": "HB 1332",
+      "question": "House Final Passage as Amended by the Senate",
+      "originRunId": "rollcall:WA:house:2166:1551948:2026-09-11T05:30:20.889Z",
+      "members": 96,
+      "notVoting": 0,
+      "absent": 2,
+      "resolution": {
+        "unmatched_reviewed": 10,
+        "matched": 86
+      },
+      "actions": {
+        "unchanged": 86
+      },
+      "notified": 0,
+      "candidates": 86,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1537323.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1537323,
+      "outcome": "dry_run",
+      "legislativeVoteId": "242f0ff7-993a-45f3-b052-84c44f923e96",
+      "reviewStatus": "approved",
+      "bill": "HB1524",
+      "voteDate": "2025-04-04",
+      "officialVoteDate": null,
+      "measureId": "HB 1524",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1537323:2026-09-11T05:30:20.889Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1538541.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1538541,
+      "outcome": "dry_run",
+      "legislativeVoteId": "cb4c5ae9-cdb7-4c8b-921a-92f10b3f13ed",
+      "reviewStatus": "approved",
+      "bill": "HB1215",
+      "voteDate": "2025-04-07",
+      "officialVoteDate": null,
+      "measureId": "HB 1215",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1538541:2026-09-11T05:30:20.889Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1541869.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1541869,
+      "outcome": "dry_run",
+      "legislativeVoteId": "793d4772-2fa4-49d6-a5ce-5cf705394f49",
+      "reviewStatus": "approved",
+      "bill": "HB1644",
+      "voteDate": "2025-04-09",
+      "officialVoteDate": null,
+      "measureId": "HB 1644",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1541869:2026-09-11T05:30:20.889Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1542482.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1542482,
+      "outcome": "dry_run",
+      "legislativeVoteId": "8d096805-0129-41d1-9edb-69ad31977d01",
+      "reviewStatus": "approved",
+      "bill": "HB1308",
+      "voteDate": "2025-04-09",
+      "officialVoteDate": null,
+      "measureId": "HB 1308",
+      "question": "Senate 3rd Reading & Final Passage as Amended by the Senate",
+      "originRunId": "rollcall:WA:senate:2166:1542482:2026-09-11T05:30:20.889Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1543690.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1543690,
+      "outcome": "dry_run",
+      "legislativeVoteId": "4a336e18-2e0c-4033-925e-e3428b8ae72f",
+      "reviewStatus": "approved",
+      "bill": "HB1531",
+      "voteDate": "2025-04-10",
+      "officialVoteDate": null,
+      "measureId": "HB 1531",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1543690:2026-09-11T05:30:20.889Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 3
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1547959.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1547959,
+      "outcome": "dry_run",
+      "legislativeVoteId": "38051048-f1b9-48f4-a1cc-7fca08c618ee",
+      "reviewStatus": "approved",
+      "bill": "HB1696",
+      "voteDate": "2025-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 1696",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1547959:2026-09-11T05:30:20.889Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1547963.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1547963,
+      "outcome": "dry_run",
+      "legislativeVoteId": "f31c916c-fe9e-4391-ae2d-b3b9c995c844",
+      "reviewStatus": "approved",
+      "bill": "HB1332",
+      "voteDate": "2025-04-14",
+      "officialVoteDate": null,
+      "measureId": "HB 1332",
+      "question": "Senate 3rd Reading & Final Passage as Amended by the Senate",
+      "originRunId": "rollcall:WA:senate:2166:1547963:2026-09-11T05:30:20.889Z",
+      "members": 48,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 29,
+        "matched": 19
+      },
+      "actions": {
+        "unchanged": 19
+      },
+      "notified": 0,
+      "candidates": 19,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-wa-senate-2166-roll1549219.json",
+      "state": "WA",
+      "chamber": "senate",
+      "sessionId": 2166,
+      "roll": 1549219,
+      "outcome": "dry_run",
+      "legislativeVoteId": "3b1de6c9-4a14-495b-867b-815f6e3ed03c",
+      "reviewStatus": "approved",
+      "bill": "HB1177",
+      "voteDate": "2025-04-15",
+      "officialVoteDate": null,
+      "measureId": "HB 1177",
+      "question": "Senate 3rd Reading & Final Passage",
+      "originRunId": "rollcall:WA:senate:2166:1549219:2026-09-11T05:30:20.889Z",
+      "members": 48,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 30,
+        "matched": 18
+      },
+      "actions": {
+        "unchanged": 18
+      },
+      "notified": 0,
+      "candidates": 18,
+      "error": null,
+      "related": 3
+    }
+  ]
+}
