@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest, formatElectionDate, useElectionChoices, useMe, useMintPickCardShare } from "@voteapp/api-client";
+import {
+  apiRequest,
+  formatElectionDate,
+  useElectionChoices,
+  useMe,
+  useMintPickCardShare,
+  useMyPickCardShares,
+  useRevokePickCardShare,
+} from "@voteapp/api-client";
 import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
@@ -224,10 +232,18 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
   // in the name itself. Same label on both control shapes (mint button,
   // then ShareButton) so the control keeps one identity across the swap.
   const shareLabel = `Share my ${formatElectionDate(electionDate)} picks`;
+  const stopLabel = `Stop sharing my ${formatElectionDate(electionDate)} picks`;
+  const { shares } = useMyPickCardShares();
   const mint = useMintPickCardShare();
+  const revoke = useRevokePickCardShare();
+  // The server's list is the truth once it has loaded (a link minted on
+  // another device, or before a reload, shows here with its Stop control);
+  // the mint result covers the moment between minting and the refetch.
+  const existing = shares?.find((share) => share.election_date === electionDate);
+  const token = existing?.token ?? (mint.isSuccess ? mint.data.share.token : null);
 
-  if (mint.isSuccess) {
-    const path = `/picks/${mint.data.share.token}`;
+  if (token) {
+    const path = `/picks/${token}`;
     return (
       <span className="flex flex-wrap items-center gap-2">
         {/* The minted URL is the deliverable — it renders here, visibly,
@@ -263,6 +279,25 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         <span className="text-xs text-ink-soft">
           Anyone with the link can see this card and your first name.
         </span>
+        {/* The way back: revoking kills the URL for everyone who has it.
+            Sits with the link and the name disclosure so the sharer sees
+            the exit in the same glance as the exposure. mint.reset() on
+            success, or a link minted this session would linger in state
+            after the server row is gone. */}
+        <button
+          type="button"
+          disabled={revoke.isPending}
+          onClick={() => revoke.mutate(electionDate, { onSuccess: () => mint.reset() })}
+          aria-label={stopLabel}
+          className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
+        >
+          {revoke.isPending ? "…" : "Stop sharing"}
+        </button>
+        {revoke.isError ? (
+          <span role="alert" className="text-xs font-medium text-red-800">
+            Couldn't stop sharing — try again.
+          </span>
+        ) : null}
       </span>
     );
   }

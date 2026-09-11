@@ -44,6 +44,9 @@ function verifiedRoutes(overrides: Record<string, unknown> = {}) {
       ]),
     },
     "/api/me/election-choices": { body: { choices: [electionChoice()] } },
+    // ShareCardControl lists live share links on every card with picks;
+    // none by default, so the card shows the mint button.
+    "/api/me/pick-card-shares": { body: { shares: [] } },
     // AutoPickFillControl reads the viewer's ranked issues on every verified
     // render (button gating); empty keeps it inert unless a test overrides.
     "/api/me/research-area-preferences": { body: { preferences: [] } },
@@ -389,9 +392,11 @@ describe("PicksPage", () => {
   it("mints a share link on demand and swaps in the share menu", async () => {
     const fetchMock = stubApiRoutes(
       verifiedRoutes({
-        "/api/me/pick-card-shares": {
-          body: { share: { token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" } },
-        },
+        // Same path, two shapes: GET lists (nothing yet), POST mints.
+        "/api/me/pick-card-shares": (_url: URL, init?: RequestInit) =>
+          init?.method === "POST"
+            ? { body: { share: { token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" } } }
+            : { body: { shares: [] } },
       })
     );
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
@@ -444,6 +449,45 @@ describe("PicksPage", () => {
     expect(screen.queryByText(/no pick yet/)).not.toBeInTheDocument();
     expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "November 3, 2026" })).not.toBeInTheDocument();
+  });
+
+  it("shows an existing share link with a Stop sharing control and revokes it", async () => {
+    // The link exists server-side from a previous session; no click needed
+    // to see it, and Stop sharing must be offered right there.
+    let live = true;
+    const fetchMock = stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/pick-card-shares": (_url: URL, init?: RequestInit) => {
+          if (init?.method === "DELETE") {
+            live = false;
+            return { body: { deleted: true } };
+          }
+          return {
+            body: {
+              shares: live ? [{ token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" }] : [],
+            },
+          };
+        },
+      })
+    );
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    renderPicks();
+
+    expect(
+      await screen.findByRole("link", { name: "electionssimplified.com/picks/tok_abcdefghijklmnopqrstuvwxyz012345" })
+    ).toBeInTheDocument();
+    expect(fetchMock.mock.calls.some(([, init]) => init?.method === "POST")).toBe(false);
+
+    await user.click(screen.getByRole("button", { name: "Stop sharing my November 3, 2026 picks" }));
+
+    const revoke = fetchMock.mock.calls.find(([, init]) => init?.method === "DELETE");
+    expect(revoke).toBeDefined();
+    expect(String(revoke![0])).toContain("/api/me/pick-card-shares?election_date=2026-11-03");
+
+    // Back to the mint button: the link and its disclosure are gone.
+    expect(await screen.findByRole("button", { name: "Share my November 3, 2026 picks" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /picks\/tok_/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Stop sharing/ })).not.toBeInTheDocument();
   });
 
   it("hides the share control on a card with zero picks", async () => {

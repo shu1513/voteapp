@@ -2696,6 +2696,59 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("lists and revokes pick card shares for the session holder", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedUserEmailVerified = vi.fn().mockResolvedValue(false);
+    const listAuthenticatedPickCardShares = vi.fn().mockResolvedValue({
+      shares: [{ token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" }],
+    });
+    const deleteAuthenticatedPickCardShare = vi.fn().mockResolvedValue({ deleted: true });
+    const app = createApiApp({
+      resolveAddress,
+      resolveAuthenticatedUserId,
+      lookupAuthenticatedUserEmailVerified,
+      listAuthenticatedPickCardShares,
+      deleteAuthenticatedPickCardShare,
+    });
+    const headers = { "x-user-id": "99999999-9999-4999-8999-999999999999" };
+
+    const listed = await invokeExpressApp(app, { method: "GET", path: "/api/me/pick-card-shares", headers });
+    expect(listed.statusCode).toBe(200);
+    expect(listed.body.shares).toEqual([
+      { token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" },
+    ]);
+    expect(listAuthenticatedPickCardShares).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+
+    // Body-less DELETE: no JSON content type required, the date rides in
+    // the query, like DELETE /api/me/auto-picks.
+    const revoked = await invokeExpressApp(app, {
+      method: "DELETE",
+      path: "/api/me/pick-card-shares?election_date=2026-11-03",
+      headers,
+    });
+    expect(revoked.statusCode).toBe(200);
+    expect(revoked.body).toEqual({ deleted: true });
+    expect(deleteAuthenticatedPickCardShare).toHaveBeenCalledWith(
+      "99999999-9999-4999-8999-999999999999",
+      "2026-11-03"
+    );
+
+    const missingDate = await invokeExpressApp(app, { method: "DELETE", path: "/api/me/pick-card-shares", headers });
+    expect(missingDate.statusCode).toBe(400);
+    expect(deleteAuthenticatedPickCardShare).toHaveBeenCalledTimes(1);
+
+    // Neither read nor revoke is verification-gated, and neither is open
+    // to anonymous callers.
+    expect(lookupAuthenticatedUserEmailVerified).not.toHaveBeenCalled();
+    const anonymous = await invokeExpressApp(createApiApp({ resolveAddress, listAuthenticatedPickCardShares }), {
+      method: "GET",
+      path: "/api/me/pick-card-shares",
+    });
+    expect(anonymous.statusCode).toBe(401);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("serves a public pick card by token without any session", async () => {
     const resolveAddress = vi.fn();
     const lookupPublicPickCard = vi.fn().mockResolvedValue({

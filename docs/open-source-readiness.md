@@ -62,6 +62,27 @@ The diff must show only deletions, and the second command must print `0`.
 Use `/usr/bin/grep` explicitly; the shell's `grep` is ugrep, where `-z`
 means something else.
 
+## Privacy review (done 2026-09-10)
+
+What the app holds about a person, checked against the schema: account
+email and first name, district ids (never the address), follows, research
+interests, and the picks table (`user_election_choices`: candidate or
+measure position per race). Picks are the most sensitive rows in the
+database. IPs live only in the Redis rate limiter; analytics events carry no
+user id, IP, or cookie; Ask questions are stored anonymously for 90 days;
+account deletion cascades.
+
+Two gaps closed in the same PR as this section:
+
+- Privacy policy 1.5 → 1.6. The old "preferences" paragraph let promotional
+  email content be selected from choices that include picks and follows.
+  Now: picks are named as stored data, promotional content (if ever) is
+  scoped to research-area interests only, shared pick cards are described,
+  and section-into-view is listed under analytics.
+- Shared pick cards can be revoked. `GET`/`DELETE /api/me/pick-card-shares`
+  plus a "Stop sharing" control on `/me/picks`; the public URL 404s once
+  revoked and a later Share mints a fresh token.
+
 ## Publishing (pending, after the decision)
 
 Build the public repository from a filtered fresh clone rather than
