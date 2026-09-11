@@ -53,6 +53,11 @@
           "slug": "public_education_quality",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ],
       "note": "Third reading, and the only divided roll on this act. The House produced later prints, so the version check mattered here; word-level comparison of the Senate-passed text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF SB0409.191_S.pdf."

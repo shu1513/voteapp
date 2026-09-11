@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question or idea
+    url: https://github.com/shu1513/electionssimplified/discussions
+    about: Ask how something works or propose a feature before writing code.
+  - name: Security problem
+    url: https://github.com/shu1513/electionssimplified/blob/main/SECURITY.md
+    about: Please report vulnerabilities by email, not in a public issue.

@@ -193,6 +193,11 @@
      "slug": "social_programs_and_welfare",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Assembly Bill 112, which would have removed the exemption that lets an employer ignore Nevada's family sick leave rule for workers covered by a union contract. Those workers could then use sick leave they had already earned to care for an immediate family member. The change would not have reached union contracts already running until they were renewed. The Nevada Assembly passed it 29-13, but the governor vetoed the bill, so it never became law.",
@@ -209,6 +214,11 @@
    "labels": [
     {
      "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }

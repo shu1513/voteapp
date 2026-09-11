@@ -235,6 +235,11 @@
      "slug": "civil_rights",
      "yea": "against",
      "nay": null
+    },
+    {
+     "slug": "ai_regulation",
+     "yea": "against",
+     "nay": null
     }
    ]
   }

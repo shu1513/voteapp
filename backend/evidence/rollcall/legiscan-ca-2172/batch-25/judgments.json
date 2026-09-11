@@ -1,0 +1,58 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601182,
+      "measure_id": "AB 339",
+      "vote_date": "2025-09-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 339, which requires cities, counties and other local public agencies to give a union at least 45 days' written notice before seeking bids for, renewing or extending a contract for work its members do. The notice must state the contract's length, scope, cost and reason. Construction, public works and related design and building contracts are exempt, and an emergency allows shorter notice. The Senate passed it 28-11 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 339, which requires cities, counties and other local public agencies to give a union at least 45 days' written notice before seeking bids for, renewing or extending a contract for work its members do. The notice must state the contract's length, scope, cost and reason. Construction, public works and related design and building contracts are exempt, and an emergency allows shorter notice. The Senate passed it 28-11 and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601944,
+      "measure_id": "SB 578",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 578, which sets up a California Workplace Outreach Program once the Legislature funds it. The state labor department would pay nonprofit groups to teach workers in low-wage, high-risk industries about rights such as minimum wage, overtime, paid leave, safety and protection from retaliation, and to help them assert those rights. The program ends January 1, 2031. The Senate agreed to the changes 30-10 and it became law.",
+      "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 578, which sets up a California Workplace Outreach Program once the Legislature funds it. The state labor department would pay nonprofit groups to teach workers in low-wage, high-risk industries about rights such as minimum wage, overtime, paid leave, safety and protection from retaliation, and to help them assert those rights. The program ends January 1, 2031. The Senate agreed to the changes 30-10 and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601266,
+      "measure_id": "AB 393",
+      "vote_date": "2025-09-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 393, which would have required the state prison and state hospital departments to compare costs before hiring a contractor to fill a budgeted civil service doctor or psychologist job. If the contractor cost more, the department would have had to use an available civil service doctor or psychologist first, and report each year on its use of contractors. The Senate passed it 29-10, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against passing Assembly Bill 393, which would have required the state prison and state hospital departments to compare costs before hiring a contractor to fill a budgeted civil service doctor or psychologist job. If the contractor cost more, the department would have had to use an available civil service doctor or psychologist first, and report each year on its use of contractors. The Senate passed it 29-10, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

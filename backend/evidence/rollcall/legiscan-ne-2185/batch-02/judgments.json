@@ -13,6 +13,11 @@
      "slug": "social_programs_and_welfare",
      "yea": "against",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Legislative Bill 229, which takes app-based gig workers out of Nebraska's unemployment system. The Employment Security Law funds and pays unemployment benefits. The act adds these workers to the list of people whose work does not count as employment under it. It covers a person who signs up through a company's app to be matched with customers. The person must be paid for that work and must not work at a site the company runs. Four things have to be true for the exclusion to apply. The worker and the company must agree in writing that the worker is an independent contractor. The company must not set the hours the worker has to be free. It must not stop the worker taking other work, except while they are on its jobs. And it must not be able to end the contract because the worker turned a job down. The exclusion does not apply where federal law requires the work to be covered. The Nebraska Legislature passed it 33-15, and it became law.",
@@ -119,6 +124,11 @@
    "labels": [
     {
      "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "against",
      "nay": null
     }

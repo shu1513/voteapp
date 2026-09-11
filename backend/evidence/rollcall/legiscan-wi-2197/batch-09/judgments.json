@@ -1,0 +1,22 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1664414,
+   "measure_id": "AB 595",
+   "vote_date": "2026-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 595, which would have required daily checks of the voter list against driver's license, death and felony records, and would have removed ineligible voters from the list instead of marking them ineligible. Every other year the Legislative Audit Bureau would have searched the list for noncitizens and confirmed each match in a federal immigration database. A voter flagged as a noncitizen would have been removed unless they showed a birth certificate, naturalization certificate or passport within 30 days. A removed voter could still register again, including at the polls. The bill would also have made the elections commission rule on complaints that it broke federal election law, and capped the fee for an electronic copy of the voter list at $1,000. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 595, which would have required daily checks of the voter list against driver's license, death and felony records, and would have removed ineligible voters from the list instead of marking them ineligible. Every other year the Legislative Audit Bureau would have searched the list for noncitizens and confirmed each match in a federal immigration database. A voter flagged as a noncitizen would have been removed unless they showed a birth certificate, naturalization certificate or passport within 30 days. A removed voter could still register again, including at the polls. The bill would also have made the elections commission rule on complaints that it broke federal election law, and capped the fee for an electronic copy of the voter list at $1,000. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1529030,
+      "measure_id": "HF 792",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 792, which would have made it first-degree murder to unlawfully give someone fentanyl that causes that person's death. First-degree murder carries life in prison without parole. It would not have been a defense that the person who died chose to take the drug. The Iowa House passed it 69-27, but the full Senate never voted on it, so it did not become law.",
+      "nay_description": "Voted against House File 792, which would have made it first-degree murder to unlawfully give someone fentanyl that causes that person's death. First-degree murder carries life in prison without parole. It would not have been a defense that the person who died chose to take the drug. The Iowa House passed it 69-27, but the full Senate never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1528684,
+      "measure_id": "HF 946",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 946, which would have added a penalty for police officers and sheriffs who knowingly refuse to follow Iowa's immigration enforcement law. That law requires local jails to honor federal requests to hold people for immigration officers and bars local policies that limit immigration enforcement. The attorney general would have investigated such an officer and given the officer a chance to comply. An officer who still refused could have been referred for loss of the officer's state police certification. The Iowa House passed it 61-35, but the full Senate never voted on it, so it did not become law.",
+      "nay_description": "Voted against House File 946, which would have added a penalty for police officers and sheriffs who knowingly refuse to follow Iowa's immigration enforcement law. That law requires local jails to honor federal requests to hold people for immigration officers and bars local policies that limit immigration enforcement. The attorney general would have investigated such an officer and given the officer a chance to comply. An officer who still refused could have been referred for loss of the officer's state police certification. The Iowa House passed it 61-35, but the full Senate never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1527928,
+      "measure_id": "SF 180",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 180, which would have let a person refuse, for reasons of conscience such as religious belief, any vaccine, drug, or other medical product that is authorized for emergency use or declared a federal emergency countermeasure. Employers, businesses, health care providers, and government bodies could not fire, deny service to, segregate, fine, or otherwise penalize a person for refusing. A person treated that way could sue for damages, with triple damages or $200, whichever is greater. The Iowa Senate passed it 32-15, but the full House never voted on it, so it did not become law.",
+      "nay_description": "Voted against Senate File 180, which would have let a person refuse, for reasons of conscience such as religious belief, any vaccine, drug, or other medical product that is authorized for emergency use or declared a federal emergency countermeasure. Employers, businesses, health care providers, and government bodies could not fire, deny service to, segregate, fine, or otherwise penalize a person for refusing. A person treated that way could sue for damages, with triple damages or $200, whichever is greater. The Iowa Senate passed it 32-15, but the full House never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1645454,
+      "measure_id": "SF 2203",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2203, which would have required the state to check the citizenship of every registered voter against the federal SAVE database, which tracks immigration status. It would check new voters monthly and all voters every year. A voter who could not be confirmed as a citizen would be sent a notice. The registration would be canceled if the voter did not provide proof of citizenship within 90 days. The Iowa Senate passed it 34-13, but the full House never voted on it, so it did not become law.",
+      "nay_description": "Voted against Senate File 2203, which would have required the state to check the citizenship of every registered voter against the federal SAVE database, which tracks immigration status. It would check new voters monthly and all voters every year. A voter who could not be confirmed as a citizen would be sent a notice. The registration would be canceled if the voter did not provide proof of citizenship within 90 days. The Iowa Senate passed it 34-13, but the full House never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1646558,
+      "measure_id": "SF 2274",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2274, which would have repealed Iowa's ban on selling devices that attach to a gun's trigger to make it fire faster. Selling or offering to sell such a device is now an aggravated misdemeanor, punishable by up to two years in prison. The Iowa Senate passed it 28-16, but the full House never voted on it, so it did not become law.",
+      "nay_description": "Voted against Senate File 2274, which would have repealed Iowa's ban on selling devices that attach to a gun's trigger to make it fire faster. Selling or offering to sell such a device is now an aggravated misdemeanor, punishable by up to two years in prison. The Iowa Senate passed it 28-16, but the full House never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1651538,
+      "measure_id": "SF 2442",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2442, which would have barred county boards of supervisors from restricting the building of houses, townhouses, and apartment or condo buildings of up to 12 units in areas outside city limits. Counties could still regulate those buildings to the extent needed to protect life or property, but could not adopt rules that have the effect of limiting their construction. The Iowa Senate passed it 28-16, but the full House never voted on it, so it did not become law.",
+      "nay_description": "Voted against Senate File 2442, which would have barred county boards of supervisors from restricting the building of houses, townhouses, and apartment or condo buildings of up to 12 units in areas outside city limits. Counties could still regulate those buildings to the extent needed to protect life or property, but could not adopt rules that have the effect of limiting their construction. The Iowa Senate passed it 28-16, but the full House never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1657862,
+      "measure_id": "SF 2444",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2444, which would have exempted cigar bars from Iowa's indoor smoking ban. A cigar bar would have to make at least 35 percent of its sales from premium cigars and related products, sell no other kind of cigar, hold a liquor license, keep out anyone under 21, and serve no food it prepares on site. The state would check a bar's sales each year and could fine a bar that broke the rules. The Iowa Senate passed it 27-18, but the full House never voted on it, so it did not become law.",
+      "nay_description": "Voted against Senate File 2444, which would have exempted cigar bars from Iowa's indoor smoking ban. A cigar bar would have to make at least 35 percent of its sales from premium cigars and related products, sell no other kind of cigar, hold a liquor license, keep out anyone under 21, and serve no food it prepares on site. The state would check a bar's sales each year and could fine a bar that broke the rules. The Iowa Senate passed it 27-18, but the full House never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1527547,
+      "measure_id": "SF 394",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 394, which would have shielded pesticide makers from lawsuits claiming they failed to warn about health risks, as long as the product label was approved by the federal Environmental Protection Agency or matched its latest health or cancer findings. Such a label would count as a sufficient warning under Iowa law. Other kinds of lawsuits over pesticides would still be allowed. The Iowa Senate passed it 26-21, but the full House never voted on it, so it did not become law.",
+      "nay_description": "Voted against Senate File 394, which would have shielded pesticide makers from lawsuits claiming they failed to warn about health risks, as long as the product label was approved by the federal Environmental Protection Agency or matched its latest health or cancer findings. Such a label would count as a sufficient warning under Iowa law. Other kinds of lawsuits over pesticides would still be allowed. The Iowa Senate passed it 26-21, but the full House never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1693389,
+      "measure_id": "HF 2763",
+      "vote_date": "2026-04-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2763, which would have required makers of farm equipment to sell or give owners and independent repair shops the manuals, parts, software, and tools they give their own dealers, on fair terms, including what is needed to reset security locks. A second part would have given farmers ownership of the data their equipment and farms produce. Farmers could get copies, move the data to another company, have it deleted, and be paid when a company profits from it. The Iowa House passed it 70-18, but the full Senate never voted on it, so it did not become law.",
+      "nay_description": "Voted against House File 2763, which would have required makers of farm equipment to sell or give owners and independent repair shops the manuals, parts, software, and tools they give their own dealers, on fair terms, including what is needed to reset security locks. A second part would have given farmers ownership of the data their equipment and farms produce. Farmers could get copies, move the data to another company, have it deleted, and be paid when a company profits from it. The Iowa House passed it 70-18, but the full Senate never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1651554,
+      "measure_id": "HF 2244",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2244, which would have expanded civics teaching in Iowa schools. Students in grade seven or eight would have had to take at least half a unit of civics and United States government. High school students would have needed a full unit of civics and United States government instead of half a unit, including a test of their knowledge of the Constitution and the Bill of Rights. The rules would have started in 2028. The Iowa House passed it 70-26, but the full Senate never voted on it, so it did not become law.",
+      "nay_description": "Voted against House File 2244, which would have expanded civics teaching in Iowa schools. Students in grade seven or eight would have had to take at least half a unit of civics and United States government. High school students would have needed a full unit of civics and United States government instead of half a unit, including a test of their knowledge of the Constitution and the Bill of Rights. The rules would have started in 2028. The Iowa House passed it 70-26, but the full Senate never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1520111,
+      "measure_id": "HF 401",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 401, which would have set general education requirements for undergraduates at Iowa's three public universities, including western heritage and American heritage courses, with no more than 37 credit hours in all. The Board of Regents would have had to ensure these courses do not distort major historical events or teach identity politics or theories that systemic racism, sexism, oppression, or privilege are built into American or Iowa institutions. The attorney general could sue a university to make it comply. The Iowa House passed it 61-36, but the full Senate never voted on it, so it did not become law.",
+      "nay_description": "Voted against House File 401, which would have set general education requirements for undergraduates at Iowa's three public universities, including western heritage and American heritage courses, with no more than 37 credit hours in all. The Board of Regents would have had to ensure these courses do not distort major historical events or teach identity politics or theories that systemic racism, sexism, oppression, or privilege are built into American or Iowa institutions. The attorney general could sue a university to make it comply. The Iowa House passed it 61-36, but the full Senate never voted on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

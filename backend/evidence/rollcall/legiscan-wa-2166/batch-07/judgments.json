@@ -1,0 +1,296 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1661031,
+      "measure_id": "HB 1974",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 1974. A land bank buys and holds land so it can later be used for housing people can afford. This law lets a city or county authorize a public corporation, housing authority or nonprofit to run one. A land bank may buy, hold, lease and sell property for affordable housing. It may sell to builders below market price in return for promises to keep the homes affordable. At least half of what it sells or leases must carry a deed rule keeping the homes affordable for at least 30 years. Rentals must be affordable at 80 percent of the area's median income, and owned homes at 120 percent. Counties must give land banks first chance at property taken for unpaid taxes. Land banks get tax breaks and must report each year. A nonprofit land bank may not build housing itself. It became law as chapter 233 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 59-37.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 1974. A land bank buys and holds land so it can later be used for housing people can afford. This law lets a city or county authorize a public corporation, housing authority or nonprofit to run one. A land bank may buy, hold, lease and sell property for affordable housing. It may sell to builders below market price in return for promises to keep the homes affordable. At least half of what it sells or leases must carry a deed rule keeping the homes affordable for at least 30 years. Rentals must be affordable at 80 percent of the area's median income, and owned homes at 120 percent. Counties must give land banks first chance at property taken for unpaid taxes. Land banks get tax breaks and must report each year. A nonprofit land bank may not build housing itself. It became law as chapter 233 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 59-37.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1655835,
+      "measure_id": "HB 1974",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1974. A land bank buys and holds land so it can later be used for housing people can afford. This law lets a city or county authorize a public corporation, housing authority or nonprofit to run one. A land bank may buy, hold, lease and sell property for affordable housing. It may sell to builders below market price in return for promises to keep the homes affordable. At least half of what it sells or leases must carry a deed rule keeping the homes affordable for at least 30 years. Rentals must be affordable at 80 percent of the area's median income, and owned homes at 120 percent. Counties must give land banks first chance at property taken for unpaid taxes. Land banks get tax breaks and must report each year. A nonprofit land bank may not build housing itself. It became law as chapter 233 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 1974. A land bank buys and holds land so it can later be used for housing people can afford. This law lets a city or county authorize a public corporation, housing authority or nonprofit to run one. A land bank may buy, hold, lease and sell property for affordable housing. It may sell to builders below market price in return for promises to keep the homes affordable. At least half of what it sells or leases must carry a deed rule keeping the homes affordable for at least 30 years. Rentals must be affordable at 80 percent of the area's median income, and owned homes at 120 percent. Counties must give land banks first chance at property taken for unpaid taxes. Land banks get tax breaks and must report each year. A nonprofit land bank may not build housing itself. It became law as chapter 233 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1551899,
+      "measure_id": "HB 2039",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2039. Families on cash welfare, called Temporary Assistance for Needy Families, must sign over their child support to the state. Under the older rule the state passes on at most $50 a month for one child or $100 for more, and keeps the rest to repay the aid. A 2024 law was to pass on all current child support from January 1, 2026, and to stop counting it as income when setting a family's aid. This law delays both changes by three and a half years, to July 1, 2029. It became law as chapter 402 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 56-40.",
+      "nay_description": "Voted against passing House Bill 2039. Families on cash welfare, called Temporary Assistance for Needy Families, must sign over their child support to the state. Under the older rule the state passes on at most $50 a month for one child or $100 for more, and keeps the rest to repay the aid. A 2024 law was to pass on all current child support from January 1, 2026, and to stop counting it as income when setting a family's aid. This law delays both changes by three and a half years, to July 1, 2029. It became law as chapter 402 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 56-40.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1558652,
+      "measure_id": "HB 2039",
+      "vote_date": "2025-04-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2039. Families on cash welfare, called Temporary Assistance for Needy Families, must sign over their child support to the state. Under the older rule the state passes on at most $50 a month for one child or $100 for more, and keeps the rest to repay the aid. A 2024 law was to pass on all current child support from January 1, 2026, and to stop counting it as income when setting a family's aid. This law delays both changes by three and a half years, to July 1, 2029. It became law as chapter 402 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-22.",
+      "nay_description": "Voted against passing House Bill 2039. Families on cash welfare, called Temporary Assistance for Needy Families, must sign over their child support to the state. Under the older rule the state passes on at most $50 a month for one child or $100 for more, and keeps the rest to repay the aid. A 2024 law was to pass on all current child support from January 1, 2026, and to stop counting it as income when setting a family's aid. This law delays both changes by three and a half years, to July 1, 2029. It became law as chapter 402 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-22.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1551894,
+      "measure_id": "HB 2040",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2040. The Aged, Blind, or Disabled program gives cash aid to low-income adults who are 65 or older, blind, or likely to qualify as disabled. Many get it while they wait for federal disability payments, called Supplemental Security Income. When those federal payments later cover the same months, the state treats the overlap as a debt and takes it back. A 2023 law was to end that repayment on October 1, 2025. This law pushes the end back three years, to October 1, 2028, so the state keeps collecting until then. It became law as chapter 403 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 56-39.",
+      "nay_description": "Voted against passing House Bill 2040. The Aged, Blind, or Disabled program gives cash aid to low-income adults who are 65 or older, blind, or likely to qualify as disabled. Many get it while they wait for federal disability payments, called Supplemental Security Income. When those federal payments later cover the same months, the state treats the overlap as a debt and takes it back. A 2023 law was to end that repayment on October 1, 2025. This law pushes the end back three years, to October 1, 2028, so the state keeps collecting until then. It became law as chapter 403 of the 2025 session laws and took effect on July 27, 2025. The Washington House approved it 56-39.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1551893
+      ],
+      "note": "The House passed HB 2040 57-39 and then, the same day, voted again on reconsideration, 56-39. Same-day rolls cannot be ordered by date. The reconsideration vote is the House's final word on the bill, so it is the one judged, and the earlier roll is acknowledged."
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1558667,
+      "measure_id": "HB 2040",
+      "vote_date": "2025-04-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2040. The Aged, Blind, or Disabled program gives cash aid to low-income adults who are 65 or older, blind, or likely to qualify as disabled. Many get it while they wait for federal disability payments, called Supplemental Security Income. When those federal payments later cover the same months, the state treats the overlap as a debt and takes it back. A 2023 law was to end that repayment on October 1, 2025. This law pushes the end back three years, to October 1, 2028, so the state keeps collecting until then. It became law as chapter 403 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-22.",
+      "nay_description": "Voted against passing House Bill 2040. The Aged, Blind, or Disabled program gives cash aid to low-income adults who are 65 or older, blind, or likely to qualify as disabled. Many get it while they wait for federal disability payments, called Supplemental Security Income. When those federal payments later cover the same months, the state treats the overlap as a debt and takes it back. A 2023 law was to end that repayment on October 1, 2025. This law pushes the end back three years, to October 1, 2028, so the state keeps collecting until then. It became law as chapter 403 of the 2025 session laws and took effect on July 27, 2025. The Washington Senate approved it 25-22.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1657587,
+      "measure_id": "HB 2165",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 2165. This law creates the crime of falsely posing as a peace officer. A person commits it by claiming to be an officer, or acting to give that impression, when a reasonable person would believe it. Examples include using a vehicle, clothing or a badge. It covers state, local and federal officers. Any item with a word such as police, sheriff or trooper, or the name of a federal agency that employs officers, counts as a law enforcement insignia. The crime is a gross misdemeanor, the more serious class of misdemeanor. It does not reach retired officers keeping items their agency allows, items kept in memory of an officer who died, or use in art, satire and news. It replaces the part of an older impersonation crime that covered posing as an officer. It became law as chapter 114 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 66-29.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 2165. This law creates the crime of falsely posing as a peace officer. A person commits it by claiming to be an officer, or acting to give that impression, when a reasonable person would believe it. Examples include using a vehicle, clothing or a badge. It covers state, local and federal officers. Any item with a word such as police, sheriff or trooper, or the name of a federal agency that employs officers, counts as a law enforcement insignia. The crime is a gross misdemeanor, the more serious class of misdemeanor. It does not reach retired officers keeping items their agency allows, items kept in memory of an officer who died, or use in art, satire and news. It replaces the part of an older impersonation crime that covered posing as an officer. It became law as chapter 114 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 66-29.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1651574,
+      "measure_id": "HB 2165",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2165. This law creates the crime of falsely posing as a peace officer. A person commits it by claiming to be an officer, or acting to give that impression, when a reasonable person would believe it. Examples include using a vehicle, clothing or a badge. It covers state, local and federal officers. Any item with a word such as police, sheriff or trooper, or the name of a federal agency that employs officers, counts as a law enforcement insignia. The crime is a gross misdemeanor, the more serious class of misdemeanor. It does not reach retired officers keeping items their agency allows, items kept in memory of an officer who died, or use in art, satire and news. It replaces the part of an older impersonation crime that covered posing as an officer. It became law as chapter 114 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-18.",
+      "nay_description": "Voted against passing House Bill 2165. This law creates the crime of falsely posing as a peace officer. A person commits it by claiming to be an officer, or acting to give that impression, when a reasonable person would believe it. Examples include using a vehicle, clothing or a badge. It covers state, local and federal officers. Any item with a word such as police, sheriff or trooper, or the name of a federal agency that employs officers, counts as a law enforcement insignia. The crime is a gross misdemeanor, the more serious class of misdemeanor. It does not reach retired officers keeping items their agency allows, items kept in memory of an officer who died, or use in art, satire and news. It replaces the part of an older impersonation crime that covered posing as an officer. It became law as chapter 114 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-18.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1631017,
+      "measure_id": "HB 2242",
+      "vote_date": "2026-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2242. Washington law requires health plans to cover preventive care, such as screenings and vaccines, based on lists kept by federal health advisers. This law ties that coverage to those lists as they stood on June 30, 2025. The state insurance commissioner may update them, but not to cover less. Plans may no longer drop a preventive service just because a federal list removes it. For vaccines, plans must cover those recommended by the state Department of Health instead of the federal vaccine advisory committee. The department may issue its own vaccine advice, after weighing the federal committee's advice and other experts. The coverage rules apply to plans issued from April 1, 2026. It became law as chapter 13 of the 2026 session laws and took effect on March 9, 2026. The Washington House approved it 57-39.",
+      "nay_description": "Voted against passing House Bill 2242. Washington law requires health plans to cover preventive care, such as screenings and vaccines, based on lists kept by federal health advisers. This law ties that coverage to those lists as they stood on June 30, 2025. The state insurance commissioner may update them, but not to cover less. Plans may no longer drop a preventive service just because a federal list removes it. For vaccines, plans must cover those recommended by the state Department of Health instead of the federal vaccine advisory committee. The department may issue its own vaccine advice, after weighing the federal committee's advice and other experts. The coverage rules apply to plans issued from April 1, 2026. It became law as chapter 13 of the 2026 session laws and took effect on March 9, 2026. The Washington House approved it 57-39.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1646832,
+      "measure_id": "HB 2242",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2242. Washington law requires health plans to cover preventive care, such as screenings and vaccines, based on lists kept by federal health advisers. This law ties that coverage to those lists as they stood on June 30, 2025. The state insurance commissioner may update them, but not to cover less. Plans may no longer drop a preventive service just because a federal list removes it. For vaccines, plans must cover those recommended by the state Department of Health instead of the federal vaccine advisory committee. The department may issue its own vaccine advice, after weighing the federal committee's advice and other experts. The coverage rules apply to plans issued from April 1, 2026. It became law as chapter 13 of the 2026 session laws and took effect on March 9, 2026. The Washington Senate approved it 36-12.",
+      "nay_description": "Voted against passing House Bill 2242. Washington law requires health plans to cover preventive care, such as screenings and vaccines, based on lists kept by federal health advisers. This law ties that coverage to those lists as they stood on June 30, 2025. The state insurance commissioner may update them, but not to cover less. Plans may no longer drop a preventive service just because a federal list removes it. For vaccines, plans must cover those recommended by the state Department of Health instead of the federal vaccine advisory committee. The department may issue its own vaccine advice, after weighing the federal committee's advice and other experts. The coverage rules apply to plans issued from April 1, 2026. It became law as chapter 13 of the 2026 session laws and took effect on March 9, 2026. The Washington Senate approved it 36-12.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1632720,
+      "measure_id": "HB 2355",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2355. This law sets work rules for domestic workers who work in private homes four or more hours a month. They include nannies, house cleaners, cooks, gardeners and home care aides. Whoever hires them must pay at least the minimum wage, and overtime after 40 hours a week. The hirer must give a written agreement with the pay and terms. Before ending the job, the hirer must give two weeks' notice or two weeks' pay, or four weeks for a live-in worker. A hirer may not keep a worker's passport or other papers, watch the worker in a bathroom or private room, or listen in on private calls. A hirer may not punish a worker for using these rights. The state Department of Labor and Industries enforces the law. Occasional babysitting, pet sitting and work by family members are not covered. It became law as chapter 15 of the 2026 session laws and takes effect on July 1, 2027. The Washington House approved it 57-39.",
+      "nay_description": "Voted against passing House Bill 2355. This law sets work rules for domestic workers who work in private homes four or more hours a month. They include nannies, house cleaners, cooks, gardeners and home care aides. Whoever hires them must pay at least the minimum wage, and overtime after 40 hours a week. The hirer must give a written agreement with the pay and terms. Before ending the job, the hirer must give two weeks' notice or two weeks' pay, or four weeks for a live-in worker. A hirer may not keep a worker's passport or other papers, watch the worker in a bathroom or private room, or listen in on private calls. A hirer may not punish a worker for using these rights. The state Department of Labor and Industries enforces the law. Occasional babysitting, pet sitting and work by family members are not covered. It became law as chapter 15 of the 2026 session laws and takes effect on July 1, 2027. The Washington House approved it 57-39.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1646965,
+      "measure_id": "HB 2355",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2355. This law sets work rules for domestic workers who work in private homes four or more hours a month. They include nannies, house cleaners, cooks, gardeners and home care aides. Whoever hires them must pay at least the minimum wage, and overtime after 40 hours a week. The hirer must give a written agreement with the pay and terms. Before ending the job, the hirer must give two weeks' notice or two weeks' pay, or four weeks for a live-in worker. A hirer may not keep a worker's passport or other papers, watch the worker in a bathroom or private room, or listen in on private calls. A hirer may not punish a worker for using these rights. The state Department of Labor and Industries enforces the law. Occasional babysitting, pet sitting and work by family members are not covered. It became law as chapter 15 of the 2026 session laws and takes effect on July 1, 2027. The Washington Senate approved it 28-20.",
+      "nay_description": "Voted against passing House Bill 2355. This law sets work rules for domestic workers who work in private homes four or more hours a month. They include nannies, house cleaners, cooks, gardeners and home care aides. Whoever hires them must pay at least the minimum wage, and overtime after 40 hours a week. The hirer must give a written agreement with the pay and terms. Before ending the job, the hirer must give two weeks' notice or two weeks' pay, or four weeks for a live-in worker. A hirer may not keep a worker's passport or other papers, watch the worker in a bathroom or private room, or listen in on private calls. A hirer may not punish a worker for using these rights. The state Department of Labor and Industries enforces the law. Occasional babysitting, pet sitting and work by family members are not covered. It became law as chapter 15 of the 2026 session laws and takes effect on July 1, 2027. The Washington Senate approved it 28-20.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1619421,
+      "measure_id": "HB 2411",
+      "vote_date": "2026-01-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2411. State workers can donate leave to coworkers in need through a shared leave program. This law lets a state worker receive shared leave if they are the victim of a hate crime. It also covers time off when the worker or a close relative or household member is caught up in immigration enforcement, such as detention, a court hearing or deportation. For that reason, the worker must be legally allowed to work in the United States. An employer may ask for proof, but must tell the worker not to include details of anyone's immigration status. Any such details the worker gives stay confidential. It became law as chapter 241 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 60-36.",
+      "nay_description": "Voted against passing House Bill 2411. State workers can donate leave to coworkers in need through a shared leave program. This law lets a state worker receive shared leave if they are the victim of a hate crime. It also covers time off when the worker or a close relative or household member is caught up in immigration enforcement, such as detention, a court hearing or deportation. For that reason, the worker must be legally allowed to work in the United States. An employer may ask for proof, but must tell the worker not to include details of anyone's immigration status. Any such details the worker gives stay confidential. It became law as chapter 241 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 60-36.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1654684,
+      "measure_id": "HB 2411",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2411. State workers can donate leave to coworkers in need through a shared leave program. This law lets a state worker receive shared leave if they are the victim of a hate crime. It also covers time off when the worker or a close relative or household member is caught up in immigration enforcement, such as detention, a court hearing or deportation. For that reason, the worker must be legally allowed to work in the United States. An employer may ask for proof, but must tell the worker not to include details of anyone's immigration status. Any such details the worker gives stay confidential. It became law as chapter 241 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 2411. State workers can donate leave to coworkers in need through a shared leave program. This law lets a state worker receive shared leave if they are the victim of a hate crime. It also covers time off when the worker or a close relative or household member is caught up in immigration enforcement, such as detention, a court hearing or deportation. For that reason, the worker must be legally allowed to work in the United States. An employer may ask for proof, but must tell the worker not to include details of anyone's immigration status. Any such details the worker gives stay confidential. It became law as chapter 241 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1659823,
+      "measure_id": "HB 2548",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate's changes to House Bill 2548. Washington requires health care groups to give the Attorney General 60 days' notice before certain mergers and deals. This law adds more deals to that list. They include a change in majority ownership or control of a hospital, hospital system or provider group, and the sale of most of its assets, including selling a building and leasing it back. They also include turning a nonprofit hospital or provider group into a for-profit one. The notice must name anyone with majority ownership or control. The Attorney General must post pending and completed deals online every three months. If the Attorney General asks for more information, the deal must wait until 30 days after the parties certify they have complied. Parties must pay a filing fee. It became law as chapter 222 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 55-41.",
+      "nay_description": "Voted against accepting the Senate's changes to House Bill 2548. Washington requires health care groups to give the Attorney General 60 days' notice before certain mergers and deals. This law adds more deals to that list. They include a change in majority ownership or control of a hospital, hospital system or provider group, and the sale of most of its assets, including selling a building and leasing it back. They also include turning a nonprofit hospital or provider group into a for-profit one. The notice must name anyone with majority ownership or control. The Attorney General must post pending and completed deals online every three months. If the Attorney General asks for more information, the deal must wait until 30 days after the parties certify they have complied. Parties must pay a filing fee. It became law as chapter 222 of the 2026 session laws and took effect on June 11, 2026. The Washington House approved it 55-41.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1655349,
+      "measure_id": "HB 2548",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2548. Washington requires health care groups to give the Attorney General 60 days' notice before certain mergers and deals. This law adds more deals to that list. They include a change in majority ownership or control of a hospital, hospital system or provider group, and the sale of most of its assets, including selling a building and leasing it back. They also include turning a nonprofit hospital or provider group into a for-profit one. The notice must name anyone with majority ownership or control. The Attorney General must post pending and completed deals online every three months. If the Attorney General asks for more information, the deal must wait until 30 days after the parties certify they have complied. Parties must pay a filing fee. It became law as chapter 222 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "nay_description": "Voted against passing House Bill 2548. Washington requires health care groups to give the Attorney General 60 days' notice before certain mergers and deals. This law adds more deals to that list. They include a change in majority ownership or control of a hospital, hospital system or provider group, and the sale of most of its assets, including selling a building and leasing it back. They also include turning a nonprofit hospital or provider group into a for-profit one. The notice must name anyone with majority ownership or control. The Attorney General must post pending and completed deals online every three months. If the Attorney General asks for more information, the deal must wait until 30 days after the parties certify they have complied. Parties must pay a filing fee. It became law as chapter 222 of the 2026 session laws and took effect on June 11, 2026. The Washington Senate approved it 30-19.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -267,6 +267,11 @@
           "slug": "election_integrity",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
         }
       ]
     },

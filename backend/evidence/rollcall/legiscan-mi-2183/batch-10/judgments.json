@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1575242,
+      "measure_id": "HB 4338",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4338. It would bar cities, villages and townships from adopting or enforcing any rule that limits police or local officials from sharing information or cooperating with federal officials about a person's immigration status. Any such rule would be void. Residents could sue, the attorney general would have to sue, and a court would order the rule amended or repealed and award damages and legal costs. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4338. It would bar cities, villages and townships from adopting or enforcing any rule that limits police or local officials from sharing information or cooperating with federal officials about a person's immigration status. Any such rule would be void. Residents could sue, the attorney general would have to sue, and a court would order the rule amended or repealed and award damages and legal costs. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1575768,
+      "measure_id": "HB 4339",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4339. It would bar counties from adopting or enforcing any rule that limits police or local officials from sharing information or cooperating with federal officials about a person's immigration status. Any such rule would be void. Residents could sue, the attorney general would have to sue, and a court would order the rule amended or repealed and award damages and legal costs. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4339. It would bar counties from adopting or enforcing any rule that limits police or local officials from sharing information or cooperating with federal officials about a person's immigration status. Any such rule would be void. Residents could sue, the attorney general would have to sue, and a court would order the rule amended or repealed and award damages and legal costs. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1575285,
+      "measure_id": "HB 4342",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4342. It would make the state withhold the revenue-sharing payments the Legislature sets each year from a city, village, township or county for as long as it enforces a local rule that limits cooperation with federal immigration officials, starting with the fiscal year that began October 1, 2025. The share the state constitution guarantees would still be paid. The House passed it 57-49. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4342. It would make the state withhold the revenue-sharing payments the Legislature sets each year from a city, village, township or county for as long as it enforces a local rule that limits cooperation with federal immigration officials, starting with the fiscal year that began October 1, 2025. The share the state constitution guarantees would still be paid. The House passed it 57-49. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1575080,
+      "measure_id": "HB 4340",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4340. It would bar anyone who is not a U.S. citizen or a qualified immigrant under federal law from receiving services, grants or other help under Michigan's main public assistance law, except where federal law requires otherwise. The House passed it 63-43. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4340. It would bar anyone who is not a U.S. citizen or a qualified immigrant under federal law from receiving services, grants or other help under Michigan's main public assistance law, except where federal law requires otherwise. The House passed it 63-43. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1575120,
+      "measure_id": "HB 4341",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4341. It would bar anyone who is not a U.S. citizen or a qualified immigrant under federal law from receiving services, grants or other help from the state housing development authority's programs, except where federal law requires otherwise. The House passed it 63-43. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4341. It would bar anyone who is not a U.S. citizen or a qualified immigrant under federal law from receiving services, grants or other help from the state housing development authority's programs, except where federal law requires otherwise. The House passed it 63-43. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1602852,
+      "measure_id": "HB 4515",
+      "vote_date": "2025-09-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4515. It would require the Bridge card, which delivers food and cash assistance, to show the recipient's photo and signature. If more than one adult may use the card, each adult's photo and signature would have to appear on it. The House passed it 60-38. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4515. It would require the Bridge card, which delivers food and cash assistance, to show the recipient's photo and signature. If more than one adult may use the card, each adult's photo and signature would have to appear on it. The House passed it 60-38. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1711904,
+      "measure_id": "HB 5145",
+      "vote_date": "2026-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5145. It would bar the state from accepting an applicant's own statement as proof of identity, income or Michigan residency for any public assistance program, when first applying and at each yearly review. Applicants would have to provide documents such as a driver's license, pay stubs or a lease. Before denying help, the state would have to try other ways to verify eligibility, such as data matches. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5145. It would bar the state from accepting an applicant's own statement as proof of identity, income or Michigan residency for any public assistance program, when first applying and at each yearly review. Applicants would have to provide documents such as a driver's license, pay stubs or a lease. Before denying help, the state would have to try other ways to verify eligibility, such as data matches. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1705360,
+      "measure_id": "HB 5812",
+      "vote_date": "2026-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5812. It would bar the state from seeking or renewing a federal waiver of the food assistance work requirements without the Legislature's specific approval. It would also bar the state from using its federal option to exempt some people from those work requirements, though the federal good-cause rule for a temporary absence from work would still apply. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5812. It would bar the state from seeking or renewing a federal waiver of the food assistance work requirements without the Legislature's specific approval. It would also bar the state from using its federal option to exempt some people from those work requirements, though the federal good-cause rule for a temporary absence from work would still apply. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1705314,
+      "measure_id": "HB 6013",
+      "vote_date": "2026-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 6013. It would make the state track where Bridge cards are used. If a recipient's card is used outside Michigan for more than 90 days in a row, the state would have to suspend it, subject to federal law, until the recipient confirms Michigan residency or eligibility. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 6013. It would make the state track where Bridge cards are used. If a recipient's card is used outside Michigan for more than 90 days in a row, the state would have to suspend it, subject to federal law, until the recipient confirms Michigan residency or eligibility. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

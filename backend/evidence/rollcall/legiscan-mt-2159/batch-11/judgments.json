@@ -51,6 +51,11 @@
      "slug": "social_programs_and_welfare",
      "yea": "against",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": null
     }
    ]
   },
@@ -67,6 +72,11 @@
    "labels": [
     {
      "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "against",
      "nay": null
     }

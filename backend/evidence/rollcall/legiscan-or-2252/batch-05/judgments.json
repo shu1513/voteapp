@@ -87,6 +87,11 @@
           "slug": "corporate_accountability",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -103,6 +108,11 @@
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "for",
           "nay": null
         }
@@ -123,6 +133,11 @@
           "slug": "social_programs_and_welfare",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },
@@ -139,6 +154,11 @@
       "labels": [
         {
           "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "labor_rights",
           "yea": "for",
           "nay": null
         }

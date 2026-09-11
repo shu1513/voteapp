@@ -13,6 +13,11 @@
      "slug": "public_education_quality",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Assembly Bill 155, which would have made the number of students per teacher, and per specialist such as a school counselor, something school districts must negotiate with their unions rather than set alone. Where a union contract set a ratio, the district would no longer have had to weigh the State Board of Education's recommended ratios. It would have applied only to contracts signed from July 2025 onward. The Nevada Assembly passed it 26-16, but the governor vetoed the bill, so it never became law.",
@@ -29,6 +34,11 @@
    "labels": [
     {
      "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }
@@ -49,6 +59,11 @@
      "slug": "civil_rights",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Assembly Bill 434, which would have made it unlawful for an employer to punish or threaten a worker who refuses to attend a meeting held to push the employer's religious or political opinions. A worker could sue for lost wages, damages and legal costs. The version the Assembly voted covered any meeting held for that purpose, except at a religious employer or where refusing substantially interfered with the worker's job or the working relationship. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
@@ -65,6 +80,11 @@
    "labels": [
     {
      "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }
@@ -85,6 +105,11 @@
      "slug": "reduce_wealth_gap",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Senate Bill 301, which would have let state peace officers in categories one, two and three who work outside the regular civil service system join the state employee collective bargaining system. Collective bargaining means negotiating pay and conditions as a group. The existing exclusions, such as for managers and short-term temporary staff, would have stayed in place. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
@@ -101,6 +126,11 @@
    "labels": [
     {
      "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }
@@ -121,6 +151,11 @@
      "slug": "reduce_wealth_gap",
      "yea": "for",
      "nay": null
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "for",
+     "nay": null
     }
    ],
    "yea_description": "Voted for Senate Bill 410, which would have written into law that the insurance benefits local governments must negotiate with their unions include insurance for an employee's dependents. It changed nothing else about what must be bargained. It would not have applied to any union contract signed before October 2025. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law.",
@@ -137,6 +172,11 @@
    "labels": [
     {
      "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "labor_rights",
      "yea": "for",
      "nay": null
     }

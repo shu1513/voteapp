@@ -15,6 +15,11 @@
           "slug": "corporate_accountability",
           "yea": "against",
           "nay": "for"
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": "for"
         }
       ]
     },

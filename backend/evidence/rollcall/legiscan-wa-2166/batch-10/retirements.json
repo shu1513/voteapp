@@ -1,0 +1,42 @@
+[
+  {
+    "recordId": "365206c0-6533-4a00-984f-d45494966c81",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "759abfa3-1953-41f1-9bef-248b2d6f5ad5",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 29-19, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "c4601946-bb74-46cc-9947-b8150e8146ad",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "8267ac9d-9294-436e-9336-b5dbaa040629",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "376025dc-fd32-4047-b00b-68b54ca16b08",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "1379995b-0063-446e-9be4-a1305d87cbbe",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "bcc8e54d-718f-4e17-8ed2-d607c8fcdbe0",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "6f9a3344-f18b-4959-86bb-092703242b9b",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "d59895f0-a434-43e2-96ff-266d93946479",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 29-19, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "8fa5f1e6-e413-49b1-8ffe-0eb6c3ba119d",
+    "reason": "Duplicate of the imported roll-call record for bill 6182. This hand-written record describes the same vote, the one Washington recorded 57-36, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  }
+]

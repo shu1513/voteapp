@@ -228,6 +228,11 @@
      "slug": "reduce_wealth_gap",
      "yea": "against",
      "nay": "for"
+    },
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": "for"
     }
    ],
    "acknowledge_later_rolls": [

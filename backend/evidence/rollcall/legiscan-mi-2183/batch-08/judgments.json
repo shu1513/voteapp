@@ -1,0 +1,202 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1709286,
+      "measure_id": "HB 5933",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5933. It would change how the state handles building permits and trade permits such as electrical and plumbing permits when the state is the permit office. The state would have to ask for any changes to an application within the existing deadline of 10 business days, or 15 for a complicated building, and could not ask for new changes after that. The House passed it 79-26. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5933. It would change how the state handles building permits and trade permits such as electrical and plumbing permits when the state is the permit office. The state would have to ask for any changes to an application within the existing deadline of 10 business days, or 15 for a complicated building, and could not ask for new changes after that. The House passed it 79-26. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1709241,
+      "measure_id": "HB 5934",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5934. It would make the state refund the fee for a building permit or trade permit when the state is the permit office and misses the deadline to grant or deny the application. The House passed it 75-30. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5934. It would make the state refund the fee for a building permit or trade permit when the state is the permit office and misses the deadline to grant or deny the application. The House passed it 75-30. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1709243,
+      "measure_id": "HB 5935",
+      "vote_date": "2026-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5935. When the state is the permit office for a building permit or trade permit, it would have to cite the rule behind any denial. It would also have to tell the applicant within 7 days if an application is incomplete, or the application would count as complete. The House passed it 81-24. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5935. When the state is the permit office for a building permit or trade permit, it would have to cite the rule behind any denial. It would also have to tell the applicant within 7 days if an application is incomplete, or the application would count as complete. The House passed it 81-24. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1712560,
+      "measure_id": "HB 5936",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5936. When the state environment department misses its deadline to approve or deny most permits, it now owes the applicant 15% of the fee. The bill would make it pay the full application fee plus any first annual or other periodic fee. Each approval or denial would also have to cite the law it is based on. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5936. When the state environment department misses its deadline to approve or deny most permits, it now owes the applicant 15% of the fee. The bill would make it pay the full application fee plus any first annual or other periodic fee. Each approval or denial would also have to cite the law it is based on. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1712639,
+      "measure_id": "HB 5937",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5937. It would cut the time the state environment department has to tell an applicant whether a permit application is complete from 30 days to 7. It would also set a decision deadline for wetland permits of 30 days, or 90 days if a hearing is held. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5937. It would cut the time the state environment department has to tell an applicant whether a permit application is complete from 30 days to 7. It would also set a decision deadline for wetland permits of 30 days, or 90 days if a hearing is held. The House passed it 58-49. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1712577,
+      "measure_id": "HB 5938",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5938. It would require any hearing on a wetland permit to be held within 30 days of a complete application, instead of 60. When a permit holder asks to change a permit, the state could add only related changes, could not reopen parts it already approved, and would have to name any added changes within 7 days. The House passed it 62-45. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5938. It would require any hearing on a wetland permit to be held within 30 days of a complete application, instead of 60. When a permit holder asks to change a permit, the state could add only related changes, could not reopen parts it already approved, and would have to name any added changes within 7 days. The House passed it 62-45. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1710339,
+      "measure_id": "HB 6038",
+      "vote_date": "2026-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 6038. It would limit when the state environment department can ask for changes to a wetland permit application. It could visit the site and ask for changes only before the application is treated as complete, and could not ask for changes after any later site visit. The House passed it 61-46. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 6038. It would limit when the state environment department can ask for changes to a wetland permit application. It could visit the site and ask for changes only before the application is treated as complete, and could not ask for changes after any later site visit. The House passed it 61-46. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1712660,
+      "measure_id": "HB 5082",
+      "vote_date": "2026-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5082. It would make the state environment department assess whether a landowner's property is a wetland within 60 days of a request, instead of within a reasonable time. It would also end the fee for this assessment. The House passed it 57-50. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5082. It would make the state environment department assess whether a landowner's property is a wetland within 60 days of a request, instead of within a reasonable time. It would also end the fee for this assessment. The House passed it 57-50. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1701041,
+      "measure_id": "HB 5504",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5504. It would create a State Digital Service Office inside the state technology department, working independently of the department's director. The office would review state software projects costing $1 million or more, oversee technology work costing more than $500,000, and push agencies toward modern, user-centered software practices. The House passed it 57-46. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5504. It would create a State Digital Service Office inside the state technology department, working independently of the department's director. The office would review state software projects costing $1 million or more, oversee technology work costing more than $500,000, and push agencies toward modern, user-centered software practices. The House passed it 57-46. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1701016,
+      "measure_id": "HB 5505",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5505. It would create a digital oversight office in the Legislature, led by an officer the Legislature appoints for three years. The office could investigate state agencies' technology projects and purchases, on a complaint or on its own, and could join or take over projects at risk of running over cost or schedule. The House passed it 57-46. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5505. It would create a digital oversight office in the Legislature, led by an officer the Legislature appoints for three years. The office could investigate state agencies' technology projects and purchases, on a complaint or on its own, and could join or take over projects at risk of running over cost or schedule. The House passed it 57-46. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1499787,
+      "measure_id": "HB 4052",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4052. It would bar members of the Legislature and their staff from entering into nondisclosure agreements about any work done in a lawmaker's official role. Any such agreement made, changed, extended or renewed after the bill took effect would be void. The House passed it 80-28. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4052. It would bar members of the Legislature and their staff from entering into nondisclosure agreements about any work done in a lawmaker's official role. Any such agreement made, changed, extended or renewed after the bill took effect would be void. The House passed it 80-28. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

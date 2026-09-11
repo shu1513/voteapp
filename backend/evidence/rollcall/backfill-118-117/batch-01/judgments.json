@@ -337,6 +337,11 @@
         {
           "slug": "civil_rights",
           "yea": "for"
+        },
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
         }
       ]
     },

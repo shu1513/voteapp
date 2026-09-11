@@ -60,8 +60,7 @@
      what makes the affordance readable. Dark ink text on it: 12.9:1. */
   --color-pick: #ffd814;
   --color-pick-hover: #f7ca00;
-  /* Democratic party brand blue; marks ballot-measure labels and
-     Democratic party text. */
+  /* Democratic party brand blue; marks Democratic party text. */
   --color-dem-blue: #0015bc;
   /* Republican party red, darkened from the brand #e9141d to clear WCAG AA
      for small text on white (5.9:1; the brand shade is 4.4:1 < 4.5). */
@@ -85,7 +84,8 @@
   /* Guest conversion nudge ("Enter your address to see if this race is on
      your ballot"). Light green tint so the callout pops against white cards
      without competing with pick yellow, autopick teal, or party colors.
-     nudge-deep is the link/text green: 6.7:1 on white, still AA on the tint. */
+     nudge-deep is the link/text green: 6.7:1 on white, still AA on the tint.
+     Also the election card's "Ballot Measure" label. */
   --color-nudge: #e8f5e9;
   --color-nudge-line: #a5d6a7;
   --color-nudge-deep: #166534;

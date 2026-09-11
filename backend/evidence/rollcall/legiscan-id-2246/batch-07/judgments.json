@@ -141,6 +141,11 @@
           "slug": "data_privacy",
           "yea": "for",
           "nay": null
+        },
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
         }
       ]
     }

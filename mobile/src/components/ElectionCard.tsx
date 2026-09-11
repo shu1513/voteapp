@@ -107,7 +107,9 @@ export function ElectionCard({
           </Text>
         ) : null}
         {election.race_type === "ballot_measure" ? (
-          <Text className="rounded bg-ink/10 px-2 py-0.5 text-xs text-ink">Ballot measure</Text>
+          // Green letters, no pill — same as the web card (user decision
+          // 2026-09-11). The gray chip read as a status badge.
+          <Text className="px-2 py-0.5 text-xs text-nudge-deep">Ballot measure</Text>
         ) : election.candidate_count === 0 && election.candidate_roster_status ? (
           <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
             {formatRosterStatus(election.candidate_roster_status).short}
