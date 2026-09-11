@@ -105,7 +105,7 @@ process is untouched. Under election integrity this is accurate rolls; under
 civil rights it is the risk that a list match cancels an eligible voter. This
 campaign's standing rule sends questions about who may vote to civil rights,
 and there a citizenship check does not have a clear direction either.
-**Raised for the operator**, alongside SF 44 from batch 01.
+**Raised for the operator**, alongside SF 44 from batch 01. Later settled and imported in batch 04.
 
 **Thirty-four other measures were dropped without a full read**, and the
 worklist gives a reason for each. Nineteen fail filter 3: the subject is
