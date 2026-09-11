@@ -39,7 +39,9 @@ The reasons for each call, and for the four calls reviewed and kept, are in JUDG
 - Batches 02 and 04 were re-imported (`import-rerun-report-2026-09-11.json`, stamps
   `2026-09-11T05:39:12.446Z` and `2026-09-11T05:39:17.768Z`). All 216 and 262 records came back
   unchanged; only tags moved. HB 3127's 22 yes voters carried both labels until the roll was
-  retracted. SB 2084's 34 yes
+  retracted. The batch-02 reports were then regenerated after the retraction (stamps
+  `2026-09-11T16:39:56.959Z` dry, `2026-09-11T16:40:08.515Z` real): six files, 173 records,
+  all unchanged, so the committed reports no longer show the retracted roll. SB 2084's 34 yes
   voters carry `labor_rights`, and its old spending tags are gone. The
   `import-dry-run-rerun-report.json` files in those two folders are now this review's check
   before the re-import.

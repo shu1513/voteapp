@@ -26,8 +26,8 @@ act many of them then voted for, the mistake the HB 1576 note below warns about.
 The retraction follows the Tennessee SB 766 recipe: 43 records retired through
 `manual:records:retire` (`hb3127-retirements.json`), roll 1662879 set back to pending, the
 entry removed from `judgments.json` and the roll's evidence JSON removed from this folder (it
-stays in the out-of-repo store). The re-import dry run afterwards read six files and changed
-nothing.
+stays in the out-of-repo store). Both rerun reports in this folder were regenerated after the
+retraction: six files, 173 records, all unchanged.
 
 The tally audit did not catch this because it compares counts only, and the count matched.
 The verb in the history line has to be read as well; that is now trap 5 in the README.
