@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1675366,
+      "measure_id": "H 516",
+      "vote_date": "2026-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 516, which bars Idaho school districts from using public money to support teachers unions. Districts may no longer deduct union dues from teachers' pay, give a union more teacher contact information than public records law requires unless the teacher agrees in writing, or send out union messages. Teachers may still use their own personal leave for union work, but on-duty union representation is paid only if the union repays the district. Violations carry civil fines of up to $2,500. The Idaho Senate passed it 20-14, and it became law.",
+      "nay_description": "Voted against House Bill 516, which bars Idaho school districts from using public money to support teachers unions. Districts may no longer deduct union dues from teachers' pay, give a union more teacher contact information than public records law requires unless the teacher agrees in writing, or send out union messages. Teachers may still use their own personal leave for union work, but on-duty union representation is paid only if the union repays the district. Violations carry civil fines of up to $2,500. The Idaho Senate passed it 20-14, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1676245,
+      "measure_id": "H 516",
+      "vote_date": "2026-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 516, which bars Idaho school districts from using public money to support teachers unions. Districts may no longer deduct union dues from teachers' pay, give a union more teacher contact information than public records law requires unless the teacher agrees in writing, or send out union messages. Teachers may still use their own personal leave for union work, but on-duty union representation is paid only if the union repays the district. Violations carry civil fines of up to $2,500. The Idaho House passed it 43-24, and it became law.",
+      "nay_description": "Voted against House Bill 516, which bars Idaho school districts from using public money to support teachers unions. Districts may no longer deduct union dues from teachers' pay, give a union more teacher contact information than public records law requires unless the teacher agrees in writing, or send out union messages. Teachers may still use their own personal leave for union work, but on-duty union representation is paid only if the union repays the district. Violations carry civil fines of up to $2,500. The Idaho House passed it 43-24, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
