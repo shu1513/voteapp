@@ -8,7 +8,7 @@ import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { pageMeta } from "../lib/pageMeta";
 
 /** The one-line claim under the hero; also the share card's second line. */
-const TAGLINE = "Independent, nonpartisan, AI-assisted election research with linked sources.";
+const TAGLINE = "Factual, nonpartisan, AI-assisted research with linked sources.";
 
 // Server-rendered head for the home page: the same title useDocumentTitle
 // sets after hydration, so crawlers see it in the HTML rather than the root's
