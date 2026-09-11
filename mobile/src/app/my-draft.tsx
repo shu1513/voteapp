@@ -5,6 +5,8 @@ import {
   reasonLabel,
   useElectionChoices,
   useMintPickCardShare,
+  useMyPickCardShares,
+  useRevokePickCardShare,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useRouter } from "expo-router";
@@ -182,10 +184,22 @@ function ChoiceRow({ choice, today }: { choice: ElectionChoice; today: string })
   );
 }
 
-function ShareCardControl({ electionDate }: { electionDate: string }) {
+// canMint: the card has picks to share. A live link renders (with its Stop
+// control) regardless — a card whose picks were since cleared, or a date
+// listed under Shared links below the cards, still owns a public URL that
+// only this control can revoke.
+function ShareCardControl({ electionDate, canMint }: { electionDate: string; canMint: boolean }) {
+  const { shares } = useMyPickCardShares();
   const mint = useMintPickCardShare();
-  if (mint.isSuccess) {
-    const path = `/picks/${mint.data.share.token}`;
+  const revoke = useRevokePickCardShare();
+  // The server's list is the only truth: a link minted on the web or on
+  // another device shows here with its Stop control, and a revoke made
+  // elsewhere takes effect on the next refetch. The mint hook writes its
+  // result into that same list, so no mutation state is consulted here — a
+  // stale mint result would otherwise resurrect a dead link.
+  const token = shares?.find((share) => share.election_date === electionDate)?.token ?? null;
+  if (token) {
+    const path = `/picks/${token}`;
     return (
       <View className="mt-2 gap-2">
         {/* The minted URL is the deliverable — visible the moment it exists.
@@ -202,14 +216,30 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         </Text>
         <View className="flex-row items-center gap-2">
           <ShareButton path={path} shareText={`My ${formatElectionDate(electionDate)} election picks`} />
-          {/* Names the name: the public page shows the owner's first name,
-              and the sharer must learn that HERE, before posting the link. */}
-          <Text className="flex-1 text-xs text-ink-soft">
-            Anyone with the link can see this card and your first name.
-          </Text>
+          {/* The way back: revoking kills the URL for everyone who has it.
+              Sits with the link and the name disclosure so the sharer sees
+              the exit in the same glance as the exposure. */}
+          <Pressable
+            disabled={revoke.isPending}
+            onPress={() => revoke.mutate(electionDate)}
+            accessibilityRole="button"
+            accessibilityLabel={`Stop sharing my ${formatElectionDate(electionDate)} picks`}
+            className={`rounded-lg border border-line bg-white px-3 py-2 active:border-ink${revoke.isPending ? " opacity-50" : ""}`}
+          >
+            <Text className="text-sm font-medium text-ink">{revoke.isPending ? "…" : "Stop sharing"}</Text>
+          </Pressable>
         </View>
+        {/* Names the name: the public page shows the owner's first name,
+            and the sharer must learn that HERE, before posting the link. */}
+        <Text className="text-xs text-ink-soft">Anyone with the link can see this card and your first name.</Text>
+        {revoke.isError ? (
+          <Text className="text-xs font-medium text-red-800">Couldn&apos;t stop sharing — try again.</Text>
+        ) : null}
       </View>
     );
+  }
+  if (!canMint) {
+    return null;
   }
   return (
     <View className="mt-2 flex-row flex-wrap items-center gap-2">
@@ -318,10 +348,11 @@ function PickDateCard({
           {pickedCount} / {elections.length}
         </Text>
       </View>
-      {/* Mint-on-demand: no share row exists until the user asks for one.
-          Hidden entirely while the card has zero picks — the backend
-          refuses to mint for an empty card anyway. */}
-      {pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
+      {/* Mint-on-demand: no share row (and no live public URL) exists until
+          the user asks for one. The mint button hides while the card has
+          zero picks (the backend refuses to mint for an empty card), but a
+          link minted earlier still shows, with Stop sharing. */}
+      <ShareCardControl electionDate={date} canMint={pickedCount > 0} />
       {/* Past cards drop the fill control (the backend rejects writes to
           past elections), matching the rows' "no pick" retirement. */}
       {!isPast ? (
@@ -455,6 +486,34 @@ function PastPicks({
   );
 }
 
+// Live share links whose date has no card on this screen: the election
+// dropped off the ballot, the address changed, or (unverified) no ballot
+// loads at all. The public URL keeps serving — results, and the owner's
+// first name — so the owner needs a way back to it. Dates WITH a card carry
+// their own control inside the card; listing those here too would show one
+// link twice.
+function SharedLinks({ cardedDates }: { cardedDates: Set<string> }) {
+  const { shares } = useMyPickCardShares();
+  const uncarded = (shares ?? []).filter((share) => !cardedDates.has(share.election_date));
+  if (uncarded.length === 0) {
+    return null;
+  }
+  return (
+    <View className="mt-4">
+      <Collapsible summary={`Shared links (${uncarded.length})`}>
+        <View className="mt-1 gap-3">
+          {uncarded.map((share) => (
+            <View key={share.election_date}>
+              <Text className="text-sm text-ink-soft">{formatElectionDate(share.election_date)}</Text>
+              <ShareCardControl electionDate={share.election_date} canMint={false} />
+            </View>
+          ))}
+        </View>
+      </Collapsible>
+    </View>
+  );
+}
+
 function MyDraftBody({ me }: { me: Me }) {
   const router = useRouter();
   const verified = me.email_verified;
@@ -524,6 +583,9 @@ function MyDraftBody({ me }: { me: Me }) {
               <PastPicks choices={choices ?? []} today={today} cardedElectionIds={nothingCarded} />
             </>
           )}
+          {/* No cards here, so every live link lists — the share API is not
+              verification-gated and neither is revoking. */}
+          <SharedLinks cardedDates={new Set()} />
         </View>
       </ScrollView>
     );
@@ -632,6 +694,10 @@ function MyDraftBody({ me }: { me: Me }) {
             cardedElectionIds={cardedElectionIds}
           />
           <PastPicks choices={choices ?? []} today={today} cardedElectionIds={cardedElectionIds} />
+          {/* Dates with a card above own their link inside the card; with
+              no cards (ballot failed, so dates is empty) every live link
+              lists here. */}
+          <SharedLinks cardedDates={new Set(dates)} />
         </>
       ) : null}
     </ScrollView>
