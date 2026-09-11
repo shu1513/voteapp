@@ -129,3 +129,31 @@ Every roll was judged against the version printed on or before its own date,
 plus any floor amendment adopted after that print and before the vote. A failed
 bill is never reprinted, so those amendments appear in no version;
 `sd_lateamend.py` found 18 and each was read.
+
+## Review response (2026-09-10) — three 2026 descriptions corrected
+
+All three findings were checked against the LRC text and are true.
+
+- **SB 118 (P2, true).** The Senate Taxation engrossed text, the version voted
+  16-17, names the fund "as created in Senate Bill 125" and says the treasurer
+  may not transfer money if SB 125 does not become effective. SB 125 passed the
+  Senate 34-0 and was tabled by the House 64-3 on March 4. The description said
+  "the fund exists". Now: the fund would have come from SB 125, no money could
+  move unless that bill also became law, and the House later tabled it.
+- **HB 1163 (P2, true).** Section 7 carves out more than federal health rules:
+  facilities bound by CMS or CDC regulations, school and early-childhood entry
+  vaccinations under § 13-28-7.1, clinical placements required by Board of
+  Regents or Technical Education health programs, court orders, and the
+  National Guard. The description now names all five.
+- **HB 1151 (P2, true).** The repealed sections (§ 34-20B-115 and 115.1) bar
+  sales to, purchase by, possession by and consumption by people under 21, cap
+  7-hydroxymitragynine at 2% of alkaloids, ban synthetic and adulterated
+  products, and require serving, content and warning labels. The description
+  said the current rules "only bar sales" to under-21s. Now: bar sales to and
+  use by people under 21, cap potency, ban synthetic or adulterated products
+  and require warning labels.
+
+Judge: batch 04 2 `updated` / 11 `unchanged`; batch 05 1 `updated` / 9
+`unchanged`. Import rewrote 106 records in place (HB 1151 39, HB 1163 40,
+SB 118 27). Dry-run re-run 493 and 354 `unchanged`, 0 errors. South Dakota
+row count unchanged at 4,210.
