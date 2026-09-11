@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1693876,
+      "measure_id": "SB 757",
+      "vote_date": "2026-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 757. It would bar social media and similar apps from showing a minor a feed chosen by the app from what it knows about the user, unless a parent gives verified consent. An app could use such a feed only after reasonable steps show the user is not a minor. It would bar feed notifications to minors from 10 p.m. to 6 a.m. and during school hours on school-year weekdays, and require age-check data to be deleted right away. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 757. It would bar social media and similar apps from showing a minor a feed chosen by the app from what it knows about the user, unless a parent gives verified consent. An app could use such a feed only after reasonable steps show the user is not a minor. It would bar feed notifications to minors from 10 p.m. to 6 a.m. and during school hours on school-year weekdays, and require age-check data to be deleted right away. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1693819,
+      "measure_id": "SB 758",
+      "vote_date": "2026-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 758. It would make online services set a minor's account to the most private settings by default, collect only the data needed for the service, and stop targeted ads, profiling and manipulative design aimed at minors. It would also bar notifications to minors late at night and during school hours, and limit how a minor's data may be used to recommend content. Violations could bring fines of up to $50,000 each starting in 2027. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 758. It would make online services set a minor's account to the most private settings by default, collect only the data needed for the service, and stop targeted ads, profiling and manipulative design aimed at minors. It would also bar notifications to minors late at night and during school hours, and limit how a minor's data may be used to recommend content. Violations could bring fines of up to $50,000 each starting in 2027. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1693747,
+      "measure_id": "SB 760",
+      "vote_date": "2026-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 760. It would bar AI chatbot operators from offering minors features that act like a friend, romantic partner or other relationship, or that claim to be human or have feelings. Chatbots could not give minors content that encourages suicide, self-harm, eating disorders or drug use, or that urges secrecy from parents. A user's own claim to be an adult would not be enough, and the attorney general could seek fines of $25,000 per violation. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 760. It would bar AI chatbot operators from offering minors features that act like a friend, romantic partner or other relationship, or that claim to be human or have feelings. Chatbots could not give minors content that encourages suicide, self-harm, eating disorders or drug use, or that urges secrecy from parents. A user's own claim to be an adult would not be enough, and the attorney general could seek fines of $25,000 per violation. The Senate passed it 20-17. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1589760,
+      "measure_id": "SB 134",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 134. It would widen Michigan's consumer protection law. A business would no longer be exempt just because its industry is regulated or its type of deal is allowed by law, only for a practice the law expressly permits. Fines of up to $25,000 could apply to each person misled or each deceptive ad, the attorney general could bring class actions, and small businesses and nonprofits would also be protected. The Senate passed it 19-18. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 134. It would widen Michigan's consumer protection law. A business would no longer be exempt just because its industry is regulated or its type of deal is allowed by law, only for a practice the law expressly permits. Fines of up to $25,000 could apply to each person misled or each deceptive ad, the attorney general could bring class actions, and small businesses and nonprofits would also be protected. The Senate passed it 19-18. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1600099,
+      "measure_id": "SB 360",
+      "vote_date": "2025-08-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 360. It would require businesses and state agencies that hold personal information to keep reasonable security safeguards. It would add passport and other ID numbers, medical and health insurance details, online account logins and biometric data to the information protected. People would have to be told of a breach within 45 days, and the attorney general could sue for fines, including up to $2,000 for failing to keep safeguards. The Senate passed it 19-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 360. It would require businesses and state agencies that hold personal information to keep reasonable security safeguards. It would add passport and other ID numbers, medical and health insurance details, online account logins and biometric data to the information protected. People would have to be told of a breach within 45 days, and the attorney general could sue for fines, including up to $2,000 for failing to keep safeguards. The Senate passed it 19-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1664043,
+      "measure_id": "SB 451",
+      "vote_date": "2026-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 451. It would bar credit reporting companies from including medical debt in credit reports, except for reports used for very large home loans above the federal conforming loan limit. Medical providers and debt collectors could not report medical debt to credit bureaus, and people could sue for damages over violations. The Senate passed it 27-8. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 451. It would bar credit reporting companies from including medical debt in credit reports, except for reports used for very large home loans above the federal conforming loan limit. Medical providers and debt collectors could not report medical debt to credit bureaus, and people could sue for damages over violations. The Senate passed it 27-8. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1712122,
+      "measure_id": "SB 1041",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1041. It would bar hotels and other lodging from raising prices by more than 20% during or shortly after a declared state of emergency in the affected area, unless higher costs, an earlier discount, an earlier contract or normal seasonal pricing explains it. The attorney general could seek fines of up to $10,000 per violation for a person and $500,000 for a business. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 1041. It would bar hotels and other lodging from raising prices by more than 20% during or shortly after a declared state of emergency in the affected area, unless higher costs, an earlier discount, an earlier contract or normal seasonal pricing explains it. The attorney general could seek fines of up to $10,000 per violation for a person and $500,000 for a business. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1712127,
+      "measure_id": "SB 1042",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1042. It would bar sellers from raising prices on food, building materials, emergency and medical supplies and other goods and services by more than 20% during or shortly after a declared state of emergency, unless higher costs or an earlier discount explains it. The attorney general could seek fines of up to $10,000 per violation for a person and $500,000 for a business. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 1042. It would bar sellers from raising prices on food, building materials, emergency and medical supplies and other goods and services by more than 20% during or shortly after a declared state of emergency, unless higher costs or an earlier discount explains it. The attorney general could seek fines of up to $10,000 per violation for a person and $500,000 for a business. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1712125,
+      "measure_id": "SB 1043",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1043. It would bar sellers of gasoline, propane and home heating oil from raising prices by more than 20% during or shortly after a market disruption such as a storm, shortage or strike, unless higher costs or an earlier discount explains it. The attorney general could seek fines of up to $10,000 per violation for a person and $500,000 for a business. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 1043. It would bar sellers of gasoline, propane and home heating oil from raising prices by more than 20% during or shortly after a market disruption such as a storm, shortage or strike, unless higher costs or an earlier discount explains it. The attorney general could seek fines of up to $10,000 per violation for a person and $500,000 for a business. The Senate passed it 20-15. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
