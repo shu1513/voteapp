@@ -55,7 +55,8 @@ Dispositions are in `survey/divided-enacted-worklist.tsv`.
 
 Review fixes re-ran the importer in place; rewritten rows carry the re-run stamp instead:
 batch 02 `2026-09-10T05:44:42.259Z` (112 rows), batch 03 `2026-09-10T05:44:47.601Z` (176),
-batch 04 `2026-09-10T05:44:51.277Z` (92), batch 05 `2026-09-10T04:48:47.712Z` (15).
+batch 04 `2026-09-10T05:44:51.277Z` (92), batch 05 `2026-09-10T04:48:47.712Z` (15),
+batch 06 `2026-09-11T02:18:16.187Z` (114).
 
 **Local total: 3,004 candidate records, 102 candidates, 64 approved roll calls over 40
 measures. Production holds zero Iowa roll-call records.**
