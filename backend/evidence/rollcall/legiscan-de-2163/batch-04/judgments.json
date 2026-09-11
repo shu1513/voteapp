@@ -1,0 +1,58 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1570813,
+      "measure_id": "HB 130",
+      "vote_date": "2025-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 130, which gives public employee unions new access to the workers they represent. Public employers, including schools, must give the union each new worker's contact details within 14 days of hire, and a full list every January and October. Unions may email members at their work addresses and meet with them in public buildings, but not for partisan campaigning. The Delaware House passed it 22-14, and it became law.",
+      "nay_description": "Voted against House Bill 130, which gives public employee unions new access to the workers they represent. Public employers, including schools, must give the union each new worker's contact details within 14 days of hire, and a full list every January and October. Unions may email members at their work addresses and meet with them in public buildings, but not for partisan campaigning. The Delaware House passed it 22-14, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1573995,
+      "measure_id": "SB 24",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 24, which lets a public employee union be certified without an election when more than half of the workers in a bargaining unit sign cards choosing it. The labor board must check the signatures and, if a majority signed, certify the union. It covers school employees and other state and local public employees. The Delaware Senate passed it 14-6, and it became law.",
+      "nay_description": "Voted against Senate Bill 24, which lets a public employee union be certified without an election when more than half of the workers in a bargaining unit sign cards choosing it. The labor board must check the signatures and, if a majority signed, certify the union. It covers school employees and other state and local public employees. The Delaware Senate passed it 14-6, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1595630,
+      "measure_id": "SB 24",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 24, which lets a public employee union be certified without an election when more than half of the workers in a bargaining unit sign cards choosing it. The labor board must check the signatures and, if a majority signed, certify the union. It covers school employees and other state and local public employees. The Delaware House passed it 26-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 24, which lets a public employee union be certified without an election when more than half of the workers in a bargaining unit sign cards choosing it. The labor board must check the signatures and, if a majority signed, certify the union. It covers school employees and other state and local public employees. The Delaware House passed it 26-12, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
