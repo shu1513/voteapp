@@ -38,8 +38,11 @@ not for reach.
 
 - `import-report.json`: 6 rolls, 45 inserts, run stamp `2026-09-10T06:40:23.021Z`.
 - Database on that stamp: 45 rows, 9 distinct candidates, 28 area tags.
-- Convergence dry run afterwards: 45 unchanged. The dry-run stamp
-  `2026-09-10T06:39:31.928Z` matches 0 rows.
+- Convergence dry run afterwards: 45 unchanged (stamp `2026-09-10T06:39:31.928Z`,
+  matching 0 rows).
+- Review fixes to HB 106, HB 207, and HB 274 (see `JUDGING.md`):
+  `import-dry-run-rerun-report.json` planned 25 rewrites and 20 unchanged, and
+  `import-rerun-report.json` (stamp `2026-09-11T02:37:56.659Z`) applied them.
 
 ## Every other 2025 candidate roll now has a written disposition
 

@@ -62,8 +62,10 @@ its residential customers, and that conservation portion is conclusively
 presumed reasonable. Contracts for secondary (untreated, outdoor) water entered
 on or after July 1, 2025 must allow tiered billing, and by July 1, 2030 secondary
 suppliers must bill by a tiered conservation rate, charging the lowest tier for
-water used to grow food. A supplier out of compliance after April 1, 2030 loses
-state water money and faces a state engineer fine.
+water used to grow food. Under 73-10-34(14)(f), a supplier exempt from metering
+under (9), (10), or (11), or authorized to meter at strategic points under (13),
+is not required to bill a tiered rate. A supplier out of compliance after April
+1, 2030 loses state water money and faces a state engineer fine.
 `environment_and_public_health` / for.
 
 ## HB 264 Tax Incentives Amendments
