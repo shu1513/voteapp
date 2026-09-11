@@ -1,0 +1,202 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1510685,
+   "measure_id": "HB 267",
+   "vote_date": "2025-01-27",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 267, which barred state and local governments, including school districts, from bargaining with unions for public workers or signing union contracts. It also barred using public money or property to help unions. Unions paid through payroll had to report their spending each year. The Utah House passed it 42-32 and it was signed into law. Lawmakers repealed it in a December 2025 special session.",
+   "nay_description": "Voted against House Bill 267, which barred state and local governments, including school districts, from bargaining with unions for public workers or signing union contracts. It also barred using public money or property to help unions. Unions paid through payroll had to report their spending each year. The Utah House passed it 42-32 and it was signed into law. Lawmakers repealed it in a December 2025 special session.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510688,
+   "measure_id": "HB 267",
+   "vote_date": "2025-02-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 267, which barred state and local governments, including school districts, from bargaining with unions for public workers or signing union contracts. It also barred using public money or property to help unions. Unions paid through payroll had to report their spending each year. The Utah Senate passed it 16-13 and it was signed into law. Lawmakers repealed it in a December 2025 special session.",
+   "nay_description": "Voted against House Bill 267, which barred state and local governments, including school districts, from bargaining with unions for public workers or signing union contracts. It also barred using public money or property to help unions. Unions paid through payroll had to report their spending each year. The Utah Senate passed it 16-13 and it was signed into law. Lawmakers repealed it in a December 2025 special session.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1513181,
+   "measure_id": "SB 327",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 327, which said the state law protecting the right to bargain as a group covers private-sector workers. It also set the definitions for House Bill 267's ban on union contracts for public workers. The Utah Senate passed it 19-5 and it was signed into law. It was tied to House Bill 267, which lawmakers repealed in a December 2025 special session.",
+   "nay_description": "Voted against Senate Bill 327, which said the state law protecting the right to bargain as a group covers private-sector workers. It also set the definitions for House Bill 267's ban on union contracts for public workers. The Utah Senate passed it 19-5 and it was signed into law. It was tied to House Bill 267, which lawmakers repealed in a December 2025 special session.",
+   "labels": [
+    {
+     "slug": "labor_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1511508,
+   "measure_id": "HB 233",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 233, which bars a public school that gets state money from letting any group that performs elective abortions, or its staff or partner groups, teach any health lesson. Such groups also may not supply health materials they made, paid for, donated, or branded. The state school board may fine a school system that breaks the rule. The Utah House passed it 52-13 and it was signed into law.",
+   "nay_description": "Voted against House Bill 233, which bars a public school that gets state money from letting any group that performs elective abortions, or its staff or partner groups, teach any health lesson. Such groups also may not supply health materials they made, paid for, donated, or branded. The state school board may fine a school system that breaks the rule. The Utah House passed it 52-13 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1511507,
+   "measure_id": "HB 233",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 233, which bars a public school that gets state money from letting any group that performs elective abortions, or its staff or partner groups, teach any health lesson. Such groups also may not supply health materials they made, paid for, donated, or branded. The state school board may fine a school system that breaks the rule. The Utah Senate passed it 18-8 and it was signed into law.",
+   "nay_description": "Voted against House Bill 233, which bars a public school that gets state money from letting any group that performs elective abortions, or its staff or partner groups, teach any health lesson. Such groups also may not supply health materials they made, paid for, donated, or branded. The state school board may fine a school system that breaks the rule. The Utah Senate passed it 18-8 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1512074,
+   "measure_id": "HB 390",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 390, which bars a public college from treating a student group worse because the group is religious or political, or because of its views. That includes denying it meeting space or funding. A college also may not punish such a group for requiring its leaders to share its beliefs or follow its rules. The Utah Senate passed it 21-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 390, which bars a public college from treating a student group worse because the group is religious or political, or because of its views. That includes denying it meeting space or funding. A college also may not punish such a group for requiring its leaders to share its beliefs or follow its rules. The Utah Senate passed it 21-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1514207,
+   "measure_id": "HB 226",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 226, which requires county jails and the state prison to tell U.S. immigration agents before they let out someone who is in the country unlawfully after a sentence for a felony or some other serious crimes. They must also help hand the person over to federal custody. It also says being here unlawfully is a sign a person may flee, when a court decides on release before trial. The Utah Senate passed it 21-8 and it was signed into law.",
+   "nay_description": "Voted against House Bill 226, which requires county jails and the state prison to tell U.S. immigration agents before they let out someone who is in the country unlawfully after a sentence for a felony or some other serious crimes. They must also help hand the person over to federal custody. It also says being here unlawfully is a sign a person may flee, when a court decides on release before trial. The Utah Senate passed it 21-8 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510622,
+   "measure_id": "HB 252",
+   "vote_date": "2025-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 252, which bars county jails, state prisons, and youth custody from starting cross-sex hormones or sex-change surgery for people in their care. It also bars starting puberty blockers for minors in youth custody. They may still offer counseling and other mental health care, and youth lockups must house boys and girls separately. The Utah Senate passed it 19-6 and it was signed into law.",
+   "nay_description": "Voted against House Bill 252, which bars county jails, state prisons, and youth custody from starting cross-sex hormones or sex-change surgery for people in their care. It also bars starting puberty blockers for minors in youth custody. They may still offer counseling and other mental health care, and youth lockups must house boys and girls separately. The Utah Senate passed it 19-6 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1510699,
+   "measure_id": "HB 269",
+   "vote_date": "2025-02-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 269, which requires public colleges to assign students to single-sex dorm units by their sex at birth, with an original birth certificate as proof. Colleges may still offer units that are unisex or for one person. It also drops medical records as proof that a person may use a restroom or locker room set aside for one sex. Schools now accept only an original birth certificate; public changing rooms still accept an amended one with proof of surgery. The Utah Senate passed it 20-7 and it was signed into law.",
+   "nay_description": "Voted against House Bill 269, which requires public colleges to assign students to single-sex dorm units by their sex at birth, with an original birth certificate as proof. Colleges may still offer units that are unisex or for one person. It also drops medical records as proof that a person may use a restroom or locker room set aside for one sex. Schools now accept only an original birth certificate; public changing rooms still accept an amended one with proof of surgery. The Utah Senate passed it 20-7 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "house",
+   "session": "2137",
+   "roll": 1512100,
+   "measure_id": "HB 300",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 300, which requires a voter who mails in a ballot to write the last four digits of a Utah driver license, state ID, or Social Security number on the envelope. Starting in 2029, voters get a mail ballot only if they ask for one. A request can last up to eight years. The state must also join a federal program that checks immigration status, and look for address problems on voter rolls. The Utah House passed it 56-15 and it was signed into law.",
+   "nay_description": "Voted against House Bill 300, which requires a voter who mails in a ballot to write the last four digits of a Utah driver license, state ID, or Social Security number on the envelope. Starting in 2029, voters get a mail ballot only if they ask for one. A request can last up to eight years. The state must also join a federal program that checks immigration status, and look for address problems on voter rolls. The Utah House passed it 56-15 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "UT",
+   "chamber": "senate",
+   "session": "2137",
+   "roll": 1512099,
+   "measure_id": "HB 300",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 300, which requires a voter who mails in a ballot to write the last four digits of a Utah driver license, state ID, or Social Security number on the envelope. Starting in 2029, voters get a mail ballot only if they ask for one. A request can last up to eight years. The state must also join a federal program that checks immigration status, and look for address problems on voter rolls. The Utah Senate passed it 19-10 and it was signed into law.",
+   "nay_description": "Voted against House Bill 300, which requires a voter who mails in a ballot to write the last four digits of a Utah driver license, state ID, or Social Security number on the envelope. Starting in 2029, voters get a mail ballot only if they ask for one. A request can last up to eight years. The state must also join a federal program that checks immigration status, and look for address problems on voter rolls. The Utah Senate passed it 19-10 and it was signed into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
