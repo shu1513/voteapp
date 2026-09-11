@@ -24,6 +24,9 @@ biological sex and then give a female student a right to sue if a male student
 plays on a women's team. They are dropped on SF0044's reasoning, pending the
 same decision.
 
+**Update:** the decision is made (Wyoming batch-04): this class is
+`civil_rights`, yes = against. AB 100 and AB 102 are now imported in batch-08.
+
 The other three gender-related measures have a different structure. In each, the
 claim on the other side of the scale is **not an equal-treatment claim**:
 
@@ -99,7 +102,7 @@ SB 389 in batch-02 and SB 825 in batch-01.
 
 ## The drops
 
-- **AB 100** and **AB 102** — see above. Pending the SF0044 decision.
+- **AB 100** and **AB 102** — see above. Since decided and imported in batch-08.
 - **SB 652** would have rewritten the University of Wisconsin's and technical
   colleges' minority student grant and recruitment programs into programs for
   disadvantaged students. Dropped on filter 5. Inside `civil_rights` it reads

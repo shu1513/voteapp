@@ -5,6 +5,8 @@ import {
   reasonLabel,
   useElectionChoices,
   useMintPickCardShare,
+  useMyPickCardShares,
+  useRevokePickCardShare,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useRouter } from "expo-router";
@@ -182,10 +184,22 @@ function ChoiceRow({ choice, today }: { choice: ElectionChoice; today: string })
   );
 }
 
-function ShareCardControl({ electionDate }: { electionDate: string }) {
+// canMint: the card has picks to share. A live link renders (with its Stop
+// control) regardless — a card whose picks were since cleared, or a date
+// listed under Shared links below the cards, still owns a public URL that
+// only this control can revoke.
+function ShareCardControl({ electionDate, canMint }: { electionDate: string; canMint: boolean }) {
+  const { shares } = useMyPickCardShares();
   const mint = useMintPickCardShare();
-  if (mint.isSuccess) {
-    const path = `/picks/${mint.data.share.token}`;
+  const revoke = useRevokePickCardShare();
+  // The server's list is the only truth: a link minted on the web or on
+  // another device shows here with its Stop control, and a revoke made
+  // elsewhere takes effect on the next refetch. The mint hook writes its
+  // result into that same list, so no mutation state is consulted here — a
+  // stale mint result would otherwise resurrect a dead link.
+  const token = shares?.find((share) => share.election_date === electionDate)?.token ?? null;
+  if (token) {
+    const path = `/picks/${token}`;
     return (
       <View className="mt-2 gap-2">
         {/* The minted URL is the deliverable — visible the moment it exists.
@@ -202,14 +216,30 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         </Text>
         <View className="flex-row items-center gap-2">
           <ShareButton path={path} shareText={`My ${formatElectionDate(electionDate)} election picks`} />
-          {/* Names the name: the public page shows the owner's first name,
-              and the sharer must learn that HERE, before posting the link. */}
-          <Text className="flex-1 text-xs text-ink-soft">
-            Anyone with the link can see this card and your first name.
-          </Text>
+          {/* The way back: revoking kills the URL for everyone who has it.
+              Sits with the link and the name disclosure so the sharer sees
+              the exit in the same glance as the exposure. */}
+          <Pressable
+            disabled={revoke.isPending}
+            onPress={() => revoke.mutate(electionDate)}
+            accessibilityRole="button"
+            accessibilityLabel={`Stop sharing my ${formatElectionDate(electionDate)} picks`}
+            className={`rounded-lg border border-line bg-white px-3 py-2 active:border-ink${revoke.isPending ? " opacity-50" : ""}`}
+          >
+            <Text className="text-sm font-medium text-ink">{revoke.isPending ? "…" : "Stop sharing"}</Text>
+          </Pressable>
         </View>
+        {/* Names the name: the public page shows the owner's first name,
+            and the sharer must learn that HERE, before posting the link. */}
+        <Text className="text-xs text-ink-soft">Anyone with the link can see this card and your first name.</Text>
+        {revoke.isError ? (
+          <Text className="text-xs font-medium text-red-800">Couldn&apos;t stop sharing — try again.</Text>
+        ) : null}
       </View>
     );
+  }
+  if (!canMint) {
+    return null;
   }
   return (
     <View className="mt-2 flex-row flex-wrap items-center gap-2">
@@ -236,8 +266,37 @@ function hasRenderablePick(choice: ElectionChoice | undefined): choice is Electi
   return choice !== undefined && (choice.picks.length > 0 || choice.measure_position !== null);
 }
 
-// Per-election-day card: x/y progress, share, auto-pick fill/clear, one row
-// per race.
+// One line for the whole fill run, instead of "auto pick: …" on every row the
+// engine left open (34 races → 30 identical notes was clutter). Counts what
+// landed and groups the open rows by reason; skipped_existing rows (already
+// decided by hand) are not the run's story. Per-race detail stays on each
+// election screen's panel. Same function as the web page.
+function autoFillSummary(results: Map<string, AutoPickElectionResult>): string | null {
+  const all = [...results.values()];
+  const picked = all.filter((result) => result.outcome === "picked").length;
+  const open = all.filter((result) => result.outcome === "no_pick");
+  if (picked === 0 && open.length === 0) {
+    return null;
+  }
+  const byReason = new Map<string, number>();
+  for (const result of open) {
+    const label = reasonLabel(result.reason);
+    byReason.set(label, (byReason.get(label) ?? 0) + 1);
+  }
+  const reasons = [...byReason.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, count]) => (byReason.size > 1 ? `${label} (${count})` : label))
+    .join(", ");
+  const parts = [`Auto-fill picked ${picked} race${picked === 1 ? "" : "s"}`];
+  if (open.length > 0) {
+    parts.push(`${open.length} left open: ${reasons}`);
+  }
+  return parts.join(" · ");
+}
+
+// Per-election-day card: date title, x/y progress bar, share, auto-pick
+// fill/clear, one row per race (title over pick — the web's two-column grid
+// stacks below its sm breakpoint, which every phone is).
 function PickDateCard({
   date,
   elections,
@@ -265,16 +324,35 @@ function PickDateCard({
   // few days so results can land on them); once the date passes, "no pick
   // yet" would invite an action that's no longer possible.
   const isPast = date < today;
+  const progressLabel = `${pickedCount} of ${elections.length} race${elections.length === 1 ? "" : "s"} decided`;
+  const progressPercent = elections.length === 0 ? 0 : Math.round((pickedCount / elections.length) * 100);
+  const summary = autoResults ? autoFillSummary(autoResults) : null;
   return (
     <View className="rounded-xl border border-line bg-white p-4">
-      <Text className="text-lg font-semibold text-ink">My {formatElectionDate(date)} Election Draft</Text>
-      <Text className="mt-0.5 text-xs text-ink-soft">
-        {pickedCount} of {elections.length} race{elections.length === 1 ? "" : "s"} decided
-      </Text>
-      {/* Mint-on-demand: no share row exists until the user asks for one.
-          Hidden entirely while the card has zero picks — the backend
-          refuses to mint for an empty card anyway. */}
-      {pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
+      {/* Date only: the screen heading already says "My Election Draft". */}
+      <Text className="text-lg font-semibold text-ink">{formatElectionDate(date)}</Text>
+      {/* Progress bar + "N / M" instead of a grey sentence: the count is a
+          status, and a bar is the shape people already read as one. The
+          full sentence stays as the bar's accessible name. Green = the
+          "decided" color the pick names and Won flags already use. */}
+      <View className="mt-2 flex-row items-center gap-3">
+        <View
+          accessibilityRole="progressbar"
+          accessibilityLabel={progressLabel}
+          accessibilityValue={{ min: 0, max: elections.length, now: pickedCount }}
+          className="h-2 flex-1 overflow-hidden rounded-full bg-surface"
+        >
+          <View className="h-full rounded-full bg-green-700" style={{ width: `${progressPercent}%` }} />
+        </View>
+        <Text className="text-sm font-semibold text-ink">
+          {pickedCount} / {elections.length}
+        </Text>
+      </View>
+      {/* Mint-on-demand: no share row (and no live public URL) exists until
+          the user asks for one. The mint button hides while the card has
+          zero picks (the backend refuses to mint for an empty card), but a
+          link minted earlier still shows, with Stop sharing. */}
+      <ShareCardControl electionDate={date} canMint={pickedCount > 0} />
       {/* Past cards drop the fill control (the backend rejects writes to
           past elections), matching the rows' "no pick" retirement. */}
       {!isPast ? (
@@ -286,23 +364,35 @@ function PickDateCard({
           onResults={onAutoResults}
         />
       ) : null}
-      <View className="mt-3 gap-2">
+      {summary !== null ? (
+        <Text accessibilityLiveRegion="polite" className="mt-2 text-xs text-ink-soft">
+          {summary}
+        </Text>
+      ) : null}
+      {/* Race rows with hairline dividers, title over pick. Undecided rows
+          show an empty pick slot; "no pick yet" survives only in the link's
+          accessibility label, so sighted users read the empty slot and a
+          screen reader still hears the state. */}
+      <View className="mt-3 border-t border-line">
         {elections.map((election) => {
           const choice = choiceByElectionId?.get(election.id);
           const autoResult = autoResults?.get(election.id);
+          const decided = hasRenderablePick(choice);
           return (
-            <View key={election.id}>
-              {hasRenderablePick(choice) ? (
+            <View key={election.id} className="border-b border-line/60 py-2">
+              <Text
+                className="text-sm text-ink underline"
+                accessibilityRole="link"
+                accessibilityLabel={
+                  decided ? undefined : `${election.official_ballot_title} — ${isPast ? "no pick" : "no pick yet"}`
+                }
+                onPress={() => router.push(`/elections/${election.id}`)}
+              >
+                {election.official_ballot_title}
+              </Text>
+              {decided ? (
                 <>
                   <Text className="text-sm">
-                    <Text
-                      className="text-ink underline"
-                      accessibilityRole="link"
-                      onPress={() => router.push(`/elections/${election.id}`)}
-                    >
-                      {election.official_ballot_title}
-                    </Text>
-                    <Text className="text-ink-soft"> — </Text>
                     <PickedLine choice={choice} election={election} />
                     {autoResult?.outcome === "picked" &&
                     autoResult.reason === "tie" &&
@@ -310,24 +400,12 @@ function PickDateCard({
                       // Partial fill: some seats landed, the rest tied.
                       // Gated on a live vacancy so the note retires the
                       // moment the user fills the remaining seats by hand.
-                      <Text className="text-ink-soft"> · auto pick: remaining seats tied — your call</Text>
+                      <Text className="text-xs text-ink-soft"> · remaining seats tied — your call</Text>
                     ) : null}
                   </Text>
                   <StrandedRemoveButtons choice={choice} today={today} />
                 </>
-              ) : (
-                // Undecided: the whole line is the quiet call to action —
-                // grey, tappable, straight to the race. After a fill run,
-                // the one-line reason the engine left it open rides along.
-                <Text
-                  className="text-sm text-ink-soft underline"
-                  accessibilityRole="link"
-                  onPress={() => router.push(`/elections/${election.id}`)}
-                >
-                  {election.official_ballot_title} — {isPast ? "no pick" : "no pick yet"}
-                  {autoResult?.outcome === "no_pick" ? ` · auto pick: ${reasonLabel(autoResult.reason)}` : ""}
-                </Text>
-              )}
+              ) : null}
             </View>
           );
         })}
@@ -408,6 +486,34 @@ function PastPicks({
   );
 }
 
+// Live share links whose date has no card on this screen: the election
+// dropped off the ballot, the address changed, or (unverified) no ballot
+// loads at all. The public URL keeps serving — results, and the owner's
+// first name — so the owner needs a way back to it. Dates WITH a card carry
+// their own control inside the card; listing those here too would show one
+// link twice.
+function SharedLinks({ cardedDates }: { cardedDates: Set<string> }) {
+  const { shares } = useMyPickCardShares();
+  const uncarded = (shares ?? []).filter((share) => !cardedDates.has(share.election_date));
+  if (uncarded.length === 0) {
+    return null;
+  }
+  return (
+    <View className="mt-4">
+      <Collapsible summary={`Shared links (${uncarded.length})`}>
+        <View className="mt-1 gap-3">
+          {uncarded.map((share) => (
+            <View key={share.election_date}>
+              <Text className="text-sm text-ink-soft">{formatElectionDate(share.election_date)}</Text>
+              <ShareCardControl electionDate={share.election_date} canMint={false} />
+            </View>
+          ))}
+        </View>
+      </Collapsible>
+    </View>
+  );
+}
+
 function MyDraftBody({ me }: { me: Me }) {
   const router = useRouter();
   const verified = me.email_verified;
@@ -477,6 +583,9 @@ function MyDraftBody({ me }: { me: Me }) {
               <PastPicks choices={choices ?? []} today={today} cardedElectionIds={nothingCarded} />
             </>
           )}
+          {/* No cards here, so every live link lists — the share API is not
+              verification-gated and neither is revoking. */}
+          <SharedLinks cardedDates={new Set()} />
         </View>
       </ScrollView>
     );
@@ -497,7 +606,6 @@ function MyDraftBody({ me }: { me: Me }) {
   // The milestone judges the nearest UPCOMING day, not dates[0]: a
   // just-finished day still carded has nothing left to celebrate.
   const nearestUpcomingDate = dates.find((date) => date >= today);
-  const cardedElectionIds = new Set((ballot.data?.elections ?? []).map((election) => election.id));
 
   // One reveal: nothing below the heading until BOTH queries settle, and no
   // cards at all when the choices fetch failed — rendering them from an
@@ -505,6 +613,12 @@ function MyDraftBody({ me }: { me: Me }) {
   // visible error beats confidently wrong "0 of N decided" cards.
   const choicesReady = choiceByElectionId !== undefined;
   const picksSettled = ballot.isSuccess && choicesReady;
+  // "Carded" means a card actually renders, not that ballot data exists: a
+  // failed refetch keeps the cached elections (and dates) but the cards go
+  // with picksSettled, so their picks and share links must list below
+  // instead of vanishing with them.
+  const cardedElectionIds = new Set(picksSettled ? ballot.data.elections.map((election) => election.id) : []);
+  const cardedDates = new Set(picksSettled ? dates : []);
   // Ballot failed but choices loaded: the choice-only sections (upcoming,
   // past) need nothing from the ballot, so they must survive the failure —
   // an error line plus the whole saved history beats an error line alone.
@@ -587,6 +701,10 @@ function MyDraftBody({ me }: { me: Me }) {
           <PastPicks choices={choices ?? []} today={today} cardedElectionIds={cardedElectionIds} />
         </>
       ) : null}
+      {/* Outside both gates: the share API needs neither the ballot nor the
+          picks, and a live link stays public through either failure, so
+          the way to revoke it must too. */}
+      <SharedLinks cardedDates={cardedDates} />
     </ScrollView>
   );
 }

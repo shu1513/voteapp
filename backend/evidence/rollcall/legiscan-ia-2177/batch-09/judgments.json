@@ -1,0 +1,58 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1642621,
+      "measure_id": "SF 2263",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2263, which would have let people keep guns and other dangerous weapons in their vehicles in public parking lots run by the state or a city, county, or township. The weapon had to stay out of sight in the locked vehicle whenever no one was in it, and National Guard sites were excluded. State rules could not bar foster parents from carrying a lawful gun, loaded or not, in a car used to transport a foster child. The bill also removed the label weapons free zone from areas near schools and in public parks, but kept double fines for weapon crimes committed there. The Iowa Senate passed it 35-12, but the two chambers never agreed on the same text, so it did not become law.",
+      "nay_description": "Voted against Senate File 2263, which would have let people keep guns and other dangerous weapons in their vehicles in public parking lots run by the state or a city, county, or township. The weapon had to stay out of sight in the locked vehicle whenever no one was in it, and National Guard sites were excluded. State rules could not bar foster parents from carrying a lawful gun, loaded or not, in a car used to transport a foster child. The bill also removed the label weapons free zone from areas near schools and in public parks, but kept double fines for weapon crimes committed there. The Iowa Senate passed it 35-12, but the two chambers never agreed on the same text, so it did not become law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1684550,
+      "measure_id": "SF 2263",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2263, which would have let people keep guns and other dangerous weapons in their vehicles in public parking lots run by the state or a city, county, or township. The weapon had to stay out of sight in the locked vehicle whenever no one was in it, and lots at National Guard sites, prisons, and jails were excluded. State rules could not bar foster parents from carrying a lawful gun in a car used to transport a foster child. The House added a ban on enforcing red flag laws, meaning orders that take guns from people not convicted of a violent felony or violent aggravated misdemeanor or otherwise disqualified, with a $50,000 penalty for each case. The Iowa House passed it 60-26, but the two chambers never agreed on the same text, so it did not become law.",
+      "nay_description": "Voted against Senate File 2263, which would have let people keep guns and other dangerous weapons in their vehicles in public parking lots run by the state or a city, county, or township. The weapon had to stay out of sight in the locked vehicle whenever no one was in it, and lots at National Guard sites, prisons, and jails were excluded. State rules could not bar foster parents from carrying a lawful gun in a car used to transport a foster child. The House added a ban on enforcing red flag laws, meaning orders that take guns from people not convicted of a violent felony or violent aggravated misdemeanor or otherwise disqualified, with a $50,000 penalty for each case. The Iowa House passed it 60-26, but the two chambers never agreed on the same text, so it did not become law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1693435,
+      "measure_id": "SF 2284",
+      "vote_date": "2026-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 2284, which would have set new limits on automatic license plate readers, the cameras that record the plates of passing cars. A city or county could use them only after passing an ordinance, and the cameras could not use facial recognition. Images would be deleted within 30 days unless needed for a criminal case, each search would need a case number and be logged, and the data could not be used for marketing. The bill also capped how many mobile traffic cameras a city or county could run and sent half their revenue to first responder pension and benefit funds. A vehicle owner who proved someone else was driving would have a camera ticket dismissed. The Iowa Senate passed it 31-9, but the two chambers never agreed on the same text, so it did not become law.",
+      "nay_description": "Voted against Senate File 2284, which would have set new limits on automatic license plate readers, the cameras that record the plates of passing cars. A city or county could use them only after passing an ordinance, and the cameras could not use facial recognition. Images would be deleted within 30 days unless needed for a criminal case, each search would need a case number and be logged, and the data could not be used for marketing. The bill also capped how many mobile traffic cameras a city or county could run and sent half their revenue to first responder pension and benefit funds. A vehicle owner who proved someone else was driving would have a camera ticket dismissed. The Iowa Senate passed it 31-9, but the two chambers never agreed on the same text, so it did not become law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

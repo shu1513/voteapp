@@ -1,0 +1,46 @@
+[
+  {
+    "recordId": "02a3a0d7-c7b2-4ec2-8d97-361afa1b085a",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 28-20, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "52206d0e-6d19-4cd6-8d4e-ae9168499013",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "de8a0451-1f50-473f-b9c4-472eecb79c6b",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 28-20, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "bc3bf6ab-77cc-4e34-9611-19ae969cba8f",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "0f2d6c80-e946-4f72-bafb-6e684d2e71b9",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "b73e71fc-7c33-4cb4-a1d4-9dca99929a9f",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "c2e7f260-6ff7-40a0-90fb-e4c1ed60159a",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "dd3a7de2-3455-4489-97d1-bbac1f6e524b",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "8af0b09e-09a7-44cf-9028-11bce1567018",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "e30b1cb7-2890-45a0-a012-89fa47738cf8",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 28-20, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "75acf77c-0a3e-44e9-bc1b-c71947c1d17a",
+    "reason": "Duplicate of the imported roll-call record for bill 1213. This hand-written record describes the same vote, the one Washington recorded 57-38, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  }
+]
