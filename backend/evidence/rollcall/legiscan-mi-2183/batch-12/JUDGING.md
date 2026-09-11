@@ -61,8 +61,9 @@ report medical debt; private action for actual damages, injunction and fees.
 ### SB 1041, SB 1042, SB 1043 — price gouging
 Three new acts with the same structure. An "excessively increased price" is a
 disparity of more than 20% over the pre-emergency or pre-disruption price,
-unless explained by the listed exceptions (costs, a prior discount, and for
-lodging a prior contract or regular seasonal rates). SB 1043's trigger is a
+unless explained by the listed exceptions (costs, a prior discount, for SB 1042
+a retail markup at or below the retailer's cost, and for lodging a prior
+contract or regular seasonal rates). SB 1043's trigger is a
 "market disruption" such as weather, supply failure, strike or civil disorder,
 and it excludes utility-regulated energy. Attorney general fines of up to
 $10,000 per violation for an individual and $500,000 for others.
@@ -78,3 +79,22 @@ Judge: 9 updated. Dry run: 141 planned inserts, 0 errors, stamp
 
 None. The sweep's tally matches for SB 757, SB 758 and SB 760 were all on other
 dates and other bills.
+
+## Review fixes
+
+Three sentences were corrected after PR review, each checked against the
+engrossed print:
+
+- SB 451, section 5(2): the exception is any credit transaction above the
+  conforming loan limit, not only home loans. "very large home loans" became
+  "a loan of any kind larger than the federal conforming mortgage limit".
+- SB 1042, section 2(e): a third exception, "a markup at or less than the cost
+  to the retailer", was missing. Added. SB 1041 and SB 1043 do not have it.
+- SB 757, section 7(2): the two routes are alternatives. The two sentences
+  became one: "unless reasonable steps show the user is not a minor or a
+  parent gives verified consent".
+
+Judge: 3 updated. `import-dry-run-rerun-report.json`: 47 rewrite, 94
+unchanged. `import-rerun-report.json`: **47 rewritten in place, 94
+unchanged**, 0 notified, stamp `2026-09-11T19:08:33.601Z`. Michigan roll-call
+records stay at 7,306 (no inserts, no retirements).
