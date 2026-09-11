@@ -1,0 +1,94 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1552473,
+      "measure_id": "SB 111",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 111. It would create a personal protection order for adults 60 and older, vulnerable adults and people with developmental disabilities. A court could bar abuse, threats, stalking, buying or having a firearm, harm to pets, and control over the person's money and property. It could also order property returned and damages paid. The Senate passed it 19-18. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 111. It would create a personal protection order for adults 60 and older, vulnerable adults and people with developmental disabilities. A court could bar abuse, threats, stalking, buying or having a firearm, harm to pets, and control over the person's money and property. It could also order property returned and damages paid. The Senate passed it 19-18. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1579547,
+      "measure_id": "SB 257",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 257. It would give survivors of criminal sexual conduct more time to sue: the later of 10 years after the claim arises, age 42, or 7 years after discovering the injury and its cause. There would be no deadline if the abuser is convicted. Older claims already too late could be filed within 1 year, with damages capped at $1.5 million per defendant for each incident. The Senate passed it 25-9. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 257. It would give survivors of criminal sexual conduct more time to sue: the later of 10 years after the claim arises, age 42, or 7 years after discovering the injury and its cause. There would be no deadline if the abuser is convicted. Older claims already too late could be filed within 1 year, with damages capped at $1.5 million per defendant for each incident. The Senate passed it 25-9. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1579594,
+      "measure_id": "SB 260",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 260. It would end governmental immunity for public universities, colleges and school districts sued over sexual abuse by an employee when the school was negligent in hiring, supervising or training, or knew of the abuse and did not report it. A school could be held liable only if it knew of an earlier act or the person's tendency and failed to act. The Senate passed it 25-9. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 260. It would end governmental immunity for public universities, colleges and school districts sued over sexual abuse by an employee when the school was negligent in hiring, supervising or training, or knew of the abuse and did not report it. A school could be held liable only if it knew of an earlier act or the person's tendency and failed to act. The Senate passed it 25-9. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1579628,
+      "measure_id": "SB 78",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 78. It would let a person convicted of a felony committed before age 18 ask a court to set it aside, even for offenses that normally cannot be cleared. At least 15 years must have passed since release, with no adult conviction, no pending charge and no illegal drug use since. Crimes requiring sex offender registration would not qualify. The Senate passed it 23-11. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 78. It would let a person convicted of a felony committed before age 18 ask a court to set it aside, even for offenses that normally cannot be cleared. At least 15 years must have passed since release, with no adult conviction, no pending charge and no illegal drug use since. Crimes requiring sex offender registration would not qualify. The Senate passed it 23-11. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "senate",
+      "session": "2183",
+      "roll": 1595345,
+      "measure_id": "SB 154",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 154. It would make it a crime to use force, threats or physical obstruction to injure, intimidate or interfere with people getting or providing reproductive health care, or to damage a facility because it provides that care. A first offense could bring up to 1 year and a $10,000 fine, repeat offenses would be felonies, and officials could sue to stop violations. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+      "nay_description": "Voted against Senate Bill 154. It would make it a crime to use force, threats or physical obstruction to injure, intimidate or interfere with people getting or providing reproductive health care, or to damage a facility because it provides that care. A first offense could bring up to 1 year and a $10,000 fine, repeat offenses would be felonies, and officials could sue to stop violations. The Senate passed it 19-17. The House has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
