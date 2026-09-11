@@ -3,7 +3,7 @@
 Outside-spending summaries for supported New York state candidates, built on
 the official NY Open Data (Socrata) mirrors of NYSBOE campaign finance data.
 Full background, verified data facts, and the phase plan live in
-[docs/plans/plan-new-york-finance.md](../../plan-new-york-finance.md).
+[docs/plans/plan-new-york-finance.md](../../docs/plans/plan-new-york-finance.md).
 
 It is isolated behind New-York-specific feature flags and does not run unless
 explicitly enabled.
