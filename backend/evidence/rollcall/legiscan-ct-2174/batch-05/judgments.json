@@ -1,0 +1,67 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1576768,
+      "measure_id": "HB 6844",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 6844. It would bar towns and cities from cutting a retired worker's pension because the retiree gets permanent partial disability benefits under workers' compensation. Temporary disability benefits paid after a work injury would count as wages when a town figures a worker's pension, up to the worker's pay before the injury. The state Comptroller would also study moving police and firefighters into a defined pension plan. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 6844. It would bar towns and cities from cutting a retired worker's pension because the retiree gets permanent partial disability benefits under workers' compensation. Temporary disability benefits paid after a work injury would count as wages when a town figures a worker's pension, up to the worker's pay before the injury. The state Comptroller would also study moving police and firefighters into a defined pension plan. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1571789,
+      "measure_id": "SB 1222",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 1222. It would extend workers' compensation to state and town public works employees while they travel between home and work in certain cases. Those cases are when they are on call for emergencies, when they are ordered in while other staff are excused, and after two or more days in a row of mandatory overtime. The Connecticut Senate passed it 24-12. The House did not vote on it, so it did not become law.",
+      "nay_description": "Voted against SB 1222. It would extend workers' compensation to state and town public works employees while they travel between home and work in certain cases. Those cases are when they are on call for emergencies, when they are ordered in while other staff are excused, and after two or more days in a row of mandatory overtime. The Connecticut Senate passed it 24-12. The House did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1571790
+      ],
+      "note": "Roll 1571790 (Senate roll 168, 11-25) rejected Senate Amendment A before passage (roll 169)."
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1574188,
+      "measure_id": "SB 1371",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 1371. It would require a school board to show just cause before firing a teacher. A tenured teacher facing dismissal would get a hearing before a neutral hearing officer, whose decision would bind both sides, instead of a hearing before the school board. A board could no longer overturn its own decision not to renew a new teacher only when it was arbitrary. The Connecticut Senate passed it 27-8. The House did not vote on it, so it did not become law.",
+      "nay_description": "Voted against SB 1371. It would require a school board to show just cause before firing a teacher. A tenured teacher facing dismissal would get a hearing before a neutral hearing officer, whose decision would bind both sides, instead of a hearing before the school board. A board could no longer overturn its own decision not to renew a new teacher only when it was arbitrary. The Connecticut Senate passed it 27-8. The House did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1574189,
+        1574190
+      ],
+      "note": "Rolls 1574190 (roll 188, 9-11) and 1574189 (roll 189, 11-23) rejected Senate Amendments B and A before passage (roll 190)."
+    }
+  ]
+}
