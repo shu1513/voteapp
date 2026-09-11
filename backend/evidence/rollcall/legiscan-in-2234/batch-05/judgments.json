@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1645961,
+      "measure_id": "HB 1302",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1302, which loosens several Indiana labor and safety rules. Employers with five or more workers aged 14 to 17 no longer have to register with the state or report how many minors they employ, and the public list of those employers is repealed. It also ends the separate state certificate for coal mine belt examiners. The Indiana House agreed to the final version 69-25, and it became law.",
+      "nay_description": "Voted against House Bill 1302, which loosens several Indiana labor and safety rules. Employers with five or more workers aged 14 to 17 no longer have to register with the state or report how many minors they employ, and the public list of those employers is repealed. It also ends the separate state certificate for coal mine belt examiners. The Indiana House agreed to the final version 69-25, and it became law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
