@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1522293,
+      "measure_id": "HB 4170",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4170. It would cut the state income tax rate from 4.25% to 4.05% starting with the 2025 tax year. It would also make future automatic rate cuts, which happen when state general fund revenue grows faster than inflation, permanent instead of lasting one year. The House passed it 65-43. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4170. It would cut the state income tax rate from 4.25% to 4.05% starting with the 2025 tax year. It would also make future automatic rate cuts, which happen when state general fund revenue grows faster than inflation, permanent instead of lasting one year. The House passed it 65-43. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1604199,
+      "measure_id": "HB 4747",
+      "vote_date": "2025-10-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4747. It would let taxpayers deduct contributions to another state's 529 college savings plan or ABLE disability savings account from their state income, starting in 2026. Today only Michigan's own plans qualify. The existing yearly limits of $5,000 for a single return and $10,000 for a joint return would apply to each kind of account. The House passed it 72-32. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4747. It would let taxpayers deduct contributions to another state's 529 college savings plan or ABLE disability savings account from their state income, starting in 2026. Today only Michigan's own plans qualify. The existing yearly limits of $5,000 for a single return and $10,000 for a joint return would apply to each kind of account. The House passed it 72-32. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1705400,
+      "measure_id": "HB 4467",
+      "vote_date": "2026-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4467. It would bar health professionals from giving minors puberty blockers, cross-sex hormones above normal levels, sterilizing surgery, genital surgery, or removal of healthy body parts, when done to change a minor's apparent sex or affirm a gender identity that differs from the minor's sex. Exceptions would include minors born with a medically verifiable disorder of sex development and treatment of harm from an earlier transition procedure. People could sue over violations until age 38 if treated as minors, and the attorney general could enforce the ban. The House passed it 57-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4467. It would bar health professionals from giving minors puberty blockers, cross-sex hormones above normal levels, sterilizing surgery, genital surgery, or removal of healthy body parts, when done to change a minor's apparent sex or affirm a gender identity that differs from the minor's sex. Exceptions would include minors born with a medically verifiable disorder of sex development and treatment of harm from an earlier transition procedure. People could sue over violations until age 38 if treated as minors, and the attorney general could enforce the ban. The House passed it 57-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1705441,
+      "measure_id": "HB 4466",
+      "vote_date": "2026-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4466. It would let the state discipline a licensed health professional who is found by a court to have violated House Bill 4467, the proposed ban on gender transition treatment for minors. A certified court record would be conclusive proof. The House passed it 57-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4466. It would let the state discipline a licensed health professional who is found by a court to have violated House Bill 4467, the proposed ban on gender transition treatment for minors. A certified court record would be conclusive proof. The House passed it 57-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1610619,
+      "measure_id": "HB 4915",
+      "vote_date": "2025-12-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4915. It would bar the state and health licensing boards from requiring implicit bias training to get or renew a health professional license or registration, and would cancel the current rule that requires it. The House passed it 56-45. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4915. It would bar the state and health licensing boards from requiring implicit bias training to get or renew a health professional license or registration, and would cancel the current rule that requires it. The House passed it 56-45. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1570119,
+      "measure_id": "HB 4242",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4242. It would require licensed health professionals who keep patient records off-site, including through a records company, to make sure the records are physically kept in a U.S. state or a Canadian province. The House passed it 71-39. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4242. It would require licensed health professionals who keep patient records off-site, including through a records company, to make sure the records are physically kept in a U.S. state or a Canadian province. The House passed it 71-39. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1712614,
+      "measure_id": "HB 5974",
+      "vote_date": "2026-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5974. It would give parents, guardians and others acting as parents the right to see a minor's medical records, including records of care the minor lawfully got without a parent's consent or notice. Today the minor alone controls those records. Except where federal law says otherwise, a provider could not limit a parent's access. The House passed it 61-46. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5974. It would give parents, guardians and others acting as parents the right to see a minor's medical records, including records of care the minor lawfully got without a parent's consent or notice. Today the minor alone controls those records. Except where federal law says otherwise, a provider could not limit a parent's access. The House passed it 61-46. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1591722,
+      "measure_id": "HB 4356",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4356. It would have the Secretary of State mail a notice and a return card after each November election to every registered voter who has not voted in 8 years or more. A voter who does not return the card would have to confirm their address at the polls, and a card whose signature does not match would mark the registration as challenged. If the notice comes back undeliverable, the registration would be challenged and then canceled unless the voter votes or updates it by the day after the second November election. The House passed it 56-41. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4356. It would have the Secretary of State mail a notice and a return card after each November election to every registered voter who has not voted in 8 years or more. A voter who does not return the card would have to confirm their address at the polls, and a card whose signature does not match would mark the registration as challenged. If the notice comes back undeliverable, the registration would be challenged and then canceled unless the voter votes or updates it by the day after the second November election. The House passed it 56-41. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1603012,
+      "measure_id": "HB 4602",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4602. It would let each local election board control how it builds the test ballots used to check voting machines before an election, using any source. The Secretary of State could not give one vendor exclusive control of test ballots or require all ballot data to go to a single vendor. The state's testing procedures would have to be clear, public and repeatable without proprietary systems. The House passed it 63-41. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4602. It would let each local election board control how it builds the test ballots used to check voting machines before an election, using any source. The Secretary of State could not give one vendor exclusive control of test ballots or require all ballot data to go to a single vendor. The state's testing procedures would have to be clear, public and repeatable without proprietary systems. The House passed it 63-41. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
