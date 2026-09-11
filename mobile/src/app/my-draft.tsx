@@ -606,7 +606,6 @@ function MyDraftBody({ me }: { me: Me }) {
   // The milestone judges the nearest UPCOMING day, not dates[0]: a
   // just-finished day still carded has nothing left to celebrate.
   const nearestUpcomingDate = dates.find((date) => date >= today);
-  const cardedElectionIds = new Set((ballot.data?.elections ?? []).map((election) => election.id));
 
   // One reveal: nothing below the heading until BOTH queries settle, and no
   // cards at all when the choices fetch failed — rendering them from an
@@ -614,6 +613,12 @@ function MyDraftBody({ me }: { me: Me }) {
   // visible error beats confidently wrong "0 of N decided" cards.
   const choicesReady = choiceByElectionId !== undefined;
   const picksSettled = ballot.isSuccess && choicesReady;
+  // "Carded" means a card actually renders, not that ballot data exists: a
+  // failed refetch keeps the cached elections (and dates) but the cards go
+  // with picksSettled, so their picks and share links must list below
+  // instead of vanishing with them.
+  const cardedElectionIds = new Set(picksSettled ? ballot.data.elections.map((election) => election.id) : []);
+  const cardedDates = new Set(picksSettled ? dates : []);
   // Ballot failed but choices loaded: the choice-only sections (upcoming,
   // past) need nothing from the ballot, so they must survive the failure —
   // an error line plus the whole saved history beats an error line alone.
@@ -698,10 +703,8 @@ function MyDraftBody({ me }: { me: Me }) {
       ) : null}
       {/* Outside both gates: the share API needs neither the ballot nor the
           picks, and a live link stays public through either failure, so
-          the way to revoke it must too. Exclude exactly the dates whose
-          cards render (picksSettled) — a failed ballot refetch keeps the
-          cached dates but drops the cards, and those links must list here. */}
-      <SharedLinks cardedDates={new Set(picksSettled ? dates : [])} />
+          the way to revoke it must too. */}
+      <SharedLinks cardedDates={cardedDates} />
     </ScrollView>
   );
 }
