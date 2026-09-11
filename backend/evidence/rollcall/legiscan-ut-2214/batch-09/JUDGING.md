@@ -134,10 +134,13 @@ failure is tracking excused absences. `public_education_quality` / for.
   party both loosen who may apply herbicide.
 - **SB 251**, not recognizable. It covers the reimbursement procedure for local
   enforcement costs and renames one administrative penalty as a civil penalty.
-- **SB 153**, operator direction call. From May 25, 2026, every withheld or
-  private voter record becomes public unless the voter proves at-risk status.
-  At-risk covers domestic violence, police, military, public figures and
-  protective orders. It also limits use of the voter list to political and
-  other lawful purposes, and makes misuse a class A misdemeanor. The Senate's
+- **SB 153**, operator direction call. Voter records that were classified
+  private on request, with no reason required, become public from May 25, 2026
+  unless the voter applies and qualifies as at-risk (20A-2-602).
+  Records withheld for a threat since May 2020 carry over as at-risk without an
+  application. At-risk covers domestic violence, police, military, public
+  figures and protective orders. It also limits use of the voter list to
+  political and other lawful purposes, and makes misuse a class A misdemeanor.
+  The Senate's
   19-5 concurrence was reconsidered, and the 22-7 revote six minutes later is
   the decisive roll.

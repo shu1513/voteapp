@@ -29,10 +29,12 @@ Every label states `nay: null`.
 - **SB 251 Local Health Department and DEQ Coordination** is dropped as not
   recognizable. It sets how the environment department repays local
   governments from penalty money.
-- **SB 153 Election Amendments goes to you as a direction call.** It makes most
-  voter records that were private public from May 25, 2026, unless the voter
-  qualifies as at risk. It also limits who may get the voter list and what they
-  may use it for, and makes misuse a class A misdemeanor. Privacy moves both
+- **SB 153 Election Amendments goes to you as a direction call.** It makes
+  voter records that were private on request, with no reason required, public
+  from May 25, 2026, unless the voter applies and qualifies as at risk; records
+  withheld for a threat carry over. It also limits who may get the voter list
+  and what they may use it for, and makes misuse a class A misdemeanor. Privacy
+  moves both
   ways, so the direction is yours to call.
 
 ## Checks run before importing
