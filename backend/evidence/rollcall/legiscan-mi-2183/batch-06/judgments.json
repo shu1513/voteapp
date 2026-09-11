@@ -1,0 +1,130 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1570252,
+      "measure_id": "HB 4283",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4283. It would let an electric provider that runs gas-fired engines built before February 27, 2024 to replace coal plants in the Upper Peninsula skip the filings that show it meets Michigan's renewable and clean energy standards. It would only have to certify that it uses such an engine and gets at least 15% of its power from renewable energy credits. A provider whose rates the state sets would still have to file plans to meet the standards by 2050, and this option would end after 2050. The House passed it 83-26. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4283. It would let an electric provider that runs gas-fired engines built before February 27, 2024 to replace coal plants in the Upper Peninsula skip the filings that show it meets Michigan's renewable and clean energy standards. It would only have to certify that it uses such an engine and gets at least 15% of its power from renewable energy credits. A provider whose rates the state sets would still have to file plans to meet the standards by 2050, and this option would end after 2050. The House passed it 83-26. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1565659,
+      "measure_id": "HB 4028",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4028. It would repeal the 2023 law that lets developers of large wind, solar and energy storage projects get a state siting permit from the Public Service Commission that overrides local zoning. Siting decisions for these projects would go back to local governments. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4028. It would repeal the 2023 law that lets developers of large wind, solar and energy storage projects get a state siting permit from the Public Service Commission that overrides local zoning. Siting decisions for these projects would go back to local governments. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1565448,
+      "measure_id": "HB 4027",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4027. It is the zoning half of the plan to repeal Michigan's 2023 siting law for large wind, solar and energy storage projects. It would remove the rule that local zoning is subject to that siting law. It would also end a protection for renewable energy projects that got local land use approval on or after January 1, 2021: today that approval cannot be revoked or changed once substantial construction or spending has begun. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4027. It is the zoning half of the plan to repeal Michigan's 2023 siting law for large wind, solar and energy storage projects. It would remove the rule that local zoning is subject to that siting law. It would also end a protection for renewable energy projects that got local land use approval on or after January 1, 2021: today that approval cannot be revoked or changed once substantial construction or spending has begun. The House passed it 58-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1698058,
+      "measure_id": "HB 5711",
+      "vote_date": "2026-05-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5711. It would repeal Michigan's clean energy standards, which require electric providers to reach 80% clean energy by 2035 and 100% by 2040, and 50% renewable energy by 2030 and 60% by 2035. It would also repeal the rules that make utilities run yearly programs to cut energy waste, including programs for low-income customers, and end requirements that state government cut its own energy use. It would also shrink the utility program that credits rooftop-solar customers for power they send back: systems could be sized to 100% of past-year use instead of 110%, and utilities could cap the program at 1% of peak load instead of 10%. It would count municipal trash and landfill gas as renewable energy. The House passed it 57-48. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5711. It would repeal Michigan's clean energy standards, which require electric providers to reach 80% clean energy by 2035 and 100% by 2040, and 50% renewable energy by 2030 and 60% by 2035. It would also repeal the rules that make utilities run yearly programs to cut energy waste, including programs for low-income customers, and end requirements that state government cut its own energy use. It would also shrink the utility program that credits rooftop-solar customers for power they send back: systems could be sized to 100% of past-year use instead of 110%, and utilities could cap the program at 1% of peak load instead of 10%. It would count municipal trash and landfill gas as renewable energy. The House passed it 57-48. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1698056,
+      "measure_id": "HB 5710",
+      "vote_date": "2026-05-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 5710. It is the utility-rules half of the plan to repeal Michigan's clean energy standards. When the Public Service Commission reviews a utility's long-term power plan, it would have to put reliability and affordability first and weigh other factors only if they do not hurt reliability or raise total costs. It would drop the requirements that utilities forecast their greenhouse gas emissions and study environmental justice effects of new gas plants. It would also end the grant program that pays nonprofits and local governments to speak for home utility customers in rate cases. The House passed it 58-47. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 5710. It is the utility-rules half of the plan to repeal Michigan's clean energy standards. When the Public Service Commission reviews a utility's long-term power plan, it would have to put reliability and affordability first and weigh other factors only if they do not hurt reliability or raise total costs. It would drop the requirements that utilities forecast their greenhouse gas emissions and study environmental justice effects of new gas plants. It would also end the grant program that pays nonprofits and local governments to speak for home utility customers in rate cases. The House passed it 58-47. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1612982,
+      "measure_id": "HB 4486",
+      "vote_date": "2025-12-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4486. It would bar counties, cities, villages and townships from banning the use of natural gas or propane, or the installation of pipes and other equipment that deliver them. Any such local rule adopted after the bill took effect would be void. The House passed it 61-42. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4486. It would bar counties, cities, villages and townships from banning the use of natural gas or propane, or the installation of pipes and other equipment that deliver them. Any such local rule adopted after the bill took effect would be void. The House passed it 61-42. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MI",
+      "chamber": "house",
+      "session": "2183",
+      "roll": 1603162,
+      "measure_id": "HB 4160",
+      "vote_date": "2025-09-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4160. It would bar state agencies from adopting a rule stricter than the matching federal standard unless the agency's director finds a clear and convincing need and states the facts and exceptional circumstances behind it. Where federal law does not require a state rule, a Michigan law that specifically allows the stricter rule would also be enough. Emergency rules and changes to the current special education rules would be exempt. The House passed it 59-41. The Senate has not voted on it, so it is not law.",
+      "nay_description": "Voted against House Bill 4160. It would bar state agencies from adopting a rule stricter than the matching federal standard unless the agency's director finds a clear and convincing need and states the facts and exceptional circumstances behind it. Where federal law does not require a state rule, a Michigan law that specifically allows the stricter rule would also be enough. Emergency rules and changes to the current special education rules would be exempt. The House passed it 59-41. The Senate has not voted on it, so it is not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
