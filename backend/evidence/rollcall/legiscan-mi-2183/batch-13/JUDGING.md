@@ -24,7 +24,10 @@ violence.
 ### SB 31 — births and hospital policy
 New section 21538, from January 1, 2027: a patient giving birth may have a
 partner or spouse and a doula, or a doula and a companion, present throughout
-the stay, subject to listed limits. The policy must state the hospital's
+the stay, subject to listed limits. Review fix: the first description said the
+companion option applied "if there is no partner"; 21538(1)(a)(ii) also covers
+a partner or spouse who is not available. Re-judged and the 16 records
+rewritten in place (import-rerun-report.json). The policy must state the hospital's
 informed consent policy and its process for accepting a midwife's transfer
 information. Section 20201's hospital duties add that "sex" includes pregnancy
 or lactating status.
