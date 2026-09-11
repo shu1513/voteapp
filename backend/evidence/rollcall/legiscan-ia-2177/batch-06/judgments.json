@@ -1,0 +1,76 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1512436,
+      "measure_id": "HF 316",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 316, which adds career education to Iowa schools. Students in grades five and six must be taught career planning, covering how to investigate careers, how school connects to them, and what they intend to pursue. The health curriculum must include the characteristics of communicable diseases. The state must publish a list of industry-recognized credentials that high school students can earn and a seal for their transcripts. Schools must report which students earn one, keep those reports confidential, and recognize graduates who earned a credential. The Iowa House passed it 61-28, and it became law.",
+      "nay_description": "Voted against House File 316, which adds career education to Iowa schools. Students in grades five and six must be taught career planning, covering how to investigate careers, how school connects to them, and what they intend to pursue. The health curriculum must include the characteristics of communicable diseases. The state must publish a list of industry-recognized credentials that high school students can earn and a seal for their transcripts. Schools must report which students earn one, keep those reports confidential, and recognize graduates who earned a credential. The Iowa House passed it 61-28, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1693494,
+      "measure_id": "SF 378",
+      "vote_date": "2026-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate File 378, which raises Iowa's default speed limit from 55 to 60 miles per hour on roads where no other speed limit applies. It also widens a break for drivers. The first two tickets in a year for going ten miles per hour or less over the limit do not count toward losing a license, and that rule now covers zones with limits of 35 to 60 miles per hour instead of 35 to 55. Road agencies may put stickers on existing signs to show the new limits. The Iowa Senate passed it 28-16, and it became law.",
+      "nay_description": "Voted against Senate File 378, which raises Iowa's default speed limit from 55 to 60 miles per hour on roads where no other speed limit applies. It also widens a break for drivers. The first two tickets in a year for going ten miles per hour or less over the limit do not count toward losing a license, and that rule now covers zones with limits of 35 to 60 miles per hour instead of 35 to 55. Road agencies may put stickers on existing signs to show the new limits. The Iowa Senate passed it 28-16, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "house",
+      "session": "2177",
+      "roll": 1686962,
+      "measure_id": "HF 2670",
+      "vote_date": "2026-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2670, which rewrites parts of what Iowa schools must teach and test. It strikes the rule that schools teach from a multicultural and gender-fair approach, and drops the requirement that global perspectives run through every grade. Kindergarten no longer has to cover healthy emotional and social habits or human growth and development. Starting with the 2027-28 school year, students must also take a social studies test in grades eight and eleven. The science test moves from grade ten to grade eleven, and high school math units may include agriculture. The Iowa House passed it 65-28, and it became law.",
+      "nay_description": "Voted against House File 2670, which rewrites parts of what Iowa schools must teach and test. It strikes the rule that schools teach from a multicultural and gender-fair approach, and drops the requirement that global perspectives run through every grade. Kindergarten no longer has to cover healthy emotional and social habits or human growth and development. Starting with the 2027-28 school year, students must also take a social studies test in grades eight and eleven. The science test moves from grade ten to grade eleven, and high school math units may include agriculture. The Iowa House passed it 65-28, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IA",
+      "chamber": "senate",
+      "session": "2177",
+      "roll": 1682564,
+      "measure_id": "HF 2670",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House File 2670, which rewrites parts of what Iowa schools must teach and test. It strikes the rule that schools teach from a multicultural and gender-fair approach, and drops the requirement that global perspectives run through every grade. Kindergarten no longer has to cover healthy emotional and social habits or human growth and development. Starting with the 2027-28 school year, students must also take a social studies test in grades eight and eleven. The science test moves from grade ten to grade eleven, and high school math units may include agriculture. The Iowa Senate passed it 30-17, and it became law.",
+      "nay_description": "Voted against House File 2670, which rewrites parts of what Iowa schools must teach and test. It strikes the rule that schools teach from a multicultural and gender-fair approach, and drops the requirement that global perspectives run through every grade. Kindergarten no longer has to cover healthy emotional and social habits or human growth and development. Starting with the 2027-28 school year, students must also take a social studies test in grades eight and eleven. The science test moves from grade ten to grade eleven, and high school math units may include agriculture. The Iowa Senate passed it 30-17, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
