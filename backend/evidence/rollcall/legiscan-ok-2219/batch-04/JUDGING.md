@@ -29,9 +29,12 @@ $2.13. Scored `reduce_wealth_gap`, yes = **against**, following the campaign's l
 wage measures. The no side is null:
 the employer-side argument is about restaurant costs, not about the gap.
 
-**SB 2084, settlements at state colleges.** The act caps at two years of base pay what a
-college in the state system may pay a faculty member to resolve a wrongful firing claim,
-whether by agreement, arbitration or court judgment. Scored `government_spending_reduction`,
+**SB 2084, settlements at state colleges.** The act caps at two years of pay what a
+college in the state system may pay a faculty member to resolve a wrongful firing claim
+brought under state law, whether by agreement, arbitration or court judgment. Federal
+claims sit outside the cap, and the records say so. The statute measures the cap as base
+salary, compensation or contractual benefit; the records say "pay" rather than "base pay"
+so they do not understate it. Scored `government_spending_reduction`,
 yes = for, because the plain effect is a ceiling on public money paid out. The competing
 reading, that the cap cuts what a wrongly fired professor can recover, is real, but it belongs
 to a workers' rights axis the research areas do not carry, and `legal_competence` is barred
