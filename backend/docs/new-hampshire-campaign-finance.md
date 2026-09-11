@@ -155,8 +155,13 @@ Do not link candidate committees from the bulk receipt `Candidate Name` field:
 live 2026 candidate-committee exports put the committee name in that column.
 Do not parse committee display text (`Friends of`, `Committee to Elect`, etc.).
 Return an exact link only when official registration data agrees on candidate,
-cycle, office, and every required district. Some live candidate-committee
-registrations omit district; those remain unmatched rather than guessed.
+cycle, office, and every required district. Many live State Senate committee
+registrations omit district (22 Active ones in the 2026 cycle). Senate districts
+are unique statewide, so a district-blank Senate registration is accepted with
+confidence `unique_name` when it is the only name-matching filer of that office
+in the cycle; an exact-district registration always wins, and a same-named
+filer in another district or a second district-blank filer is reported as
+ambiguous. District-blank House and commissioner rows stay unmatched.
 State House district numbers repeat by county, so match both the registration's
 county (`town` in the API response) and district number to VoteApp's
 county-qualified House district name. County-office links likewise require the

@@ -21,7 +21,13 @@ export type NewHampshireCandidateFilerMatch = {
   candidateAliases: string[];
   officeName: string;
   district: string | null;
-  confidence: "exact";
+  /**
+   * `exact` = the registration carries the candidate's office and district.
+   * `unique_name` = the registration omits the district (common for State
+   * Senate committees) and the name matches exactly one filer of that office
+   * in the cycle; the district on the match is VoteApp's.
+   */
+  confidence: "exact" | "unique_name";
   source: "cfs_registration";
   sourceUrl: string | null;
   matchedRegistrationRowCount: number;
@@ -64,6 +70,8 @@ type CandidateFilerAccumulator = {
   filerNames: Set<string>;
   candidateAliases: Map<string, string>;
   rows: NewHampshireFilingEntityRow[];
+  /** The district the match reports: VoteApp's for exact and district-blank rows, the registration's otherwise. */
+  district: NewHampshireDistrictEvidence | null;
 };
 
 type NewHampshireDistrictEvidence = {
@@ -235,6 +243,18 @@ function officeRequiresDistrict(officeName: NewHampshireCanonicalOfficeName): bo
   return officeName !== "Governor";
 }
 
+/**
+ * State Senate committees often register without a district (2026 cycle: 22
+ * of the Active ones). Senate districts are unique statewide, so a
+ * district-blank Senate registration can stand in for the district when the
+ * name matches exactly one filer of that office in the cycle. House and
+ * commissioner district numbers repeat by county, so a blank district there
+ * stays a miss.
+ */
+function officeAllowsDistrictBlankFallback(officeName: NewHampshireCanonicalOfficeName): boolean {
+  return officeName === "State Senate";
+}
+
 function districtNumber(value: string | null | undefined): string {
   const key = normalizeTextKey(value ?? "")
     .replace(/\bNEW HAMPSHIRE\b/g, " ")
@@ -307,21 +327,49 @@ function registrationRaceTargetKey(row: NewHampshireFilingEntityRow): string | n
   return `${officeName}\u0000${district?.key ?? ""}`;
 }
 
+/** Race target of a district-blank registration, for offices where the blank is matchable. */
+function districtBlankRaceTargetKey(row: NewHampshireFilingEntityRow): string | null {
+  const officeName = canonicalOfficeName(row.officeName ?? "");
+  if (!officeName || !officeAllowsDistrictBlankFallback(officeName)) return null;
+  if (normalizeDistrictEvidence(officeName, row.district, row.county)) return null;
+  return `${officeName} `;
+}
+
+// An alias is kept only when every registration matching it points at one
+// race. Targets are counted per filing entity: a filer with both a
+// district-specific and a district-blank row is one race, not two, while a
+// district-blank Senate filer and a same-named House filer are two.
 function retainUnambiguousCandidateAliases(input: {
   aliases: readonly string[];
   filingEntityRows: readonly NewHampshireFilingEntityRow[];
   electionCycleId: number;
 }): string[] {
   return input.aliases.filter((alias) => {
-    const raceTargets = new Set<string>();
+    const explicitTargetsByFiler = new Map<number, Set<string>>();
+    const blankTargetByFiler = new Map<number, string>();
     for (const row of input.filingEntityRows) {
       if (!isCandidateRegistration(row) || row.electionCycleId !== input.electionCycleId) {
         continue;
       }
-      const raceTarget = registrationRaceTargetKey(row);
-      if (!raceTarget) continue;
+      const explicitTarget = registrationRaceTargetKey(row);
+      const blankTarget = explicitTarget ? null : districtBlankRaceTargetKey(row);
+      if (!explicitTarget && !blankTarget) continue;
       const names = officialCandidateNames(row);
-      if (names.length > 0 && candidateNamesMatch(alias, names)) raceTargets.add(raceTarget);
+      if (names.length === 0 || !candidateNamesMatch(alias, names)) continue;
+      if (explicitTarget) {
+        const targets = explicitTargetsByFiler.get(row.filingEntityId) ?? new Set<string>();
+        targets.add(explicitTarget);
+        explicitTargetsByFiler.set(row.filingEntityId, targets);
+      } else if (blankTarget) {
+        blankTargetByFiler.set(row.filingEntityId, blankTarget);
+      }
+    }
+    const raceTargets = new Set<string>();
+    for (const targets of explicitTargetsByFiler.values()) {
+      for (const target of targets) raceTargets.add(target);
+    }
+    for (const [filingEntityId, target] of blankTargetByFiler) {
+      if (!explicitTargetsByFiler.has(filingEntityId)) raceTargets.add(target);
     }
     return raceTargets.size <= 1;
   });
@@ -338,7 +386,7 @@ function rememberCandidateAlias(accumulator: CandidateFilerAccumulator, value: s
 function toMatch(input: {
   accumulator: CandidateFilerAccumulator;
   officeName: NewHampshireCanonicalOfficeName;
-  district: NewHampshireDistrictEvidence | null;
+  confidence: NewHampshireCandidateFilerMatch["confidence"];
   sourceUrl: string | null;
 }): NewHampshireCandidateFilerMatch {
   const filerName = [...input.accumulator.filerNames].sort((left, right) =>
@@ -354,12 +402,33 @@ function toMatch(input: {
       left.localeCompare(right)
     ),
     officeName: input.officeName,
-    district: input.district?.label ?? null,
-    confidence: "exact",
+    district: input.accumulator.district?.label ?? null,
+    confidence: input.confidence,
     source: "cfs_registration",
     sourceUrl: input.sourceUrl,
     matchedRegistrationRowCount: input.accumulator.rows.length,
   };
+}
+
+function accumulateRow(input: {
+  bucket: Map<number, CandidateFilerAccumulator>;
+  row: NewHampshireFilingEntityRow;
+  candidateName: string;
+  officialNames: readonly string[];
+  district: NewHampshireDistrictEvidence | null;
+}): void {
+  const accumulator = input.bucket.get(input.row.filingEntityId) ?? {
+    filingEntityId: input.row.filingEntityId,
+    filerNames: new Set<string>(),
+    candidateAliases: new Map<string, string>(),
+    rows: [],
+    district: input.district,
+  };
+  accumulator.rows.push(input.row);
+  accumulator.filerNames.add(input.row.filerName);
+  rememberCandidateAlias(accumulator, input.candidateName);
+  for (const name of input.officialNames) rememberCandidateAlias(accumulator, name);
+  input.bucket.set(input.row.filingEntityId, accumulator);
 }
 
 export function resolveNewHampshireCandidateFiler(
@@ -396,35 +465,57 @@ export function resolveNewHampshireCandidateFiler(
     };
   }
 
-  const rowsByFiler = new Map<number, CandidateFilerAccumulator>();
+  // Three buckets of name-matching registrations for the office and cycle:
+  // exact (office + district), district-blank, and other-district. Exact
+  // matches always win. With no exact match, one district-blank filer is
+  // accepted only when it is the ONLY name-matching filer of the office —
+  // a same-named filer in another district or a second district-blank filer
+  // makes the name non-unique, and both are reported as ambiguous so an
+  // operator can link by hand.
+  const exactByFiler = new Map<number, CandidateFilerAccumulator>();
+  const blankByFiler = new Map<number, CandidateFilerAccumulator>();
+  const otherDistrictByFiler = new Map<number, CandidateFilerAccumulator>();
+  const blankFallback = officeRequiresDistrict(canonicalOffice) && officeAllowsDistrictBlankFallback(canonicalOffice);
   for (const row of input.filingEntityRows) {
     if (!isCandidateRegistration(row) || row.electionCycleId !== electionCycleId) continue;
     if (canonicalOfficeName(row.officeName ?? "") !== canonicalOffice) continue;
     const rowDistrict = normalizeDistrictEvidence(canonicalOffice, row.district, row.county);
-    if (officeRequiresDistrict(canonicalOffice) && rowDistrict?.key !== district?.key) continue;
+    let bucket: Map<number, CandidateFilerAccumulator>;
+    let matchDistrict: NewHampshireDistrictEvidence | null;
+    if (!officeRequiresDistrict(canonicalOffice) || rowDistrict?.key === district?.key) {
+      bucket = exactByFiler;
+      matchDistrict = district;
+    } else if (!blankFallback) {
+      continue;
+    } else if (rowDistrict === null) {
+      bucket = blankByFiler;
+      matchDistrict = district;
+    } else {
+      bucket = otherDistrictByFiler;
+      matchDistrict = rowDistrict;
+    }
 
     const names = officialCandidateNames(row);
     if (names.length === 0 || !candidateNamesMatch(input.candidateName, names)) continue;
-
-    const accumulator = rowsByFiler.get(row.filingEntityId) ?? {
-      filingEntityId: row.filingEntityId,
-      filerNames: new Set<string>(),
-      candidateAliases: new Map<string, string>(),
-      rows: [],
-    };
-    accumulator.rows.push(row);
-    accumulator.filerNames.add(row.filerName);
-    rememberCandidateAlias(accumulator, input.candidateName);
-    for (const name of names) rememberCandidateAlias(accumulator, name);
-    rowsByFiler.set(row.filingEntityId, accumulator);
+    accumulateRow({ bucket, row, candidateName: input.candidateName, officialNames: names, district: matchDistrict });
   }
 
-  const matches = [...rowsByFiler.values()]
+  let matched: CandidateFilerAccumulator[] = [...exactByFiler.values()];
+  let confidence: NewHampshireCandidateFilerMatch["confidence"] = "exact";
+  if (matched.length === 0 && blankByFiler.size > 0) {
+    confidence = "unique_name";
+    matched =
+      blankByFiler.size === 1 && otherDistrictByFiler.size === 0
+        ? [...blankByFiler.values()]
+        : [...blankByFiler.values(), ...otherDistrictByFiler.values()];
+  }
+
+  const matches = matched
     .map((accumulator) =>
       toMatch({
         accumulator,
         officeName: canonicalOffice,
-        district,
+        confidence,
         sourceUrl: input.sourceUrl ?? null,
       })
     )
