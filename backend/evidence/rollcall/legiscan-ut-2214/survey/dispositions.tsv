@@ -111,8 +111,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0059	H		1644498	2026-02-25	68	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Identification Verification Amendments
 2214	HB0059	H		1656212	2026-03-06	66	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Identification Verification Amendments
 2214	HB0059	S		1656211	2026-03-06	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Identification Verification Amendments
-2214	HB0060	H		1622172	2026-02-03	54	17	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Water Rights Amendments
-2214	HB0060	S		1639860	2026-02-20	18	7	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Water Rights Amendments
+2214	HB0060	H		1622172	2026-02-03	54	17	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	House/ passed 3rd reading	Water Rights Amendments
+2214	HB0060	S		1639860	2026-02-20	18	7	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 3rd reading	Water Rights Amendments
 2214	HB0061	H		1616429	2026-01-22	74	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Navajo Trust Fund Amendments
 2214	HB0061	S		1625721	2026-02-06	28	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Navajo Trust Fund Amendments
 2214	HB0062	H		1624838	2026-02-05	71	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Road Jurisdiction Amendments
@@ -146,7 +146,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0076	H		1619302	2026-01-29	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Data Center Water Transparency Amendments
 2214	HB0076	H		1655059	2026-03-05	62	2	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Data Center Water Transparency Amendments
 2214	HB0076	S		1654375	2026-03-05	13	15	0	4	signed	screened	not-the-chambers-final-roll	Senate/ failed	Data Center Water Transparency Amendments
-2214	HB0076	S		1654376	2026-03-05	19	5	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Data Center Water Transparency Amendments
+2214	HB0076	S		1654376	2026-03-05	19	5	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 2nd & 3rd readings/ suspension	Data Center Water Transparency Amendments
 2214	HB0077	H		1617498	2026-01-27	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Tax Modifications
 2214	HB0077	S		1625631	2026-02-06	27	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Tax Modifications
 2214	HB0078	H		1617210	2026-01-26	75	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Nuclear Regulatory Amendments
@@ -158,7 +158,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0082	S		1638302	2026-02-19	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Judgment Information Amendments
 2214	HB0084	H		1637409	2026-02-18	67	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Dangerous Weapon Amendments
 2214	HB0084	H		1656611	2026-03-06	58	8	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Dangerous Weapon Amendments
-2214	HB0084	S		1656422	2026-03-06	18	5	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Dangerous Weapon Amendments
+2214	HB0084	S		1656422	2026-03-06	18	5	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 2nd & 3rd readings/ suspension	Dangerous Weapon Amendments
 2214	HB0085	H		1616537	2026-01-23	55	11	1	6	none	screened	not-divided	House/ passed 3rd reading	State Sovereignty Amendments
 2214	HB0085	S		1625467	2026-02-05	12	17	0	6	none	screened	not-enacted-status-6	Senate/ failed	State Sovereignty Amendments
 2214	HB0086	H		1625838	2026-02-06	48	18	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Restricted Person Amendments
@@ -356,7 +356,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0212	S		1656658	2026-03-06	13	14	0	6	none	screened	not-the-chambers-final-roll	Senate/ failed	County Formation Amendments
 2214	HB0212	S		1656866	2026-03-07	17	12	1	6	none	screened	not-enacted-status-6	Senate/ passed 2nd & 3rd readings/ suspension	County Formation Amendments
 2214	HB0214	H		1624496	2026-02-05	61	12	1	4	signed	screened	not-divided	House/ passed 3rd reading	Firearms Liability Amendments
-2214	HB0214	S		1639779	2026-02-20	19	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Firearms Liability Amendments
+2214	HB0214	S		1639779	2026-02-20	19	6	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 3rd reading	Firearms Liability Amendments
 2214	HB0215	H		1627887	2026-02-10	72	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Landscaping Restrictions Amendments
 2214	HB0215	S		1639745	2026-02-20	24	1	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Landscaping Restrictions Amendments
 2214	HB0216	H		1640672	2026-02-23	68	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Child Support Calculation Amendments
@@ -371,7 +371,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0221	H		1639008	2026-02-19	62	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Coercion Amendments
 2214	HB0221	S		1652469	2026-03-04	27	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Coercion Amendments
 2214	HB0222	H		1628559	2026-02-10	63	8	1	4	signed	screened	not-divided	House/ passed 3rd reading	Limitation of Actions Amendments
-2214	HB0222	S		1639742	2026-02-20	20	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Limitation of Actions Amendments
+2214	HB0222	S		1639742	2026-02-20	20	6	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 3rd reading	Limitation of Actions Amendments
 2214	HB0223	H		1626742	2026-02-09	46	25	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Electronic Signature Collection Amendments
 2214	HB0223	S		1654548	2026-03-05	11	18	0	6	none	screened	not-enacted-status-6	Senate/ failed	Electronic Signature Collection Amendments
 2214	HB0228	H		1640136	2026-02-20	68	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Vehicle Sales Amendments
@@ -509,7 +509,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0313	H		1640314	2026-02-20	54	17	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Landscaper Certification Amendments
 2214	HB0313	S		1656499	2026-03-06	15	13	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Landscaper Certification Amendments
 2214	HB0314	H		1627894	2026-02-10	64	4	1	4	signed	screened	not-divided	House/ passed 3rd reading	Firearm Purchase Amendments
-2214	HB0314	S		1639763	2026-02-20	18	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Firearm Purchase Amendments
+2214	HB0314	S		1639763	2026-02-20	18	6	1	4	signed	dropped:mixed	drops the buyer consent form but keeps approved background checks 30 days instead of 20	Senate/ passed 3rd reading	Firearm Purchase Amendments
 2214	HB0315	H		1649139	2026-03-02	40	28	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Human Development Instruction
 2214	HB0318	H		1636273	2026-02-17	70	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Agency Fee Amendments
 2214	HB0318	S		1653294	2026-03-04	27	0	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Agency Fee Amendments
@@ -528,7 +528,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0325	S		1656746	2026-03-06	21	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	Government Records Classification Amendments
 2214	HB0326	H		1640847	2026-02-23	71	0	1	6	none	screened	not-divided	House/ passed 3rd reading	Animal Depredation Amendments
 2214	HB0328	H		1636841	2026-02-18	39	29	1	6	none	screened	not-enacted-status-6	House/ passed 3rd reading	Water Usage Modifications
-2214	HB0329	H		1635232	2026-02-17	53	18	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	State Employee Maternity and Leave Amendments
+2214	HB0329	H		1635232	2026-02-17	53	18	1	4	signed	dropped:no-area	paid postpartum leave for state employees; no area covers public employment benefits	House/ passed 3rd reading	State Employee Maternity and Leave Amendments
 2214	HB0329	S		1655694	2026-03-05	25	2	1	4	signed	screened	not-divided	Senate/ passed 2nd & 3rd readings/ suspension	State Employee Maternity and Leave Amendments
 2214	HB0330	H		1629015	2026-02-10	65	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Liability Limitations Amendments
 2214	HB0330	H		1646113	2026-02-26	50	15	1	4	signed	batch-06	imported 2026-09-10, run 06:48:26.930Z	House/ concurs with Senate amendment	Liability Limitations Amendments
@@ -572,7 +572,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0356	S		1638742	2026-02-19	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Drug Distribution Amendments
 2214	HB0357	H		1638913	2026-02-19	65	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Amendments to Motor Vehicle Data Privacy
 2214	HB0357	H		1656765	2026-03-06	57	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Amendments to Motor Vehicle Data Privacy
-2214	HB0357	S		1656764	2026-03-06	19	10	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Amendments to Motor Vehicle Data Privacy
+2214	HB0357	S		1656764	2026-03-06	19	10	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 2nd & 3rd readings/ suspension	Amendments to Motor Vehicle Data Privacy
 2214	HB0358	H		1637369	2026-02-18	69	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	School Scheduling Amendments
 2214	HB0358	S		1656015	2026-03-06	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	School Scheduling Amendments
 2214	HB0361	H		1647965	2026-02-27	67	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Elections Provisions Amendments
@@ -697,7 +697,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0436	H		1656661	2026-03-06	64	0	1	4	signed	screened	not-divided	House/ concurs with Senate amendment	Moderate Income Housing Infrastructure Amendments
 2214	HB0436	S		1656283	2026-03-06	20	8	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Moderate Income Housing Infrastructure Amendments
 2214	HB0437	H		1640325	2026-02-20	67	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Environmental Permitting Amendments
-2214	HB0437	S		1654018	2026-03-04	23	6	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Environmental Permitting Amendments
+2214	HB0437	S		1654018	2026-03-04	23	6	1	4	signed	dropped:no-direction	expedited environmental permit review by certified outside reviewers; agency still decides; process change	Senate/ passed 2nd & 3rd readings/ suspension	Environmental Permitting Amendments
 2214	HB0438	H		1639970	2026-02-20	68	1	1	6	none	screened	not-divided	House/ passed 3rd reading	Artificial Intelligence Amendments
 2214	HB0438	S		1655775	2026-03-05	12	15	0	6	none	screened	not-enacted-status-6	Senate/ failed	Artificial Intelligence Amendments
 2214	HB0439	H		1642385	2026-02-24	59	8	1	6	none	screened	not-divided	House/ passed 3rd reading	Water Planning Amendments
@@ -736,7 +736,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	HB0468	H		1647655	2026-02-27	62	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Mobile Mammography Amendments
 2214	HB0468	S		1656074	2026-03-06	24	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Mobile Mammography Amendments
 2214	HB0471	H		1642703	2026-02-24	55	13	1	4	signed	screened	not-divided	House/ passed 3rd reading	Social Services Amendments
-2214	HB0471	S		1652723	2026-03-04	20	5	1	4	signed	candidate	divided-enacted-final	Senate/ passed 2nd & 3rd readings/ suspension	Social Services Amendments
+2214	HB0471	S		1652723	2026-03-04	20	5	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 2nd & 3rd readings/ suspension	Social Services Amendments
 2214	HB0472	H		1640988	2026-02-23	67	0	1	4	signed	screened	not-divided	House/ passed 3rd reading	Division of Licensing and Background Checks Amendments
 2214	HB0472	S		1652254	2026-03-04	26	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Division of Licensing and Background Checks Amendments
 2214	HB0473	H		1639041	2026-02-19	65	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	Colorado River Authority Amendments
@@ -1022,7 +1022,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0059	S		1634957	2026-02-17	22	2	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Alimony Amendments
 2214	SB0059	S		1647689	2026-02-27	24	1	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Alimony Amendments
 2214	SB0060	H		1653792	2026-03-04	61	11	1	4	signed	screened	not-divided	House/ passed 3rd reading	Income Tax Rate Amendments
-2214	SB0060	S		1628445	2026-02-10	22	7	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Income Tax Rate Amendments
+2214	SB0060	S		1628445	2026-02-10	22	7	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 3rd reading	Income Tax Rate Amendments
 2214	SB0062	H		1656395	2026-03-06	65	1	1	4	signed	screened	not-divided	House/ passed 3rd reading	School Finance Amendments
 2214	SB0062	S		1641719	2026-02-23	17	12	1	4	signed	screened	not-the-chambers-final-roll	Senate/ passed 3rd reading	School Finance Amendments
 2214	SB0062	S		1656396	2026-03-06	21	7	1	4	signed	held	tally-mismatch: LegiScan 21-7, sheet 28-0 (different vote's list)	Senate/ concurs with House amendment	School Finance Amendments
@@ -1327,7 +1327,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	passed	status	govern
 2214	SB0233	H		1652975	2026-03-04	51	18	1	4	signed	candidate	divided-enacted-final	House/ passed 3rd reading	Judicial Performance Evaluation Amendments
 2214	SB0233	S		1642170	2026-02-24	18	7	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Judicial Performance Evaluation Amendments
 2214	SB0234	H		1655822	2026-03-05	56	11	1	4	signed	screened	not-divided	House/ passed 3rd reading	Rulemaking Amendments
-2214	SB0234	S		1640863	2026-02-23	20	7	1	4	signed	candidate	divided-enacted-final	Senate/ passed 3rd reading	Rulemaking Amendments
+2214	SB0234	S		1640863	2026-02-23	20	7	1	4	signed	batch-07	imported 2026-09-10, run 06:54:37.475Z	Senate/ passed 3rd reading	Rulemaking Amendments
 2214	SB0235	H		1653945	2026-03-04	67	2	1	4	signed	screened	not-divided	House/ passed 3rd reading	Governor Compensation Amendments
 2214	SB0235	S		1642534	2026-02-24	25	0	1	4	signed	screened	not-divided	Senate/ passed 3rd reading	Governor Compensation Amendments
 2214	SB0235	S		1654742	2026-03-05	26	2	1	4	signed	screened	not-divided	Senate/ concurs with House amendment	Governor Compensation Amendments
