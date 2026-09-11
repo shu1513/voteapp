@@ -23,8 +23,7 @@ const SHARE_IMAGE = `${SITE_ORIGIN}/og-card.png`;
 const SHARE_IMAGE_ALT = `${APP_NAME} — see how much power your vote has`;
 
 export const DEFAULT_DESCRIPTION =
-  "See how much power your vote has and who the candidates really are by their track records " +
-  "instead of their marketing.";
+  "See how much power your vote has and who the candidates really are by their track records.";
 
 type PageMetaInput = {
   title: string;

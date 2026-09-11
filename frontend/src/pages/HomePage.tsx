@@ -310,7 +310,7 @@ export function HomePage() {
             wrap from ragging into a one-word last line. */}
         <h1 className="mt-6 text-balance text-title font-bold">
           See how much power your vote has and who the candidates really are by their track
-          records instead of their marketing.
+          records.
         </h1>
         {/* What the service is, where a first-time visitor actually looks.
             Centred with the rest of the masthead — one alignment axis for
