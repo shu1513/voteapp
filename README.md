@@ -34,7 +34,13 @@ These are deliberate. If you are reading the code and wondering "why", this is w
 
 ## Running locally
 
-Requires Node, Postgres (`postgresql://localhost:5432/voteapp`), and Redis (`redis://localhost:6379`).
+Requires Node, Redis (`redis://localhost:6379`), and Postgres **with the [pgvector](https://github.com/pgvector/pgvector) extension** at `postgresql://localhost:5432/voteapp` (migration 234 runs `CREATE EXTENSION vector`; plain Postgres fails there). The quickest matching database is the same image CI uses:
+
+```bash
+docker run -d --name voteapp-pg -p 5432:5432 -e POSTGRES_USER=$USER -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_DB=voteapp pgvector/pgvector:pg16
+```
+
+Or on macOS: `brew install postgresql@16 pgvector`, then `createdb voteapp`.
 
 ```bash
 cd backend && cp .env.example .env && npm install && npm run db:migrate && npm run address:api
