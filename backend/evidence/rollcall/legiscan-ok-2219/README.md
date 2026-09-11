@@ -76,6 +76,12 @@ version split.
 4. **Ninety Senate committee rolls would otherwise clutter the surfaced queue.** Oklahoma's
    Senate appropriations committee seats 21 to 26 of 48, which is neither clearly floor nor
    clearly committee by tally, so committee work is excluded by name instead.
+5. **A tally match is not a passage check.** HB 3127's House roll reads 47-46 and the history
+   line reads `Third Reading, Measure failed: Ayes: 47 Nays: 46`: the counts agree, the verb
+   does not. Oklahoma needs a majority of all members (51 of 101, 25 of 48), and LegiScan's
+   `passed` flag only compares yes to no. The roll was imported and had to be retracted. Read
+   the verb of the matching history line, and treat any divided roll short of the
+   constitutional majority as failed.
 
 ## Oklahoma ships its own tally oracle
 
@@ -138,10 +144,11 @@ work — that adds members without any new judging.
     survey/     the measured description histogram this config was written from,
                 the divided-and-enacted worklist, and the triage decisions
     batch-01/   seven measures, eleven rolls, 303 records
-    batch-02/   six measures, seven rolls, 216 records
+    batch-02/   five measures, six rolls, 173 records (HB 3127 retracted, see its PLAN.md)
     batch-03/   four measures, five rolls, 164 records
     batch-04/   six measures, nine rolls, 262 records
     batch-05/   six measures, ten rolls, 264 records
     batch-06/   six measures, eleven rolls, 287 records
     batch-07/   six measures, six rolls, 58 records
     batch-08/   four measures, four rolls, 39 records
+    batch-09/   one measure, one roll, 38 records, plus label fixes after review

@@ -34,11 +34,12 @@ college in the state system may pay a faculty member to resolve a wrongful firin
 brought under state law, whether by agreement, arbitration or court judgment. Federal
 claims sit outside the cap, and the records say so. The statute measures the cap as base
 salary, compensation or contractual benefit; the records say "pay" rather than "base pay"
-so they do not understate it. Scored `government_spending_reduction`,
-yes = for, because the plain effect is a ceiling on public money paid out. The competing
-reading, that the cap cuts what a wrongly fired professor can recover, is real, but it belongs
-to a workers' rights axis the research areas do not carry, and `legal_competence` is barred
-from roll-call records. Recording it under spending keeps the direction honest.
+so they do not understate it. Scored `labor_rights`, yes = **against**. It was first scored
+`government_spending_reduction`, yes = for, because the Labor Rights area did not exist yet.
+Review on 2026-09-11 moved it (see batch-09). The act's plain effect is a limit on what a
+wrongly fired worker can recover, which is the core of that area. The spending reading was
+weak: the cap touches no budget, and the other spending records are budgets, tax credits and
+cuts.
 
 **SB 998, electric plant costs.** The act moves cost and risk from the electric company to
 its customers in three ways: a shorter decision window for gas plants, permission to bill
