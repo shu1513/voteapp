@@ -1,0 +1,76 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1522672,
+   "measure_id": "AB 100",
+   "vote_date": "2025-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 100, which would have made public schools, charter schools and private voucher schools label every sports team as boys, girls or coed, based on the sex on a pupil's original birth certificate, and bar boys from girls' teams. A girl who lost a spot or was harmed by a violation could have sued the school. Each locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a pupil who asked for another option. The Assembly passed it 51-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 100, which would have made public schools, charter schools and private voucher schools label every sports team as boys, girls or coed, based on the sex on a pupil's original birth certificate, and bar boys from girls' teams. A girl who lost a spot or was harmed by a violation could have sued the school. Each locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a pupil who asked for another option. The Assembly passed it 51-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1630296,
+   "measure_id": "AB 100",
+   "vote_date": "2026-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 100, which would have made public schools, charter schools and private voucher schools label every sports team as boys, girls or coed, based on the sex on a pupil's original birth certificate, and bar boys from girls' teams. A girl who lost a spot or was harmed by a violation could have sued the school. Each locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a pupil who asked for another option. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 100, which would have made public schools, charter schools and private voucher schools label every sports team as boys, girls or coed, based on the sex on a pupil's original birth certificate, and bar boys from girls' teams. A girl who lost a spot or was harmed by a violation could have sued the school. Each locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a pupil who asked for another option. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1522508,
+   "measure_id": "AB 102",
+   "vote_date": "2025-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 102, which would have made University of Wisconsin campuses and technical colleges label every college and club sports team as men's, women's or coed, based on the sex on a student's original birth certificate, and bar men from women's teams. A female student who lost a spot or was harmed by a violation could have sued the school. Each campus locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a student who asked for another option. The Assembly passed it 50-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 102, which would have made University of Wisconsin campuses and technical colleges label every college and club sports team as men's, women's or coed, based on the sex on a student's original birth certificate, and bar men from women's teams. A female student who lost a spot or was harmed by a violation could have sued the school. Each campus locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a student who asked for another option. The Assembly passed it 50-43, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1630339,
+   "measure_id": "AB 102",
+   "vote_date": "2026-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 102, which would have made University of Wisconsin campuses and technical colleges label every college and club sports team as men's, women's or coed, based on the sex on a student's original birth certificate, and bar men from women's teams. A female student who lost a spot or was harmed by a violation could have sued the school. Each campus locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a student who asked for another option. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 102, which would have made University of Wisconsin campuses and technical colleges label every college and club sports team as men's, women's or coed, based on the sex on a student's original birth certificate, and bar men from women's teams. A female student who lost a spot or was harmed by a violation could have sued the school. Each campus locker room and shower room would also have been limited to one biological sex, with a single-user room or staff locker room offered to a student who asked for another option. The Senate agreed to it 18-15, but the governor vetoed the bill and the Legislature did not override the veto, so it never became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
