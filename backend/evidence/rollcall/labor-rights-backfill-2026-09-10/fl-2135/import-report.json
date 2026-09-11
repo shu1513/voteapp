@@ -1,0 +1,163 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-11T02:39:41.810Z",
+  "finishedAt": "2026-09-11T02:39:42.081Z",
+  "jurisdiction": "FL",
+  "sessionId": 2135,
+  "evidenceDir": "evidence/rollcall/labor-rights-backfill-2026-09-10/fl-2135",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-fl-2135/crosswalk.json",
+  "crosswalkEntries": 162,
+  "peopleFile": "evidence/rollcall/legiscan-fl-2135/legiscan-people-fl-2135.json",
+  "peopleMembers": 162,
+  "files": 1,
+  "outcomes": {
+    "imported": 1
+  },
+  "actions": {
+    "unchanged": 9
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-fl-senate-2135-roll1557039.json",
+      "state": "FL",
+      "chamber": "senate",
+      "sessionId": 2135,
+      "roll": 1557039,
+      "outcome": "imported",
+      "legislativeVoteId": "5deb6ce9-5098-4da9-992f-70d714f205e3",
+      "reviewStatus": "approved",
+      "bill": "H1219",
+      "voteDate": "2025-04-24",
+      "officialVoteDate": null,
+      "measureId": "H 1219",
+      "question": "Senate: Third Reading RCS#51",
+      "originRunId": "rollcall:FL:senate:2135:1557039:2026-09-11T02:39:41.810Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 28,
+        "matched": 9
+      },
+      "actions": {
+        "unchanged": 9
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "21471af8-a4c0-4097-9301-96a9e7881914",
+          "candidateName": "Colleen Burton",
+          "peopleId": 16389,
+          "memberName": "Colleen Burton",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "351e0e6c-858b-4052-80dc-20388a05ad3f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "8021f9e0-52c0-476d-918f-fa124c8d491b",
+          "candidateName": "Jay Trumbull",
+          "peopleId": 16763,
+          "memberName": "Jay Trumbull",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "f0dbfdf2-a2d7-4246-b60d-ed4361e0b2f4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a21c1bf6-a8a1-40a5-8ca5-e5c18bc57c93",
+          "candidateName": "Clay Yarborough",
+          "peopleId": 19070,
+          "memberName": "Clay Yarborough",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "b0de1b28-222b-4779-b068-f0f1c7d7e7ac",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "3ac25543-06d8-4de3-814d-a13f4037338a",
+          "candidateName": "Ana Maria Rodriguez",
+          "peopleId": 20905,
+          "memberName": "Ana Rodriguez",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "8b581c9b-c76d-41cc-a7cb-427fee3ac580",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4c8f40d7-a40d-405f-8de9-aae5c34467b0",
+          "candidateName": "Ileana Garcia",
+          "peopleId": 21775,
+          "memberName": "Ileana Garcia",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "4f7b443b-a1f3-4673-93a0-a89afaa3fed8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c4737951-b19f-4989-8b75-72da7b7a0351",
+          "candidateName": "Jennifer Bradley",
+          "peopleId": 22852,
+          "memberName": "Jennifer Bradley",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "2df22e09-6799-4853-aa00-7f160c4f3896",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e0c0c169-beb3-4468-b125-757df092a818",
+          "candidateName": "Alexis Calatayud",
+          "peopleId": 23320,
+          "memberName": "Alexis Calatayud",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "aafdede6-6305-4ff1-a780-902421198c33",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e48ba822-e1fa-47f9-8940-d09ab493b94c",
+          "candidateName": "Mack Bernard",
+          "peopleId": 1622,
+          "memberName": "Mackenson Bernard",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "7fb829a4-178c-4738-9cb9-c98f96f876cf",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "f1139f62-5aa7-4ad0-a4b6-d150d88ef029",
+          "candidateName": "Rosalind Osgood",
+          "peopleId": 23121,
+          "memberName": "Rosalind Osgood",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "6ad13443-522b-482f-9737-1203948f1639",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}

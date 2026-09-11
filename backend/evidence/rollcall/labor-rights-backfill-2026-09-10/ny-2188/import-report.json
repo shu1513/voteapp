@@ -1,0 +1,67 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-11T02:40:47.768Z",
+  "finishedAt": "2026-09-11T02:40:48.062Z",
+  "jurisdiction": "NY",
+  "sessionId": 2188,
+  "evidenceDir": "evidence/rollcall/labor-rights-backfill-2026-09-10/ny-2188",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ny-2188/crosswalk.json",
+  "crosswalkEntries": 219,
+  "peopleFile": "evidence/rollcall/legiscan-ny-2188/legiscan-people-ny-2188.json",
+  "peopleMembers": 219,
+  "files": 1,
+  "outcomes": {
+    "imported": 1
+  },
+  "actions": {
+    "unchanged": 1
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ny-senate-2188-roll1590519.json",
+      "state": "NY",
+      "chamber": "senate",
+      "sessionId": 2188,
+      "roll": 1590519,
+      "outcome": "imported",
+      "legislativeVoteId": "cd2f8b5c-1d4a-4f42-9a52-4a61ed9c5f89",
+      "reviewStatus": "approved",
+      "bill": "A00584",
+      "voteDate": "2025-06-12",
+      "officialVoteDate": null,
+      "measureId": "A 584",
+      "question": "Senate Floor Vote - Final Passage",
+      "originRunId": "rollcall:NY:senate:2188:1590519:2026-09-11T02:40:47.768Z",
+      "members": 59,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "unmatched_reviewed": 58,
+        "matched": 1
+      },
+      "actions": {
+        "unchanged": 1
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "48c0e330-eef8-401b-a075-63bc0aba1de1",
+          "candidateName": "Liz Krueger",
+          "peopleId": 1424,
+          "memberName": "Liz Krueger",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "c1c18caa-38d2-48ee-8eba-8e78bfa47c3c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}

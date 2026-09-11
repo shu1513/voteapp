@@ -1,0 +1,199 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-11T02:40:08.759Z",
+  "finishedAt": "2026-09-11T02:40:09.086Z",
+  "jurisdiction": "IN",
+  "sessionId": 2143,
+  "evidenceDir": "evidence/rollcall/labor-rights-backfill-2026-09-10/in-2143",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-in-2143/crosswalk.json",
+  "crosswalkEntries": 151,
+  "peopleFile": "evidence/rollcall/legiscan-in-2143/legiscan-people-in-2143.json",
+  "peopleMembers": 151,
+  "files": 1,
+  "outcomes": {
+    "imported": 1
+  },
+  "actions": {
+    "unchanged": 12
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-in-senate-2143-roll1495551.json",
+      "state": "IN",
+      "chamber": "senate",
+      "sessionId": 2143,
+      "roll": 1495551,
+      "outcome": "imported",
+      "legislativeVoteId": "6ca22980-61ff-431e-9732-177febb4dc90",
+      "reviewStatus": "approved",
+      "bill": "SB0409",
+      "voteDate": "2025-02-20",
+      "officialVoteDate": null,
+      "measureId": "SB 409",
+      "question": "Senate - Third reading",
+      "originRunId": "rollcall:IN:senate:2143:1495551:2026-09-11T02:40:08.759Z",
+      "members": 49,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 37,
+        "matched": 12
+      },
+      "actions": {
+        "unchanged": 12
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "4a26d550-d0f9-4105-8921-0731e0468694",
+          "candidateName": "Ronnie Alting",
+          "peopleId": 5621,
+          "memberName": "Ronnie Alting",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "2ac4278d-fb54-46b6-9a0b-3a3ab6261329",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c1fdaddd-cb85-4cf0-bd9b-0a3e27c828cf",
+          "candidateName": "Rodney Pol Jr.",
+          "peopleId": 23013,
+          "memberName": "Rodney Pol",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "03794db7-33f1-48bf-b6c6-3c857c56f995",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "557189cb-1f7b-4dbc-80c5-b84609a10a24",
+          "candidateName": "Randy Maxwell",
+          "peopleId": 25031,
+          "memberName": "Randy Maxwell",
+          "side": "yea",
+          "action": "unchanged",
+          "recordId": "7eb60d46-8b0e-4bef-8ed0-f321419223e4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "791af7f5-1a4e-4a6f-8502-6fc7f32d3a77",
+          "candidateName": "Jim Tomes",
+          "peopleId": 10581,
+          "memberName": "James Tomes",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "ecbcc7e8-623b-411c-a03d-c4420ec14cff",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "9be5ecd3-38fc-417d-93a2-cfd05709901a",
+          "candidateName": "Jeff Raatz",
+          "peopleId": 16536,
+          "memberName": "Jeff Raatz",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "ab165741-94b5-4dfb-85fa-410ded742b1b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "92b72b61-5e9d-4ea7-a7c9-f18a4c3388b8",
+          "candidateName": "Chris Garten",
+          "peopleId": 19710,
+          "memberName": "Chris Garten",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "3859ae3a-2d0a-4e88-9b31-31ab583af7d4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "f2327148-4132-49d7-8acf-01c6b5a5aaa4",
+          "candidateName": "Mike Gaskill",
+          "peopleId": 19711,
+          "memberName": "Mike Gaskill",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "39d542e2-36f3-4d44-864c-b4484b1af51e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "6a6b90fd-0a68-4653-aebd-2b520acbc0f3",
+          "candidateName": "Gary Byrne",
+          "peopleId": 23088,
+          "memberName": "Gary Byrne",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "0fcdcbe4-4e7b-4f8e-a9c9-afbb19fc5afd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c43d752c-83fe-46a8-a2ef-f388fc6cd4da",
+          "candidateName": "Scott Alexander",
+          "peopleId": 23826,
+          "memberName": "Scott Alexander",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "8cd22ad2-682d-4ba5-a0de-01de7a2b5cf1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "862a689a-97fc-484f-963c-66b7a7fceae1",
+          "candidateName": "Tyler Johnson",
+          "peopleId": 23875,
+          "memberName": "Tyler Johnson",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "10e87d08-b454-4cd0-bfce-d8033e6e8451",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0f55138c-a71f-41df-9ebc-7eded77b1a90",
+          "candidateName": "Greg Goode",
+          "peopleId": 25030,
+          "memberName": "Greg Goode",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "ef566b7f-f4ee-4fd4-a563-468307cfee54",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7478a3fc-5925-4417-8954-d6ca843a746b",
+          "candidateName": "Daryl Schmitt",
+          "peopleId": 25506,
+          "memberName": "Daryl Schmitt",
+          "side": "nay",
+          "action": "unchanged",
+          "recordId": "71fb8e31-d3be-4a9c-9bb2-7065b2f9e666",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}
