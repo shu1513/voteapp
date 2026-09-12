@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { Pool } from "pg";
@@ -148,7 +148,11 @@ function readMap(): Map<string, CityDistrictMap> {
 
 function writeMap(map: Map<string, CityDistrictMap>): void {
   const cities = [...map.values()].sort((a, b) => b.population_2025 - a.population_2025);
-  writeFileSync(MAP_PATH, `${JSON.stringify({ cities }, null, 2)}\n`);
+  // Temp + rename so an interrupted build never leaves half-written JSON
+  // that readMap cannot resume from.
+  const tempPath = `${MAP_PATH}.tmp`;
+  writeFileSync(tempPath, `${JSON.stringify({ cities }, null, 2)}\n`);
+  renameSync(tempPath, MAP_PATH);
 }
 
 async function fetchJson<T>(url: string, body?: URLSearchParams): Promise<T> {
@@ -413,6 +417,7 @@ type DbDistrict = {
   district_type: string;
   geoid_compact: string;
   name: string;
+  state: string;
   last_elections_searched_at: string | null;
 };
 
@@ -449,7 +454,7 @@ async function loadDbDistricts(db: Queryable, wanted: MappedDistrict[]): Promise
   const keys = [...new Map(wanted.map((d) => [`${d.district_type}:${d.geoid_compact}`, d])).values()];
   const result = await db.query<DbDistrict>(
     `
-      SELECT d.id::text AS id, d.district_type, d.geoid_compact, d.name,
+      SELECT d.id::text AS id, d.district_type, d.geoid_compact, d.name, d.state,
         d.last_elections_searched_at::text AS last_elections_searched_at
       FROM public.districts AS d
       JOIN unnest($1::text[], $2::text[]) AS k(district_type, geoid_compact)
@@ -611,7 +616,7 @@ export async function buildCoverageReport(
             stage: "election_discovery",
             target_id: districtId,
             election_id: null,
-            state: row.geoid_compact.slice(0, 2),
+            state: row.state,
             label: row.name,
             election_date: null,
           },
