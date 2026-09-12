@@ -44,7 +44,7 @@ export function FullAddressExplanation({ onOpen }: { onOpen?: () => void } = {})
                   later to see the remaining races.
                 </p>
                 <p>
-                  {ADDRESS_FIELD_PRIVACY_NOTE} You can verify that in our public source code{" "}
+                  {ADDRESS_FIELD_PRIVACY_NOTE} Our source code is open and public{" "}
                   <a
                     href="https://github.com/shu1513/electionssimplified"
                     target="_blank"
