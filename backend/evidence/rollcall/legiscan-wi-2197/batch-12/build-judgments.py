@@ -81,16 +81,17 @@ add('AB 617', 1609656, 'house', '2025-11-19', 53, 44, (
     'contact the voter, so the error could be fixed. Voters who applied by email could '
     'have gotten text alerts when their application and ballot arrived. The deadline '
     'to request a ballot by mail would have moved from five days before the election '
-    'to seven. Cities could no longer have counted ballots at one central location '
-    'instead of at the polls, and early voting sites would have had to be in fixed '
-    'buildings. {t}'), L((EI, 'for', None)))
+    'to seven. Cities could no longer have counted polling-place ballots at one central '
+    'location, though central counting of absentee ballots could have continued, and '
+    'early voting sites would have had to be in fixed buildings. {t}'), L((EI, 'for', None)))
 
 add('AB 840', 1614720, 'house', '2026-01-20', 53, 44, (
     'Assembly Bill 840, which would have set rules for the largest data centers. '
     'Utility regulators would have had to keep the cost of serving them off other '
     'customers\' bills. New centers would have needed closed-loop or equally '
-    'water-saving cooling, any renewable power plant serving them on site, and a bond '
-    'to cover cleanup. Every large center would also have reported its water use each '
+    'water-saving cooling, on-site placement of any renewable power plant that mainly '
+    'served them, and a bond to cover cleanup. Every large center would also have '
+    'reported its water use each '
     'year. {t}'), L((ENV, 'for', None), (COL, 'for', None)))
 
 add('AB 963', 1639884, 'house', '2026-02-19', 60, 35, (

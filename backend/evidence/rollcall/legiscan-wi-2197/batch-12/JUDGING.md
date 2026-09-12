@@ -16,7 +16,7 @@ all 46 measures in the died pool have a written disposition.**
 | AB 377 | English as the official language; machine translation in place of interpreters | civil_rights | against |
 | AB 380 | no pay for judges suspended over criminal misconduct | anti_corruption | for |
 | AB 58 | only U.S., state and agency flags on public buildings | civil_rights | against |
-| AB 617 | absentee ballot fixes, text alerts, earlier mail deadline, no central counting | election_integrity | for |
+| AB 617 | absentee ballot fixes, text alerts, earlier mail deadline, no central counting of polling-place ballots | election_integrity | for |
 | AB 840 | rules for the largest data centers on utility costs, water and cleanup | environment_and_public_health | for |
 | AB 840 | the same bill: data center costs kept off other customers' bills | cost_of_living_reduction | for |
 | AB 963 | age checks, parental consent and privacy defaults for minors on social media | data_privacy | for |
@@ -99,6 +99,32 @@ promotion. The imported record `a493329b` replaces it.
   300 no-side records, no tags.
 - All live Wisconsin roll-call records: 6,748 over 125 rolls and 99 candidates,
   with 4,136 tags. That includes batches 10 and 11, each on its own pull request.
+
+## Review fixes, after the first import
+
+Two findings from external review, both checked against the substitute
+amendment each chamber voted, and both real.
+
+- **AB 617 (Substitute Amendment 2).** The description said cities "could no
+  longer have counted ballots at one central location instead of at the polls".
+  The substitute repeals the s. 7.51 option to adjourn the polling-place canvass
+  to a central count, but leaves s. 7.52, the separate central counting of
+  absentee ballots, in place and still cross-references it. A reader who knows
+  Milwaukee's absentee central count would have taken the old sentence to mean
+  it ended. Now says polling-place ballots, and that absentee central counting
+  could have continued.
+- **AB 840 (Substitute Amendment 1).** The description said "any renewable
+  power plant serving them" had to be on site. Both the introduced bill and the
+  adopted substitute, s. 196.492 (2), restrict only a facility that "primarily
+  serves the load" of a large data center. Now says a plant that mainly served
+  them.
+
+Fix path: `build-judgments.py` -> `judgments.json` -> `rollcall:judge` ->
+`rollcall:legiscan:import`. Dry run predicted `rewrite 172, unchanged 462`; the
+real run at `2026-09-12T03:21:33.442Z` did exactly that (86 records on each
+bill), 0 errors. Convergence dry run afterwards: 634 unchanged
+(`import-dry-run-rerun-report.json`). Lint over all 20 descriptions: 0
+warnings; longest sentence still 40 words.
 
 ## The died pool, closed
 
