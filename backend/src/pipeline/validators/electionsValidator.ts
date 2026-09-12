@@ -18,6 +18,7 @@ import { parseCanonicalElectionPayload } from "../../contracts/electionPayloadCo
 import type { ElectionDistrictType, ElectionEnrichedPayload, ElectionEntryPayload } from "../../types/election.js";
 import { filterPresidentialElectionEntries } from "../../utils/presidentialOffice.js";
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
+import { isDcWardStateBoardOfEducationTitle } from "../elections/officeMatcher.js";
 
 type ValidatorOptions = {
   once?: boolean;
@@ -246,8 +247,16 @@ function isHardScopeMismatch(
     entry.race_type === "office" &&
     (/\bcity\b(?! and borough\b)|\bcity council\b|\balderman\b/.test(scopeText) ||
       (!alaskaBoroughMayor && /(?<!\bcounty )\bmayor\b/.test(scopeText)));
+  // DC's ward rows are typed state_upper (the ward's Council seat stands in
+  // for a state senate seat), and the same ward ballot elects the ward's
+  // member of the DC State Board of Education. That is the one board-of-
+  // education title that belongs on a state_upper row; the matcher routes it
+  // to its own office. Any other state's row keeps the school rejection.
+  const dcWardStateBoard =
+    districtType === "state_upper" && isDcWardStateBoardOfEducationTitle(stateCode, scopeText);
   const schoolLike =
     entry.race_type === "office" &&
+    !dcWardStateBoard &&
     /\bschool board\b|\bschool district\b|\bboard of education\b/.test(scopeText);
   // Most large US school districts are named "* County School District" or
   // "* City Schools", so county/city tokens inside a clearly-school title are
@@ -325,7 +334,13 @@ function isSoftScopeAmbiguous(
     return "us_house entry lacks clear us_house markers";
   }
 
-  if (districtType === "state_upper" && !hasAny(text, STATE_UPPER_MARKERS)) {
+  if (
+    districtType === "state_upper" &&
+    !hasAny(text, STATE_UPPER_MARKERS) &&
+    // The DC ward's State Board of Education seat is an official state_upper
+    // title (see isHardScopeMismatch); it never carries a senate marker.
+    !isDcWardStateBoardOfEducationTitle(state, text)
+  ) {
     return "state_upper entry lacks clear state_upper markers";
   }
 

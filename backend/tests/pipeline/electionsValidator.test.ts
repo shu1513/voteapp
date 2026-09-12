@@ -2125,6 +2125,101 @@ describe("runElectionsValidator", () => {
     expect(rejectedCall).toBeUndefined();
   });
 
+  it("accepts a DC ward's State Board of Education seat on the ward's state_upper row", async () => {
+    // DC ward rows are typed state_upper for the Council seat; the same ward
+    // ballot elects the ward's member of the DC State Board of Education
+    // (DCBOE certified list, live). It is the one board-of-education title
+    // that belongs on a state_upper row, and it carries no senate marker.
+    const payload = {
+      district_id: "d-dc-5",
+      district_name: "Ward 5 (2024); District of Columbia",
+      district_type: "state_upper",
+      state: "DC",
+      entries: [
+        {
+          official_ballot_title: "Ward 5 Member of the State Board of Education",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_dc_5",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_VALIDATED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+      })
+    );
+
+    const rejectedCall = redisXAddMock.mock.calls.find((call) => call[0] === STAGING_REJECTED_STREAM);
+    expect(rejectedCall).toBeUndefined();
+  });
+
+  it("still hard-rejects a State Board of Education title on another state's state_upper row", async () => {
+    const payload = {
+      district_id: "d-tx-5",
+      district_name: "State Senate District 5, Texas",
+      district_type: "state_upper",
+      state: "TX",
+      entries: [
+        {
+          official_ballot_title: "District 5 Member of the State Board of Education",
+          election_date: "2099-11-03",
+          race_type: "office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:1",
+            payload,
+            status: "pending",
+            run_id: "run_tx_5",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(redisXAddMock).toHaveBeenCalledWith(
+      STAGING_REJECTED_STREAM,
+      "*",
+      expect.objectContaining({
+        ingest_key: "elections:test:1",
+        item_type: STAGING_ITEM_TYPE_ELECTION,
+      })
+    );
+  });
+
   it("accepts state_lower entries with lower chamber alias titles", async () => {
     const payload = {
       district_id: "d-5",

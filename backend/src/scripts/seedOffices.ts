@@ -244,6 +244,23 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
+    // The District of Columbia elects a member of its State Board of Education
+    // from each Council ward (DC Code § 38-2651), on the ward ballot the
+    // matcher already routes to state_upper for the Council seat. The board
+    // approves the standards, graduation rules and accountability plan the
+    // Office of the State Superintendent of Education carries out, and runs
+    // the Office of the Ombudsman for Public Education; it does not run the
+    // education department, which reports to the Mayor — hence bullets of its
+    // own rather than the statewide board's.
+    scope: "state_upper",
+    canonicalName: "State Board of Education Member",
+    summary: [
+      "Approving what students must learn in each grade",
+      "Approving the rules for graduating from high school",
+      "Running the office that takes your complaints about public schools",
+    ].join("\n"),
+  },
+  {
     scope: "state_lower",
     canonicalName: "State Lower Chamber Legislator",
     summary: [
@@ -1862,6 +1879,25 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Treasurer",
     aliasText: "County Trustee",
+  },
+  {
+    // Montana lets a county consolidate elected offices (MCA 7-4-2301);
+    // Yellowstone County folds the assessor and the superintendent of
+    // schools into the treasurer's office and titles the seat by all three,
+    // in the filing sheet's order and in the office's own order. The token
+    // scorer cannot pick the right third: the function-noun veto drops
+    // County Treasurer (no "assessor"/"superintendent"), and the schools
+    // office then wins on token count. The office is the treasurer's — it is
+    // the county tax-collection and vehicle-licensing department, with the
+    // other two duties annexed — so both spellings are seeded to it.
+    scope: "county",
+    officeCanonicalName: "County Treasurer",
+    aliasText: "Superintendent of Schools/Assessor/Treasurer",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Treasurer",
+    aliasText: "Treasurer/Assessor/Superintendent of Schools",
   },
   {
     // Kentucky assessor title.

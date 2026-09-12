@@ -47,6 +47,7 @@ const US_SENATE_CANONICAL_NAME = "United States Senator";
 const US_HOUSE_CANONICAL_NAME = "United States Representative";
 const STATE_UPPER_CANONICAL_NAME = "State Senator";
 const STATE_LOWER_CANONICAL_NAME = "State Lower Chamber Legislator";
+const STATE_BOARD_OF_EDUCATION_CANONICAL_NAME = "State Board of Education Member";
 const SCHOOL_BOARD_CANONICAL_NAME = "School Board Member";
 const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
 const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
@@ -193,6 +194,13 @@ function normalizeMatcherText(value: string): string {
     // Councilmember", live); the catalog and its aliases key on the two-word
     // form, and one word tokenizes into zero overlap.
     .replace(/\bcouncilmembers?\b/g, "council member")
+    // New York, Oregon and New England title the seat "Councilor" ("City of
+    // Syracuse Councilor-at-Large", Onondaga County BOE, live; "City of Albany
+    // Councilor-Ward 3a", OR live). The catalog and its aliases key on
+    // "council member"; the one-word form shares zero tokens with it once the
+    // seat designator is gone, so every such seat wrote a NULL-office shell.
+    // Same treatment as "councilmember" above.
+    .replace(/\bcouncill?ors?\b/g, "council member")
     // California-style county ballots title the supervisor seat by its
     // governing body ("MEMBER, BOARD OF SUPERVISORS DISTRICT NO. 5", San
     // Diego live); the catalog keys on "County Supervisor", and the body
@@ -478,6 +486,13 @@ function stripSeatSuffixes(value: string): string {
     .replace(/(?<=\bconstable )justice of the peace\b/g, " ")
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
+    // Texas titles at-large council seats by "Place" ("City of Amarillo
+    // Councilmember, Place 1" through "Place 4", live: all four wrote
+    // NULL-office shells at ambiguous 0.571 because the surviving "place 1"
+    // tokens diluted the overlap with City Council Member). The number is the
+    // seat, exactly like Position and Office No. above. A number is required,
+    // so the catalog's own "Place Level Judge" key is untouched.
+    .replace(new RegExp(String.raw`\bplace (?:no )?${SEAT_DESIGNATOR}\b`, "g"), " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT
     // by its district; a plain seat strip would leave the bare token
     // "council", which under-tokenizes against "City Council Member". Map
@@ -555,7 +570,10 @@ function stripSeatSuffixes(value: string): string {
     // Michigan spells the same thing "Partial Term Ending 12/31/2028" and
     // prints the end date in the heading (Grand Rapids Library Board and
     // Lansing School Board, both live), so the trailing date goes with it.
-    .replace(/\b(?:unexpired|vacancy|partial)(?: term)?(?: ending(?: \d+)+)?\b/g, " ")
+    // New York's county boards print the same descriptor as "(To Fill
+    // Vacancy)" (Onondaga County live); the connector phrase goes with it,
+    // or it strands "to fill" in the key.
+    .replace(/\b(?:to fill (?:an? |the )?)?(?:unexpired|vacancy|partial)(?: term)?(?: ending(?: \d+)+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     // Ballot-heading form "For <office>" ("For Member of County Council",
@@ -728,6 +746,10 @@ function isNonCourtClerkOfficeKey(canonicalMatcherKey: string): boolean {
 const QUALIFIED_COMMISSIONER_TITLE_PATTERN =
   /\b(?:(?:revenue|tax|license) commissioner|commissioner of (?:the )?(?:licen[cs]es?|revenue))\b/;
 const COUNTY_COMMISSIONER_OFFICE_KEY = "county commissioner";
+
+export function isDcWardStateBoardOfEducationTitle(state: string, titleText: string): boolean {
+  return state.trim().toUpperCase() === "DC" && /\bstate board of education\b/.test(titleText);
+}
 
 function isWashingtonState(state: string): boolean {
   const normalized = state.trim().toLowerCase();
@@ -1205,6 +1227,29 @@ export class OfficeMatcher {
       );
       if (match) {
         return match;
+      }
+    }
+
+    // The District of Columbia has no state legislature; its ward rows are
+    // typed state_upper because the ward's Council seat stands in for one. The
+    // ward also elects its member of the DC State Board of Education (DC Code
+    // § 38-2651), which is on the same ward ballot ("Ward 5 Member of the
+    // State Board of Education", DCBOE certified list, live). Route it to the
+    // state_upper-scoped board office instead of the chamber seat every other
+    // state_upper title takes below. DC only: no state elects a state board
+    // seat from a senate district, so the same title on any other state's row
+    // is a mis-scoped entry and keeps failing loudly.
+    if (input.scope === "state_upper" && isDcWardStateBoardOfEducationTitle(input.state, titleMatcherKey)) {
+      const office = findSingleScopeOffice(offices, STATE_BOARD_OF_EDUCATION_CANONICAL_NAME);
+      if (office) {
+        return {
+          officeId: office.id,
+          method: "deterministic_fallback",
+          confidence: 1,
+          normalizedAlias,
+          aliasMemoryKey: titleMatcherKey,
+          shouldPersistAlias: false,
+        };
       }
     }
 
