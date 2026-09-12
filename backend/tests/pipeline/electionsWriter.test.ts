@@ -310,6 +310,71 @@ describe("runElectionsWriter", () => {
     expect(districtTimestampUpdateCall?.[1]?.[0]).toBe("d-1");
   });
 
+  it("files a contest by its title when the discovery family contradicts it", async () => {
+    const entry = (official_ballot_title: string, discovery_contest_family: string) => ({
+      official_ballot_title,
+      election_date: "2099-11-03",
+      race_type: "office",
+      discovery_contest_family,
+      sources: ["https://example.org/election"],
+    });
+    const payload = {
+      district_id: "d-1",
+      district_name: "Bowie County, Texas",
+      district_type: "county",
+      state: "TX",
+      entries: [
+        entry("Bowie County District Clerk", "judicial_office"),
+        entry("Bowie County District Attorney", "judicial_office"),
+        entry("Bowie County Judge", "judicial_office"),
+        entry("Justice of the Peace Precinct 2", "non_judicial_office"),
+        // Titles without a marker keep the family discovery reported.
+        entry("District Judge, 5th Judicial District", "judicial_office"),
+        entry("Constable Precinct 2", "non_judicial_office"),
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [{ ingest_key: "elections:test:writer", payload, status: "validated", run_id: "run_1" }],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000011", race_type: "office", inserted: true }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const families = clientQueryMock.mock.calls
+      .filter((call) =>
+        String(call[0]).includes(
+          "ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET"
+        )
+      )
+      .map((call) => call[1]?.[10]);
+    expect(families).toEqual([
+      "non_judicial_office",
+      "non_judicial_office",
+      "non_judicial_office",
+      "judicial_office",
+      "judicial_office",
+      "non_judicial_office",
+    ]);
+  });
+
   it("writes the resolvable entries and an office-less shell when an office match is ambiguous", async () => {
     const payload = {
       district_id: "d-oregon",

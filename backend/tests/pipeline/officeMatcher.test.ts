@@ -106,6 +106,41 @@ describe("OfficeMatcher", () => {
     expect(result.officeId).toBe("office-jp");
   });
 
+  it("maps Kentucky magistrates and justices of the peace to County Commissioner", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [{ office_id: "office-jp", normalized_alias: "justice of the peace" }],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-jp", canonical_name: "Justice of the Peace" },
+          { id: "office-county-judge", canonical_name: "County Level Judge" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    for (const officialBallotTitle of [
+      "Magistrate 1st Magisterial District",
+      "Daviess County Justice of the Peace, East District",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Daviess County, Kentucky",
+        state: "KY",
+        officialBallotTitle,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-county-commissioner",
+        method: "deterministic_fallback",
+        shouldPersistAlias: false,
+      });
+    }
+  });
+
   it("keeps a bare county Clerk title ambiguous outside Washington", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { county: [] },

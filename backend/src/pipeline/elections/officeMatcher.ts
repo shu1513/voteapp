@@ -761,6 +761,31 @@ export function isArkansasQuorumCourtTitle(input: {
   return isJusticeOfThePeaceTitle(titleMatcherKey);
 }
 
+function isKentuckyState(state: string): boolean {
+  const normalized = state.trim().toLowerCase();
+  return normalized === "ky" || normalized === "kentucky";
+}
+
+// Kentucky's justices of the peace, printed as "Magistrate", are the elected
+// members of the fiscal court, the county's legislative body (KRS 67.040), so
+// they resolve to County Commissioner like Arkansas's quorum court (live
+// 2026-09-11: five "Magistrate 1st Magisterial District" seats sat on the
+// judicial County Level Judge office and matched nothing once relabeled).
+export function isKentuckyFiscalCourtTitle(input: {
+  scope: ElectionDistrictType;
+  state: string;
+  officialBallotTitle: string;
+}): boolean {
+  if (input.scope !== "county" || !isKentuckyState(input.state)) {
+    return false;
+  }
+  const title = input.officialBallotTitle.toLowerCase();
+  if (/\bconstable\b/.test(title)) {
+    return false;
+  }
+  return /\bmagistrate\b|\bjustice of the peace\b/.test(title);
+}
+
 function hasPhrase(text: string, phrase: string): boolean {
   if (!text || !phrase) {
     return false;
@@ -1060,9 +1085,10 @@ export class OfficeMatcher {
     const titleMatcherKey = toMatcherKeyFromBallotTitle(input);
 
     // Ahead of every alias: runs have learned "justice of the peace" -> the
-    // judicial JP office, which is right everywhere except Arkansas. State-scoped
-    // and never persisted, like the Washington clerk rule.
-    if (isArkansasQuorumCourtTitle(input)) {
+    // judicial JP office, which is right everywhere except Arkansas and
+    // Kentucky, where the seat is a county legislator. State-scoped and never
+    // persisted, like the Washington clerk rule.
+    if (isArkansasQuorumCourtTitle(input) || isKentuckyFiscalCourtTitle(input)) {
       const office = findSingleScopeOffice(
         await this.loadOffices(input.scope),
         COUNTY_COMMISSIONER_CANONICAL_NAME
