@@ -39,7 +39,9 @@
 // (live 2026-09-11: 69 Louisiana constable, Texas clerk and Texas justice of
 // the peace ledgers answered the other family's questions). It reuses the
 // audit's own route check and only reads ledgers whose election is listed in
-// --context-ids-file, so the audit's other route gaps are never swept up.
+// --context-ids-file, so the audit's other route gaps are never swept up. A
+// ledger older than the candidate's latest search is skipped (reported as a
+// shape mismatch): a newer sweep owns the stamp, and it stays.
 //
 // Guard rails, all of which have to pass before a single row changes:
 // - explicit confirmed-at date window (the incident days), never "everything";
@@ -203,9 +205,13 @@ export type SweepConfirmationCohortRow = {
 };
 
 // route-coverage-gap: the audit's own route check (listRouteCoverageGaps)
-// finds the ledger's tags cover no route its current context allows.
+// finds the ledger's tags cover no route its current context allows, and the
+// ledger is the sweep the candidate's stamp rests on. A ledger older than the
+// latest search is left for the audit: the stamp there belongs to a newer
+// sweep in another context, clearing it would send that research back to the
+// backlog, and deleting the ledger alone would hide the route gap.
 export function isRouteCoverageGapLedger(row: SweepConfirmationCohortRow): boolean {
-  return listRouteCoverageGaps([row]).length > 0;
+  return row.covers_latest_search && listRouteCoverageGaps([row]).length > 0;
 }
 
 // records-retired-out: the ledger backs the candidate's latest search, every

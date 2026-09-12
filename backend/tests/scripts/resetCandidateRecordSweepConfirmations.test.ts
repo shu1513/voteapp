@@ -584,6 +584,14 @@ describe("route-coverage-gap cohort", () => {
     ).toBe(true);
   });
 
+  it("leaves a wrong-route ledger older than the candidate's latest search for the audit", () => {
+    expect(
+      isRouteCoverageGapLedger(
+        cohortRow({ candidate_id: "a", evidence: tagged(JUDICIAL), covers_latest_search: false })
+      )
+    ).toBe(false);
+  });
+
   it("keeps a ledger that covers its current route, even if it also covers another", () => {
     expect(
       isRouteCoverageGapLedger(cohortRow({ candidate_id: "a", evidence: tagged(OFFICEHOLDER) }))

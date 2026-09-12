@@ -375,6 +375,54 @@ describe("runElectionsWriter", () => {
     ]);
   });
 
+  it("keeps the Arkansas quorum-court rule when the title names the court or the state is spelled out", async () => {
+    const payload = {
+      district_id: "d-2",
+      district_name: "Pulaski County, Arkansas",
+      district_type: "county",
+      state: "Arkansas",
+      entries: [
+        {
+          official_ballot_title: "Justice of the Peace District 1, Quorum Court",
+          election_date: "2099-11-03",
+          race_type: "office",
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [{ ingest_key: "elections:test:writer-ar", payload, status: "validated", run_id: "run_1" }],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases") || sql.includes("FROM public.offices")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000012", race_type: "office", inserted: true }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    const families = clientQueryMock.mock.calls
+      .filter((call) =>
+        String(call[0]).includes(
+          "ON CONFLICT (district_id, official_ballot_title_key, election_date) DO UPDATE SET"
+        )
+      )
+      .map((call) => call[1]?.[10]);
+    expect(families).toEqual(["non_judicial_office"]);
+  });
+
   it("writes the resolvable entries and an office-less shell when an office match is ambiguous", async () => {
     const payload = {
       district_id: "d-oregon",

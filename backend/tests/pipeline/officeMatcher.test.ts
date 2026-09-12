@@ -106,7 +106,7 @@ describe("OfficeMatcher", () => {
     expect(result.officeId).toBe("office-jp");
   });
 
-  it("maps Kentucky magistrates and justices of the peace to County Commissioner", async () => {
+  it("maps a Kentucky magistrate to the Magistrate office but leaves a Kentucky justice of the peace alone", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {
         county: [{ office_id: "office-jp", normalized_alias: "justice of the peace" }],
@@ -116,29 +116,30 @@ describe("OfficeMatcher", () => {
           { id: "office-jp", canonical_name: "Justice of the Peace" },
           { id: "office-county-judge", canonical_name: "County Level Judge" },
           { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-magistrate", canonical_name: "Magistrate" },
         ],
       },
     });
     const matcher = new OfficeMatcher(client as never);
-
-    for (const officialBallotTitle of [
-      "Magistrate 1st Magisterial District",
-      "Daviess County Justice of the Peace, East District",
-    ]) {
-      const result = await matcher.resolve({
+    const resolve = (districtName: string, officialBallotTitle: string) =>
+      matcher.resolve({
         scope: "county",
-        districtName: "Daviess County, Kentucky",
+        districtName,
         state: "KY",
         officialBallotTitle,
         discoveryContestFamily: "non_judicial_office",
       });
 
-      expect(result).toMatchObject({
-        officeId: "office-county-commissioner",
-        method: "deterministic_fallback",
-        shouldPersistAlias: false,
-      });
-    }
+    expect(await resolve("Fayette County, Kentucky", "Magistrate 1st Magisterial District")).toMatchObject({
+      officeId: "office-magistrate",
+      method: "deterministic_fallback",
+      shouldPersistAlias: false,
+    });
+    // Daviess elects commissioners; its justices of the peace hold no seat on
+    // the fiscal court, so the title takes no county-legislator redirect.
+    const jp = await resolve("Daviess County, Kentucky", "Daviess County Justice of the Peace, East District");
+    expect(jp.officeId).not.toBe("office-county-commissioner");
+    expect(jp.officeId).not.toBe("office-magistrate");
   });
 
   it("keeps a bare county Clerk title ambiguous outside Washington", async () => {

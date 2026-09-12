@@ -26,7 +26,11 @@ import {
   isNonJudicialOfficeTitle,
   isStateNonJudicialOfficeTitle,
 } from "../../ai/electionPartisanshipPolicy.js";
-import { OfficeMatcher, type OfficeMatchResult } from "../elections/officeMatcher.js";
+import {
+  isArkansasQuorumCourtTitle,
+  OfficeMatcher,
+  type OfficeMatchResult,
+} from "../elections/officeMatcher.js";
 import { createDistrictNewElectionNotificationEvents } from "../users/districtNotificationEvents.js";
 
 const JUDICIAL_JUSTICE_OF_THE_PEACE_STATES = new Set(["tx", "texas", "la", "louisiana"]);
@@ -478,11 +482,21 @@ async function writeElectionsForDistrict(
       // clerks and 31 prosecutors were filed judicial). The reverse is narrow
       // on purpose: Kentucky's justices of the peace are fiscal-court members,
       // so only the Texas and Louisiana seats, judicial under Article V of each
-      // constitution and filed non-judicial 79 times, are flipped.
+      // constitution and filed non-judicial 79 times, are flipped. The Arkansas
+      // quorum-court rule stays alongside the state carve-out: it reads the
+      // matcher key and the state as the matcher does, so a title that names
+      // the court ("..., Quorum Court") or a spelled-out state still files
+      // non-judicial there where the carve-out's court veto would refuse it.
       if (
         entry.discovery_contest_family === "judicial_office" &&
         (isNonJudicialOfficeTitle(entry.official_ballot_title) ||
-          isStateNonJudicialOfficeTitle(payload.state, entry.official_ballot_title))
+          isStateNonJudicialOfficeTitle(payload.state, entry.official_ballot_title) ||
+          isArkansasQuorumCourtTitle({
+            scope: payload.district_type,
+            state: payload.state,
+            districtName: payload.district_name,
+            officialBallotTitle: entry.official_ballot_title,
+          }))
       ) {
         entry.discovery_contest_family = "non_judicial_office";
       } else if (
