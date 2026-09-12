@@ -539,16 +539,66 @@ export async function buildCoverageReport(
     };
   });
 
-  const attach = (gap: CoverageGap): void => {
+  // A unit is one (stage, target): a statewide candidate sits on every
+  // city's ballot but is one research unit, so per-city counts and totals
+  // both dedupe on that key.
+  const seenByCity = perCity.map(() => new Set<string>());
+  const uniqueByStage = new Map<CoverageStage, Set<string>>();
+  const uniqueByState = new Map<string, Map<CoverageStage, Set<string>>>();
+  const attach = (gap: Omit<CoverageGap, "district_id" | "district_type" | "district_name" | "city_share">, districtIds: string[]): void => {
     if (input.stage && gap.stage !== input.stage) {
       return;
     }
-    for (const { cityIndex, share } of cityIndexesByDistrictId.get(gap.district_id) ?? []) {
-      const city = perCity[cityIndex];
-      bump(city.gap_counts, gap.stage);
-      city.gaps?.push({ ...gap, city_share: share });
+    const key = `${gap.stage}:${gap.target_id}`;
+    for (const districtId of districtIds) {
+      const row = dbById.get(districtId);
+      for (const { cityIndex, share } of cityIndexesByDistrictId.get(districtId) ?? []) {
+        if (seenByCity[cityIndex].has(key)) {
+          continue;
+        }
+        seenByCity[cityIndex].add(key);
+        const city = perCity[cityIndex];
+        bump(city.gap_counts, gap.stage);
+        city.gaps?.push({
+          ...gap,
+          district_id: districtId,
+          district_type: row?.district_type ?? "",
+          district_name: row?.name ?? "",
+          city_share: share,
+        });
+        (uniqueByStage.get(gap.stage) ?? uniqueByStage.set(gap.stage, new Set()).get(gap.stage))?.add(gap.target_id);
+        const stateStages = uniqueByState.get(city.state) ?? uniqueByState.set(city.state, new Map()).get(city.state);
+        (stateStages?.get(gap.stage) ?? stateStages?.set(gap.stage, new Set()).get(gap.stage))?.add(gap.target_id);
+      }
     }
   };
+
+  // The profile/records gap queries keep one district per candidate
+  // (DISTINCT ON candidate); a candidate on ballots in two districts must
+  // reach both districts' cities.
+  const candidateIds = ledgerGaps
+    .filter((gap) => gap.stage === "candidate_profile" || gap.stage === "candidate_records")
+    .map((gap) => gap.target_id);
+  const districtsByCandidate = new Map<string, string[]>();
+  if (candidateIds.length > 0) {
+    const result = await db.query<{ candidate_id: string; district_id: string }>(
+      `
+        SELECT DISTINCT ce.candidate_id::text AS candidate_id, e.district_id::text AS district_id
+        FROM public.candidate_elections AS ce
+        JOIN public.elections AS e ON e.id = ce.election_id
+        WHERE ce.candidate_id = ANY($1::uuid[])
+          AND e.district_id = ANY($2::uuid[])
+          AND e.race_type = 'office'
+          AND e.election_date >= $3::date
+          AND (e.election_date - $3::date)::int <= $4::int
+          AND ce.status <> 'withdrawn'
+      `,
+      [[...new Set(candidateIds)], districtIds, input.asOfDate, input.horizonDays]
+    );
+    for (const row of result.rows) {
+      districtsByCandidate.set(row.candidate_id, [...(districtsByCandidate.get(row.candidate_id) ?? []), row.district_id]);
+    }
+  }
 
   for (const [districtId, row] of dbById) {
     if (!cityIndexesByDistrictId.has(districtId)) {
@@ -556,18 +606,17 @@ export async function buildCoverageReport(
     }
     if (row.last_elections_searched_at === null) {
       if (!openElectionsDeferrals.has(districtId)) {
-        attach({
-          stage: "election_discovery",
-          target_id: districtId,
-          district_id: districtId,
-          election_id: null,
-          state: row.geoid_compact.slice(0, 2),
-          label: row.name,
-          election_date: null,
-          district_type: row.district_type,
-          district_name: row.name,
-          city_share: 0,
-        });
+        attach(
+          {
+            stage: "election_discovery",
+            target_id: districtId,
+            election_id: null,
+            state: row.geoid_compact.slice(0, 2),
+            label: row.name,
+            election_date: null,
+          },
+          [districtId]
+        );
       }
     } else if (new Date(row.last_elections_searched_at) < staleCutoff) {
       for (const { cityIndex } of cityIndexesByDistrictId.get(districtId) ?? []) {
@@ -576,18 +625,19 @@ export async function buildCoverageReport(
     }
   }
   for (const gap of ledgerGaps) {
-    const row = dbById.get(gap.district_id);
-    attach({ ...gap, district_type: row?.district_type ?? "", district_name: row?.name ?? "", city_share: 0 });
+    const { district_id, ...unit } = gap;
+    attach(unit, districtsByCandidate.get(gap.target_id) ?? [district_id]);
   }
 
   const totalsByStage: Partial<Record<CoverageStage, number>> = {};
+  for (const [stage, targets] of uniqueByStage) {
+    totalsByStage[stage] = targets.size;
+  }
   const totalsByState: Record<string, Partial<Record<CoverageStage, number>>> = {};
+  for (const [state, stages] of uniqueByState) {
+    totalsByState[state] = Object.fromEntries([...stages].map(([stage, targets]) => [stage, targets.size]));
+  }
   for (const city of perCity) {
-    for (const [stage, count] of Object.entries(city.gap_counts) as Array<[CoverageStage, number]>) {
-      totalsByStage[stage] = (totalsByStage[stage] ?? 0) + count;
-      const state = (totalsByState[city.state] ??= {});
-      state[stage] = (state[stage] ?? 0) + count;
-    }
     city.gaps?.sort((a, b) => a.stage.localeCompare(b.stage) || (a.election_date ?? "").localeCompare(b.election_date ?? ""));
   }
   return {
