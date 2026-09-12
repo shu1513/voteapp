@@ -33,6 +33,14 @@
 // presidential writer advances no search stamp, so a newer confirmed null
 // can sit beside a stale election ledger that still "covers" the stamp.
 //
+// A fourth cohort (--cohort route-coverage-gap) covers ledgers written under
+// a wrong contest family: once the election's family is corrected, its
+// ledger's question_id tags no longer cover the route the audit requires
+// (live 2026-09-11: 69 Louisiana constable, Texas clerk and Texas justice of
+// the peace ledgers answered the other family's questions). It reuses the
+// audit's own route check and only reads ledgers whose election is listed in
+// --context-ids-file, so the audit's other route gaps are never swept up.
+//
 // Guard rails, all of which have to pass before a single row changes:
 // - explicit confirmed-at date window (the incident days), never "everything";
 // - structural cohort guard: only untagged ledgers with exactly
@@ -44,12 +52,14 @@
 // - candidates that are retired (deleted/merged) or under an active
 //   records-search claim are skipped and reported, never touched;
 // - local-database guard, row locks, single transaction, --dry-run.
+import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { DEFAULT_LEASE_HOURS } from "../pipeline/candidates/candidateRecordsSearchClaim.js";
+import { listRouteCoverageGaps } from "./auditCandidateRecordsCompleteness.js";
 import { assertIsoDate } from "./correctManualElectionDate.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
@@ -62,6 +72,8 @@ export type SweepConfirmationResetClient = {
 
 export type SweepConfirmationResetOptions = {
   cohort: SweepResetCohort;
+  /** Election context ids to read; required for route-coverage-gap only. */
+  contextIds?: string[] | null;
   confirmedFrom: string;
   confirmedTo: string;
   /** Required on live runs; validated against the resettable count when set. */
@@ -74,11 +86,16 @@ export type SweepConfirmationResetOptions = {
 // is question_id-tagged, so "untagged AND exactly 4 entries" cannot match it.
 export const COHORT_ENTRY_COUNT = 4;
 
-export type SweepResetCohort = "july-15-untagged" | "august-21-template" | "records-retired-out";
+export type SweepResetCohort =
+  | "july-15-untagged"
+  | "august-21-template"
+  | "records-retired-out"
+  | "route-coverage-gap";
 export const SWEEP_RESET_COHORTS: readonly SweepResetCohort[] = [
   "july-15-untagged",
   "august-21-template",
   "records-retired-out",
+  "route-coverage-gap",
 ];
 
 // Every finding the 2026-08-21 bulk run wrote, verbatim.
@@ -178,7 +195,18 @@ export type SweepConfirmationCohortRow = {
   /** Any of the candidate's ledgers (this one included, any context, any
    * date) claims no_records_found at or after last_records_searched_at. */
   has_covering_no_records_claim: boolean;
+  has_held_public_office: boolean | null;
+  /** elections.discovery_contest_family of the ledger's own election context. */
+  discovery_contest_family: string | null;
+  /** False when an election-context ledger's election row no longer exists. */
+  context_election_found: boolean;
 };
+
+// route-coverage-gap: the audit's own route check (listRouteCoverageGaps)
+// finds the ledger's tags cover no route its current context allows.
+export function isRouteCoverageGapLedger(row: SweepConfirmationCohortRow): boolean {
+  return listRouteCoverageGaps([row]).length > 0;
+}
 
 // records-retired-out: the ledger backs the candidate's latest search, every
 // record that search stored was later retired, and no covering ledger in any
@@ -255,6 +283,13 @@ export async function runSweepConfirmationReset(
   options: SweepConfirmationResetOptions
 ): Promise<SweepConfirmationResetResult> {
   const { cohort: resetCohort, confirmedFrom, confirmedTo, expectedTotal, dryRun } = options;
+  const contextIds = options.contextIds ?? null;
+  if (resetCohort === "route-coverage-gap" && (contextIds === null || contextIds.length === 0)) {
+    throw new Error("--cohort route-coverage-gap requires --context-ids-file with at least one election id");
+  }
+  if (resetCohort !== "route-coverage-gap" && contextIds !== null) {
+    throw new Error("--context-ids-file applies only to --cohort route-coverage-gap");
+  }
 
   // Enforced here, not only in main(): a direct caller must not be able to
   // run live without stating the count a dry-run told it to expect.
@@ -308,15 +343,24 @@ export async function runSweepConfirmationReset(
             WHERE n.candidate_id = sc.candidate_id
               AND n.confirmed_gap_ids @> ARRAY['candidate_records.no_records_found']::text[]
               AND n.confirmed_at >= c.last_records_searched_at
-          ) AS has_covering_no_records_claim
+          ) AS has_covering_no_records_claim,
+          c.has_held_public_office,
+          ctx.discovery_contest_family,
+          (sc.context_type <> 'election' OR ctx.id IS NOT NULL) AS context_election_found
         FROM public.candidate_record_sweep_confirmations sc
         JOIN public.candidates c ON c.id = sc.candidate_id
+        LEFT JOIN public.elections ctx
+          ON sc.context_type = 'election' AND ctx.id = sc.context_id
         WHERE sc.confirmed_at >= $1::date
           AND sc.confirmed_at < $2::date + 1
+          AND (
+            $4::uuid[] IS NULL
+            OR (sc.context_type = 'election' AND sc.context_id = ANY($4::uuid[]))
+          )
         ORDER BY sc.confirmed_at, sc.candidate_id, sc.context_type, sc.context_id
         FOR UPDATE OF sc, c
       `,
-      [confirmedFrom, confirmedTo, DEFAULT_LEASE_HOURS]
+      [confirmedFrom, confirmedTo, DEFAULT_LEASE_HOURS, contextIds]
     );
 
     const shapeMismatch: SweepConfirmationCohortRow[] = [];
@@ -327,7 +371,9 @@ export async function runSweepConfirmationReset(
       const matches =
         resetCohort === "records-retired-out"
           ? isRecordsRetiredOutLedger(row)
-          : matchesResetCohort(row.evidence, resetCohort);
+          : resetCohort === "route-coverage-gap"
+            ? isRouteCoverageGapLedger(row)
+            : matchesResetCohort(row.evidence, resetCohort);
       if (!matches) {
         shapeMismatch.push(row);
       } else if (row.candidate_retired) {
@@ -445,7 +491,9 @@ function usage(): string {
     "",
     "--cohort july-15-untagged (default), august-21-template (every finding",
     "is one of the fixed 2026-08-21 bulk-run sentences), or records-retired-out",
-    "(latest sweep's records all retired since; no no_records_found claim).",
+    "(latest sweep's records all retired since; no no_records_found claim), or",
+    "route-coverage-gap (tags miss the route of the ledger's corrected contest",
+    "family; requires --context-ids-file, one election id per line).",
     "",
     "Usage:",
     "  npm run manual:records:reset-confirmations -- --confirmed-from YYYY-MM-DD --confirmed-to YYYY-MM-DD --reason text --dry-run",
@@ -481,6 +529,7 @@ function requireEnv(name: string): string {
 async function main(): Promise<void> {
   assertKnownCliFlags("manual:records:reset-confirmations", process.argv.slice(2), [
     { name: "--cohort", value: "space" },
+    { name: "--context-ids-file", value: "space" },
     { name: "--confirmed-from", value: "space" },
     { name: "--confirmed-to", value: "space" },
     { name: "--expected-total", value: "space" },
@@ -494,6 +543,16 @@ async function main(): Promise<void> {
     throw new Error(`--cohort must be one of ${SWEEP_RESET_COHORTS.join(", ")}; received ${cohortRaw}`);
   }
   const cohort = cohortRaw as SweepResetCohort;
+  const contextIdsFile = readFlag("--context-ids-file");
+  let contextIds: string[] | null = null;
+  if (contextIdsFile !== null) {
+    const ids = readFileSync(contextIdsFile, "utf8").split(/\s+/).filter((id) => id.length > 0);
+    const invalid = ids.find((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id));
+    if (invalid) {
+      throw new Error(`--context-ids-file has an invalid election id: ${invalid}`);
+    }
+    contextIds = [...new Set(ids)];
+  }
   const confirmedFrom = requireFlag("--confirmed-from");
   const confirmedTo = requireFlag("--confirmed-to");
   const reason = requireFlag("--reason");
@@ -521,6 +580,7 @@ async function main(): Promise<void> {
   try {
     const result = await runSweepConfirmationReset(client, {
       cohort,
+      contextIds,
       confirmedFrom,
       confirmedTo,
       expectedTotal,
