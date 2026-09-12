@@ -63,10 +63,10 @@ type CandidateSort = "alphabetical" | "my_issues";
 // Rewrites the back link's ?type= (and, where the list can honor it, ?sort=)
 // to the rail's current tab and sort, so leaving the split view lands on the
 // view the rail is showing rather than the one the reader arrived with.
-// Sort carry-over rules: vote_power/soonest are list sorts on both pages;
-// my_areas reaches both ballot lists (/me/ballot server-side, /ballot via
-// its client-side mirror — which degrades to vote_power rather than lying
-// if the URL ever lands on a viewer without saved areas); alphabetical is
+// Sort carry-over rules: vote_power is a list sort on both pages; my_areas
+// reaches both ballot lists (/me/ballot server-side, /ballot via its
+// client-side mirror — which degrades to vote_power rather than lying if
+// the URL ever lands on a viewer without saved areas); alphabetical is
 // rail-only and leaves the path's sort untouched. The rewrite happens only when the engaged sort would
 // CHANGE the order the back URL already yields — the rail's seeded default
 // is mapped FROM that URL's sort (railSortForBallotSort), so this rule
@@ -89,7 +89,6 @@ function rewriteBackPath(
   }
   const honorable =
     railSort === "vote_power" ||
-    railSort === "soonest" ||
     (railSort === "my_areas" && (url.pathname === "/me/ballot" || url.pathname === "/ballot"));
   if (honorable && railSort !== railSortForBallotSort(url.searchParams.get("sort") ?? "vote_power")) {
     url.searchParams.set("sort", railSort);
@@ -319,7 +318,7 @@ export function ElectionPage() {
   // sends the un-honorable district-size sorts to vote_power). A snapshot
   // that PREDATES the railSort stamp seeds from the back URL's own ?sort=
   // instead — defaulting it to vote_power would make rewriteBackPath
-  // silently rewrite a sort=soonest back link the reader never touched.
+  // silently rewrite a sort=my_areas back link the reader never touched.
   // Only after both fall through does vote_power, the ballot's default,
   // apply (below).
   const offeredRailSorts = savedAreasLoading ? [] : railSortsOffered(contests ?? [], hasSaved);

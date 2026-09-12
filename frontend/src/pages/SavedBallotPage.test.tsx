@@ -251,14 +251,14 @@ describe("SavedBallotPage sort override", () => {
       },
     });
     const user = userEvent.setup();
-    const { router } = renderSavedBallot(undefined, "?sort=soonest");
+    const { router } = renderSavedBallot(undefined, "?sort=district_size_smallest");
 
     await screen.findByText("Governor");
     // The override reaches the API and the select shows the order the list
     // is actually in — the override, not the saved preference.
-    expect(ballotUrls[0]).toContain("sort=soonest");
+    expect(ballotUrls[0]).toContain("sort=district_size_smallest");
     const select = await screen.findByRole("combobox");
-    expect(select).toHaveValue("soonest");
+    expect(select).toHaveValue("district_size_smallest");
 
     // Choosing a sort saves the preference FIRST; the override clears only
     // after the PUT succeeds, so the refetch can only see the new order.
@@ -281,7 +281,7 @@ describe("SavedBallotPage sort override", () => {
           : { body: { sort: "vote_power", followed_first: true } },
     });
     const user = userEvent.setup();
-    const { router } = renderSavedBallot(undefined, "?sort=soonest");
+    const { router } = renderSavedBallot(undefined, "?sort=district_size_smallest");
 
     await screen.findByText("Governor");
     await user.selectOptions(await screen.findByRole("combobox"), "district_size");
@@ -291,8 +291,8 @@ describe("SavedBallotPage sort override", () => {
     expect(
       await screen.findByText("The service is having trouble right now. Please try again shortly.")
     ).toBeInTheDocument();
-    expect(router.state.location.search).toContain("sort=soonest");
-    expect(screen.getByRole("combobox")).toHaveValue("soonest");
+    expect(router.state.location.search).toContain("sort=district_size_smallest");
+    expect(screen.getByRole("combobox")).toHaveValue("district_size_smallest");
   });
 });
 
@@ -329,7 +329,7 @@ describe("SavedBallotPage nav context", () => {
 
   it("withholds the list until the saved sort is known, then seeds the rail with it", async () => {
     const user = userEvent.setup();
-    // The ballot lands first (already server-ordered by the saved soonest
+    // The ballot lands first (already server-ordered by the saved my_areas
     // preference); the preferences response is held so the client cannot yet
     // know which sort that was.
     let releasePreferences!: (value: { body: { sort: string; followed_first: boolean } }) => void;
@@ -348,10 +348,10 @@ describe("SavedBallotPage nav context", () => {
     expect(await screen.findByText("Loading your ballot…")).toBeInTheDocument();
     expect(screen.queryByText("Governor")).not.toBeInTheDocument();
 
-    releasePreferences({ body: { sort: "soonest", followed_first: true } });
+    releasePreferences({ body: { sort: "my_areas", followed_first: true } });
     await user.click(await screen.findByRole("link", { name: /Governor/ }));
     const navState = router.state.location.state as { railSort?: string };
-    expect(navState.railSort).toBe("soonest");
+    expect(navState.railSort).toBe("my_areas");
   });
 
   it("falls open on a preferences failure: list shown, rail seed omitted", async () => {

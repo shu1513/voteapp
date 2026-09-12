@@ -1752,7 +1752,7 @@ describe("ElectionPage candidate result badges", () => {
 });
 
 describe("ElectionPage back link and nav context", () => {
-  const BALLOT_BACK = { path: "/ballot?d=d-1&sort=soonest", label: "All elections" };
+  const BALLOT_BACK = { path: "/ballot?d=d-1&sort=district_size", label: "All elections" };
 
   it("uses the arrival context for the back link when router state validates", async () => {
     stubApiRoutes({ ...ANONYMOUS });
@@ -1760,7 +1760,7 @@ describe("ElectionPage back link and nav context", () => {
 
     const back = await screen.findByRole("link", { name: "Back to All elections" });
     // The full query string survives the round trip.
-    expect(back).toHaveAttribute("href", "/ballot?d=d-1&sort=soonest");
+    expect(back).toHaveAttribute("href", "/ballot?d=d-1&sort=district_size");
   });
 
   it("shows no nav bar on a deep link with no state", async () => {
@@ -2210,6 +2210,21 @@ describe("ElectionPage ballot rail sort and pick checks", () => {
     },
   ];
   const ARRIVAL = { backTo: { path: "/me/ballot", label: "My Elections" }, contests: KEYED_CONTESTS };
+  // A verified viewer with saved research areas — the only viewer the rail
+  // offers my_areas to, the one list sort besides vote_power it can carry
+  // back to the list.
+  const SAVED_AREAS = {
+    "/api/me": { body: ME_VERIFIED },
+    "/api/me/districts": { body: MY_DISTRICTS },
+    "/api/me/candidate-follows": { body: { follows: [] } },
+    "/api/me/election-choices": { body: { choices: [] } },
+    "/api/me/auto-picks": { body: { results: [] } },
+    "/api/me/research-area-preferences": {
+      body: {
+        preferences: [{ research_area_id: "a-1", slug: "housing", name: "Housing", description: null, rank: 1 }],
+      },
+    },
+  };
   const perIdLoader = ({ params }: { params: { electionId?: string } }) =>
     electionDetail({ id: params.electionId });
 
@@ -2230,13 +2245,6 @@ describe("ElectionPage ballot rail sort and pick checks", () => {
     expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
       "/me/ballot"
-    );
-
-    // A genuinely different list sort carries over.
-    await user.selectOptions(select, "soonest");
-    expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
-      "href",
-      "/me/ballot?sort=soonest"
     );
 
     // A–Z is numeric-aware and rail-only: no ?sort= carry-over.
@@ -2268,38 +2276,43 @@ describe("ElectionPage ballot rail sort and pick checks", () => {
   });
 
   it("seeds a pre-railSort snapshot from the back URL's sort without rewriting it", async () => {
-    stubApiRoutes({ ...ANONYMOUS });
+    stubApiRoutes({ ...SAVED_AREAS });
     renderElection(perIdLoader, "e-1", {
       // Keyed contests but NO railSort stamp — a history entry from the
       // deploy before the stamp existed. Defaulting to vote_power here
-      // would silently rewrite the sort=soonest back link; the seed must
+      // would silently rewrite the sort=my_areas back link; the seed must
       // come from the URL instead.
-      backTo: { path: "/me/ballot?sort=soonest", label: "My Elections" },
+      backTo: { path: "/me/ballot?sort=my_areas", label: "My Elections" },
       contests: KEYED_CONTESTS,
     });
 
     const rail = await screen.findByRole("navigation", { name: "Ballot" });
-    expect(await within(rail).findByRole("combobox")).toHaveValue("soonest");
+    expect(await within(rail).findByRole("combobox")).toHaveValue("my_areas");
     expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
-      "/me/ballot?sort=soonest"
+      "/me/ballot?sort=my_areas"
     );
   });
 
   it("keeps the engaged sort and its rewrite through a sibling walk", async () => {
-    stubApiRoutes({ ...ANONYMOUS });
+    stubApiRoutes({ ...SAVED_AREAS });
     const user = userEvent.setup();
     renderElection(perIdLoader, "e-1", ARRIVAL);
 
+    // A genuinely different list sort carries over to the back link.
     const rail = await screen.findByRole("navigation", { name: "Ballot" });
-    await user.selectOptions(await within(rail).findByRole("combobox"), "soonest");
+    await user.selectOptions(await within(rail).findByRole("combobox"), "my_areas");
+    expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
+      "href",
+      "/me/ballot?sort=my_areas"
+    );
     await user.click(within(rail).getByRole("link", { name: "Proposition 33" }));
 
     const nextRail = await screen.findByRole("navigation", { name: "Ballot" });
-    expect(await within(nextRail).findByRole("combobox")).toHaveValue("soonest");
+    expect(await within(nextRail).findByRole("combobox")).toHaveValue("my_areas");
     expect(within(nextRail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
-      "/me/ballot?sort=soonest"
+      "/me/ballot?sort=my_areas"
     );
   });
 

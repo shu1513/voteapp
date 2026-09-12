@@ -29,9 +29,11 @@ import {
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
-// Ordering the caller wants for the elections list. `vote_power` (the default)
-// sorts by the computed vote-power score descending; `soonest` sorts by
-// election date ascending (the reader's natural order); `district_size` sorts
+// Ordering the caller wants for the elections list. Election date is the
+// list's fixed outer structure under every sort below (earliest date first —
+// the list pages render one "Elections on {date}" section per date); the
+// chosen sort orders the races WITHIN each date. `vote_power` (the default)
+// sorts by the computed vote-power score descending; `district_size` sorts
 // by the election's district population descending (largest electorate first);
 // `district_size_smallest` is the same key ascending. Unknown populations sort
 // last in both directions. Office races with no published candidate list sink
@@ -46,12 +48,13 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // POSITIONAL order: followed-first grouping and the empty-race sink are both
 // skipped under it, because moving a race breaks the copy-across promise.
 // Keep SAVEABLE_BALLOT_PREFERENCE_SORTS in sync with the
-// user_ballot_preferences sort CHECK constraint (db/migrations/152) and the
+// user_ballot_preferences sort CHECK constraint (db/migrations/281) and the
 // frontend BALLOT_SORTS mirror; state_baseline is deliberately request-only
-// (not saveable) — the preview always passes it explicitly.
+// (not saveable) — the preview always passes it explicitly. The former
+// `soonest` sort was retired once date became the outer order of every sort
+// (migration 281 rewrote saved rows to vote_power).
 export type BallotSummarySort =
   | "vote_power"
-  | "soonest"
   | "district_size"
   | "district_size_smallest"
   | "my_areas"
@@ -59,7 +62,6 @@ export type BallotSummarySort =
 
 export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = [
   "vote_power",
-  "soonest",
   "district_size",
   "district_size_smallest",
   "my_areas",
@@ -68,7 +70,6 @@ export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = [
 
 export const SAVEABLE_BALLOT_PREFERENCE_SORTS: readonly BallotSummarySort[] = [
   "vote_power",
-  "soonest",
   "district_size",
   "district_size_smallest",
   "my_areas",
@@ -91,8 +92,9 @@ export type BallotSummaryOptions = {
   userId?: string | null;
   sort?: BallotSummarySort;
   // When true (the default), elections that contain at least one followed
-  // candidate are grouped ahead of the rest, each group still ordered by
-  // `sort`. A no-op for anonymous lookups, which never have follows.
+  // candidate are grouped ahead of the rest WITHIN each election date, each
+  // group still ordered by `sort`. A no-op for anonymous lookups, which never
+  // have follows.
   followedFirst?: boolean;
   // include=preview: the READER consumes this (ballot-preview roster/measure
   // payload per election); it rides on this shared options object so the API
@@ -229,8 +231,11 @@ async function loadFollowedCandidatesByElection(
 // text is the content. A recorded result also exempts: winners can be
 // recorded without candidate links (see electionResultPayloadContract), and
 // the ballot keeps races for three days past election day — a decided race
-// is readable regardless of its roster. Applied AFTER the followed-first
-// tier, which it can never contradict — a followed candidate is a candidate.
+// is readable regardless of its roster. The sink outranks the date order and
+// the followed-first tier: the list pages render every sunk race in one
+// closing "awaiting candidate information" section under all the date
+// sections, and the followed tier can never contradict it — a followed
+// candidate is a candidate.
 function hasNothingToRead(election: OrderedBallotElectionSummary): boolean {
   return election.race_type !== "ballot_measure" && election.candidate_count === 0 && !election.has_results;
 }
@@ -254,22 +259,28 @@ function sortBallotElections(
   if (sort === "state_baseline") {
     elections.sort((a, b) => {
       const byRank = stateBallotContestRank(a) - stateBallotContestRank(b);
-      return byRank !== 0 ? byRank : compareBySort(a, b, "soonest");
+      return byRank !== 0 ? byRank : compareTail(a, b);
     });
     return;
   }
   elections.sort((a, b) => {
+    const aEmpty = hasNothingToRead(a) ? 1 : 0;
+    const bEmpty = hasNothingToRead(b) ? 1 : 0;
+    if (aEmpty !== bEmpty) {
+      return aEmpty - bEmpty;
+    }
+    // Date is the outer structure of every sort: earliest date first, and
+    // the followed-first tier and the chosen sort only reorder races that
+    // share a date.
+    if (a.election_date !== b.election_date) {
+      return a.election_date < b.election_date ? -1 : 1;
+    }
     if (followedFirst) {
       const aFollowed = a.followed_candidates.length > 0 ? 0 : 1;
       const bFollowed = b.followed_candidates.length > 0 ? 0 : 1;
       if (aFollowed !== bFollowed) {
         return aFollowed - bFollowed;
       }
-    }
-    const aEmpty = hasNothingToRead(a) ? 1 : 0;
-    const bEmpty = hasNothingToRead(b) ? 1 : 0;
-    if (aEmpty !== bEmpty) {
-      return aEmpty - bEmpty;
     }
     return compareBySort(a, b, sort, areaScoresByElection);
   });
@@ -320,7 +331,14 @@ function compareBySort(
       return sort === "district_size" ? bPopulation - aPopulation : aPopulation - bPopulation;
     }
   }
-  // `soonest`, and the tiebreak for equal primary keys: earliest date first.
+  return compareTail(a, b);
+}
+
+// The shared tiebreak for equal primary keys — the reader's SQL order:
+// earliest date first, then race_type, numeric-aware title, id. The date key
+// is redundant under the list sorts (sortBallotElections already split by
+// date) but carries state_baseline's within-rank order.
+function compareTail(a: OrderedBallotElectionSummary, b: OrderedBallotElectionSummary): number {
   if (a.election_date !== b.election_date) {
     return a.election_date < b.election_date ? -1 : 1;
   }

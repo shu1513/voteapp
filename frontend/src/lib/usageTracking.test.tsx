@@ -29,7 +29,7 @@ function Home() {
 
 function Ballot() {
   useEffect(() => {
-    track("list_control", { control: "sort", value: "soonest" });
+    track("list_control", { control: "sort", value: "district_size" });
   }, []);
   return <p>ballot</p>;
 }

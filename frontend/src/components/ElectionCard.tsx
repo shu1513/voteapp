@@ -209,8 +209,9 @@ export function ElectionList({
   return (
     <div className="mt-4 space-y-6">
       {groups.map((group) => (
-        // The same date can head several runs under a date-interleaving
-        // sort; the first election id makes the key unique.
+        // Every list sort keeps date as its outer order, so each date heads
+        // exactly one run; the first election id keeps the key unique
+        // should an input ever interleave dates anyway.
         <section key={`${group.date}-${group.elections[0].id}`}>
           {/* The ballot pages carry no h1 banner; these date headings are the
               page's identity, so they read as full sentences and lead the

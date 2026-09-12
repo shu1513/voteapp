@@ -73,9 +73,9 @@ describe("parseBallotSummaryOptions", () => {
   it("parses include=preview alongside sort and followed_first", () => {
     expect(
       parseBallotSummaryOptions(
-        new URL("http://localhost/api/ballot?include=preview&sort=soonest&followed_first=false")
+        new URL("http://localhost/api/ballot?include=preview&sort=district_size_smallest&followed_first=false")
       )
-    ).toEqual({ includePreview: true, sort: "soonest", followedFirst: false });
+    ).toEqual({ includePreview: true, sort: "district_size_smallest", followedFirst: false });
   });
 
   it("accepts a duplicated include=preview", () => {

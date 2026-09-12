@@ -1561,14 +1561,14 @@ describe("createApiApp", () => {
       createApiApp({ resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries }),
       {
         method: "GET",
-        path: "/api/me/ballot?sort=soonest&followed_first=true",
+        path: "/api/me/ballot?sort=district_size_smallest&followed_first=true",
         headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
       }
     );
 
     expect(response.statusCode).toBe(200);
     expect(lookupAuthenticatedBallotSummaries).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
-      sort: "soonest",
+      sort: "district_size_smallest",
       followedFirst: true,
     });
   });
@@ -1603,12 +1603,12 @@ describe("createApiApp", () => {
       createApiApp({ resolveAuthenticatedUserId, lookupAuthenticatedBallotSummaries, getAuthenticatedBallotPreferences }),
       {
         method: "GET",
-        path: "/api/me/ballot?sort=soonest",
+        path: "/api/me/ballot?sort=district_size_smallest",
         headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
       }
     );
     expect(lookupAuthenticatedBallotSummaries).toHaveBeenLastCalledWith("99999999-9999-4999-8999-999999999999", {
-      sort: "soonest",
+      sort: "district_size_smallest",
       followedFirst: false,
     });
   });
@@ -1616,7 +1616,7 @@ describe("createApiApp", () => {
   it("serves and stores ballot preferences via GET and PUT /api/me/ballot-preferences", async () => {
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
     const getAuthenticatedBallotPreferences = vi.fn().mockResolvedValue({ sort: "vote_power", followed_first: true });
-    const setAuthenticatedBallotPreferences = vi.fn().mockResolvedValue({ sort: "soonest", followed_first: false });
+    const setAuthenticatedBallotPreferences = vi.fn().mockResolvedValue({ sort: "district_size_smallest", followed_first: false });
     const app = createApiApp({
       resolveAuthenticatedUserId,
       getAuthenticatedBallotPreferences,
@@ -1638,12 +1638,12 @@ describe("createApiApp", () => {
         "x-user-id": "99999999-9999-4999-8999-999999999999",
         "content-type": "application/json",
       },
-      body: JSON.stringify({ sort: "soonest", followed_first: false }),
+      body: JSON.stringify({ sort: "district_size_smallest", followed_first: false }),
     });
     expect(putResponse.statusCode).toBe(200);
-    expect(putResponse.body).toEqual({ sort: "soonest", followed_first: false });
+    expect(putResponse.body).toEqual({ sort: "district_size_smallest", followed_first: false });
     expect(setAuthenticatedBallotPreferences).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
-      sort: "soonest",
+      sort: "district_size_smallest",
       followed_first: false,
     });
   });
