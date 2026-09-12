@@ -172,13 +172,12 @@ describe("ElectionCard", () => {
     expect(screen.getByText("Alaska")).toBeInTheDocument();
   });
 
-  it("labels ballot measures instead of counting candidates", () => {
+  it("shows neither a type label nor a candidate count for ballot measures", () => {
     renderCard(electionSummary({ race_type: "ballot_measure", candidate_count: 0 }));
 
-    const label = screen.getByText("Ballot Measure");
-    // Green on the letters only — no chip background, and not party blue.
-    expect(label.className).toContain("text-nudge-deep");
-    expect(label.className).not.toContain("bg-");
+    // The old "Ballot Measure" label ran together with the vote-power text
+    // beside it; the tabs and the title already say what the row is.
+    expect(screen.queryByText("Ballot Measure")).not.toBeInTheDocument();
     expect(screen.queryByText(/candidates?/)).not.toBeInTheDocument();
   });
 

@@ -4,8 +4,8 @@ import type { BallotRaceType } from "@voteapp/api-client";
 // vocabulary (ballots segment "Offices" and "Measures") and, unlike
 // "Candidates", cannot be misread as a list of people. "Ballot Measures"
 // is the nationally neutral term — "Propositions" is regional (CA/AZ;
-// other states say Questions, Amendments, Issues) and the election cards
-// already say "Ballot Measure".
+// other states say Questions, Amendments, Issues) and the election page
+// heading already says "Ballot Measure".
 const TABS: { value: BallotRaceType | null; label: string }[] = [
   { value: null, label: "All" },
   { value: "office", label: "Offices" },
