@@ -398,7 +398,11 @@ function factorsFor(input: {
 //
 // Ballot measures get their own copy: they have no candidates or analyst
 // ratings, so the decisiveness paragraph would describe an axis the panel
-// never shows; the direct-vote step takes its place.
+// never shows; the direct-vote step takes its place. A measure can only
+// carry a decisiveness grade through a direct unit-test call — in the lookup,
+// historic margins key on the office's canonical name (measures have none)
+// and current ratings load for office rows only — so this copy does not
+// model that path.
 function howCalculated(raceType: ElectionRaceType): string {
   // Blank lines between the lead and the two axes: clients render this with
   // newlines preserved (whitespace-pre-line on web), so each point reads as
