@@ -53,6 +53,7 @@ const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
 const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
 const CLERK_OF_COURT_CANONICAL_NAME = "Clerk of Court";
 const JUSTICE_OF_THE_PEACE_CANONICAL_NAME = "Justice of the Peace";
+const COUNTY_COMMISSIONER_CANONICAL_NAME = "County Commissioner";
 const JUDGE_CANONICAL_NAMES = new Set([
   STATE_LEVEL_JUDGE_CANONICAL_NAME,
   COUNTY_LEVEL_JUDGE_CANONICAL_NAME,
@@ -732,6 +733,34 @@ function isWashingtonState(state: string): boolean {
   return normalized === "wa" || normalized === "washington";
 }
 
+function isArkansasState(state: string): boolean {
+  const normalized = state.trim().toLowerCase();
+  return normalized === "ar" || normalized === "arkansas";
+}
+
+// Arkansas justices of the peace are not judges. Amendment 55 made each
+// county's quorum court its legislative body, and its members keep the old
+// "Justice of the Peace" title (live: 309 Arkansas JP races filed as judicial,
+// so their records sweeps asked about court cases instead of quorum-court
+// votes). Every other state's JP seat is a judicial office.
+export function isArkansasQuorumCourtTitle(input: {
+  scope: ElectionDistrictType;
+  state: string;
+  officialBallotTitle: string;
+  districtName: string;
+}): boolean {
+  if (input.scope !== "county" || !isArkansasState(input.state)) {
+    return false;
+  }
+  const titleMatcherKey = toMatcherKeyFromBallotTitle({
+    scope: input.scope,
+    state: input.state,
+    districtName: input.districtName,
+    officialBallotTitle: input.officialBallotTitle,
+  });
+  return isJusticeOfThePeaceTitle(titleMatcherKey);
+}
+
 function hasPhrase(text: string, phrase: string): boolean {
   if (!text || !phrase) {
     return false;
@@ -1029,6 +1058,27 @@ export class OfficeMatcher {
 
     const aliases = await this.loadAliases(input.scope);
     const titleMatcherKey = toMatcherKeyFromBallotTitle(input);
+
+    // Ahead of every alias: runs have learned "justice of the peace" -> the
+    // judicial JP office, which is right everywhere except Arkansas. State-scoped
+    // and never persisted, like the Washington clerk rule.
+    if (isArkansasQuorumCourtTitle(input)) {
+      const office = findSingleScopeOffice(
+        await this.loadOffices(input.scope),
+        COUNTY_COMMISSIONER_CANONICAL_NAME
+      );
+      if (office) {
+        return {
+          officeId: office.id,
+          method: "deterministic_fallback",
+          confidence: 1,
+          normalizedAlias,
+          aliasMemoryKey: titleMatcherKey,
+          shouldPersistAlias: false,
+        };
+      }
+    }
+
     let exactOfficeId = aliases.get(normalizedAlias);
     if (!exactOfficeId && titleMatcherKey.length > 0 && titleMatcherKey !== normalizedAlias) {
       exactOfficeId = aliases.get(titleMatcherKey);
