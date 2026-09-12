@@ -52,3 +52,9 @@ hooks safe to share.
 Mobile plan docs live in `docs/plans/` (see `mobile-feature-parity.md`).
 Store release steps (EAS build profiles, push credentials, deep-link files,
 App Store / Play Console prerequisites) are in `docs/mobile-release.md`.
+
+## License
+
+AGPL-3.0-only, the same as the rest of the repository; see the root [LICENSE](../LICENSE).
+
+The code license does not cover the Elections Simplified name, app icon, or the `com.electionssimplified.voteapp` bundle identifier and package name. A fork must ship under its own name, icon, and identifiers, including in the App Store and Google Play. See [Trademarks](../README.md#trademarks) in the root README.
