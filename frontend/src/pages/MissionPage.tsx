@@ -79,9 +79,10 @@ export default function MissionPage() {
 
         <h2 className="pt-2 text-heading font-semibold">How we do it</h2>
         <p>
-          We use multiple American AI models to research public sources, validate everything across
-          different methods and models before it’s written, and run quality passes with both humans
-          and AI. For full transparency, our source code is open and public{" "}
+          We use only American AI models to research public sources and summarize what they
+          find (AI never writes content on its own). Then we filter and validate everything through
+          multiple guardrails before it’s written, and run quality passes with both humans and AI.
+          Our source code is open and public{" "}
           <a
             href="https://github.com/shu1513/electionssimplified"
             target="_blank"
@@ -90,7 +91,7 @@ export default function MissionPage() {
           >
             here
           </a>
-          , where you can see every algorithm and prompt we use.
+          , where you can see the algorithms and prompts we use.
         </p>
         <p>
           Keeping this information current (new elections, new candidates, new records) takes
