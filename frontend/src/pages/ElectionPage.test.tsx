@@ -958,7 +958,7 @@ describe("ElectionPage", () => {
     // Auto-pick is account-only: guests get the sign-up teaser in its
     // place (measure wording), never the button itself.
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Does this measure match your values?" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Does this measure match my values?" })).toBeInTheDocument();
     // Nothing to confirm before the pick.
     expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     await userEvent.setup().click(yes);
@@ -988,7 +988,7 @@ describe("ElectionPage", () => {
     expect(screen.getAllByRole("button", { name: "No" })).toHaveLength(1);
     expect(screen.getByText("Yes keeps this judge in office. No removes them.")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /match your values/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /match my values/ })).not.toBeInTheDocument();
     await userEvent.setup().click(no);
 
     expect(await screen.findByRole("button", { name: "✓ No" })).toBeInTheDocument();
