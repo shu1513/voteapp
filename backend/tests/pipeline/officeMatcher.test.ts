@@ -418,6 +418,116 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("alias_exact");
   });
 
+  it("strips a Texas 'Place N' seat so 'Councilmember, Place 1' hits the place alias (Amarillo)", async () => {
+    // "City of Amarillo Councilmember, Place 1" through "Place 4" all wrote
+    // NULL-office shells (live): the surviving "place 1" tokens left the
+    // title tied between City and Town Council Member at ambiguous 0.571.
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [{ office_id: "office-city-council-member", normalized_alias: "council member" }],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-council-member", canonical_name: "City Council Member" },
+          { id: "office-town-council-member", canonical_name: "Town Council Member" },
+          { id: "office-place-level-judge", canonical_name: "Place Level Judge" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Amarillo city, Texas",
+      state: "TX",
+      officialBallotTitle: "City of Amarillo Councilmember, Place 1",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-city-council-member");
+    expect(result.method).toBe("alias_exact");
+    expect(result.aliasMemoryKey).toBe("council member");
+  });
+
+  it("folds 'Councilor-at-Large (To Fill Vacancy)' to the place council alias (Syracuse)", async () => {
+    // Onondaga County's certified list titles the seat "COUNCILOR - AT -
+    // LARGE (TO FILL VACANCY)". The one-word "councilor" shared no token with
+    // the catalog and "to fill" survived the vacancy strip, so the contest
+    // wrote a NULL-office shell (live).
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [{ office_id: "office-city-council-member", normalized_alias: "council member" }],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-council-member", canonical_name: "City Council Member" },
+          { id: "office-town-council-member", canonical_name: "Town Council Member" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Syracuse city, New York",
+      state: "NY",
+      officialBallotTitle: "City of Syracuse Councilor-at-Large (To Fill Vacancy)",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-city-council-member");
+    expect(result.method).toBe("alias_exact");
+    expect(result.aliasMemoryKey).toBe("council member");
+  });
+
+  it("routes a DC ward's State Board of Education seat to the state_upper board office, not the chamber seat", async () => {
+    // DC ward rows are typed state_upper for the Council seat; the same ward
+    // ballot elects the ward's member of the DC State Board of Education.
+    const client = createMatcherDataClient({
+      aliasesByScope: { state_upper: [] },
+      officesByScope: {
+        state_upper: [
+          { id: "office-state-senator", canonical_name: "State Senator" },
+          { id: "office-dc-state-board", canonical_name: "State Board of Education Member" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "state_upper",
+      districtName: "Ward 5 (2024); District of Columbia",
+      state: "DC",
+      officialBallotTitle: "Ward 5 Member of the State Board of Education",
+    });
+
+    expect(result).toMatchObject({
+      officeId: "office-dc-state-board",
+      method: "deterministic_fallback",
+      confidence: 1,
+      shouldPersistAlias: false,
+    });
+
+    // The ward's Council seat still takes the chamber office.
+    const council = await matcher.resolve({
+      scope: "state_upper",
+      districtName: "Ward 5 (2024); District of Columbia",
+      state: "DC",
+      officialBallotTitle: "Ward 5 Member of the Council",
+    });
+    expect(council.officeId).toBe("office-state-senator");
+
+    // Any other state's row keeps the chamber route: no state elects a state
+    // board seat from a senate district.
+    const other = await matcher.resolve({
+      scope: "state_upper",
+      districtName: "State Senate District 5, Texas",
+      state: "TX",
+      officialBallotTitle: "District 5 Member of the State Board of Education",
+    });
+    expect(other.officeId).toBe("office-state-senator");
+  });
+
   it("resolves 'Council District No. N' seat titles through the place alias (Seattle)", async () => {
     // "City of Seattle Council District No. 5" wrote a NULL-office shell
     // (live): the interposed "No." survived the seat strip, and even a plain
