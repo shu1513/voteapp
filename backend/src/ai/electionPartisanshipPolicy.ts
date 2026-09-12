@@ -292,7 +292,9 @@ const STATE_NON_JUDICIAL_TITLE_OVERRIDES: ReadonlyMap<string, RegExp> = new Map(
   // Clerks print the statutory "judge/executive" three ways: slash, hyphen, and
   // plain space ("County Judge Executive"). The separator is optional so all
   // three land here instead of falling through to the judicial regex on "judge".
-  ["KY", /\bjudge\s*[/-]?\s*executive\b|\bmagistrate\b/i],
+  // Kentucky's magistrates are its justices of the peace (KRS 67.040), and
+  // some counties print the older title.
+  ["KY", /\bjudge\s*[/-]?\s*executive\b|\bmagistrate\b|\bjustice\s+of\s+the\s+peace\b/i],
   ["TX", /\bcounty\s+judge\b/i],
 ]);
 

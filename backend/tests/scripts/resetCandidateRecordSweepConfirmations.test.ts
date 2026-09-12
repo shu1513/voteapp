@@ -5,6 +5,7 @@ import {
   COHORT_ENTRY_COUNT,
   isAugust21TemplateLedger,
   isRecordsRetiredOutLedger,
+  isRouteCoverageGapLedger,
   matchesResetCohort,
   readSweepEvidenceShape,
   runSweepConfirmationReset,
@@ -45,6 +46,9 @@ function cohortRow(
     covers_latest_search: true,
     confirmed_gap_ids: [],
     has_covering_no_records_claim: false,
+    has_held_public_office: true,
+    discovery_contest_family: "non_judicial_office",
+    context_election_found: true,
     ...overrides,
   };
 }
@@ -377,8 +381,9 @@ describe("runSweepConfirmationReset", () => {
     await runSweepConfirmationReset(client, options());
 
     const select = statements.find((s) => s.text.includes("FOR UPDATE"));
-    expect(select?.values).toEqual(["2026-07-15", "2026-07-16", 2]);
+    expect(select?.values).toEqual(["2026-07-15", "2026-07-16", 2, null]);
     expect(select?.text).toContain("FOR UPDATE OF sc, c");
+    expect(select?.text).toContain("$4::uuid[] IS NULL");
     expect(select?.text).toContain("sc.confirmed_at >= $1::date");
     expect(select?.text).toContain("sc.confirmed_at < $2::date + 1");
   });
@@ -540,5 +545,106 @@ describe("records-retired-out cohort", () => {
     expect(deleteStatement?.values?.[0]).toEqual(["match"]);
     const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
     expect(updateStatement?.values).toEqual([["match"]]);
+  });
+});
+
+describe("route-coverage-gap cohort", () => {
+  const tagged = (questionIds: readonly string[]) => ({
+    entries: questionIds.map((question_id) => ({
+      question: `Question ${question_id}`,
+      question_id,
+      finding: "Nothing found.",
+    })),
+  });
+  const JUDICIAL = ["cases", "discipline", "endorsements"];
+  const OFFICEHOLDER = [
+    "rollcalls",
+    "sponsorship",
+    "executive",
+    "proceedings",
+    "leadership",
+    "outside_chamber",
+    "endorsements",
+  ];
+
+  it("flags a ledger whose tags answer the other family's questions", () => {
+    // A constable relabeled non-judicial still carries the judicial ledger.
+    expect(
+      isRouteCoverageGapLedger(cohortRow({ candidate_id: "a", evidence: tagged(JUDICIAL) }))
+    ).toBe(true);
+    // A justice of the peace relabeled judicial still carries the officeholder ledger.
+    expect(
+      isRouteCoverageGapLedger(
+        cohortRow({
+          candidate_id: "b",
+          evidence: tagged(OFFICEHOLDER),
+          discovery_contest_family: "judicial_office",
+        })
+      )
+    ).toBe(true);
+  });
+
+  it("leaves a wrong-route ledger older than the candidate's latest search for the audit", () => {
+    expect(
+      isRouteCoverageGapLedger(
+        cohortRow({ candidate_id: "a", evidence: tagged(JUDICIAL), covers_latest_search: false })
+      )
+    ).toBe(false);
+  });
+
+  it("keeps a ledger that covers its current route, even if it also covers another", () => {
+    expect(
+      isRouteCoverageGapLedger(cohortRow({ candidate_id: "a", evidence: tagged(OFFICEHOLDER) }))
+    ).toBe(false);
+    expect(
+      isRouteCoverageGapLedger(
+        cohortRow({
+          candidate_id: "b",
+          evidence: tagged([...JUDICIAL, ...OFFICEHOLDER]),
+          discovery_contest_family: "judicial_office",
+        })
+      )
+    ).toBe(false);
+  });
+
+  it("requires context ids and refuses them for other cohorts before touching the database", async () => {
+    const { client, statements } = fakeClient([]);
+    await expect(
+      runSweepConfirmationReset(client, options({ cohort: "route-coverage-gap" }))
+    ).rejects.toThrow(/requires --context-ids-file/);
+    await expect(
+      runSweepConfirmationReset(client, options({ contextIds: ["e-1"] }))
+    ).rejects.toThrow(/applies only to --cohort route-coverage-gap/);
+    expect(statements).toEqual([]);
+  });
+
+  it("live run reads only the listed contexts and resets only gap ledgers", async () => {
+    const gap = cohortRow({ candidate_id: "gap", evidence: tagged(JUDICIAL) });
+    const covered = cohortRow({ candidate_id: "covered", evidence: tagged(OFFICEHOLDER) });
+    const { client, statements } = fakeClient([gap, covered]);
+
+    const result = await runSweepConfirmationReset(
+      client,
+      options({
+        cohort: "route-coverage-gap",
+        contextIds: ["11111111-1111-1111-1111-111111111111"],
+        confirmedFrom: "2026-01-01",
+        confirmedTo: "2026-09-11",
+        dryRun: false,
+        expectedTotal: 1,
+      })
+    );
+
+    expect(result).toMatchObject({
+      cohort: "route-coverage-gap",
+      resettable: { total: 1 },
+      skipped: { shapeMismatchCount: 1 },
+      deletedConfirmations: 1,
+      clearedStamps: 1,
+    });
+    const select = statements.find((s) => s.text.includes("FOR UPDATE"));
+    expect(select?.values?.[3]).toEqual(["11111111-1111-1111-1111-111111111111"]);
+    const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
+    expect(deleteStatement?.values?.[0]).toEqual(["gap"]);
   });
 });

@@ -23,11 +23,24 @@ import {
   summarizeOfficeCandidateEligibilityReasons,
 } from "../candidates/officeCandidateEligibility.js";
 import {
+  isNonJudicialOfficeTitle,
+  isStateNonJudicialOfficeTitle,
+} from "../../ai/electionPartisanshipPolicy.js";
+import {
   isArkansasQuorumCourtTitle,
   OfficeMatcher,
   type OfficeMatchResult,
 } from "../elections/officeMatcher.js";
 import { createDistrictNewElectionNotificationEvents } from "../users/districtNotificationEvents.js";
+
+const JUDICIAL_JUSTICE_OF_THE_PEACE_STATES = new Set(["tx", "texas", "la", "louisiana"]);
+
+function isJudicialJusticeOfThePeaceTitle(state: string, title: string): boolean {
+  if (!JUDICIAL_JUSTICE_OF_THE_PEACE_STATES.has(state.trim().toLowerCase())) {
+    return false;
+  }
+  return /\bjustice of the peace\b/i.test(title) && !/\bconstable\b/i.test(title);
+}
 
 type WriterOptions = {
   once?: boolean;
@@ -460,19 +473,37 @@ async function writeElectionsForDistrict(
         continue;
       }
 
-      // An Arkansas justice of the peace sits on the county quorum court, the
-      // county's legislative body, so the seat is never a judicial contest
-      // whatever family discovery reported (see isArkansasQuorumCourtTitle).
+      // The title outranks a discovery family that contradicts it, because the
+      // family picks the records question list. A title carrying a non-judicial
+      // office marker (clerk, prosecutor, district attorney, solicitor,
+      // constable...) or a state carve-out (Arkansas justice of the peace and
+      // county judge, Kentucky magistrate, Texas county judge) is never a
+      // judicial contest (live 2026-09-11: 47 Louisiana constables, 36 Texas
+      // clerks and 31 prosecutors were filed judicial). The reverse is narrow
+      // on purpose: Kentucky's justices of the peace are fiscal-court members,
+      // so only the Texas and Louisiana seats, judicial under Article V of each
+      // constitution and filed non-judicial 79 times, are flipped. The Arkansas
+      // quorum-court rule stays alongside the state carve-out: it reads the
+      // matcher key and the state as the matcher does, so a title that names
+      // the court ("..., Quorum Court") or a spelled-out state still files
+      // non-judicial there where the carve-out's court veto would refuse it.
       if (
         entry.discovery_contest_family === "judicial_office" &&
-        isArkansasQuorumCourtTitle({
-          scope: payload.district_type,
-          state: payload.state,
-          districtName: payload.district_name,
-          officialBallotTitle: entry.official_ballot_title,
-        })
+        (isNonJudicialOfficeTitle(entry.official_ballot_title) ||
+          isStateNonJudicialOfficeTitle(payload.state, entry.official_ballot_title) ||
+          isArkansasQuorumCourtTitle({
+            scope: payload.district_type,
+            state: payload.state,
+            districtName: payload.district_name,
+            officialBallotTitle: entry.official_ballot_title,
+          }))
       ) {
         entry.discovery_contest_family = "non_judicial_office";
+      } else if (
+        entry.discovery_contest_family === "non_judicial_office" &&
+        isJudicialJusticeOfThePeaceTitle(payload.state, entry.official_ballot_title)
+      ) {
+        entry.discovery_contest_family = "judicial_office";
       }
 
       const officeMatch = await officeMatcher.resolve({
