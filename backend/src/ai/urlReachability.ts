@@ -466,6 +466,10 @@ async function fetchPinnedUrl(
   try {
     response = await fetch(url, {
       method,
+      // Official result hosts (results.okelections.gov, waynecountymi.gov,
+      // sos.mo.gov) answer 403 to undici's default "node"/"undici" agent and
+      // 200 to a browser; the 403 then degrades the source to "weak".
+      headers: { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" },
       redirect: "manual",
       signal: controller.signal,
       dispatcher,
