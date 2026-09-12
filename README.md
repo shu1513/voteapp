@@ -64,4 +64,10 @@ contact@electionssimplified.com
 
 GNU Affero General Public License v3.0 (AGPL-3.0-only). See [LICENSE](LICENSE).
 
-The license covers the code. It does not grant rights to the Elections Simplified name or logo; a fork needs its own name.
+### Trademarks
+
+The license covers the code only. It does not grant any right to use the Elections Simplified name, logo, or the electionssimplified.com domain. This notice is an additional term under section 7(e) of the AGPL-3.0.
+
+If you fork or redistribute this code, publish it under your own name and logo. That includes any app store listing, website, domain, or social account. You may say your project is based on Elections Simplified and link here.
+
+Only sites and apps published by Elections Simplified Inc. are official. If you find one that uses the name and is not ours, email contact@electionssimplified.com.
