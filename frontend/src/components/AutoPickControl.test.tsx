@@ -128,10 +128,10 @@ describe("AutoPickControl", () => {
     stubApiRoutes({});
     renderControl();
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
-    await userEvent.setup().click(screen.getByRole("button", { name: "Which candidate best matches your values?" }));
+    await userEvent.setup().click(screen.getByRole("button", { name: "Which candidate best matches my values?" }));
     expect(
       await screen.findByText(
-        "Sign up to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
+        "Sign up or log in to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
       )
     ).toBeInTheDocument();
     const next = encodeURIComponent(`/elections/${ELECTION_ID}`);
@@ -144,7 +144,7 @@ describe("AutoPickControl", () => {
     stubApiRoutes({});
     renderControl(null, true);
     expect(screen.queryByRole("button", { name: /Which candidate/ })).not.toBeInTheDocument();
-    await userEvent.setup().click(screen.getByRole("button", { name: "Does this measure match your values?" }));
+    await userEvent.setup().click(screen.getByRole("button", { name: "Does this measure match my values?" }));
     expect(await screen.findByText(/see whether this measure matches what you believe/)).toBeInTheDocument();
   });
 

@@ -24,7 +24,7 @@ import { RegisterPromptDialog } from "./RegisterPromptDialog";
 //
 // Below the issue floor the button explains what to do instead of calling
 // the API. Guests get a teaser pill in the button's place — "Which
-// candidate best matches your values?" — that opens the shared log in /
+// candidate best matches my values?" — that opens the shared log in /
 // sign up dialog (same as the follow button), with this page as the
 // post-auth return path: issue preferences are account-only, and the
 // question is the pitch for an account. Plain words on purpose: a first
@@ -84,8 +84,8 @@ export function AutoPickControl({
   // match.
   if (me === null) {
     const question = measure
-      ? "Does this measure match your values?"
-      : "Which candidate best matches your values?";
+      ? "Does this measure match my values?"
+      : "Which candidate best matches my values?";
     return (
       <>
         <button
@@ -104,8 +104,8 @@ export function AutoPickControl({
           title={question}
           description={
             measure
-              ? "Sign up to pick the issues you care about, and see whether this measure matches what you believe. Signing up is free."
-              : "Sign up to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
+              ? "Sign up or log in to pick the issues you care about, and see whether this measure matches what you believe. Signing up is free."
+              : "Sign up or log in to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
           }
         />
       </>
