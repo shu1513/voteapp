@@ -90,7 +90,7 @@ export default function MissionPage() {
           >
             here
           </a>
-          , where you can see every algorithm and prompt we use.
+          , where you can see the algorithms and prompts we use.
         </p>
         <p>
           Keeping this information current (new elections, new candidates, new records) takes
