@@ -1,0 +1,76 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1614181,
+   "measure_id": "AB 38",
+   "vote_date": "2026-01-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 38, which would have let people subtract from their Wisconsin taxable income the tips they deduct on their federal return under the new federal deduction for tips, for tax years 2025 through 2028. The Assembly passed it 61-33, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 38, which would have let people subtract from their Wisconsin taxable income the tips they deduct on their federal return under the new federal deduction for tips, for tax years 2025 through 2028. The Assembly passed it 61-33, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1553695,
+   "measure_id": "AB 164",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 164, which would have renamed unemployment insurance \"reemployment assistance\" and tightened what claimants must do each week. From the third week, two of the four weekly job search actions would have had to be direct contacts with employers. Claimants living in Wisconsin would also have had to keep a current resume on the state job center website. Any claimant with three weeks or fewer of benefits left would have had to attend a counseling session. The bill would have removed the rule that a claimant need not apply for the jobs the department suggests, and made workshops mandatory for claimants likely to run out of benefits. The Assembly passed it 53-42, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 164, which would have renamed unemployment insurance \"reemployment assistance\" and tightened what claimants must do each week. From the third week, two of the four weekly job search actions would have had to be direct contacts with employers. Claimants living in Wisconsin would also have had to keep a current resume on the state job center website. Any claimant with three weeks or fewer of benefits left would have had to attend a counseling session. The bill would have removed the rule that a claimant need not apply for the jobs the department suggests, and made workshops mandatory for claimants likely to run out of benefits. The Assembly passed it 53-42, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1640046,
+   "measure_id": "AB 996",
+   "vote_date": "2026-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 996, which would have had the state match the federal government's $1,000 deposit into the Trump account, a new federal savings account for children, of each child born in Wisconsin and still living here. The bill set aside no money, so the state would have paid only as funds allowed. The Assembly passed it 62-35, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 996, which would have had the state match the federal government's $1,000 deposit into the Trump account, a new federal savings account for children, of each child born in Wisconsin and still living here. The bill set aside no money, so the state would have paid only as funds allowed. The Assembly passed it 62-35, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1636786,
+   "measure_id": "SB 287",
+   "vote_date": "2026-02-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 287, which would have required state and local government agencies, including the University of Wisconsin, to check every new hire through E-Verify, the federal system that confirms a person may legally work in the United States. The state also could not have awarded a contract of $50,000 or more to an employer, or its subcontractors, that did not check new hires the same way. The Senate passed it 18-15, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Senate Bill 287, which would have required state and local government agencies, including the University of Wisconsin, to check every new hire through E-Verify, the federal system that confirms a person may legally work in the United States. The state also could not have awarded a contract of $50,000 or more to an employer, or its subcontractors, that did not check new hires the same way. The Senate passed it 18-15, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
