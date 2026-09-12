@@ -17,6 +17,19 @@ describe("candidatePartisanship", () => {
     ).toThrow(/contradicts fixed partisanship policy/i);
   });
 
+  it("keeps the stored partisan flag on an Arkansas quorum-court seat", () => {
+    // The JP title reads judicial state-blind; Arkansas's JPs are county
+    // legislators printed with a party, so a stored true must not fail closed.
+    expect(
+      resolveIncludePartyForCandidateContest({
+        districtType: "county",
+        state: "AR",
+        officialBallotTitle: "Izard County Justice of the Peace District 2",
+        electionIsPartisan: true,
+      })
+    ).toBe(true);
+  });
+
   it("still trusts explicit metadata for contests whose policy is contextual", () => {
     expect(
       resolveIncludePartyForCandidateContest({

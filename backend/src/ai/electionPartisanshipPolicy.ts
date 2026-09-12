@@ -279,8 +279,16 @@ export function isNonJudicialOfficeTitle(title: string): boolean {
 // county offices are partisan and print a party on the general ballot. Texas
 // stored the right party by coincidence (its bench is partisan too) but its
 // county judge still routed as a judicial contest, against the catalog.
+//
+// Arkansas's justice of the peace is the second entry of the same kind: since
+// Amendment 55 the JPs are the elected members of the county quorum court, the
+// county's legislative body, and are printed with a party like every other
+// Arkansas county office. Everywhere else a JP is a judge (Arizona's is a
+// partisan judicial office, Texas's a precinct court), so the carve-out stays
+// state-scoped. Live 2026-09-11: 352 Arkansas JP rows stored is_partisan=false
+// because the unmapped-state judicial default rejected the researched true.
 const STATE_NON_JUDICIAL_TITLE_OVERRIDES: ReadonlyMap<string, RegExp> = new Map([
-  ["AR", /\bcounty\s+judge\b/i],
+  ["AR", /\bcounty\s+judge\b|\bjustice\s+of\s+the\s+peace\b/i],
   // Clerks print the statutory "judge/executive" three ways: slash, hyphen, and
   // plain space ("County Judge Executive"). The separator is optional so all
   // three land here instead of falling through to the judicial regex on "judge".
