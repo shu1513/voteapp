@@ -4,14 +4,6 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://127.0.0.1:3001",
-        "EXPO_PUBLIC_DEPLOY_ENV": "development"
-      }
-    },
     "preview": {
       "distribution": "internal",
       "env": {

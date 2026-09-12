@@ -26,13 +26,13 @@ Commit the `app.json` change. Push notifications depend on that `projectId`
 (`mobile/src/lib/pushNotifications.ts` bails without it), so this step is
 required before push works on any real device.
 
-`mobile/eas.json` already defines three build profiles:
+`mobile/eas.json` defines two build profiles (local development stays on
+Expo Go, so there is no `development` / dev-client profile):
 
-| profile       | purpose                                  | API origin                        |
-| ------------- | ---------------------------------------- | --------------------------------- |
-| `development` | dev client on a device against local API | `http://127.0.0.1:3001`           |
-| `preview`     | internal test build (TestFlight / APK)   | `https://electionssimplified.com` |
-| `production`  | store build, build number auto-increment | `https://electionssimplified.com` |
+| profile      | purpose                                                        | API origin                        |
+| ------------ | -------------------------------------------------------------- | --------------------------------- |
+| `preview`    | internal test build: ad-hoc iOS install on registered devices, Android APK | `https://electionssimplified.com` |
+| `production` | store build (App Store / TestFlight, Play), build number auto-increment | `https://electionssimplified.com` |
 
 Version numbers: `cli.appVersionSource` is `remote`, so EAS stores
 `buildNumber` / `versionCode` and bumps them on every production build. Bump
@@ -49,12 +49,15 @@ variables (Expo dashboard → project → Environment variables), scoped to the
 ## 2. Push notifications [account]
 
 - **iOS:** `npx eas-cli credentials -p ios` → let EAS create the APNs key.
-- **Android:** create a Firebase project, download `google-services.json`
-  into `mobile/` (add it to `.gitignore` — it is not a secret but should not
-  be committed), set `"android": { "googleServicesFile": "./google-services.json" }`
-  in `app.json`, then upload the FCM V1 service-account JSON with
-  `npx eas-cli credentials -p android`. Without this, Android builds get no
-  push token. **[todo]**
+- **Android:** create a Firebase project, add an Android app with package
+  name `com.electionssimplified.voteapp`, download `google-services.json`
+  into `mobile/` and **commit it** (Firebase documents it as non-secret
+  project identifiers; EAS only uploads tracked files, so an ignored copy
+  would be missing from cloud builds). Set
+  `"android": { "googleServicesFile": "./google-services.json" }` in
+  `app.json`, then upload the FCM V1 service-account JSON (that one is a
+  secret — never commit it) with `npx eas-cli credentials -p android`.
+  Without this, Android builds get no push token. **[todo]**
 - Backend side: `backend/src/pipeline/users/pushNotificationSender.ts` sends
   through Expo's push service; nothing to change.
 
@@ -109,13 +112,26 @@ Google only:
 
 ## 5. Build and test
 
+The `preview` profile uses `distribution: "internal"`: iOS builds are
+ad-hoc signed and only install on devices registered first — they do not go
+through TestFlight. Register each test iPhone once (opens a link to install
+a provisioning profile on the device):
+
 ```bash
 cd mobile
+npx eas-cli device:create
+```
+
+Then build and install from the link / QR code EAS prints:
+
+```bash
 npx eas-cli build -p all --profile preview
 ```
 
-Install the iOS build via TestFlight (internal testers, no review) and the
-Android APK directly. Test on real devices, not Expo Go: native modules
+Android produces an APK that installs directly. For a wider tester group,
+skip ahead to a `production` build and `eas submit -p ios`: TestFlight only
+accepts store-signed builds, and internal TestFlight testers need no Apple
+review. Test on real devices, not Expo Go: native modules
 (gesture handler, reanimated, secure store, notifications) behave differently
 in a store build. Check:
 

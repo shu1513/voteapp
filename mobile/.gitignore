@@ -42,6 +42,3 @@ example
 # generated native folders
 /ios
 /android
-
-# Firebase config for Android push (per-developer download, see docs/mobile-release.md)
-google-services.json
