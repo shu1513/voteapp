@@ -175,7 +175,7 @@ const PINNED_DOCUMENTS = [
     // processors (Expo push service, APNs, FCM) named ahead of the store
     // release. Opt-in feature disclosure — TERMS_VERSION stays 1.4.
     version: "1.7",
-    sha256: "34c0805854dedbbd27c998e638d0bd7119b15540a3586df18c3f95bb1f14e147",
+    sha256: "160fac196a7f30003fbca980abda9795a7fb8b2c8081712f8983f54cdd81a0b4",
   },
   {
     filename: "disclaimer.md",
