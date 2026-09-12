@@ -54,6 +54,7 @@ type Queryable = Pick<Pool, "query">;
 
 export type MissingGeneralElectionRow = {
   election_id: string;
+  district_id: string;
   state: string | null;
   district_name: string | null;
   district_type: string | null;
@@ -77,11 +78,14 @@ export type MissingGeneralElectionsInput = {
   horizonDays: number;
   /** Optional two-letter state filter (uppercase). */
   state?: string;
+  /** Optional district filter (the demand ledger scopes to one ballot). */
+  districtIds?: readonly string[];
 };
 
 const MISSING_GENERALS_SQL = `
   SELECT
     e.id::text AS election_id,
+    e.district_id::text AS district_id,
     d.state,
     d.name AS district_name,
     d.district_type,
@@ -108,6 +112,7 @@ const MISSING_GENERALS_SQL = `
     AND e.election_date >= ($1::date - make_interval(days => $2::int))
     AND e.election_date <= ($1::date + make_interval(days => $3::int))
     AND ($5::text IS NULL OR d.state = $5::text)
+    AND ($6::uuid[] IS NULL OR e.district_id = ANY($6::uuid[]))
     -- Louisiana's fall jungle primaries are terminal-stage: the November
     -- race IS the general and a runoff exists only when required. Only that
     -- verified jurisdiction is excluded — a November or December primary
@@ -176,6 +181,7 @@ export async function listMissingGeneralElections(
     input.lookaheadDays,
     input.horizonDays,
     input.state ?? null,
+    input.districtIds ? [...input.districtIds] : null,
   ]);
   return result.rows;
 }

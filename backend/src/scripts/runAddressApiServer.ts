@@ -66,6 +66,7 @@ import {
   enqueueManualDistrictResearchRequestsForStaleDistricts,
   type ManualResearchTriggerSource,
 } from "../pipeline/address/manualDistrictResearchRequests.js";
+import { recordManualResearchDemandForDistricts } from "../pipeline/address/manualResearchDemand.js";
 import { readAutoDistrictResearchMode } from "../config/featureFlags.js";
 import {
   DEFAULT_ELECTIONS_SEARCH_COOLDOWN_DAYS,
@@ -419,6 +420,11 @@ async function main(): Promise<void> {
         cooldownDays: autoDistrictResearchCooldownDays,
       }).catch((error) => {
         console.warn("manual district research enqueue failed; address response unaffected", error);
+      });
+      // Finer-grained demand (empty rosters, missing profiles/records/results)
+      // for districts the queue above considers fresh.
+      void recordManualResearchDemandForDistricts(pool, { districts, triggerSource }).catch((error) => {
+        console.warn("manual research demand record failed; address response unaffected", error);
       });
     }
   };

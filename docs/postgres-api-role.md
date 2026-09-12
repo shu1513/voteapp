@@ -50,6 +50,8 @@ TO voteapp_api;
 -- grants than the general read/write tables above.
 GRANT INSERT ON public.user_terms_acceptances TO voteapp_api;
 GRANT INSERT, UPDATE ON public.user_pick_card_shares TO voteapp_api;
+-- Address resolve counts finer research gaps (migration 279); prune runs as the owner.
+GRANT INSERT, UPDATE ON public.manual_research_demand TO voteapp_api;
 
 -- Membership billing (migration 250; grants in 254). Never DELETE: rows are
 -- retained after account deletion and the FK's ON DELETE SET NULL runs as

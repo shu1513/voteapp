@@ -35,7 +35,7 @@ describe("listMissingGeneralElections", () => {
 
     expect(result).toEqual([row]);
     const [sql, params] = db.query.mock.calls[0]!;
-    expect(params).toEqual(["2026-08-09", 180, 365, 365, null]);
+    expect(params).toEqual(["2026-08-09", 180, 365, 365, null, null]);
     expect(sql).toContain("e.race_type = 'office'");
     expect(sql).toContain("e.election_stage = 'primary'");
     // The gap probe: any later same-contest election clears the row.
@@ -81,8 +81,9 @@ describe("listMissingGeneralElections", () => {
     });
 
     const [sql, params] = db.query.mock.calls[0]!;
-    expect(params).toEqual(["2026-08-09", 30, 60, 90, "MI"]);
+    expect(params).toEqual(["2026-08-09", 30, 60, 90, "MI", null]);
     expect(sql).toContain("$5::text IS NULL OR d.state = $5::text");
+    expect(sql).toContain("$6::uuid[] IS NULL OR e.district_id = ANY($6::uuid[])");
   });
 });
 
