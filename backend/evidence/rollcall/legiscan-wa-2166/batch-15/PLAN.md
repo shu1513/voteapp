@@ -33,6 +33,17 @@ None. The tally sweep found no hand-written record of any of these rolls.
 - Convergence re-run and second dry run: all 227 `unchanged`.
 - 19 candidates, 0 errors, 0 notified.
 
+## Corrections (2026-09-11)
+
+Review caught two wording errors, both fixed in `judgments.json` and re-applied with
+`rollcall:judge` (2 updated) and a convergence re-run (38 `rewrite`, 189 `unchanged`):
+
+- Senate Bill 5708: the passed text (§3) bars addictive feeds to minors outright; parental
+  consent only unlocks push notifications in restricted hours (§4). The old sentence
+  implied consent unlocked feeds too.
+- Senate Bill 5360: negligence is "usually" a gross misdemeanor; a negligent release of
+  hazardous air pollution that creates imminent danger is a class C felony (§9(1)(b)).
+
 ## Writing
 
 Median grade 8.8, worst 12.1 (Senate Bill 5466), longest sentence 28 words. The builder

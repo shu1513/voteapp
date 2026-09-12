@@ -31,8 +31,8 @@ Source for every measure: the nonpartisan Senate Bill Report **as passed Senate*
 - **Senate Bill 5701.** The Senate version of the certified payroll access that became law
   in 2025 as House Bill 1821 (batch-12). Fair wages enforcement.
 - **Senate Bill 5708.** Age estimation for apps with addictive feeds, a bar on reusing that
-  data, and no addictive feeds or timed push notifications to minors without parental
-  consent. Children's personal data.
+  data, no addictive feeds to minors, and no timed push notifications to minors without
+  parental consent. Children's personal data.
 - **Senate Bill 5797.** A $5 per $1,000 annual tax on publicly traded stocks, bonds, ETFs
   and mutual funds above $50 million per resident, with broad exemptions. A tax on the very
   largest holdings, which narrows wealth gaps.
