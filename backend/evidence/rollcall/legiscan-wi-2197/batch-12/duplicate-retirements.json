@@ -1,0 +1,6 @@
+[
+ {
+  "recordId": "f4d6e23e-f5ac-42aa-8d7f-27ed97b6cd4c",
+  "reason": "Duplicate of the canonical roll-call record imported by the Wisconsin 2197 session batch-12 run: this hand-written record describes the same vote as AB 840 roll 1614720 on 2026-01-20, which the Assembly passed 53-44. It also says the bill regulated data center utility costs, but the Senate never voted on it and it never became law. The imported record a493329b-c2a8-40a1-8a9e-8e0f0cc7cecb cites the roll call and states how the bill died. See backend/evidence/rollcall/legiscan-wi-2197/batch-12/JUDGING.md."
+ }
+]
