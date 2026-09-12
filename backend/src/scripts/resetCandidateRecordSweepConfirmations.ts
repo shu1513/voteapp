@@ -27,8 +27,11 @@
 // latest sweep stored only weak rows (directory listings, bios, primary
 // results) that later cleanups retired. They sit stamped with zero records
 // and an only_general_labels or empty-claim ledger, so the queue skips them;
-// a spot-check found real votes those sweeps missed. Ledgers claiming
-// no_records_found are never in this cohort.
+// a spot-check found real votes those sweeps missed. A candidate with a
+// covering no_records_found ledger in ANY context is never in this cohort:
+// that claim is candidate-wide (the audit reads it the same way), and the
+// presidential writer advances no search stamp, so a newer confirmed null
+// can sit beside a stale election ledger that still "covers" the stamp.
 //
 // Guard rails, all of which have to pass before a single row changes:
 // - explicit confirmed-at date window (the incident days), never "everything";
@@ -172,17 +175,20 @@ export type SweepConfirmationCohortRow = {
   /** confirmed_at >= the candidate's last_records_searched_at. */
   covers_latest_search: boolean;
   confirmed_gap_ids: string[];
+  /** Any of the candidate's ledgers (this one included, any context, any
+   * date) claims no_records_found at or after last_records_searched_at. */
+  has_covering_no_records_claim: boolean;
 };
 
 // records-retired-out: the ledger backs the candidate's latest search, every
-// record that search stored was later retired, and the ledger makes no
-// no_records_found claim (those are evidenced confirmed nulls, kept).
+// record that search stored was later retired, and no covering ledger in any
+// context claims no_records_found (those are evidenced confirmed nulls, kept).
 export function isRecordsRetiredOutLedger(row: SweepConfirmationCohortRow): boolean {
   return (
     row.record_count === 0 &&
     row.retired_record_count > 0 &&
     row.covers_latest_search &&
-    !row.confirmed_gap_ids.includes("candidate_records.no_records_found")
+    !row.has_covering_no_records_claim
   );
 }
 
@@ -295,7 +301,14 @@ export async function runSweepConfirmationReset(
               AND r.retired_at IS NOT NULL
           ) AS retired_record_count,
           coalesce(sc.confirmed_at >= c.last_records_searched_at, false) AS covers_latest_search,
-          sc.confirmed_gap_ids
+          sc.confirmed_gap_ids,
+          EXISTS (
+            SELECT 1
+            FROM public.candidate_record_sweep_confirmations n
+            WHERE n.candidate_id = sc.candidate_id
+              AND n.confirmed_gap_ids @> ARRAY['candidate_records.no_records_found']::text[]
+              AND n.confirmed_at >= c.last_records_searched_at
+          ) AS has_covering_no_records_claim
         FROM public.candidate_record_sweep_confirmations sc
         JOIN public.candidates c ON c.id = sc.candidate_id
         WHERE sc.confirmed_at >= $1::date

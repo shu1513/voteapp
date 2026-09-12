@@ -44,6 +44,7 @@ function cohortRow(
     retired_record_count: 0,
     covers_latest_search: true,
     confirmed_gap_ids: [],
+    has_covering_no_records_claim: false,
     ...overrides,
   };
 }
@@ -491,12 +492,20 @@ describe("records-retired-out cohort", () => {
     ).toBe(false);
   });
 
-  it("never matches an evidenced no_records_found confirmation", () => {
+  it("never matches a candidate with a covering no_records_found claim in any context", () => {
     const confirmedNull = retiredOut({
       candidate_id: "a",
       confirmed_gap_ids: ["candidate_records.no_records_found"],
+      has_covering_no_records_claim: true,
     });
     expect(isRecordsRetiredOutLedger(confirmedNull)).toBe(false);
+    // Weak election ledger, but a newer presidential ledger (no stamp
+    // advance) confirmed the candidate null — the candidate is done.
+    const siblingConfirmedNull = retiredOut({
+      candidate_id: "a",
+      has_covering_no_records_claim: true,
+    });
+    expect(isRecordsRetiredOutLedger(siblingConfirmedNull)).toBe(false);
   });
 
   it("live run resets only matching ledgers and clears their stamps", async () => {
@@ -504,6 +513,7 @@ describe("records-retired-out cohort", () => {
     const confirmedNull = retiredOut({
       candidate_id: "null",
       confirmed_gap_ids: ["candidate_records.no_records_found"],
+      has_covering_no_records_claim: true,
     });
     const withRecords = retiredOut({ candidate_id: "live", record_count: 3 });
     const { client, statements } = fakeClient([match, confirmedNull, withRecords]);
