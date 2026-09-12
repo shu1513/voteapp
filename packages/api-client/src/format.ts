@@ -83,13 +83,15 @@ export function groupSourcesByHost(urls: readonly string[]): SourceHostGroup[] {
   return groups;
 }
 
-// Display scale reads Very low / Below average / Normal / High / Very high:
-// "low" as a verdict on the voter and "medium" as a size word both misread,
-// so they ship as "Below average" and "Normal". Wire values stay unchanged.
+// Display scale reads Very low / Below average / Average / Above average /
+// High / Very high: "low" as a verdict on the voter and "medium" as a size
+// word both misread, so they ship as "Below average" and "Average" (the
+// statewide baseline). Wire values stay unchanged.
 const VOTE_POWER_LABELS: Record<string, string> = {
   very_low: "Very low",
   low: "Below average",
-  medium: "Normal",
+  medium: "Average",
+  above_average: "Above average",
   high: "High",
   very_high: "Very high",
   unknown: "Unknown",

@@ -99,7 +99,7 @@ export type VotePowerExplanation = {
 
 export type VotePower = {
   score: number | null;
-  label: "very_low" | "low" | "medium" | "high" | "very_high" | "unknown";
+  label: "very_low" | "low" | "medium" | "above_average" | "high" | "very_high" | "unknown";
   confidence: string;
   representation_level: string;
   decisiveness_level: string;

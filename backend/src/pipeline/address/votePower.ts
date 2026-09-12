@@ -5,21 +5,27 @@ import { binMeanIntensity } from "../competitiveness/currentRaceRatingConsensus.
 // Fixed ruler for the state-anchored representation model: a district this
 // many times smaller than its state scores 100. Data-derived 2026-08-24
 // (docs/plans/vote-power-state-anchored-representation.md): the valid band is
-// ~3,600 (median US House district must stay "normal") to ~105,000 (median
-// state senate district must reach "high"). A constant — not the smallest
-// district in the DB — so scores never drift when new districts are imported.
+// ~3,600 (median US House district must stay below "high") to ~105,000
+// (median state senate district must reach "high"). A constant — not the
+// smallest district in the DB — so scores never drift when new districts are
+// imported.
 export const REPRESENTATION_RULER_K = 50000;
 
-export type VotePowerLabel = "very_low" | "low" | "medium" | "high" | "very_high" | "unknown";
+// Six graded tiers plus unknown. "medium" is the statewide baseline (shown as
+// "Average"); "above_average" sits between it and "high" so a county, city, or
+// US House vote — a few times the weight of a statewide one — is not lumped in
+// with the statewide baseline itself.
+export type VotePowerLabel = "very_low" | "low" | "medium" | "above_average" | "high" | "very_high" | "unknown";
 
 export type VotePowerConfidence = "high" | "medium" | "low";
 
-export type VotePowerRepresentationLevel = "low" | "medium" | "high" | "unknown";
+export type VotePowerRepresentationLevel = "low" | "medium" | "above_average" | "high" | "unknown";
 
 export type VotePowerDecisivenessLevel = "none" | "low" | "medium" | "high" | "unknown";
 
 export type VotePowerFactor =
   | "high_representation"
+  | "above_average_representation"
   | "medium_representation"
   | "low_representation"
   | "high_decisiveness"
@@ -111,7 +117,21 @@ export type VotePowerExplanationContext = VotePowerInput & {
   marginContests?: { marginPercent: number; electionYear: number; weight: number }[] | null;
 };
 
-const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = ["very_low", "low", "medium", "high", "very_high"];
+const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = [
+  "very_low",
+  "low",
+  "medium",
+  "above_average",
+  "high",
+  "very_high",
+];
+
+// Ballot measures are a direct vote on the policy itself, with no
+// representative in between, so they rate one step above the same inputs on
+// an office race. The matching score bonus keeps the vote_power sort in the
+// same order as the labels (a statewide measure at "above average" must not
+// sort under an "average" county office).
+const BALLOT_MEASURE_SCORE_BONUS = 10;
 
 const DECISIVENESS_SCORE_BY_LABEL: Record<HistoricalContestCompetitivenessLabel, number> = {
   toss_up: 1,
@@ -139,6 +159,12 @@ export function representationLevelFromScore(value: number | null | undefined): 
   }
   if (score >= 66) {
     return "high";
+  }
+  // 55 ≈ a district one third of its state or smaller (ln(3) / ln(50,000) ×
+  // 50 ≈ 5): a county that covers most of its state stays at the statewide
+  // baseline instead of flipping on a fraction of a point.
+  if (score >= 55) {
+    return "above_average";
   }
   if (score >= 33) {
     return "medium";
@@ -187,6 +213,19 @@ function matrixLabel(
         return "high";
       case "high":
         return "very_high";
+    }
+  }
+
+  if (representationLevel === "above_average") {
+    switch (decisivenessLevel) {
+      case "none":
+        return "low";
+      case "low":
+        return "medium";
+      case "medium":
+        return "above_average";
+      case "high":
+        return "high";
     }
   }
 
@@ -241,7 +280,15 @@ function capLabel(label: VotePowerLabel, maxLabel: Exclude<VotePowerLabel, "unkn
   return LABELS[Math.min(labelIndex, maxIndex)] ?? label;
 }
 
+function bumpLabel(label: VotePowerLabel): VotePowerLabel {
+  if (label === "unknown") {
+    return label;
+  }
+  return LABELS[Math.min(LABELS.indexOf(label) + 1, LABELS.length - 1)] ?? label;
+}
+
 function calculateScore(input: {
+  raceType: ElectionRaceType;
   representationPowerScore: number | null;
   representationLevel: VotePowerRepresentationLevel;
   decisivenessLevel: VotePowerDecisivenessLevel;
@@ -269,6 +316,12 @@ function calculateScore(input: {
     raw = decisivenessLevel === "none" ? 0 : 100 * DECISIVENESS_SCORE_BY_LABEL[input.competitivenessLabel!];
   } else {
     return null;
+  }
+
+  // Before the caps, so a partial-data measure still sorts inside the
+  // partial-data band rather than over fully-rated office races.
+  if (input.raceType === "ballot_measure") {
+    raw += BALLOT_MEASURE_SCORE_BONUS;
   }
 
   if (decisivenessLevel === "none") {
@@ -306,6 +359,9 @@ function factorsFor(input: {
   switch (input.representationLevel) {
     case "high":
       factors.push("high_representation");
+      break;
+    case "above_average":
+      factors.push("above_average_representation");
       break;
     case "medium":
       factors.push("medium_representation");
@@ -353,22 +409,34 @@ function factorsFor(input: {
 // some panels. The decisiveness tail names both sources it can rest on
 // (analyst ratings when one exists, past results otherwise); the part row
 // says which one applied here.
-function howCalculated(): string {
+//
+// Ballot measures get their own copy: they have no candidates or analyst
+// ratings, so the decisiveness paragraph would describe an axis the panel
+// never shows; the direct-vote step takes its place.
+function howCalculated(raceType: ElectionRaceType): string {
   // Blank lines between the lead and the two axes: clients render this with
   // newlines preserved (whitespace-pre-line on web), so each point reads as
   // its own short paragraph instead of one dense block.
-  return "What goes into the rating:\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on past results or current analyst ratings, plus the number of candidates.";
+  const representation =
+    "Representation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.";
+  if (raceType === "ballot_measure") {
+    return `What goes into the rating for ballot measures:\n\n${representation}\n\nYou have more power in ballot measures because you vote directly on the policy.`;
+  }
+  return `What goes into the rating:\n\n${representation}\n\nDecisiveness: how likely this race is to be close, based on past results or current analyst ratings, plus the number of candidates.`;
 }
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-// Display word for an axis level or rating: "medium" ships as "normal"
-// (the user-facing middle tier reads "normal"; see the
-// api-client's formatVotePowerLabel). Internal level keys stay "medium".
+// Display word for an axis level or rating: "medium" ships as "average" (the
+// statewide baseline; see the api-client's formatVotePowerLabel) and
+// "above_average" as "above average". Internal level keys stay as-is.
 function levelDisplayWord(level: string): string {
-  return level === "medium" ? "normal" : level;
+  if (level === "medium") {
+    return "average";
+  }
+  return level.replace(/_/g, " ");
 }
 
 // 12 -> "12", 3.25 -> "3.25", 2.04 -> "2.04": two decimals at most — the
@@ -383,10 +451,10 @@ function formatCount(value: number): string {
   return value.toLocaleString("en-US");
 }
 
-// First-match thresholds, not ranges: "33–65 normal" would leave a 65.6
+// First-match thresholds, not ranges: "33–54 average" would leave a 54.6
 // score in no bucket, and the grader itself works on >= comparisons.
 const REPRESENTATION_GRADE_SCALE =
-  "grades: 66+ high, 33+ normal, otherwise low; a statewide race is the 50 baseline";
+  "grades: 66+ high, 55+ above average, 33+ average, otherwise low; a statewide race is the 50 baseline";
 
 // The loader's state-anchored fixed-ruler model, spelled out with this
 // district's real numbers (see recomputeRepresentationPowerScores in
@@ -448,6 +516,8 @@ function representationPart(input: {
   // retired within-type model can still grade low until the recompute runs.
   const detailByLevel: Record<Exclude<VotePowerRepresentationLevel, "unknown">, string> = {
     high: "This district is a small slice of its state, so each vote here carries much more weight than a vote in a statewide race.",
+    above_average:
+      "This district is a good deal smaller than its state, so each vote here carries more weight than a vote in a statewide race.",
     medium: "This district covers a large share of its state, so each vote carries about average weight — like a vote in a statewide race.",
     low: "This district is large, so each vote is a smaller slice of the outcome.",
   };
@@ -457,9 +527,9 @@ function representationPart(input: {
   return {
     title: "Representation",
     grade: capitalize(levelDisplayWord(input.representationLevel)),
-    // Floor, not round: the grade thresholds are the integers 33 and 66, so
-    // flooring can never display a number that sits in a higher bucket than
-    // the unrounded value (65.6 must not render as the high-threshold 66).
+    // Floor, not round: the grade thresholds are the integers 33, 55 and 66,
+    // so flooring can never display a number that sits in a higher bucket
+    // than the unrounded value (65.6 must not render as the high-threshold 66).
     stat: `${Math.floor(input.representationPowerScore)} out of 100`,
     detail: `${detailByLevel[input.representationLevel]}${populationSuffix}`,
     formula: representationFormula({
@@ -473,7 +543,7 @@ function representationPart(input: {
 // First-match thresholds so boundary margins read unambiguously: a 2.04
 // margin is "not ≤2, so ≤5 → very competitive", never inside a "0–2" range.
 const MARGIN_GRADE_SCALE =
-  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, not competitive grades low";
+  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade average, not competitive grades low";
 
 // The margin-to-grade pipeline with this contest's real numbers (see
 // classifyHistoricalContestMargin — this string must match its cutoffs).
@@ -542,7 +612,7 @@ function competitivenessLabelText(label: HistoricalContestCompetitivenessLabel):
 // Mirrors deriveConsensusLabel's ladder and bins (currentRaceRatingConsensus)
 // the way MARGIN_GRADE_SCALE mirrors classifyHistoricalContestMargin.
 const RATING_GRADE_SCALE =
-  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, not competitive grades low";
+  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade average, not competitive grades low";
 
 // The rating-to-grade pipeline with the real per-outlet observations. When a
 // consensus guardrail (opposite favored sides, or safe requiring all-Solid)
@@ -694,7 +764,10 @@ function marginStat(marginPercent: number | null, marginElectionYears: number[] 
   return `${points} weighted margin across ${formatYearList(years)}`;
 }
 
-function explanationResultFor(result: VotePowerResult, skipDecisiveness: boolean): string {
+function explanationResultFor(
+  result: VotePowerResult,
+  options: { skipDecisiveness: boolean; isBallotMeasure: boolean }
+): string {
   if (result.label === "unknown") {
     return "Not enough data → no rating yet.";
   }
@@ -707,23 +780,30 @@ function explanationResultFor(result: VotePowerResult, skipDecisiveness: boolean
   if (result.representation_level !== "unknown") {
     pieces.push(`${levelDisplayWord(result.representation_level)} representation`);
   }
-  if (!skipDecisiveness) {
+  if (!options.skipDecisiveness) {
     if (result.decisiveness_level === "none") {
       pieces.push("an uncontested race");
     } else if (result.decisiveness_level !== "unknown") {
       pieces.push(`${levelDisplayWord(result.decisiveness_level)} decisiveness`);
     }
   }
+  // The direct-vote step is part of the rating (calculateVotePower bumps
+  // every rated measure one tier), so the sum names it or the arithmetic
+  // would not produce the displayed label.
+  if (options.isBallotMeasure) {
+    pieces.push("a direct vote on the policy");
+  }
   return `${capitalize(pieces.join(" + "))} → My vote power: ${capitalize(RESULT_LABEL_TEXT[result.label])}.`;
 }
 
 // Display words for the rating in the result line. "low" reads as a verdict
 // on the voter and "medium" as a size word, so they ship as "below average"
-// and "normal" (mirrors the api-client's formatVotePowerLabel chip copy).
+// and "average" (mirrors the api-client's formatVotePowerLabel chip copy).
 const RESULT_LABEL_TEXT: Record<Exclude<VotePowerLabel, "unknown">, string> = {
   very_low: "very low",
   low: "below average",
-  medium: "normal",
+  medium: "average",
+  above_average: "above average",
   high: "high",
   very_high: "very high",
 };
@@ -804,9 +884,9 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
   ].filter((caveat): caveat is string => caveat !== null);
 
   return {
-    how: howCalculated(),
+    how: howCalculated(input.raceType),
     parts,
-    result: explanationResultFor(result, skipDecisiveness),
+    result: explanationResultFor(result, { skipDecisiveness, isBallotMeasure }),
     caveat: caveats.length > 0 ? caveats.join(" ") : null,
   };
 }
@@ -824,9 +904,19 @@ export function calculateVotePower(input: VotePowerInput): VotePowerResult {
   if (missingCoreAxis) {
     label = capLabel(label, "high");
   }
+  // Direct vote on the policy: one tier up. "Very high" stays reserved for
+  // measures with close-race evidence — a small district alone tops out at
+  // "high", the same ceiling a partial-data rating has.
+  if (input.raceType === "ballot_measure") {
+    label = bumpLabel(label);
+    if (missingCoreAxis || decisivenessLevel === "unknown") {
+      label = capLabel(label, "high");
+    }
+  }
 
   return {
     score: calculateScore({
+      raceType: input.raceType,
       representationPowerScore,
       representationLevel,
       decisivenessLevel,

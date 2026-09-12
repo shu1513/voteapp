@@ -6,9 +6,10 @@ import type { ElectionSummary } from "./types";
 export const LONG_BALLOT_THRESHOLD = 7;
 
 /** The impact filter is a minimum-label threshold, not a label set: "high"
- * keeps High + Very high, "medium" keeps Normal and above. The wire word
- * stays `medium` (matching the backend label and the URL param) even though
- * the UI renders it as "Normal" via formatVotePowerLabel. */
+ * keeps High + Very high, "medium" keeps Average and above (Above average
+ * included). The wire word stays `medium` (matching the backend label and
+ * the URL param) even though the UI renders it as "Average" via
+ * formatVotePowerLabel. */
 export type VoteImpactThreshold = "high" | "medium";
 
 /** The two ElectionSummary.race_type values the tabs slice on. Wire words
@@ -18,7 +19,7 @@ export type BallotRaceType = "office" | "ballot_measure";
 
 const IMPACT_LABELS: Record<VoteImpactThreshold, ReadonlySet<string>> = {
   high: new Set(["high", "very_high"]),
-  medium: new Set(["medium", "high", "very_high"]),
+  medium: new Set(["medium", "above_average", "high", "very_high"]),
 };
 
 function matchesIssues(election: ElectionSummary, savedAreaIds: Set<string>): boolean {
