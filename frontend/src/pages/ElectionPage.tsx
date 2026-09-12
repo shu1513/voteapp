@@ -702,8 +702,8 @@ export function ElectionPage() {
 
         {measure ? (
           <section className="mt-6 rounded-xl border border-line bg-surface p-4">
-            {/* Same green as the ballot card's "Ballot Measure" label (user
-                decision 2026-09-11) — not party blue. */}
+            {/* nudge-deep green (user decision 2026-09-11) — not party blue
+                on a nonpartisan measure. */}
             <h2 ref={measureSummaryRef} className="text-heading font-semibold text-nudge-deep">Ballot Measure</h2>
             {measure.research_area_tags.length > 0 ? (
               // Comma-separated colored text, not boxed chips (boxes read as

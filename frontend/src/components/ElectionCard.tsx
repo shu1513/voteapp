@@ -373,10 +373,11 @@ function ElectionCard({
             </span>
           ) : null}
           {election.race_type === "ballot_measure" ? (
-            // nudge-deep green, not dem-blue (user decision 2026-09-11): a
-            // party color on a nonpartisan measure, and it ran together with
-            // the vote-power blue beside it.
-            <span className="whitespace-nowrap text-sm text-nudge-deep">Ballot Measure</span>
+            // No "Ballot Measure" label (user decision 2026-09-12): it sat
+            // right after the vote-power text and the two ran together. The
+            // Offices / Ballot Measures tabs and the title itself already say
+            // what the row is; measures just show no candidate count.
+            null
           ) : election.candidate_count === 0 && election.candidate_roster_status ? (
             <span className="whitespace-nowrap text-sm text-ink-soft">
               {formatRosterStatus(election.candidate_roster_status).short}
