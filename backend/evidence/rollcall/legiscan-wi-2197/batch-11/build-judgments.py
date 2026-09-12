@@ -47,9 +47,10 @@ add('AB 164', 1553695, 'house', '2025-04-22', 53, 42, (
     'Assembly Bill 164, which would have renamed unemployment insurance "reemployment '
     'assistance" and tightened what claimants must do each week. From the third week, '
     'two of the four weekly job search actions would have had to be direct contacts '
-    'with employers. Claimants would also have had to keep a current resume on the '
-    'state job center website and attend a counseling session when fewer than three '
-    'weeks of benefits were left. The bill would have removed the rule that a claimant '
+    'with employers. Claimants living in Wisconsin would also have had to keep a '
+    'current resume on the state job center website. Any claimant with three weeks or '
+    'fewer of benefits left would have had to attend a counseling session. The bill '
+    'would have removed the rule that a claimant '
     'need not apply for the jobs the department suggests, and made workshops mandatory '
     'for claimants likely to run out of benefits. {t}'), L((SOC, 'against', None)))
 

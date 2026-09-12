@@ -70,3 +70,19 @@ is written from the substitute, read through LegiScan's `getAmendment` call.
 - Duplicate sweep: no live hand-written record describes these four votes.
 - All live Wisconsin roll-call records: 6,114 over 115 rolls and 99 candidates,
   with 3,758 tags. That includes batch-10, which is on its own pull request.
+
+Review correction (2026-09-11), AB 164: the first descriptions put the
+counseling trigger at "fewer than three weeks" and made the resume rule apply to
+every claimant. The bill's Section 26 (new s. 108.04 (15) (ao)) fires when the
+remaining entitlement is "3 or less times" the weekly benefit rate, so exactly
+three weeks qualifies; Section 20 (new s. 108.04 (2) (a) 4. c.) requires the
+resume only "if the claimant resides in this state". The LRB analysis says
+"less than three weeks", but the statutory text governs. Descriptions now read
+"three weeks or fewer" and "Claimants living in Wisconsin". The initial-week
+carve-out on the resume rule is not mentioned: the paragraph is already about
+weekly duties, and the one-week lag adds nothing a voter would weigh. Judge:
+1 updated, 3 unchanged. Import rewrote all 84 AB 164 records in place (dry run
+`import-dry-run-rerun-report.json`, real run `import-rerun-report.json`,
+`actions {rewrite: 84, unchanged: 180}`). Live totals unchanged. Direction
+stands: the bill tightens claimant duties, so a yes vote is against
+`social_programs_and_welfare`.
