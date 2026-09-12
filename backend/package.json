@@ -126,6 +126,8 @@
     "manual:deferral:status": "tsx src/scripts/manualResearchDeferrals.ts status",
     "manual:demand:status": "tsx src/scripts/manualResearchDemand.ts status",
     "manual:demand:prune": "tsx src/scripts/manualResearchDemand.ts prune",
+    "manual:city-coverage:build-map": "tsx src/scripts/majorCityCoverage.ts build-map",
+    "manual:city-coverage:report": "tsx src/scripts/majorCityCoverage.ts report",
     "manual:candidate-finance:validate": "tsx src/scripts/validateManualCandidateFinance.ts",
     "manual:candidate-finance:preview": "tsx src/scripts/previewManualCandidateFinance.ts",
     "manual:candidate-finance:import": "tsx src/scripts/importManualCandidateFinance.ts",
