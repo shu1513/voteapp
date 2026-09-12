@@ -14,6 +14,7 @@ The config entry for this session was added in a separate pull request and is in
 | `legiscan-people-wa-2166.json` | the people snapshot the importer runs against |
 | `survey/…-survey.json` | the description histogram the config was written from |
 | `survey/divided-enacted-worklist.tsv` | one row per measure-chamber slot, with a disposition |
+| `survey/divided-not-enacted-worklist.tsv` | the same for measures that did not become law |
 | `survey/tally-audit.json` | every floor roll checked against Washington's own tally |
 
 ## Feed health — the cleanest tier
@@ -134,6 +135,45 @@ same-day peer needing `acknowledge_later_rolls`, which is unusually few.
 Washington is a Democratic trifecta, so party-line bills become law and the
 divided-and-enacted set is large. If every slot were eventually imported the yield would
 be roughly 24,500 records.
+
+## Not-enacted pool (batches 13 to 16)
+
+A second pass took measures that did **not** become law. What passes a trifecta is often
+bipartisan, so contested votes on stalled bills are where much of the disagreement sits.
+The worklist is `survey/divided-not-enacted-worklist.tsv`, one row per slot, each with a
+disposition and reason.
+
+| stage | count |
+| --- | --- |
+| chamber's last kept floor roll divided, measure not enacted | 92 slots over 92 measures |
+| by chamber | 29 House / 63 Senate |
+| LegiScan status | all 92 at status 2 (passed one chamber) |
+| other chamber held any floor vote | 1 (House Bill 2675, dropped) |
+| **imported** | **42 measures, 42 rolls, 1,544 records** |
+| dropped with a written reason | 50 |
+
+All 92 final votes passed; no divided final-passage vote failed. The session's one full
+veto (House Bill 1108) was not a divided vote.
+
+- **Gate, per measure:** not enacted, the chamber's last floor vote divided and passed,
+  and the other chamber held no floor vote at all.
+- **Source:** the bill report written for the exact version the chamber passed, `HBR APH`
+  (as passed House) or `SBR APS` (as passed Senate). Eight carry a suffix (`1574.E`,
+  `5017-S … APS2`) and were found by listing the report folders, not by guessing names.
+- **Wording:** conditional ("It would …") with a dated tail, "As of September 2026 the
+  Senate had not voted on it, so it was not law." The builder refuses enactment language.
+- **Most drops** are fee, fund or bond machinery, administrative changes, cannabis,
+  criminal-justice leniency that reads two ways, and voter-access expansion.
+
+| batch | measures | records | candidates | retired |
+| --- | --- | --- | --- | --- |
+| 13 (House) | 11 | 957 | 89 | 0 |
+| 14 (Senate) | 10 | 190 | 19 | 2 |
+| 15 (Senate) | 12 | 227 | 19 | 0 |
+| 16 (Senate) | 9 | 170 | 19 | 0 |
+
+Washington now holds **11,002 live roll-call records across 108 candidates** locally. Both
+pools are closed. Production holds none.
 
 ## Judging notes for this state
 

@@ -1,0 +1,10 @@
+[
+  {
+    "recordId": "453034b7-c394-4a9e-a676-fd0b8b728e9d",
+    "reason": "Duplicate of the imported roll-call record for bill 5098. This hand-written record describes the same vote, the one Washington recorded 29-20, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  },
+  {
+    "recordId": "980664ea-a346-4793-949f-3a7dbdf0017a",
+    "reason": "Duplicate of the imported roll-call record for bill 5098. This hand-written record describes the same vote, the one Washington recorded 29-20, which the roll-call pipeline now imports from the official roll call itself. The imported record cites the roll call as its source; this one does not."
+  }
+]

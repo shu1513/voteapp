@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1633011,
+      "measure_id": "SB 5906",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5906. It would limit immigration enforcement at schools, child care sites, health care facilities, adult family homes, colleges and county auditors' offices. Unless state or federal law required it, schools and child care providers could not collect information on the immigration status of students or their families. These places could not let immigration agents into their private areas without a judge's warrant or court order. School boards would adopt policies on this by the 2027-28 school year. If agents targeted a union worker on site, the employer would have to contact the worker's union. The Washington Senate passed it 30-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 5906. It would limit immigration enforcement at schools, child care sites, health care facilities, adult family homes, colleges and county auditors' offices. Unless state or federal law required it, schools and child care providers could not collect information on the immigration status of students or their families. These places could not let immigration agents into their private areas without a judge's warrant or court order. School boards would adopt policies on this by the 2027-28 school year. If agents targeted a union worker on site, the employer would have to contact the worker's union. The Washington Senate passed it 30-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1635510,
+      "measure_id": "SB 5924",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5924. It would let pharmacists prescribe more drugs and devices from December 1, 2027. These would include vaccines, overdose and addiction treatments, epinephrine injectors, HIV prevention medicines, hormonal birth control, and travel medicines. Pharmacists could also prescribe for minor conditions that need no new diagnosis, or that a simple approved test can guide. The state pharmacy commission would write the rules. The Washington Senate passed it 38-11. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 5924. It would let pharmacists prescribe more drugs and devices from December 1, 2027. These would include vaccines, overdose and addiction treatments, epinephrine injectors, HIV prevention medicines, hormonal birth control, and travel medicines. Pharmacists could also prescribe for minor conditions that need no new diagnosis, or that a simple approved test can guide. The state pharmacy commission would write the rules. The Washington Senate passed it 38-11. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1635744,
+      "measure_id": "SB 5947",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5947. It would create a 19-member Washington Health Care Board to design a state health plan covering all medically needed care for every resident. The plan could start only after the federal government approved a waiver and provided funding, and the Legislature passed any laws needed. The governor would appoint the board, which would include employers, health care providers, labor and a tribal member. The Washington Senate passed it 30-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 5947. It would create a 19-member Washington Health Care Board to design a state health plan covering all medically needed care for every resident. The plan could start only after the federal government approved a waiver and provided funding, and the Legislature passed any laws needed. The governor would appoint the board, which would include employers, health care providers, labor and a tribal member. The Washington Senate passed it 30-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1628811,
+      "measure_id": "SB 5956",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5956. It would limit artificial intelligence and surveillance in public schools. Schools could not base discipline, suspension, expulsion or police referrals only on an automated system's score, or on surveillance data without a human review. They could not use facial recognition to track students, or keep watchlists built only by an automated system. They could not use body data such as face scans to guess a student's emotions, mental health, sexual orientation or gender identity. Data from these tools could go to police only when the law required it or serious harm was likely. The Washington Senate passed it 35-13. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 5956. It would limit artificial intelligence and surveillance in public schools. Schools could not base discipline, suspension, expulsion or police referrals only on an automated system's score, or on surveillance data without a human review. They could not use facial recognition to track students, or keep watchlists built only by an automated system. They could not use body data such as face scans to guess a student's emotions, mental health, sexual orientation or gender identity. Data from these tools could go to police only when the law required it or serious harm was likely. The Washington Senate passed it 35-13. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1624157,
+      "measure_id": "SB 5972",
+      "vote_date": "2026-02-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5972. It would let all jail officers and security staff use interest arbitration, where a neutral arbitrator settles a contract dispute when a union and an employer cannot agree. Today only jail staff in counties of 70,000 or more people have it. The Washington Senate passed it 34-15. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 5972. It would let all jail officers and security staff use interest arbitration, where a neutral arbitrator settles a contract dispute when a union and an employer cannot agree. Today only jail staff in counties of 70,000 or more people have it. The Washington Senate passed it 34-15. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1632819,
+      "measure_id": "SB 5984",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5984. It would set rules for AI companion chatbots, apps built to act as a friend or partner. Users would be told at the start, and at least every three hours, that they are talking to AI and not a person. When an operator knows a user is a minor, or the chatbot is aimed at minors, it would have to block sexual content and tactics that build emotional dependence. Operators would need a plan to spot talk of suicide or self-harm and refer users to crisis help. It could be enforced under the Consumer Protection Act. The Washington Senate passed it 38-11. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 5984. It would set rules for AI companion chatbots, apps built to act as a friend or partner. Users would be told at the start, and at least every three hours, that they are talking to AI and not a person. When an operator knows a user is a minor, or the chatbot is aimed at minors, it would have to block sexual content and tactics that build emotional dependence. Operators would need a plan to spot talk of suicide or self-harm and refer users to crisis help. It could be enforced under the Consumer Protection Act. The Washington Senate passed it 38-11. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "ai_regulation",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1625743,
+      "measure_id": "SB 5993",
+      "vote_date": "2026-02-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 5993. It would cap interest on medical debt at 1 percent a year, simple interest, for debt incurred after December 31, 2026. No interest could be charged while a hospital had not finished screening the patient for charity care, or on debt found invalid or not owed. Interest paid on debt later cut by charity care or found invalid would be refunded. The Washington Senate passed it 29-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 5993. It would cap interest on medical debt at 1 percent a year, simple interest, for debt incurred after December 31, 2026. No interest could be charged while a hospital had not finished screening the patient for charity care, or on debt found invalid or not owed. Interest paid on debt later cut by charity care or found invalid would be refunded. The Washington Senate passed it 29-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1633675,
+      "measure_id": "SB 6049",
+      "vote_date": "2026-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6049. It would keep more information held by state agencies from public release. A state worker's name and identifying details could be withheld if the worker swore that they or a dependent survived a hate crime and the risk continues. Individual answers to voluntary state staff surveys, and students' answers to the Healthy Youth Survey, would also be exempt. Data with identities removed or combined could still be released. The Washington Senate passed it 30-18. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 6049. It would keep more information held by state agencies from public release. A state worker's name and identifying details could be withheld if the worker swore that they or a dependent survived a hate crime and the risk continues. Individual answers to voluntary state staff surveys, and students' answers to the Healthy Youth Survey, would also be exempt. Data with identities removed or combined could still be released. The Washington Senate passed it 30-18. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "senate",
+      "session": "2166",
+      "roll": 1629147,
+      "measure_id": "SB 6184",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 6184. It would widen state programs for homeless and at-risk youth. A court-linked youth housing program would no longer be limited to six counties or set to expire. Housing stipends could be paid to young people directly, not just to landlords, and a 12 percent cap on program overhead would end. Crisis centers for youth could delay telling a parent where a child is when there is a compelling reason. The Washington Senate passed it 30-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing Senate Bill 6184. It would widen state programs for homeless and at-risk youth. A court-linked youth housing program would no longer be limited to six counties or set to expire. Housing stipends could be paid to young people directly, not just to landlords, and a 12 percent cap on program overhead would end. Crisis centers for youth could delay telling a parent where a child is when there is a compelling reason. The Washington Senate passed it 30-19. As of September 2026 the House had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

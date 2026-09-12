@@ -1,0 +1,202 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1627889,
+      "measure_id": "HB 1002",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1002. It would let county coroners and medical examiner staff get workers' compensation for post-traumatic stress disorder caused by the job. Mental illness caused by stress is normally not covered. Staff hired after January 1, 2026, would qualify only if a mental health exam at hiring ruled out earlier trauma, or if no exam was offered. Covered staff would be those who respond to, look into or autopsy the cases these offices handle. The Washington House passed it 70-24. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 1002. It would let county coroners and medical examiner staff get workers' compensation for post-traumatic stress disorder caused by the job. Mental illness caused by stress is normally not covered. Staff hired after January 1, 2026, would qualify only if a mental health exam at hiring ruled out earlier trauma, or if no exam was offered. Covered staff would be those who respond to, look into or autopsy the cases these offices handle. The Washington House passed it 70-24. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1503806,
+      "measure_id": "HB 1080",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1080. It would require hotels and short-term rentals to include every mandatory fee in the room rate they advertise or show. Government taxes and fees could be left out of that rate, but they would have to appear in the total price before a guest books. Each violation could bring a civil fine of up to $10,000, enforced by a city attorney, county prosecutor or the Attorney General. The Washington House passed it 58-39. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 1080. It would require hotels and short-term rentals to include every mandatory fee in the room rate they advertise or show. Government taxes and fees could be left out of that rate, but they would have to appear in the total price before a guest books. Each violation could bring a civil fine of up to $10,000, enforced by a city attorney, county prosecutor or the Attorney General. The Washington House passed it 58-39. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1503196,
+      "measure_id": "HB 1291",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1291. It would stop health plans from making patients meet their deductible before covering labor and delivery care. It would apply to plans issued or renewed from January 1, 2026, including plans for state and school employees. Any cost sharing a patient paid for that care would still count toward the deductible. Plans paired with a health savings account would set the lowest deductible federal tax rules allow. The Washington House passed it 56-39. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 1291. It would stop health plans from making patients meet their deductible before covering labor and delivery care. It would apply to plans issued or renewed from January 1, 2026, including plans for state and school employees. Any cost sharing a patient paid for that care would still count toward the deductible. Plans paired with a health savings account would set the lowest deductible federal tax rules allow. The Washington House passed it 56-39. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1508908,
+      "measure_id": "HB 1423",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1423. It would create a pilot program, running until July 1, 2028, for cameras that catch illegally loud vehicles. Cities of at least 2,000 people could use them only in zones they have set aside for street-racing camera enforcement. The cameras would record sound only just before, during and after a violation. Loud music could not be used as proof. By January 1, 2028, the state Traffic Safety Commission would report where the cameras were placed, the incomes and makeup of those areas, and the number of violations. The Washington House passed it 57-40. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 1423. It would create a pilot program, running until July 1, 2028, for cameras that catch illegally loud vehicles. Cities of at least 2,000 people could use them only in zones they have set aside for street-racing camera enforcement. The cameras would record sound only just before, during and after a violation. Loud music could not be used as proof. By January 1, 2028, the state Traffic Safety Commission would report where the cameras were placed, the incomes and makeup of those areas, and the number of violations. The Washington House passed it 57-40. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1508987,
+      "measure_id": "HB 1622",
+      "vote_date": "2025-03-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1622. It would require most state and local public employers to bargain with their workers' unions before adopting or changing artificial intelligence tools that affect wages or performance reviews. State law now bars bargaining over technology for most state workers. Employers would not have to bargain over a vendor's update to technology already in use, if it does not meaningfully affect wages or reviews. The House version would have been void unless the 2025 budget paid for it. The Washington House passed it 58-38. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 1622. It would require most state and local public employers to bargain with their workers' unions before adopting or changing artificial intelligence tools that affect wages or performance reviews. State law now bars bargaining over technology for most state workers. Employers would not have to bargain over a vendor's update to technology already in use, if it does not meaningfully affect wages or reviews. The House version would have been void unless the 2025 budget paid for it. The Washington House passed it 58-38. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "labor_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1551862,
+      "measure_id": "HB 2041",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2041. It would shorten Apple Health coverage after pregnancy for people approved from July 1, 2026. Apple Health is the state's Medicaid program. It now covers people for 12 months after a pregnancy ends, even if their income rises. For people newly approved from that date, this continuous coverage would last six months instead. People approved before then would keep the full 12 months. The Washington House passed it 56-40. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 2041. It would shorten Apple Health coverage after pregnancy for people approved from July 1, 2026. Apple Health is the state's Medicaid program. It now covers people for 12 months after a pregnancy ends, even if their income rises. For people newly approved from that date, this continuous coverage would last six months instead. People approved before then would keep the full 12 months. The Washington House passed it 56-40. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1635736,
+      "measure_id": "HB 2095",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2095. It would make it easier for people walking, cycling or riding scooters to win injury lawsuits against drivers. A driver who hit one of them on a sidewalk, shoulder, crosswalk, bike lane or path would be presumed careless unless the driver proved otherwise. This would not apply if the victim ignored traffic signals, ran a stop sign, or was impaired and broke right-of-way rules. On-duty emergency drivers would be exempt. The winning side could recover $1,500 in set damages plus legal fees. The Washington House passed it 53-44. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 2095. It would make it easier for people walking, cycling or riding scooters to win injury lawsuits against drivers. A driver who hit one of them on a sidewalk, shoulder, crosswalk, bike lane or path would be presumed careless unless the driver proved otherwise. This would not apply if the victim ignored traffic signals, ran a stop sign, or was impaired and broke right-of-way rules. On-duty emergency drivers would be exempt. The winning side could recover $1,500 in set damages plus legal fees. The Washington House passed it 53-44. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1634701,
+      "measure_id": "HB 2244",
+      "vote_date": "2026-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2244. It would open more government records to the public. It would end rules keeping secret the state toxicologist's blood test results, some files from the state financial regulator's investigations, and state efficiency surveys. Accident reports could be released once names and other personal details were removed. Grand jury reports could name or criticize a person. Courts would lose a general power to seal family court files on grounds of public morals or harm to children. It would add one new exemption, for the locations of archaeological sites. The Washington House passed it 70-26. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 2244. It would open more government records to the public. It would end rules keeping secret the state toxicologist's blood test results, some files from the state financial regulator's investigations, and state efficiency surveys. Accident reports could be released once names and other personal details were removed. Grand jury reports could name or criticize a person. Courts would lose a general power to seal family court files on grounds of public morals or harm to children. It would add one new exemption, for the locations of archaeological sites. The Washington House passed it 70-26. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1634248,
+      "measure_id": "HB 2464",
+      "vote_date": "2026-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2464. It would require privately run jails and detention centers to report serious events to the state health department and local police by the end of the next business day. These would include claims of abuse or neglect, deaths, suicides, injuries that put someone in the hospital, and emergencies. The Attorney General could enforce it. From November 1, 2026, police with such a center in their area would report each year on calls there, whether they looked into them, and whether any case went to prosecutors. The Washington House passed it 58-38. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 2464. It would require privately run jails and detention centers to report serious events to the state health department and local police by the end of the next business day. These would include claims of abuse or neglect, deaths, suicides, injuries that put someone in the hospital, and emergencies. The Attorney General could enforce it. From November 1, 2026, police with such a center in their area would report each year on calls there, whether they looked into them, and whether any case went to prosecutors. The Washington House passed it 58-38. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1633940,
+      "measure_id": "HB 2515",
+      "vote_date": "2026-02-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2515. It would set rules for data centers that use 20 megawatts or more of power. Each would buy power under a utility rate plan meant to keep its costs from shifting to other customers, with contracts of at least 10 years and exit fees. Owners would publish reports on their water and energy use. New or expanded centers would have to get 80 percent of their power from new renewable or zero-emission sources by 2030, and all of it from renewable or zero-emission sources by 2045. Work on power plants they own on site would have to meet labor standards. The Washington House passed it 51-41. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 2515. It would set rules for data centers that use 20 megawatts or more of power. Each would buy power under a utility rate plan meant to keep its costs from shifting to other customers, with contracts of at least 10 years and exit fees. Owners would publish reports on their water and energy use. New or expanded centers would have to get 80 percent of their power from new renewable or zero-emission sources by 2030, and all of it from renewable or zero-emission sources by 2045. Work on power plants they own on site would have to meet labor standards. The Washington House passed it 51-41. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "WA",
+      "chamber": "house",
+      "session": "2166",
+      "roll": 1634720,
+      "measure_id": "HB 2637",
+      "vote_date": "2026-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2637. It would keep more personal information held by government agencies from release under the Public Records Act. It would cover a person's age, birth date, place of birth, language and home address. It would also cover precise location data, utility account data, and ID numbers such as Social Security, passport, driver's license and license plate numbers. Birth years in voter records, business addresses, and addresses in voter or property records would stay public. A law that requires release would still apply. The Washington House passed it 52-45. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "nay_description": "Voted against passing House Bill 2637. It would keep more personal information held by government agencies from release under the Public Records Act. It would cover a person's age, birth date, place of birth, language and home address. It would also cover precise location data, utility account data, and ID numbers such as Social Security, passport, driver's license and license plate numbers. Birth years in voter records, business addresses, and addresses in voter or property records would stay public. A law that requires release would still apply. The Washington House passed it 52-45. As of September 2026 the Senate had not voted on it, so it was not law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
