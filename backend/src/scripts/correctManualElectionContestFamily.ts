@@ -62,6 +62,7 @@ export type ElectionContestFamilyCorrectionResult = {
   alreadyCorrected: boolean;
   officeId: string;
   officeBackfilled: boolean;
+  officeReplaced: boolean;
   sourceAppended: boolean;
   matchMethod: "alias_exact" | "deterministic_fallback";
   dryRun: boolean;
@@ -204,10 +205,27 @@ export async function runElectionContestFamilyCorrection(
           `(${match.officeId}); refusing correction`
       );
     }
+    // A judge office stored on an election being corrected to non-judicial is
+    // the same classification error (309 Arkansas quorum-court seats sat on the
+    // judicial Justice of the Peace office), so it is replaced. Any other stored
+    // office that differs from the match is a real conflict.
+    let officeReplaced = false;
     if (row.office_id && row.office_id !== match.officeId) {
-      throw new Error(
-        `Election ${electionId} already references office ${row.office_id}, but corrected family resolves ${match.officeId}; refusing correction`
+      const storedOffice = await client.query<ResolvedOfficeRow>(
+        `
+          SELECT canonical_name
+          FROM public.offices
+          WHERE id = $1::uuid
+        `,
+        [row.office_id]
       );
+      const storedCanonicalName = storedOffice.rows[0]?.canonical_name;
+      if (!storedCanonicalName || familyIsJudicial || !isJudicialOfficeCanonicalName(storedCanonicalName)) {
+        throw new Error(
+          `Election ${electionId} already references office ${row.office_id}, but corrected family resolves ${match.officeId}; refusing correction`
+        );
+      }
+      officeReplaced = true;
     }
 
     const { sources, appended: sourceAppended } = mergeElectionSource(
@@ -215,7 +233,7 @@ export async function runElectionContestFamilyCorrection(
       sourceUrl
     );
     const officeBackfilled = row.office_id === null;
-    const needsUpdate = !alreadyCorrected || officeBackfilled || sourceAppended;
+    const needsUpdate = !alreadyCorrected || officeBackfilled || officeReplaced || sourceAppended;
 
     if (dryRun || !needsUpdate) {
       await client.query("ROLLBACK");
@@ -242,6 +260,7 @@ export async function runElectionContestFamilyCorrection(
       alreadyCorrected,
       officeId: match.officeId,
       officeBackfilled,
+      officeReplaced,
       sourceAppended,
       matchMethod: match.method,
       dryRun,

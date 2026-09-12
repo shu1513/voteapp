@@ -22,7 +22,11 @@ import {
   evaluateOfficeCandidateEligibilityByElectionIds,
   summarizeOfficeCandidateEligibilityReasons,
 } from "../candidates/officeCandidateEligibility.js";
-import { OfficeMatcher, type OfficeMatchResult } from "../elections/officeMatcher.js";
+import {
+  isArkansasQuorumCourtTitle,
+  OfficeMatcher,
+  type OfficeMatchResult,
+} from "../elections/officeMatcher.js";
 import { createDistrictNewElectionNotificationEvents } from "../users/districtNotificationEvents.js";
 
 type WriterOptions = {
@@ -454,6 +458,21 @@ async function writeElectionsForDistrict(
       if (entry.race_type !== "office") {
         matchedOfficeIds.push(null);
         continue;
+      }
+
+      // An Arkansas justice of the peace sits on the county quorum court, the
+      // county's legislative body, so the seat is never a judicial contest
+      // whatever family discovery reported (see isArkansasQuorumCourtTitle).
+      if (
+        entry.discovery_contest_family === "judicial_office" &&
+        isArkansasQuorumCourtTitle({
+          scope: payload.district_type,
+          state: payload.state,
+          districtName: payload.district_name,
+          officialBallotTitle: entry.official_ballot_title,
+        })
+      ) {
+        entry.discovery_contest_family = "non_judicial_office";
       }
 
       const officeMatch = await officeMatcher.resolve({

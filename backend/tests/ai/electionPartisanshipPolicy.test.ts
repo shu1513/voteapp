@@ -838,6 +838,8 @@ describe("electionPartisanshipPolicy", () => {
     // 145 aliases to the County Executive office. The judicial branch (which
     // would force the state's judicial ballot rule) must not claim them.
     expect(isJudicialOfficeTitle("Crawford County Judge", "AR")).toBe(false);
+    expect(isJudicialOfficeTitle("Pulaski County Justice of the Peace District 3", "AR")).toBe(false);
+    expect(isJudicialOfficeTitle("Justice of the Peace, District 7", "ar")).toBe(false);
     expect(isJudicialOfficeTitle("Laurel County Judge/Executive", "KY")).toBe(false);
     expect(isJudicialOfficeTitle("Laurel County Judge-Executive", "KY")).toBe(false);
     expect(isJudicialOfficeTitle("Laurel County Judge Executive", "KY")).toBe(false);
@@ -865,6 +867,12 @@ describe("electionPartisanshipPolicy", () => {
     expect(isJudicialOfficeTitle("Magisterial District Judge, District 05-2-01", "PA")).toBe(true);
     expect(isJudicialOfficeTitle("Circuit Judge, 27th Judicial Circuit", "KY")).toBe(true);
     expect(isJudicialOfficeTitle("District Judge, 2nd Division", "AR")).toBe(true);
+    // A justice of the peace is a judge outside Arkansas: Arizona prints the
+    // party for its JPs but they sit on a precinct court, and Texas's JP holds a
+    // precinct court too. Both stay on the judicial branch.
+    expect(isJudicialOfficeTitle("Justice of the Peace, Precinct 2", "AZ")).toBe(true);
+    expect(isJudicialOfficeTitle("Justice of the Peace, Precinct 4, Place 1", "TX")).toBe(true);
+    expect(isJudicialOfficeTitle("Pulaski County Justice of the Peace District 3")).toBe(true);
   });
 
   it("lets AR/KY/TX county executive and fiscal-court offices be stored partisan", () => {
@@ -872,6 +880,7 @@ describe("electionPartisanshipPolicy", () => {
       ["KY", "Laurel County, Kentucky", "Laurel County Judge/Executive"],
       ["KY", "Laurel County, Kentucky", "Laurel County Magistrate District 1"],
       ["AR", "Crawford County, Arkansas", "Crawford County Judge"],
+      ["AR", "Pulaski County, Arkansas", "Pulaski County Justice of the Peace District 3"],
       ["TX", "Van Zandt County, Texas", "Van Zandt County Judge"],
     ] as const) {
       // No fixed policy value, so a source-backed true survives instead of
@@ -907,5 +916,35 @@ describe("electionPartisanshipPolicy", () => {
         })
       ).toBe(true);
     }
+  });
+
+  it("keeps an Arkansas justice of the peace partisan even when discovery filed it as judicial", () => {
+    // The family is only where the question was asked; the office decides.
+    // A judicial_office pass returning quorum-court seats must not force the
+    // researched value to nonpartisan.
+    expect(
+      resolveElectionIsPartisan({
+        draft: {
+          district_id: "d-1",
+          district_name: "Garland County, Arkansas",
+          district_type: "county",
+          state: "AR",
+        },
+        contestFamily: "judicial_office",
+        raceType: "office",
+        officialBallotTitle: "Garland County Justice of the Peace District 5",
+        aiValue: true,
+      })
+    ).toBe(true);
+
+    // Arizona's JP is judicial and forced partisan by its title rule, so the
+    // Arkansas carve-out must not have loosened it into ask_ai.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "AZ",
+        officialBallotTitle: "Justice of the Peace, Precinct 2",
+      })
+    ).toBe(true);
   });
 });

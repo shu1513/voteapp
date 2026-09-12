@@ -9,6 +9,14 @@ import {
 const ELECTION_ID = "10000000-0000-4000-8000-000000000001";
 const JUDGE_OFFICE_ID = "20000000-0000-4000-8000-000000000001";
 const OTHER_OFFICE_ID = "20000000-0000-4000-8000-000000000002";
+const JP_OFFICE_ID = "20000000-0000-4000-8000-000000000003";
+const COMMISSIONER_OFFICE_ID = "20000000-0000-4000-8000-000000000004";
+const OFFICES = [
+  { id: JUDGE_OFFICE_ID, canonical_name: "County Level Judge" },
+  { id: OTHER_OFFICE_ID, canonical_name: "County Recorder" },
+  { id: JP_OFFICE_ID, canonical_name: "Justice of the Peace" },
+  { id: COMMISSIONER_OFFICE_ID, canonical_name: "County Commissioner" },
+];
 const SOURCE_URL = "https://nmcourts.gov/courts-by-county/";
 
 type FakeElectionRow = {
@@ -60,19 +68,10 @@ function fakeClient(
     }
     if (text.includes("WHERE id = $1::uuid") && text.includes("FROM public.offices")) {
       const officeId = values?.[0];
-      const offices = [
-        { id: JUDGE_OFFICE_ID, canonical_name: "County Level Judge" },
-        { id: OTHER_OFFICE_ID, canonical_name: "County Recorder" },
-      ];
-      return { rows: offices.filter((office) => office.id === officeId) };
+      return { rows: OFFICES.filter((office) => office.id === officeId) };
     }
     if (text.includes("FROM public.offices")) {
-      return {
-        rows: [
-          { id: JUDGE_OFFICE_ID, canonical_name: "County Level Judge" },
-          { id: OTHER_OFFICE_ID, canonical_name: "County Recorder" },
-        ],
-      };
+      return { rows: OFFICES };
     }
     return { rows: [] };
   });
@@ -115,6 +114,7 @@ describe("runElectionContestFamilyCorrection", () => {
       alreadyCorrected: false,
       officeId: JUDGE_OFFICE_ID,
       officeBackfilled: true,
+      officeReplaced: false,
       sourceAppended: true,
       matchMethod: "deterministic_fallback",
       dryRun: false,
@@ -205,6 +205,37 @@ describe("runElectionContestFamilyCorrection", () => {
     );
     expect(updateStatement(statements)).toBeUndefined();
     expect(statements.at(-1)?.text).toBe("ROLLBACK");
+  });
+
+  it("replaces the judicial JP office when an Arkansas quorum-court seat is corrected to non-judicial", async () => {
+    const { client, statements } = fakeClient(
+      electionRow({
+        official_ballot_title: "Justice of the Peace District 3",
+        discovery_contest_family: "judicial_office",
+        office_id: JP_OFFICE_ID,
+        district_name: "Columbia County, Arkansas",
+        state: "AR",
+      }),
+      { aliasOfficeId: JP_OFFICE_ID, aliasKey: "justice of the peace" }
+    );
+
+    const result = await runElectionContestFamilyCorrection(
+      client,
+      options({ expectedFamily: "judicial_office", correctedFamily: "non_judicial_office" })
+    );
+
+    expect(result).toMatchObject({
+      officeId: COMMISSIONER_OFFICE_ID,
+      officeBackfilled: false,
+      officeReplaced: true,
+      matchMethod: "deterministic_fallback",
+    });
+    expect(updateStatement(statements)?.values?.slice(0, 3)).toEqual([
+      ELECTION_ID,
+      "non_judicial_office",
+      COMMISSIONER_OFFICE_ID,
+    ]);
+    expect(statements.at(-1)?.text).toBe("COMMIT");
   });
 
   it("lets the matcher discard a mis-learned non-judge alias for a judge title", async () => {

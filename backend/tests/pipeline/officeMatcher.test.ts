@@ -52,6 +52,60 @@ describe("OfficeMatcher", () => {
     });
   });
 
+  it("maps an Arkansas justice of the peace to County Commissioner over a learned JP alias", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [{ office_id: "office-jp", normalized_alias: "justice of the peace" }],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-jp", canonical_name: "Justice of the Peace" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    for (const discoveryContestFamily of ["judicial_office", "non_judicial_office"] as const) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Columbia County, Arkansas",
+        state: "AR",
+        officialBallotTitle: "Justice of the Peace District 3",
+        discoveryContestFamily,
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-county-commissioner",
+        method: "deterministic_fallback",
+        shouldPersistAlias: false,
+      });
+    }
+  });
+
+  it("keeps a Texas justice of the peace on the judicial JP office", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-jp", canonical_name: "Justice of the Peace" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Morris County, Texas",
+      state: "TX",
+      officialBallotTitle: "Justice of the Peace, Precinct 1",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-jp");
+  });
+
   it("keeps a bare county Clerk title ambiguous outside Washington", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { county: [] },
