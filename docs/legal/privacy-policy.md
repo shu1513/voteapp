@@ -51,12 +51,20 @@ follows (the old wording read as pick-targeted); adds section-into-view to
 the analytics list (section_exposed in backend/src/usage/events.ts).
 Clarifications of existing practice, nothing new collected —
 CURRENT_TERMS_VERSION stays 1.4.
+1.6 → 1.7 on 2026-09-12 (mobile store release, docs/mobile-release.md):
+names the mobile push notification tokens (user_push_tokens: expo token,
+native APNs/FCM token, platform, last_seen_at; revoked on logout, CASCADE on
+account delete — mobile/src/lib/pushNotifications.ts) and the push
+processors (Expo push service, APNs, FCM) that receive the token and
+notification text only. This version must be LIVE before the app is
+submitted to either store. Disclosure of an opt-in feature —
+CURRENT_TERMS_VERSION stays 1.4.
 -->
 
 # Elections Simplified Privacy Policy
 
-**Last updated:** September 10, 2026
-**Version:** 1.6
+**Last updated:** September 12, 2026
+**Version:** 1.7
 
 This Privacy Policy describes how Elections Simplified Inc., a Delaware corporation and the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
@@ -71,6 +79,8 @@ This Privacy Policy describes how Elections Simplified Inc., a Delaware corporat
 **Support payments (optional).** If you choose to support the Service with a one-time payment or a monthly membership, the payment is processed by Stripe (see Section 3); you enter your card details on Stripe's payment pages, and your card number never reaches our servers. Stripe's payment notifications to us may include limited billing details (such as the name and email address you gave Stripe), which we do not store. What we store is the payment amount, date, type (one-time or monthly), refund status, and Stripe reference identifiers, linked to your account.
 
 **Preferences and activity.** Settings you choose: candidates you follow, research-area interests, ballot ordering preferences, and email notification opt-ins.
+
+**Mobile app and push notifications.** If you use the Elections Simplified app for iPhone or Android and allow notifications, we store a push notification token for that device (an identifier issued by Apple, Google, or the Expo push service that lets us send notifications to that device, not to you by name), the device platform (iOS or Android), and when the token was last registered or refreshed. The token is linked to your account so notifications about candidates you follow reach your devices. Signing out on a device marks that device's token as revoked, and we stop sending to it; deleting your account removes the stored tokens. The app stores your sign-in session on the device in the operating system's secure storage.
 
 **Your picks.** If you record a pick for a race or a position on a ballot measure, we store it on your account so your ballot draft is there when you return. Because the Service is about elections, your picks, follows, and interests may reveal your civic or political views. We treat them as your private account data and never sell them or disclose them to third parties; the one exception is a pick card you choose to share, described below. We use them to provide the features you chose and to select relevant civic updates for the notification emails you control in settings. If those emails ever include clearly labeled promotional content from a civic organization, it is chosen only from the research-area interests you selected (for example, an environmental group for someone who chose the environment as an interest), never from your picks or the candidates you follow. Every such email includes a working unsubscribe link, and the data used to choose them never leaves us.
 
@@ -96,6 +106,7 @@ We share information only with the processors needed to run the Service:
 - **Google Places (autocomplete)** — receives the address text you type when address suggestions are enabled; requests are proxied through our servers so Google does not receive your IP address from your browser.
 - **Google (Sign in with Google)** — when you choose to sign in with Google, your browser interacts with Google directly to complete the sign-in (Google's own privacy policy applies to that interaction), and we receive the identity token described in Section 1. We send Google nothing about your activity in the Service.
 - **Amazon Web Services (SES)** — receives your email address to deliver account and notification emails.
+- **Expo push service, Apple Push Notification service, and Google Firebase Cloud Messaging (mobile push notifications)** — when you allow notifications in the mobile app, receive the device push token and the notification text in order to deliver it to your device. They receive no account information.
 - **Usage analytics** — the usage information described in Section 1 is collected and stored by us on the infrastructure providers listed below; no separate analytics company receives it.
 - **OpenAI (AI answers in Ask)** — when AI-generated answers are enabled for the Ask feature, receives the text of your chat question and the snippets of our own election data used to answer it, together with a pseudonymous account identifier (a cryptographic hash used only for abuse prevention — never your email address, name, or address). We send requests with storage disabled, and under OpenAI's API terms this content is not used to train OpenAI's models. AI answers are labeled as AI-generated in the Service.
 - **Stripe (support payments)** — if you choose to make a support payment, Stripe collects your card and billing details directly on its own payment pages (we never receive your card number) and processes the payment, any recurring membership billing, and any refund on our behalf. We receive the payment amount, status, and reference identifiers. Stripe also retains payment records under its own legal obligations; see Stripe's privacy policy at stripe.com/privacy.
@@ -108,7 +119,7 @@ We may also disclose information if we believe in good faith that disclosure is 
 
 ## 4. Retention and deletion
 
-Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, the Google account identifier if you signed in with Google, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. If you made support payments, any active membership is canceled when you delete your account, and the payment records described in Section 1 (amounts, dates, type, refund status, and Stripe reference identifiers) are retained for accounting, tax, and legal-compliance purposes with the link to your deleted account removed; Stripe separately retains its payment records under its own legal obligations. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics events are deleted 90 days after they are received; only aggregate statistics that identify no browser or session are kept longer.
+Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, the Google account identifier if you signed in with Google, saved districts, follows, preferences, mobile push notification tokens, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. If you made support payments, any active membership is canceled when you delete your account, and the payment records described in Section 1 (amounts, dates, type, refund status, and Stripe reference identifiers) are retained for accounting, tax, and legal-compliance purposes with the link to your deleted account removed; Stripe separately retains its payment records under its own legal obligations. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics events are deleted 90 days after they are received; only aggregate statistics that identify no browser or session are kept longer.
 
 ## 5. Your choices
 

@@ -1,6 +1,9 @@
 import { index, layout, route, type RouteConfig } from "@react-router/dev/routes";
 
 export default [
+  // Resource route (no layout): Apple universal-links manifest for the mobile
+  // app, kept out of public/ so it is served as application/json.
+  route(".well-known/apple-app-site-association", "routes/apple-app-site-association.ts"),
   layout("App.tsx", [
     index("pages/HomePage.tsx"),
     route("ballot", "pages/BallotPage.tsx"),

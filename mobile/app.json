@@ -10,12 +10,21 @@
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.electionssimplified.voteapp",
+      "supportsTablet": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
       "associatedDomains": [
         "applinks:electionssimplified.com"
       ]
     },
     "android": {
       "package": "com.electionssimplified.voteapp",
+      "blockedPermissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
       "intentFilters": [
         {
           "action": "VIEW",

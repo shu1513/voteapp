@@ -171,8 +171,11 @@ const PINNED_DOCUMENTS = [
     // read as pick-targeted); adds section-into-view to the analytics list.
     // Clarifications of existing practice, nothing new collected —
     // TERMS_VERSION stays 1.4, no re-acceptance.
-    version: "1.6",
-    sha256: "01043ef6113fded9a558901ee19d7a4d6ff09eab7b383ca970babffb7200c2aa",
+    // 1.7 (2026-09-12): mobile push notification tokens and the push
+    // processors (Expo push service, APNs, FCM) named ahead of the store
+    // release. Opt-in feature disclosure — TERMS_VERSION stays 1.4.
+    version: "1.7",
+    sha256: "160fac196a7f30003fbca980abda9795a7fb8b2c8081712f8983f54cdd81a0b4",
   },
   {
     filename: "disclaimer.md",

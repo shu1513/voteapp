@@ -50,6 +50,8 @@ hooks safe to share.
 ## Project docs
 
 Mobile plan docs live in `docs/plans/` (see `mobile-feature-parity.md`).
+Store release steps (EAS build profiles, push credentials, deep-link files,
+App Store / Play Console prerequisites) are in `docs/mobile-release.md`.
 
 ## License
 
