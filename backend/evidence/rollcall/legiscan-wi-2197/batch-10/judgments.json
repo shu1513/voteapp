@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1494273,
+   "measure_id": "AB 3",
+   "vote_date": "2025-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 3, which would have added cursive writing to the state's model English standards and required public, charter and private voucher schools to teach it, so that pupils could write legibly in cursive by the end of fifth grade. The Assembly passed it 51-46, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 3, which would have added cursive writing to the state's model English standards and required public, charter and private voucher schools to teach it, so that pupils could write legibly in cursive by the end of fifth grade. The Assembly passed it 51-46, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1493523,
+   "measure_id": "AB 4",
+   "vote_date": "2025-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 4, which would have required public, charter and private voucher schools to teach civics starting in the 2027-28 school year. The lessons would have covered the country's founding principles, how to take part in government, and how communism, socialism and totalitarianism compare with representative democracy. Students graduating from the 2030-31 school year on would have needed a half credit of civics. The Assembly passed it 52-46, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 4, which would have required public, charter and private voucher schools to teach civics starting in the 2027-28 school year. The lessons would have covered the country's founding principles, how to take part in government, and how communism, socialism and totalitarianism compare with representative democracy. Students graduating from the 2030-31 school year on would have needed a half credit of civics. The Assembly passed it 52-46, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1517600,
+   "measure_id": "AB 91",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 91, which would have split the cost of the 25 school resource officers, police officers assigned to schools, that state law already requires in Milwaukee Public Schools equally between the district and the City of Milwaukee. Both would have had 30 days to sign an agreement and certify that the officers were in place, or lose part of their state aid. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 91, which would have split the cost of the 25 school resource officers, police officers assigned to schools, that state law already requires in Milwaukee Public Schools equally between the district and the City of Milwaukee. Both would have had 30 days to sign an agreement and certify that the officers were in place, or lose part of their state aid. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1614194,
+   "measure_id": "AB 226",
+   "vote_date": "2026-01-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 226, which would have barred public schools, charter schools and private voucher schools from serving meals that contain any of five additives: brominated vegetable oil, potassium bromate, propylparaben, azodicarbonamide and red dye 3. The Assembly passed it 53-43, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 226, which would have barred public schools, charter schools and private voucher schools from serving meals that contain any of five additives: brominated vegetable oil, potassium bromate, propylparaben, azodicarbonamide and red dye 3. The Assembly passed it 53-43, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1609667,
+   "measure_id": "AB 644",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 644, which would have raised state aid for school districts that merge in 2027, 2028 or 2029 to $1,500 per pupil in the first year and $650 in the second, up from $150 today. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 644, which would have raised state aid for school districts that merge in 2027, 2028 or 2029 to $1,500 per pupil in the first year and $650 in the second, up from $150 today. The Assembly passed it 53-44, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1609704,
+   "measure_id": "AB 647",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 647, which would have given school boards that agree to share whole grades, sending all or most pupils in a grade to one district, a grant of $500 per pupil in those grades each year for four years. A new grant would have been allowed only when enough money was set aside to pay the existing grants in full. The Assembly passed it 54-43, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 647, which would have given school boards that agree to share whole grades, sending all or most pupils in a grade to one district, a grant of $500 per pupil in those grades each year for four years. A new grant would have been allowed only when enough money was set aside to pay the existing grants in full. The Assembly passed it 54-43, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "house",
+   "session": "2197",
+   "roll": 1609660,
+   "measure_id": "AB 648",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Assembly Bill 648, which would have created new state aid for school districts that merge on or after July 1, 2026, when the merged district's allowed tax rate is higher than the lowest rate among the districts that merged. The aid would have shrunk by a fifth each year and ended in the sixth year. It would have counted against the district's revenue limit, which lowers the property tax the district may levy. The bill did not fund the new aid. The Assembly passed it 54-43, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 648, which would have created new state aid for school districts that merge on or after July 1, 2026, when the merged district's allowed tax rate is higher than the lowest rate among the districts that merged. The aid would have shrunk by a fifth each year and ended in the sixth year. It would have counted against the district's revenue limit, which lowers the property tax the district may levy. The bill did not fund the new aid. The Assembly passed it 54-43, but the Senate did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WI",
+   "chamber": "senate",
+   "session": "2197",
+   "roll": 1592623,
+   "measure_id": "SB 41",
+   "vote_date": "2025-06-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 41, which would have created competitive grants of up to $20,000 for public, private and tribal schools to make their buildings safer and train staff in security, with preference for schools that had never had a state school safety grant. Before voting, the Senate removed the bill's $30 million, so no money would have been set aside for the grants. No grant could have been made after June 30, 2027. The Senate passed it 18-14, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "nay_description": "Voted against Senate Bill 41, which would have created competitive grants of up to $20,000 for public, private and tribal schools to make their buildings safer and train staff in security, with preference for schools that had never had a state school safety grant. Before voting, the Senate removed the bill's $30 million, so no money would have been set aside for the grants. No grant could have been made after June 30, 2027. The Senate passed it 18-14, but the Assembly did not vote on it before the session's last floor period ended, so it never became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
