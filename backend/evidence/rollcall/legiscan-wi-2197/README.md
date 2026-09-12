@@ -75,14 +75,21 @@ divided government showing up in the data. The operator chose to work both scope
 | batch-07 | vetoed pool, elections, environment and state operations | 6 kept of 17 | 8 | 388 |
 | batch-08 | AB 100 and AB 102, added after the SF0044 decision | 2 kept of 2 | 4 | 189 |
 | batch-09 | AB 595, added after the HB0318 decision | 1 kept of 1 | 1 | 11 |
+| batch-10 | died pool, education | 8 kept of 14 | 8 | 614 |
+| batch-11 | died pool, economy and taxes | 4 kept of 14 | 4 | 264 |
+| batch-12 | died pool, everything else | 10 kept of 18 | 10 | 634 |
 
-**The enacted pool and the vetoed pool are both closed.** Every one of the 24
-enacted measures and 74 vetoed measures has a written disposition. Wisconsin holds
-5,236 roll-call records over 103 roll calls, all local.
+**All three pools are closed: enacted, vetoed, and died.** Every one of the 24
+enacted measures, 74 vetoed measures and 46 measures that died in the second
+chamber has a written disposition. Wisconsin holds 6,748 roll-call records over
+125 roll calls, all local.
 
-Not worked, by decision: the 46 measures that died without a veto (the operator
-has not asked for that scope), and the adopted joint and senate resolutions
-(not law, so out of scope under the standing rules).
+Not worked, by decision: the adopted joint and senate resolutions (not law, so
+out of scope under the standing rules).
+
+Three hand-written records were retired as duplicates of imported votes. Apply
+each batch's `duplicate-retirements.json` again at promotion: batch-06, batch-10
+and batch-12.
 
 AB 100 and AB 102 (sports designated by biological sex) were dropped in batch-05
 pending the campaign-wide decision on Wyoming SF0044. Wyoming batch-04 made it
