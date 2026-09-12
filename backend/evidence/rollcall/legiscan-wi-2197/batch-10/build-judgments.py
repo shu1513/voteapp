@@ -77,8 +77,8 @@ add('AB 644', 1609667, 'house', '2025-11-19', 53, 44, (
 
 add('AB 647', 1609704, 'house', '2025-11-19', 54, 43, (
     'Assembly Bill 647, which would have given school boards that agree to share whole '
-    'grades, sending every pupil in a grade to one district, a four-year grant of $500 '
-    'per pupil in those grades. A new grant would have been allowed only when enough '
+    'grades, sending all or most pupils in a grade to one district, a grant of $500 per '
+    'pupil in those grades each year for four years. A new grant would have been allowed only when enough '
     'money was set aside to pay the existing grants in full. {t}'),
     L((EFF, 'for', None)))
 
