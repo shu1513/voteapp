@@ -17,11 +17,18 @@
 // so keeping the stamp would hide them from repair permanently. Their records
 // are never touched; the re-sweep is additive.
 //
+// A second cohort (--cohort august-21-template) covers the 2026-08-21 bulk
+// run: question_id-tagged 7-entry ledgers whose findings were the same fixed
+// sentences on every candidate. A spot-check of 10 found real dated actions
+// the ledgers denied. Only ledgers where EVERY finding is one of those
+// sentences match; any candidate-specific finding keeps the ledger.
+//
 // Guard rails, all of which have to pass before a single row changes:
 // - explicit confirmed-at date window (the incident days), never "everything";
 // - structural cohort guard: only untagged ledgers with exactly
 //   COHORT_ENTRY_COUNT evidence entries match the collapsed template — every
-//   post-#350 write carries question_id tags and can never match;
+//   post-#350 write carries question_id tags and can never match (or, for
+//   the august-21-template cohort, every finding is a fixed template sentence);
 // - --expected-total from a prior --dry-run must equal the live resettable
 //   count (a mismatch means the database moved — re-run the dry-run);
 // - candidates that are retired (deleted/merged) or under an active
@@ -44,6 +51,7 @@ export type SweepConfirmationResetClient = {
 };
 
 export type SweepConfirmationResetOptions = {
+  cohort: SweepResetCohort;
   confirmedFrom: string;
   confirmedTo: string;
   /** Required on live runs; validated against the resettable count when set. */
@@ -55,6 +63,23 @@ export type SweepConfirmationResetOptions = {
 // post-#350 never_held ledger also has 4 entries, but every post-#350 write
 // is question_id-tagged, so "untagged AND exactly 4 entries" cannot match it.
 export const COHORT_ENTRY_COUNT = 4;
+
+export type SweepResetCohort = "july-15-untagged" | "august-21-template";
+export const SWEEP_RESET_COHORTS: readonly SweepResetCohort[] = [
+  "july-15-untagged",
+  "august-21-template",
+];
+
+// Every finding the 2026-08-21 bulk run wrote, verbatim.
+export const AUGUST_21_TEMPLATE_FINDINGS: ReadonlySet<string> = new Set([
+  "The stored office or service record was compared; no additional dated substantive roll-call action found.",
+  "No additional dated legislation sponsorship found.",
+  "No additional dated executive action found.",
+  "No dated court, ethics, disciplinary, or campaign-finance proceeding found.",
+  "The stored service record was compared; no additional dated leadership action found.",
+  "No additional dated public action found.",
+  "No dated endorsement record found.",
+]);
 
 const SAMPLE_LIMIT = 10;
 const QUESTION_SIGNATURE_LIMIT = 20;
@@ -98,6 +123,33 @@ export function readSweepEvidenceShape(evidence: unknown): SweepEvidenceShape {
   return { entryCount: entries.length, hasQuestionIdTags, questions };
 }
 
+// True only when the ledger has entries and every one of them carries a
+// finding from AUGUST_21_TEMPLATE_FINDINGS. Anything unparseable is false.
+export function isAugust21TemplateLedger(evidence: unknown): boolean {
+  if (typeof evidence !== "object" || evidence === null || Array.isArray(evidence)) {
+    return false;
+  }
+  const entries = (evidence as { entries?: unknown }).entries;
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return false;
+  }
+  return entries.every((entry) => {
+    if (typeof entry !== "object" || entry === null || Array.isArray(entry)) {
+      return false;
+    }
+    const finding = (entry as { finding?: unknown }).finding;
+    return typeof finding === "string" && AUGUST_21_TEMPLATE_FINDINGS.has(finding.trim());
+  });
+}
+
+export function matchesResetCohort(evidence: unknown, cohort: SweepResetCohort): boolean {
+  if (cohort === "august-21-template") {
+    return isAugust21TemplateLedger(evidence);
+  }
+  const shape = readSweepEvidenceShape(evidence);
+  return shape.entryCount === COHORT_ENTRY_COUNT && !shape.hasQuestionIdTags;
+}
+
 export type SweepConfirmationCohortRow = {
   candidate_id: string;
   context_type: "election" | "presidential_cycle";
@@ -113,6 +165,7 @@ export type SweepConfirmationCohortRow = {
 type CandidateSample = { candidateId: string; displayName: string };
 
 export type SweepConfirmationResetResult = {
+  cohort: SweepResetCohort;
   dryRun: boolean;
   confirmedFrom: string;
   confirmedTo: string;
@@ -171,7 +224,7 @@ export async function runSweepConfirmationReset(
   client: SweepConfirmationResetClient,
   options: SweepConfirmationResetOptions
 ): Promise<SweepConfirmationResetResult> {
-  const { confirmedFrom, confirmedTo, expectedTotal, dryRun } = options;
+  const { cohort: resetCohort, confirmedFrom, confirmedTo, expectedTotal, dryRun } = options;
 
   // Enforced here, not only in main(): a direct caller must not be able to
   // run live without stating the count a dry-run told it to expect.
@@ -226,8 +279,7 @@ export async function runSweepConfirmationReset(
     const activeClaim: SweepConfirmationCohortRow[] = [];
     const resettable: SweepConfirmationCohortRow[] = [];
     for (const row of cohort.rows) {
-      const shape = readSweepEvidenceShape(row.evidence);
-      if (shape.entryCount !== COHORT_ENTRY_COUNT || shape.hasQuestionIdTags) {
+      if (!matchesResetCohort(row.evidence, resetCohort)) {
         shapeMismatch.push(row);
       } else if (row.candidate_retired) {
         retired.push(row);
@@ -304,6 +356,7 @@ export async function runSweepConfirmationReset(
     }
 
     return {
+      cohort: resetCohort,
       dryRun,
       confirmedFrom,
       confirmedTo,
@@ -341,6 +394,9 @@ function usage(): string {
     "candidate (records-holding ones too — their stamps came from the same collapsed",
     "run) so all of them rejoin the unstamped backlog for a real sweep.",
     "",
+    "--cohort july-15-untagged (default) or august-21-template (every finding",
+    "is one of the fixed 2026-08-21 bulk-run sentences).",
+    "",
     "Usage:",
     "  npm run manual:records:reset-confirmations -- --confirmed-from YYYY-MM-DD --confirmed-to YYYY-MM-DD --reason text --dry-run",
     "  npm run manual:records:reset-confirmations -- --confirmed-from YYYY-MM-DD --confirmed-to YYYY-MM-DD --expected-total N --reason text",
@@ -374,6 +430,7 @@ function requireEnv(name: string): string {
 
 async function main(): Promise<void> {
   assertKnownCliFlags("manual:records:reset-confirmations", process.argv.slice(2), [
+    { name: "--cohort", value: "space" },
     { name: "--confirmed-from", value: "space" },
     { name: "--confirmed-to", value: "space" },
     { name: "--expected-total", value: "space" },
@@ -382,6 +439,11 @@ async function main(): Promise<void> {
   ]);
   loadProjectEnv();
 
+  const cohortRaw = readFlag("--cohort") ?? "july-15-untagged";
+  if (!SWEEP_RESET_COHORTS.includes(cohortRaw as SweepResetCohort)) {
+    throw new Error(`--cohort must be one of ${SWEEP_RESET_COHORTS.join(", ")}; received ${cohortRaw}`);
+  }
+  const cohort = cohortRaw as SweepResetCohort;
   const confirmedFrom = requireFlag("--confirmed-from");
   const confirmedTo = requireFlag("--confirmed-to");
   const reason = requireFlag("--reason");
@@ -408,6 +470,7 @@ async function main(): Promise<void> {
 
   try {
     const result = await runSweepConfirmationReset(client, {
+      cohort,
       confirmedFrom,
       confirmedTo,
       expectedTotal,

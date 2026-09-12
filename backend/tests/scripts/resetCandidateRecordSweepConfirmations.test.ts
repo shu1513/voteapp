@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  AUGUST_21_TEMPLATE_FINDINGS,
   COHORT_ENTRY_COUNT,
+  isAugust21TemplateLedger,
+  matchesResetCohort,
   readSweepEvidenceShape,
   runSweepConfirmationReset,
   type SweepConfirmationCohortRow,
@@ -73,6 +76,7 @@ function options(
   overrides: Partial<Parameters<typeof runSweepConfirmationReset>[1]> = {}
 ) {
   return {
+    cohort: "july-15-untagged" as const,
     confirmedFrom: "2026-07-15",
     confirmedTo: "2026-07-16",
     expectedTotal: null,
@@ -372,5 +376,88 @@ describe("runSweepConfirmationReset", () => {
     expect(select?.text).toContain("FOR UPDATE OF sc, c");
     expect(select?.text).toContain("sc.confirmed_at >= $1::date");
     expect(select?.text).toContain("sc.confirmed_at < $2::date + 1");
+  });
+});
+
+const AUGUST_FINDINGS = [...AUGUST_21_TEMPLATE_FINDINGS];
+
+function augustEvidence(findings: readonly string[] = AUGUST_FINDINGS) {
+  return {
+    entries: findings.map((finding, index) => ({
+      question: `Question ${index}`,
+      question_id: `q${index}`,
+      finding,
+    })),
+  };
+}
+
+describe("august-21-template cohort", () => {
+  it("matches a ledger whose every finding is a template sentence", () => {
+    expect(AUGUST_21_TEMPLATE_FINDINGS.size).toBe(7);
+    expect(isAugust21TemplateLedger(augustEvidence())).toBe(true);
+    expect(isAugust21TemplateLedger(augustEvidence(AUGUST_FINDINGS.map((f) => ` ${f} `)))).toBe(
+      true
+    );
+  });
+
+  it("keeps a ledger with any candidate-specific finding", () => {
+    const mixed = augustEvidence([
+      ...AUGUST_FINDINGS.slice(0, 6),
+      "No additional dated substantive roll-call action found in the focused Volusia Council minutes search.",
+    ]);
+    expect(isAugust21TemplateLedger(mixed)).toBe(false);
+  });
+
+  it("rejects empty or malformed evidence", () => {
+    for (const evidence of [
+      null,
+      "nope",
+      {},
+      { entries: [] },
+      { entries: ["nope"] },
+      { entries: [{ question: "q" }] },
+    ]) {
+      expect(isAugust21TemplateLedger(evidence)).toBe(false);
+    }
+  });
+
+  it("keeps the two cohorts disjoint", () => {
+    expect(matchesResetCohort(templateEvidence(), "august-21-template")).toBe(false);
+    expect(matchesResetCohort(augustEvidence(), "july-15-untagged")).toBe(false);
+    expect(matchesResetCohort(templateEvidence(), "july-15-untagged")).toBe(true);
+    expect(matchesResetCohort(augustEvidence(), "august-21-template")).toBe(true);
+  });
+
+  it("live run resets only pure template ledgers and clears their stamps", async () => {
+    const pure = cohortRow({ candidate_id: "pure", evidence: augustEvidence(), record_count: 2 });
+    const mixed = cohortRow({
+      candidate_id: "mixed",
+      evidence: augustEvidence([...AUGUST_FINDINGS.slice(0, 6), "Board minutes reviewed; no vote found."]),
+    });
+    const july = cohortRow({ candidate_id: "july" });
+    const { client, statements } = fakeClient([pure, mixed, july]);
+
+    const result = await runSweepConfirmationReset(
+      client,
+      options({
+        cohort: "august-21-template",
+        confirmedFrom: "2026-08-21",
+        confirmedTo: "2026-08-21",
+        dryRun: false,
+        expectedTotal: 1,
+      })
+    );
+
+    expect(result).toMatchObject({
+      cohort: "august-21-template",
+      resettable: { total: 1, zeroRecordCount: 0, withRecordsCount: 1 },
+      skipped: { shapeMismatchCount: 2 },
+      deletedConfirmations: 1,
+      clearedStamps: 1,
+    });
+    const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
+    expect(deleteStatement?.values?.[0]).toEqual(["pure"]);
+    const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
+    expect(updateStatement?.values).toEqual([["pure"]]);
   });
 });
