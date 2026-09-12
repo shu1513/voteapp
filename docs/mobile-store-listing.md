@@ -91,7 +91,7 @@ tracking, no data brokers.
 
 ## Review notes (Apple) — demo account
 
-> Elections Simplified is a independent voter-information app. Browsing works
+> Elections Simplified is an independent voter-information app. Browsing works
 > without an account: enter any U.S. address (for example, 1600 Pennsylvania
 > Ave NW, Washington, DC 20500) to see a ballot. To review signed-in
 > features (picks, follows, notifications) use:
