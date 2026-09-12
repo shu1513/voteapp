@@ -21,7 +21,7 @@ produces, so manual research works what real users are waiting on.
 | `candidate_roster` | election | upcoming office election, no candidate link, no live roster deferral |
 | `candidate_profile` | candidate | live candidate on an upcoming ballot with an empty summary |
 | `candidate_records` | candidate | same, `last_records_searched_at IS NULL` |
-| `ballot_measure` | measure | upcoming measure never researched or without a summary |
+| `ballot_measure` | election | upcoming measure election with no `ballot_measures` row yet, never researched, or without a summary |
 | `election_results` | election | past office race with a roster but no won/advanced/runoff row; past measure election with a measure lacking its result |
 | `missing_general` | election | primary with no later same-contest election (the `manual:elections:missing-generals` rules, scoped to the ballot's districts) |
 

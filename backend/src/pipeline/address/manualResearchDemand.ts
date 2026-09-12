@@ -134,17 +134,21 @@ const GAP_QUERIES: Record<Exclude<ManualResearchDemandStage, "missing_general">,
       AND c.last_records_searched_at IS NULL
     ORDER BY c.id, e.election_date ASC, e.id ASC
   `,
-  // Upcoming measure that was never researched or has no summary.
+  // Upcoming measure election whose detail row does not exist yet (the
+  // measure writer creates ballot_measures only after research — the very
+  // gap to count), was never researched, or has no summary. Keyed by the
+  // election so the row's identity survives research.
   ballot_measure: `
-    SELECT 'ballot_measure' AS stage, bm.id::text AS target_id, ${GAP_SELECT_COLUMNS},
-      bm.official_ballot_title AS label
-    FROM public.ballot_measures AS bm
-    JOIN public.elections AS e ON e.id = bm.election_id
+    SELECT 'ballot_measure' AS stage, e.id::text AS target_id, ${GAP_SELECT_COLUMNS},
+      e.official_ballot_title AS label
+    FROM public.elections AS e
     JOIN public.districts AS d ON d.id = e.district_id
+    LEFT JOIN public.ballot_measures AS bm ON bm.election_id = e.id
     WHERE e.district_id = ANY($1::uuid[])
+      AND e.race_type = 'ballot_measure'
       AND e.election_date >= $2::date
       AND (e.election_date - $2::date)::int <= $3::int
-      AND (bm.last_researched IS NULL OR COALESCE(btrim(bm.summary), '') = '')
+      AND (bm.id IS NULL OR bm.last_researched IS NULL OR COALESCE(btrim(bm.summary), '') = '')
   `,
   // Past election with no decisive result: an office race whose roster
   // exists but no won/advanced/runoff row was recorded, or a measure

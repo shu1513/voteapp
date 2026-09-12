@@ -11,9 +11,9 @@ BEGIN;
 -- priority signal for the existing due lists.
 CREATE TABLE public.manual_research_demand (
     stage text NOT NULL,
-    -- election id (candidate_roster, election_results, missing_general),
-    -- candidate id (candidate_profile, candidate_records) or ballot measure
-    -- id (ballot_measure); no FK because the target is polymorphic.
+    -- election id (candidate_roster, ballot_measure, election_results,
+    -- missing_general) or candidate id (candidate_profile,
+    -- candidate_records); no FK because the target is polymorphic.
     target_id uuid NOT NULL,
     district_id uuid NOT NULL,
     -- The election that put the target on the user's ballot (the target

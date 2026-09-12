@@ -125,8 +125,14 @@ describe("findResearchGapsForDistricts", () => {
     }
     expect(sqlByStage.get("candidate_profile")).toContain("COALESCE(btrim(c.summary), '') = ''");
     expect(sqlByStage.get("candidate_records")).toContain("c.last_records_searched_at IS NULL");
-    // Measures: never researched or no summary.
-    expect(sqlByStage.get("ballot_measure")).toContain("bm.last_researched IS NULL OR COALESCE(btrim(bm.summary), '') = ''");
+    // Measures: keyed by the election so a measure election with no detail
+    // row yet (the writer creates it after research) still counts.
+    expect(sqlByStage.get("ballot_measure")).toContain("SELECT 'ballot_measure' AS stage, e.id::text AS target_id");
+    expect(sqlByStage.get("ballot_measure")).toContain("LEFT JOIN public.ballot_measures AS bm ON bm.election_id = e.id");
+    expect(sqlByStage.get("ballot_measure")).toContain("e.race_type = 'ballot_measure'");
+    expect(sqlByStage.get("ballot_measure")).toContain(
+      "bm.id IS NULL OR bm.last_researched IS NULL OR COALESCE(btrim(bm.summary), '') = ''"
+    );
     // Results: past races with a roster but no decisive outcome; measures without a result.
     expect(sqlByStage.get("election_results")).toContain("e.election_date < $2::date");
     expect(sqlByStage.get("election_results")).toContain("er.outcome IN ('won', 'advanced', 'runoff')");
