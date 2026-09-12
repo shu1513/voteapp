@@ -257,10 +257,10 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           historical_competitiveness: null,
           current_competitiveness: null,
           vote_power: {
-            // 73 representation + the 10-point direct-vote bonus; the label
-            // bump (high → very high) is capped back to high because the
-            // measure has no close-race evidence.
-            score: 83,
+            // The direct-vote label bump (high → very high) is capped back
+            // to high because the measure has no close-race evidence; the
+            // score carries no bonus.
+            score: 73,
             label: "high",
             confidence: "high",
             representation_level: "high",

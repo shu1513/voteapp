@@ -126,13 +126,6 @@ const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = [
   "very_high",
 ];
 
-// Ballot measures are a direct vote on the policy itself, with no
-// representative in between, so they rate one step above the same inputs on
-// an office race. The matching score bonus keeps the vote_power sort in the
-// same order as the labels (a statewide measure at "above average" must not
-// sort under an "average" county office).
-const BALLOT_MEASURE_SCORE_BONUS = 10;
-
 const DECISIVENESS_SCORE_BY_LABEL: Record<HistoricalContestCompetitivenessLabel, number> = {
   toss_up: 1,
   very_competitive: 0.85,
@@ -288,7 +281,6 @@ function bumpLabel(label: VotePowerLabel): VotePowerLabel {
 }
 
 function calculateScore(input: {
-  raceType: ElectionRaceType;
   representationPowerScore: number | null;
   representationLevel: VotePowerRepresentationLevel;
   decisivenessLevel: VotePowerDecisivenessLevel;
@@ -316,12 +308,6 @@ function calculateScore(input: {
     raw = decisivenessLevel === "none" ? 0 : 100 * DECISIVENESS_SCORE_BY_LABEL[input.competitivenessLabel!];
   } else {
     return null;
-  }
-
-  // Before the caps, so a partial-data measure still sorts inside the
-  // partial-data band rather than over fully-rated office races.
-  if (input.raceType === "ballot_measure") {
-    raw += BALLOT_MEASURE_SCORE_BONUS;
   }
 
   if (decisivenessLevel === "none") {
@@ -904,9 +890,14 @@ export function calculateVotePower(input: VotePowerInput): VotePowerResult {
   if (missingCoreAxis) {
     label = capLabel(label, "high");
   }
-  // Direct vote on the policy: one tier up. "Very high" stays reserved for
+  // Ballot measures are a direct vote on the policy itself, with no
+  // representative in between: one tier up. "Very high" stays reserved for
   // measures with close-race evidence — a small district alone tops out at
-  // "high", the same ceiling a partial-data rating has.
+  // "high", the same ceiling a partial-data rating has. Label only: the score
+  // carries no bonus, because score bands already overlap across tiers (an
+  // office "very high" starts near 76 while "high" runs to about 81), so a
+  // bonus could not make the sort follow the labels — it would only push
+  // evidence-free small-district measures over toss-up offices.
   if (input.raceType === "ballot_measure") {
     label = bumpLabel(label);
     if (missingCoreAxis || decisivenessLevel === "unknown") {
@@ -916,7 +907,6 @@ export function calculateVotePower(input: VotePowerInput): VotePowerResult {
 
   return {
     score: calculateScore({
-      raceType: input.raceType,
       representationPowerScore,
       representationLevel,
       decisivenessLevel,

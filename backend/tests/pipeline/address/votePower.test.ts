@@ -205,8 +205,8 @@ describe("calculateVotePower", () => {
     });
   });
 
-  it("rates ballot measures one tier above the office matrix, with a matching score bonus", () => {
-    // Office: 58 / medium. Measure: +10 score, medium → above_average.
+  it("rates ballot measures one tier above the office matrix, with no score bonus", () => {
+    // Office: 58 / medium. Measure: same 58, medium → above_average.
     expect(
       calculateVotePower({
         raceType: "ballot_measure",
@@ -215,14 +215,14 @@ describe("calculateVotePower", () => {
         competitivenessLabel: "competitive",
       })
     ).toMatchObject({
-      score: 68,
+      score: 58,
       label: "above_average",
       confidence: "high",
       factors: ["medium_representation", "medium_decisiveness", "direct_vote_on_policy"],
     });
   });
 
-  it("lets a measure with close-race evidence reach very high, with the score clamped at 100", () => {
+  it("lets a measure with close-race evidence reach very high", () => {
     expect(
       calculateVotePower({
         raceType: "ballot_measure",
@@ -231,7 +231,7 @@ describe("calculateVotePower", () => {
         competitivenessLabel: "toss_up",
       })
     ).toMatchObject({
-      score: 100,
+      score: 96,
       label: "very_high",
       factors: ["high_representation", "high_decisiveness", "direct_vote_on_policy"],
     });
@@ -246,7 +246,7 @@ describe("calculateVotePower", () => {
         competitivenessLabel: null,
       })
     ).toMatchObject({
-      score: 60,
+      score: 50,
       label: "above_average",
       confidence: "high",
       representation_level: "medium",
@@ -255,9 +255,8 @@ describe("calculateVotePower", () => {
     });
   });
 
-  it("keeps a partial-data measure inside the partial-data score band", () => {
-    // Unknown representation: the bonus lands before the 79 cap, and the
-    // bumped label stays under the partial-data "high" ceiling.
+  it("keeps a partial-data measure under the partial-data ceiling", () => {
+    // Unknown representation: the bumped label stays under the "high" cap.
     expect(
       calculateVotePower({
         raceType: "ballot_measure",
@@ -311,7 +310,7 @@ describe("calculateVotePower", () => {
         competitivenessLabel: null,
       })
     ).toMatchObject({
-      score: 100,
+      score: 90,
       label: "high",
       confidence: "high",
       representation_level: "high",
