@@ -23,6 +23,13 @@
 // the ledgers denied. Only ledgers where EVERY finding is one of those
 // sentences match; any candidate-specific finding keeps the ledger.
 //
+// A third cohort (--cohort records-retired-out) covers candidates whose
+// latest sweep stored only weak rows (directory listings, bios, primary
+// results) that later cleanups retired. They sit stamped with zero records
+// and an only_general_labels or empty-claim ledger, so the queue skips them;
+// a spot-check found real votes those sweeps missed. Ledgers claiming
+// no_records_found are never in this cohort.
+//
 // Guard rails, all of which have to pass before a single row changes:
 // - explicit confirmed-at date window (the incident days), never "everything";
 // - structural cohort guard: only untagged ledgers with exactly
@@ -64,10 +71,11 @@ export type SweepConfirmationResetOptions = {
 // is question_id-tagged, so "untagged AND exactly 4 entries" cannot match it.
 export const COHORT_ENTRY_COUNT = 4;
 
-export type SweepResetCohort = "july-15-untagged" | "august-21-template";
+export type SweepResetCohort = "july-15-untagged" | "august-21-template" | "records-retired-out";
 export const SWEEP_RESET_COHORTS: readonly SweepResetCohort[] = [
   "july-15-untagged",
   "august-21-template",
+  "records-retired-out",
 ];
 
 // Every finding the 2026-08-21 bulk run wrote, verbatim.
@@ -160,7 +168,23 @@ export type SweepConfirmationCohortRow = {
   candidate_retired: boolean;
   active_claim: boolean;
   record_count: number;
+  retired_record_count: number;
+  /** confirmed_at >= the candidate's last_records_searched_at. */
+  covers_latest_search: boolean;
+  confirmed_gap_ids: string[];
 };
+
+// records-retired-out: the ledger backs the candidate's latest search, every
+// record that search stored was later retired, and the ledger makes no
+// no_records_found claim (those are evidenced confirmed nulls, kept).
+export function isRecordsRetiredOutLedger(row: SweepConfirmationCohortRow): boolean {
+  return (
+    row.record_count === 0 &&
+    row.retired_record_count > 0 &&
+    row.covers_latest_search &&
+    !row.confirmed_gap_ids.includes("candidate_records.no_records_found")
+  );
+}
 
 type CandidateSample = { candidateId: string; displayName: string };
 
@@ -263,7 +287,15 @@ export async function runSweepConfirmationReset(
             FROM public.candidate_records r
             WHERE r.candidate_id = sc.candidate_id
               AND r.retired_at IS NULL
-          ) AS record_count
+          ) AS record_count,
+          (
+            SELECT count(*)::int
+            FROM public.candidate_records r
+            WHERE r.candidate_id = sc.candidate_id
+              AND r.retired_at IS NOT NULL
+          ) AS retired_record_count,
+          coalesce(sc.confirmed_at >= c.last_records_searched_at, false) AS covers_latest_search,
+          sc.confirmed_gap_ids
         FROM public.candidate_record_sweep_confirmations sc
         JOIN public.candidates c ON c.id = sc.candidate_id
         WHERE sc.confirmed_at >= $1::date
@@ -279,7 +311,11 @@ export async function runSweepConfirmationReset(
     const activeClaim: SweepConfirmationCohortRow[] = [];
     const resettable: SweepConfirmationCohortRow[] = [];
     for (const row of cohort.rows) {
-      if (!matchesResetCohort(row.evidence, resetCohort)) {
+      const matches =
+        resetCohort === "records-retired-out"
+          ? isRecordsRetiredOutLedger(row)
+          : matchesResetCohort(row.evidence, resetCohort);
+      if (!matches) {
         shapeMismatch.push(row);
       } else if (row.candidate_retired) {
         retired.push(row);
@@ -394,8 +430,9 @@ function usage(): string {
     "candidate (records-holding ones too — their stamps came from the same collapsed",
     "run) so all of them rejoin the unstamped backlog for a real sweep.",
     "",
-    "--cohort july-15-untagged (default) or august-21-template (every finding",
-    "is one of the fixed 2026-08-21 bulk-run sentences).",
+    "--cohort july-15-untagged (default), august-21-template (every finding",
+    "is one of the fixed 2026-08-21 bulk-run sentences), or records-retired-out",
+    "(latest sweep's records all retired since; no no_records_found claim).",
     "",
     "Usage:",
     "  npm run manual:records:reset-confirmations -- --confirmed-from YYYY-MM-DD --confirmed-to YYYY-MM-DD --reason text --dry-run",

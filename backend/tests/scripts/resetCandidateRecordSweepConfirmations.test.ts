@@ -4,6 +4,7 @@ import {
   AUGUST_21_TEMPLATE_FINDINGS,
   COHORT_ENTRY_COUNT,
   isAugust21TemplateLedger,
+  isRecordsRetiredOutLedger,
   matchesResetCohort,
   readSweepEvidenceShape,
   runSweepConfirmationReset,
@@ -40,6 +41,9 @@ function cohortRow(
     candidate_retired: false,
     active_claim: false,
     record_count: 0,
+    retired_record_count: 0,
+    covers_latest_search: true,
+    confirmed_gap_ids: [],
     ...overrides,
   };
 }
@@ -459,5 +463,72 @@ describe("august-21-template cohort", () => {
     expect(deleteStatement?.values?.[0]).toEqual(["pure"]);
     const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
     expect(updateStatement?.values).toEqual([["pure"]]);
+  });
+});
+
+describe("records-retired-out cohort", () => {
+  const retiredOut = (overrides: Partial<SweepConfirmationCohortRow> & { candidate_id: string }) =>
+    cohortRow({
+      retired_record_count: 2,
+      confirmed_gap_ids: ["candidate_records.only_general_labels"],
+      ...overrides,
+    });
+
+  it("matches a covering ledger whose stored records were all retired", () => {
+    expect(isRecordsRetiredOutLedger(retiredOut({ candidate_id: "a" }))).toBe(true);
+    expect(isRecordsRetiredOutLedger(retiredOut({ candidate_id: "a", confirmed_gap_ids: [] }))).toBe(
+      true
+    );
+  });
+
+  it("keeps candidates with active records, no retired records, or an older ledger", () => {
+    expect(isRecordsRetiredOutLedger(retiredOut({ candidate_id: "a", record_count: 1 }))).toBe(false);
+    expect(
+      isRecordsRetiredOutLedger(retiredOut({ candidate_id: "a", retired_record_count: 0 }))
+    ).toBe(false);
+    expect(
+      isRecordsRetiredOutLedger(retiredOut({ candidate_id: "a", covers_latest_search: false }))
+    ).toBe(false);
+  });
+
+  it("never matches an evidenced no_records_found confirmation", () => {
+    const confirmedNull = retiredOut({
+      candidate_id: "a",
+      confirmed_gap_ids: ["candidate_records.no_records_found"],
+    });
+    expect(isRecordsRetiredOutLedger(confirmedNull)).toBe(false);
+  });
+
+  it("live run resets only matching ledgers and clears their stamps", async () => {
+    const match = retiredOut({ candidate_id: "match" });
+    const confirmedNull = retiredOut({
+      candidate_id: "null",
+      confirmed_gap_ids: ["candidate_records.no_records_found"],
+    });
+    const withRecords = retiredOut({ candidate_id: "live", record_count: 3 });
+    const { client, statements } = fakeClient([match, confirmedNull, withRecords]);
+
+    const result = await runSweepConfirmationReset(
+      client,
+      options({
+        cohort: "records-retired-out",
+        confirmedFrom: "2026-07-10",
+        confirmedTo: "2026-09-10",
+        dryRun: false,
+        expectedTotal: 1,
+      })
+    );
+
+    expect(result).toMatchObject({
+      cohort: "records-retired-out",
+      resettable: { total: 1, zeroRecordCount: 1 },
+      skipped: { shapeMismatchCount: 2 },
+      deletedConfirmations: 1,
+      clearedStamps: 1,
+    });
+    const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
+    expect(deleteStatement?.values?.[0]).toEqual(["match"]);
+    const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
+    expect(updateStatement?.values).toEqual([["match"]]);
   });
 });
