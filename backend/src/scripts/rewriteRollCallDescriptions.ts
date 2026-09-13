@@ -8,6 +8,7 @@ import {
   type LegislativeVoteDescriptionRewrite,
 } from "../pipeline/rollcall/legislativeVoteStore.js";
 import { LEGISLATIVE_VOTE_CHAMBERS, type LegislativeVoteChamber } from "../pipeline/rollcall/legislativeVotes.js";
+import { describeRollCallDescriptionLengthProblem } from "../pipeline/rollcall/rollCallDescriptionLength.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
@@ -115,15 +116,46 @@ type RollResult = {
  * old yea or nay sentence. Exported for the per-roll walk in main() and
  * for tests; the caller owns the transaction.
  */
+/** "Voted to pass Senate Bill 627, which ..." -> "Voted to pass Senate Bill 627". */
+export function rollCallOpener(description: string): string {
+  const match = /^(.*?)(?:, |\. )/.exec(description);
+  return match ? match[1]! : description;
+}
+
 export async function rewriteRollCallRecords(
   client: Queryable,
   input: {
     rewrite: LegislativeVoteDescriptionRewrite;
     oldYeaDescription: string;
     oldNayDescription: string;
+    /**
+     * Also rewrite records that carry an earlier revision of the same digest:
+     * same opener as the old yea/nay sentence and still over the length gate.
+     * Records someone already shortened by hand are still left alone.
+     */
+    staleToo?: boolean;
   }
 ): Promise<{ rewritten: number; leftAlone: number; leftAloneIds: string[] }> {
   const { rewrite } = input;
+  const yeaOpener = rollCallOpener(input.oldYeaDescription);
+  const nayOpener = rollCallOpener(input.oldNayDescription);
+  const staleMatch = (description: string): string | null => {
+    if (!input.staleToo || yeaOpener === nayOpener) {
+      return null;
+    }
+    if (describeRollCallDescriptionLengthProblem(description) === null) {
+      return null;
+    }
+    const startsWithOpener = (opener: string) =>
+      description.startsWith(`${opener}, `) || description.startsWith(`${opener}. `);
+    if (startsWithOpener(yeaOpener)) {
+      return rewrite.yeaDescription;
+    }
+    if (startsWithOpener(nayOpener)) {
+      return rewrite.nayDescription;
+    }
+    return null;
+  };
   const prefix = `rollcall:${rewrite.jurisdiction}:${rewrite.chamber}:${rewrite.session}:${rewrite.rollNumber}:`;
   const records = await client.query<{
     id: string;
@@ -150,7 +182,7 @@ export async function rewriteRollCallRecords(
         ? rewrite.yeaDescription
         : record.description === input.oldNayDescription
           ? rewrite.nayDescription
-          : null;
+          : staleMatch(record.description);
     if (next === null) {
       leftAloneIds.push(record.id);
       continue;
@@ -223,12 +255,14 @@ async function main(): Promise<void> {
   assertKnownCliFlags("rollcall:rewrite", argv, [
     { name: "--rewrites-file", value: "both" },
     { name: "--dry-run", value: "none" },
+    { name: "--stale-too", value: "none" },
   ]);
   const rewritesFile = readValueFlag(argv, "--rewrites-file");
   if (rewritesFile === null) {
     throw new Error("--rewrites-file is required");
   }
   const dryRun = argv.includes("--dry-run");
+  const staleToo = argv.includes("--stale-too");
   const entries = parseRewritesFile(JSON.parse(readFileSync(rewritesFile, "utf8")) as unknown);
   loadProjectEnv();
   const databaseUrl = process.env.DATABASE_URL?.trim();
@@ -253,6 +287,7 @@ async function main(): Promise<void> {
           rewrite: entry,
           oldYeaDescription: applied.oldYeaDescription,
           oldNayDescription: applied.oldNayDescription,
+          staleToo,
         });
         rows.push({ roll, outcome: "updated", ...result, leftAloneIds: result.leftAloneIds.slice(0, 5) });
       }

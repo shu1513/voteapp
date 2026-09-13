@@ -40,3 +40,4 @@ promotion.
 | IL | 193 | 13217 | 95 |
 | WA | 220 | 11002 | 0 |
 | CO | 474 | 13473 | 0 |
+| CA | 343 | 10949 | 0 (478 stale-revision records rewritten via `--stale-too`) |

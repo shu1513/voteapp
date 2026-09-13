@@ -59,6 +59,16 @@ describe("rewriteRollCallRecords", () => {
     expect(query.mock.calls[3]![1]).toEqual(["r1", oldYea, ENTRY.yea_description, "manual", "rollcall-rewrite"]);
   });
 
+  it("with staleToo, rewrites an older revision of the digest but not a hand-shortened row", async () => {
+    const stale = "Voted against House Bill 67, which sets rules for towing. Older digest wording. More. Still more. The Delaware House passed it 23-14, and it became law.";
+    const short = "Voted for House Bill 67, which caps towing fees. The Delaware House passed it 23-14, and it became law.";
+    const rows = [record("r1", "c1", stale), record("r2", "c2", short), record("r3", "c3", "Hand-edited text. 23-14.")];
+    const query = vi.fn().mockResolvedValueOnce({ rows }).mockResolvedValue({ rows: [], rowCount: 1 });
+    const result = await rewriteRollCallRecords({ query }, { rewrite, oldYeaDescription: oldYea, oldNayDescription: oldNay, staleToo: true });
+    expect(result).toEqual({ rewritten: 1, leftAlone: 2, leftAloneIds: ["r2", "r3"] });
+    expect((query.mock.calls[1]![1] as unknown[])[2]).toBe(ENTRY.nay_description);
+  });
+
   it("fails loud when a row changed under the rewrite", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rows: [record("r1", "c1", oldYea)] }).mockResolvedValue({ rows: [], rowCount: 0 });
     await expect(rewriteRollCallRecords({ query }, { rewrite, oldYeaDescription: oldYea, oldNayDescription: oldNay })).rejects.toThrow(

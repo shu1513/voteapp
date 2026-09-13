@@ -29,7 +29,12 @@ Recipe (all paths from `backend/`; scripts here are python3, no deps):
 5. `npm run rollcall:rewrite -- --rewrites-file evidence/rollcall/description-rewrite-2026-09-13/CO/rewrites.json --dry-run`
    then without `--dry-run`, saving stdout to `CO/apply-report.json`.
    `leftAlone` rows are records whose text no longer matched the roll's
-   stored sentence (hand-edited); list them, do not force them.
+   stored sentence. If they are just an older revision of the same digest
+   (same opener, still over the length gate) rerun with `--stale-too`;
+   a record someone shortened by hand is still left alone.
+   `tools/compact.py <export.json> 300` is a shorter per-measure view than
+   showstate.py: one body per measure, plus only the rolls whose OPEN or
+   CLOSE needs an override.
 6. Add the row to ../README.md, commit `data(rollcall): rewrite CO ...`.
 
 Sanity check afterwards:
