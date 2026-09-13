@@ -305,10 +305,12 @@ export function HomePage() {
             interpolates 32 -> 52px — a text wordmark this long can't carry
             Google's ~90px image-logo scale without wrapping on phones. */}
         <p className="text-wordmark font-extrabold tracking-tight text-rausch">{APP_NAME}</p>
-        {/* One sentence, still the whole pitch. text-title (22 -> 32px) keeps
-            a clear step below the wordmark; text-balance stops the centred
-            wrap from ragging into a one-word last line. */}
-        <h1 className="mt-6 text-balance text-title font-bold">
+        {/* One sentence, still the whole pitch. 23 -> 35px: one notch above
+            the shared text-title (22 -> 32px) because this is a masthead, not
+            a page heading, while keeping a clear step below the wordmark;
+            text-balance stops the centred wrap from ragging into a one-word
+            last line. */}
+        <h1 className="mt-6 text-balance text-[clamp(1.4375rem,1.1875rem+1.25vw,2.1875rem)] font-bold leading-[1.2]">
           See who the candidates really are by their track records
         </h1>
         {/* What the service is, where a first-time visitor actually looks.
@@ -316,7 +318,8 @@ export function HomePage() {
             mark, pitch, and claim; the form below keeps its own left-aligned
             label/input convention. Size and ink-mid set it apart as a
             standalone claim (ink-soft failed APCA for a must-read line). */}
-        <p className="mt-3 text-base font-medium text-ink-mid">
+        {/* 16.5 -> 18.5px: a hair under text-body (17 -> 19px). */}
+        <p className="mt-3 text-[clamp(1.03125rem,0.9896rem+0.2083vw,1.15625rem)] font-medium leading-relaxed text-ink-mid">
           {TAGLINE}
         </p>
       </div>
@@ -360,6 +363,7 @@ export function HomePage() {
               }}
               onRetrievePendingChange={setRetrievePending}
               searchIconWhenIdle
+              pill
             />
             {/* text-sm + the deep brand step: the 12px/rausch-dark pairing
                 failed APCA for an error the visitor must act on. */}
@@ -369,6 +373,20 @@ export function HomePage() {
                 code from the suggestions.
               </p>
             ) : null}
+            {/* Google-sized: a small centered button right under the pill box,
+                not a full-width bar competing with the field. The privacy note
+                sits below it so the box-and-button pair reads as one unit. */}
+            <div className="mt-4 flex justify-center">
+              <button
+                type="submit"
+                disabled={!canSearch}
+                // Disabled keeps the brand color at reduced opacity: the old
+                // gray-out read as broken rather than "accept the terms first".
+                className="rounded-md bg-rausch px-8 py-2 text-sm font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-rausch"
+              >
+                {resolve.isPending ? "Searching…" : "Search"}
+              </button>
+            </div>
             {/* Notice belongs here, not only in the dialog: the autocomplete
                 forwards what is typed after three characters, so collection
                 starts while the visitor types and long before Search. */}
@@ -380,7 +398,7 @@ export function HomePage() {
                 coarse-input hint: same two promises (district lookup only,
                 never saved), short enough to be read. Other surfaces keep
                 the full constant. */}
-            <p className="mt-1 text-xs text-ink-soft">
+            <p className="mt-4 text-center text-xs text-ink-soft">
               The address is only used to find voting districts. You can also search by ZIP or
               city, with fewer local races.{" "}
               <FullAddressExplanation
@@ -388,16 +406,6 @@ export function HomePage() {
               />
             </p>
           </div>
-
-          <button
-            type="submit"
-            disabled={!canSearch}
-            // Disabled keeps the brand color at reduced opacity: the old
-            // gray-out read as broken rather than "accept the terms first".
-            className="w-full rounded-md bg-rausch px-4 py-3 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-rausch"
-          >
-            {resolve.isPending ? "Searching…" : "Search"}
-          </button>
         </form>
 
         {resolve.isError ? (

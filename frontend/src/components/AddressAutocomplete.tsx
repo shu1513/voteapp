@@ -40,6 +40,9 @@ type AddressAutocompleteProps = {
    * text, exactly like Google's mobile search box; never rendered at sm+
    * where the cursor does the job. */
   searchIconWhenIdle?: boolean;
+  /** Google-style pill box (landing page). Settings and saved-ballot forms
+   * keep the square field so it lines up with their other inputs. */
+  pill?: boolean;
 };
 
 export function AddressAutocomplete({
@@ -49,6 +52,7 @@ export function AddressAutocomplete({
   inputId,
   placeholder,
   searchIconWhenIdle,
+  pill,
 }: AddressAutocompleteProps) {
   // Drives the idle search glyph only; suggestion machinery has its own
   // focus handling below.
@@ -119,10 +123,14 @@ export function AddressAutocomplete({
       <div className="relative">
         <ComboboxInput
           id={inputId}
-          // pl-10 clears the glyph while it shows; sm:px-3 because the glyph
-          // never renders at sm+ (see sm:hidden below).
-          className={`mt-1 w-full rounded-md border border-line py-3 shadow-sm focus:border-ink focus:outline-none ${
-            showSearchIcon ? "pl-10 pr-3 sm:px-3" : "px-3"
+          // The left padding clears the glyph while it shows; the sm: reset
+          // because the glyph never renders at sm+ (see sm:hidden below).
+          className={`mt-1 w-full border border-line py-3 focus:border-ink focus:outline-none ${
+            pill
+              ? `rounded-full shadow-sm hover:shadow-md focus:shadow-md ${
+                  showSearchIcon ? "pl-11 pr-5 sm:px-5" : "px-5"
+                }`
+              : `rounded-md shadow-sm ${showSearchIcon ? "pl-10 pr-3 sm:px-3" : "px-3"}`
           }`}
           placeholder={placeholder}
           autoComplete="street-address"
@@ -147,7 +155,9 @@ export function AddressAutocomplete({
           <span
             aria-hidden="true"
             data-testid="address-search-hint"
-            className="pointer-events-none absolute inset-y-0 left-3 flex items-center pt-1 text-ink-soft sm:hidden"
+            className={`pointer-events-none absolute inset-y-0 flex items-center pt-1 text-ink-soft sm:hidden ${
+              pill ? "left-4" : "left-3"
+            }`}
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <circle cx="11" cy="11" r="7" />
