@@ -1,14 +1,11 @@
 import { useState } from "react";
 import type { ElectionCandidate } from "@voteapp/api-client";
-import { partyColorClass } from "@voteapp/api-client";
+import { partyColorClass, useMyResearchAreas } from "@voteapp/api-client";
 import { AutoPickControl } from "./AutoPickControl";
 import { FinanceSummaryCard, hasFinanceContent } from "./FinanceSummaryCard";
-import { RecordItem } from "./RecordItem";
+import { StanceSummary } from "./StanceSummary";
+import { TrackRecordSection, type RecordView } from "./TrackRecordSection";
 import { sourceLinkProps, track } from "../lib/usage";
-
-// Same cut-off as the candidate page's newest-first view: a long-serving
-// judge can carry dozens of records, and the Yes/No card must stay reachable.
-const INITIAL_RECORDS = 20;
 
 type RetentionJudgeSectionProps = {
   electionId: string;
@@ -22,10 +19,11 @@ type RetentionJudgeSectionProps = {
 };
 
 // A judicial retention race is one Yes/No question about one person, so the
-// election page shows the judge inline — name, site, summary, finance, and
-// the full track record — instead of a one-card "Candidates" list that only
-// linked to the profile. The Yes/No answer itself stays on the page's
-// sticky card (ElectionPage), so this section carries no pick button.
+// election page shows the judge inline — the same blocks as the profile
+// (summary, stance boxes, finance, grouped track record) — instead of a
+// one-card "Candidates" list that only linked to the profile. The Yes/No
+// answer itself stays on the page's sticky card (ElectionPage), so this
+// section carries no pick button.
 export function RetentionJudgeSection({
   electionId,
   candidate,
@@ -33,10 +31,10 @@ export function RetentionJudgeSection({
   reporterEmail,
   headingRef,
 }: RetentionJudgeSectionProps) {
-  const [showAll, setShowAll] = useState(false);
+  const { preferences } = useMyResearchAreas();
+  // Same default as the profile: grouped by issue, every group collapsed.
+  const [view, setView] = useState<RecordView>("my_issues");
   const website = candidate.official_website_url ?? null;
-  const records = candidate.records;
-  const shownRecords = showAll ? records : records.slice(0, INITIAL_RECORDS);
   return (
     <section className="mt-6">
       <h2 ref={headingRef} className="text-heading font-semibold">
@@ -62,6 +60,14 @@ export function RetentionJudgeSection({
         ) : null}
       </p>
       {candidate.summary ? <p className="mt-2 text-body text-ink">{candidate.summary}</p> : null}
+      <StanceSummary
+        candidateName={candidate.display_name}
+        records={candidate.records}
+        // Personalized order only in the "my issues first" view, so the
+        // boxes always match the record groups below (same rule as the profile).
+        preferences={view === "my_issues" ? preferences : []}
+        headingLevel="h3"
+      />
       {showAutoPick ? (
         // "Does this candidate align with my values?": the engine answers
         // the Yes/No from the judge's records (see decideRetentionRace).
@@ -89,30 +95,15 @@ export function RetentionJudgeSection({
           </div>
         </details>
       ) : null}
-      <h3 className="mt-4 text-subheading font-semibold">Track record</h3>
-      {records.length > 0 ? (
-        <>
-          <ul className="mt-2 space-y-3">
-            {shownRecords.map((record) => (
-              <RecordItem key={record.id} record={record} showTags reporterEmail={reporterEmail} />
-            ))}
-          </ul>
-          {!showAll && records.length > INITIAL_RECORDS ? (
-            <button
-              type="button"
-              onClick={() => {
-                track("detail_control", { control: "records_show_all", value: "none" });
-                setShowAll(true);
-              }}
-              className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
-            >
-              Show all {records.length} records
-            </button>
-          ) : null}
-        </>
-      ) : (
-        <p className="mt-2 text-sm text-ink-soft">No public records on file yet.</p>
-      )}
+      <TrackRecordSection
+        records={candidate.records}
+        preferences={preferences}
+        view={view}
+        onViewChange={setView}
+        reporterEmail={reporterEmail}
+        headingLevel="h3"
+        emptyState={<p className="mt-4 text-sm text-ink-soft">No public records on file yet.</p>}
+      />
     </section>
   );
 }

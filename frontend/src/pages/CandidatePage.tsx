@@ -1,24 +1,14 @@
 import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import type {
-  CandidateDetail,
-  CandidateElection,
-  CandidateRecord,
-  FinanceSummary,
-  RecordAreaStance,
-  ResearchAreaPreference,
-} from "@voteapp/api-client";
-import { classifyStanceSummary, EVALUATIVE_AREA_SLUGS } from "@voteapp/api-client";
+import type { CandidateDetail, CandidateElection, FinanceSummary } from "@voteapp/api-client";
 import {
   CANDIDATE_RAIL_SORTS,
   candidateRailSortsOffered,
   sortCandidateRailEntries,
   type CandidateRailSortKey,
 } from "@voteapp/api-client";
-import { CappedInlineList } from "../components/CappedInlineList";
 import { DetailPager } from "../components/DetailPager";
-import { SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { DetailRail } from "../components/DetailRail";
 import {
   pagerNeighbors,
@@ -36,99 +26,24 @@ import { CandidatePickButton, CandidatePickRow, MeasureChoiceButtons } from "../
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { useMyDistricts } from "../lib/useMyDistricts";
 import { AddressNudge } from "../components/AddressNudge";
-import { AutoPickControl } from "../components/AutoPickControl";
 import { PostPickActions } from "../components/PostPickActions";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
-import { RecordItem, recordStanceTag } from "../components/RecordItem";
+import { StanceSummary } from "../components/StanceSummary";
+import { TrackRecordSection, type RecordView } from "../components/TrackRecordSection";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictName, formatElectionDate, isJudicialRetentionTitle } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { pageMeta } from "../lib/pageMeta";
 import { useHydrated } from "../lib/useHydrated";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
-import { compareByResearchAreaPriority } from "@voteapp/api-client";
 import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
 import { candidateProfileLinks } from "@voteapp/api-client";
 import { useFollows } from "@voteapp/api-client";
 import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
-import { UNRANKED_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 import { sourceLinkProps, track, useSectionExposure } from "../lib/usage";
-
-type RecordView = "my_issues" | "newest";
-
-// A researched incumbent can carry 50+ records; rendering everything open
-// made the profile a 10,000px wall. Grouped views start with EVERY issue
-// group collapsed behind its per-group count, so the profile opens as a
-// readable index of which issues the candidate has a record on and the
-// reader picks what to expand; the flat newest view cuts off with an
-// explicit "show all".
-const INITIAL_NEWEST_RECORDS = 20;
-
-type RecordGroup = {
-  /** null for the untagged "Other records" pseudo-group. */
-  areaId: string | null;
-  /** null for "Other records"; drives the public-salience ordering. */
-  areaSlug: string | null;
-  areaName: string;
-  records: CandidateRecord[];
-};
-
-// Records grouped by research area (a record with several tags appears under
-// each; untagged records fall into "Other records"). Groups key on the
-// stable research_area_id — display names are presentation, not identity.
-// Groups order by public salience (same ranking as election-card chips), not
-// alphabetically, so the issues voters care about most lead; "Other records"
-// stays last.
-function groupRecords(records: CandidateRecord[]): RecordGroup[] {
-  const groups = new Map<string | null, RecordGroup>();
-  for (const record of records) {
-    const areas = record.research_area_tags.length
-      ? record.research_area_tags.map((tag) => ({
-          areaId: tag.research_area_id,
-          areaSlug: tag.slug,
-          areaName: tag.name,
-        }))
-      : [{ areaId: null, areaSlug: null, areaName: "Other records" }];
-    for (const area of areas) {
-      const group = groups.get(area.areaId) ?? { ...area, records: [] };
-      group.records.push(record);
-      groups.set(area.areaId, group);
-    }
-  }
-  return [...groups.values()].sort((a, b) =>
-    a.areaId === null || a.areaSlug === null
-      ? 1
-      : b.areaId === null || b.areaSlug === null
-        ? -1
-        : compareByResearchAreaPriority(
-            { slug: a.areaSlug, name: a.areaName },
-            { slug: b.areaSlug, name: b.areaName }
-          )
-  );
-}
-
-// "My issues first": saved-area groups move to the front ordered by the
-// user's rank (unranked saved areas after ranked ones), everything else
-// keeps the public-salience order groupRecords produced.
-function orderGroupsByPreference(
-  groups: RecordGroup[],
-  preferences: readonly ResearchAreaPreference[]
-): RecordGroup[] {
-  const rankByAreaId = new Map(
-    preferences.map((preference) => [preference.research_area_id, preference.rank ?? UNRANKED_RESEARCH_AREA_RANK])
-  );
-  return groups
-    .map((group, index) => ({
-      group,
-      index,
-      rank: (group.areaId !== null ? rankByAreaId.get(group.areaId) : undefined) ?? Number.POSITIVE_INFINITY,
-    }))
-    .sort((a, b) => a.rank - b.rank || a.index - b.index)
-    .map(({ group }) => group);
-}
 
 // Loader payload: the candidate detail plus this candidate's finance for
 // each election they are currently in, keyed by candidate_election_id.
@@ -236,128 +151,6 @@ function OngoingElectionFinance({
   );
 }
 
-// Collapsed-group stance tally: how many of the group's records are for /
-// against THIS group's area (a record can lean differently per area, so the
-// count must come from the group's own tag, same rule as recordStanceTag).
-// Neutral-tagged records count toward neither, so the two numbers need not
-// sum to the record count. The "Other records" group has no area and gets
-// zeros.
-function groupStanceCounts(group: RecordGroup): { forCount: number; againstCount: number } {
-  let forCount = 0;
-  let againstCount = 0;
-  if (group.areaId != null) {
-    for (const record of group.records) {
-      const stance = recordStanceTag(record, group.areaId)?.stance;
-      if (stance === "for") forCount += 1;
-      else if (stance === "against") againstCount += 1;
-    }
-  }
-  return { forCount, againstCount };
-}
-
-// The candidate-page counterpart of the measure page's "A YES vote means" /
-// "A NO vote means" boxes: green what the record supports, red what it
-// opposes, amber where it splits (full width below the pair — a third
-// column would squeeze all three on desktop and mixed is the box that
-// needs its counts read). Only the border, fill, and heading carry the
-// color; the area list itself is plain ink. Unlike a measure's one-line
-// "what yes means", these bodies run to several comma-separated areas with
-// counts, and a paragraph of green-on-green (or red-on-red) reads as one
-// tinted block the text sinks into. Renders nothing when no area
-// classifies, so a record-less or judicial-only profile gets no empty
-// shell.
-function StanceSummary({
-  candidateName,
-  records,
-  preferences,
-  exposureRef,
-}: {
-  candidateName: string;
-  records: CandidateRecord[];
-  preferences: readonly ResearchAreaPreference[];
-  /** section_exposed marker (the lead-in line). */
-  exposureRef?: (node: Element | null) => void;
-}) {
-  const { supports, opposes, mixed } = classifyStanceSummary(records, preferences);
-  if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
-    return null;
-  }
-  // The viewer's saved areas render in the shared saved-issue purple so they
-  // stand out from the rest of the list, mirroring the front-of-list ordering.
-  const savedAreaIds = new Set(preferences.map((preference) => preference.research_area_id));
-  // Comma-separated text, not boxed chips (boxes read as buttons — same
-  // rule as the roster rows). Name and count stay one text node so an
-  // exact-match query for the bare area name still resolves to the record
-  // group heading, not this summary.
-  const areaWithCount = (area: RecordAreaStance) => {
-    const count = area.for_count + area.against_count;
-    const text = `${area.name} (${count} record${count === 1 ? "" : "s"})`;
-    return savedAreaIds.has(area.research_area_id) ? <span className={SAVED_AREA_TEXT_CLASS}>{text}</span> : text;
-  };
-  const sideBox = (side: "supports" | "opposes", areas: RecordAreaStance[]) =>
-    areas.length === 0 ? null : (
-      <div
-        className={
-          side === "supports"
-            ? "rounded border border-green-200 bg-green-50 p-3"
-            : "rounded border border-red-200 bg-red-50 p-3"
-        }
-      >
-        <h3
-          className={
-            side === "supports"
-              ? "text-sm font-semibold text-green-900"
-              : "text-sm font-semibold text-red-900"
-          }
-        >
-          {side === "supports" ? "Supports" : "Opposes"}
-        </h3>
-        <CappedInlineList
-          noun="issues"
-          className="mt-1 text-sm text-ink"
-          items={areas.map((area) => ({ key: area.research_area_id, node: areaWithCount(area) }))}
-        />
-      </div>
-    );
-  return (
-    <section className="mt-4">
-      {/* sr-only heading so the section lands in heading navigation; the
-          visible lead-in is aria-hidden because it says the same thing —
-          without the name, which a heading jumped to on its own needs. */}
-      <h2 className="sr-only">{`Where ${candidateName} stands, based on their records`}</h2>
-      <p ref={exposureRef} className="text-sm text-ink-soft" aria-hidden="true">
-        Where they stand, based on their records:
-      </p>
-      {supports.length > 0 || opposes.length > 0 ? (
-        // Two columns only when both sides exist — one box alone spans the
-        // full row instead of leaving an empty half.
-        <div className={`mt-2 grid gap-3${supports.length > 0 && opposes.length > 0 ? " sm:grid-cols-2" : ""}`}>
-          {sideBox("supports", supports)}
-          {sideBox("opposes", opposes)}
-        </div>
-      ) : null}
-      {mixed.length > 0 ? (
-        <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3">
-          <h3 className="text-subheading font-semibold text-amber-900">Mixed record</h3>
-          {/* Same "N support · N oppose" phrasing as the record group
-              headers, so the two surfaces can't drift apart. */}
-          <CappedInlineList
-            noun="issues"
-            className="mt-1 text-sm text-ink"
-            items={mixed.map((area) => {
-              const text = `${area.name} (${area.for_count} support · ${area.against_count} oppose)`;
-              return {
-                key: area.research_area_id,
-                node: savedAreaIds.has(area.research_area_id) ? <span className={SAVED_AREA_TEXT_CLASS}>{text}</span> : text,
-              };
-            })}
-          />
-        </div>
-      ) : null}
-    </section>
-  );
-}
-
 // "Name (Party, State)" built from the non-empty parts: party is typed
 // string but the detail reader coalesces a missing value to ""
 // (candidateDetailReader.ts), and "Jane Doe (, CA)" must not reach a share
@@ -447,16 +240,6 @@ export function CandidatePage() {
   // preference reorder is a no-op, so it degrades to the public-salience
   // order a plain "by issue" view would show.
   const [recordView, setRecordView] = useState<RecordView>("my_issues");
-  // Keyed by candidate, unlike the view pick above: the roster pager keeps
-  // this component mounted across candidates, and a bare boolean would leak
-  // one candidate's 50-record expansion into the next — defeating the
-  // 20-record cap. Same per-entity keying as ElectionPage's party filter
-  // (the view pick is a preference that travels; expanding a list is not);
-  // stale state is simply never read.
-  const [newestExpansion, setNewestExpansion] = useState<{ candidateId: string; on: boolean }>({
-    candidateId: "",
-    on: false,
-  });
 
   const detail = useLoaderData<typeof loader>();
   const candidate = detail.candidate;
@@ -466,13 +249,11 @@ export function CandidatePage() {
   const stanceRef = useSectionExposure("stance", candidate.candidate_id);
   const financeRef = useSectionExposure("finance", candidate.candidate_id);
   const trackRecordRef = useSectionExposure("track_record", candidate.candidate_id);
-  const showAllNewest = newestExpansion.candidateId === candidate.candidate_id && newestExpansion.on;
   // ?? {}: tolerates loader data from before this field existed (deploy skew
   // between a cached document and fresh code) by rendering no finance.
   const ongoingFinance = detail.ongoing_finance ?? {};
   const isFollowing = (follows ?? []).some((follow) => follow.candidate_id === candidate.candidate_id);
   const profileLinks = candidateProfileLinks(candidate);
-  const recordGroups = orderGroupsByPreference(groupRecords(candidate.records), preferences);
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
   // The history list splits on the same date boundary: "is in" would misread
@@ -894,161 +675,35 @@ export function CandidatePage() {
           />
         ))}
 
-        {recordGroups.length > 0 ? (
-          <section className="mt-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              {/* "Track record", not "Record"/"Records": bare "Record" read as
-                  a typo next to a list of many items, and "Records" reads as
-                  documents. This is the home-page promise ("who these
-                  candidates really are by their records") paid off. */}
-              <h2 ref={trackRecordRef} className="text-heading font-semibold">Track record</h2>
-              <label className="flex items-center gap-2 text-sm text-ink-soft">
-                View
-                <select
-                  value={recordView}
-                  onChange={(event) => {
-                    track("detail_control", { control: "record_view", value: event.target.value });
-                    setRecordView(event.target.value as RecordView);
-                  }}
-                  className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
-                >
-                  <option value="my_issues">My issues first</option>
-                  <option value="newest">Newest first</option>
-                </select>
-              </label>
-            </div>
-            {recordView === "newest" ? (
-              // Flat chronological view; the payload already arrives newest-first.
-              <>
-                <ul className="mt-2 space-y-3">
-                  {(showAllNewest ? candidate.records : candidate.records.slice(0, INITIAL_NEWEST_RECORDS)).map(
-                    (record) => (
-                      <RecordItem key={record.id} record={record} showTags reporterEmail={me?.email} />
-                    )
-                  )}
-                </ul>
-                {!showAllNewest && candidate.records.length > INITIAL_NEWEST_RECORDS ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      track("detail_control", { control: "records_show_all", value: "none" });
-                      setNewestExpansion({ candidateId: candidate.candidate_id, on: true });
-                    }}
-                    className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
-                  >
-                    Show all {candidate.records.length} records
-                  </button>
-                ) : null}
-              </>
-            ) : (
-              recordGroups.map((group) => {
-                // Stance tally shown while collapsed, so the split is readable
-                // without opening the group. Evaluative areas keep their
-                // evidence wording (favorable/unfavorable), matching the cards
-                // inside; zero-count sides stay hidden to avoid "0 oppose"
-                // noise. Same colored-text-only treatment as StanceChip.
-                const { forCount, againstCount } = groupStanceCounts(group);
-                const evaluative = group.areaSlug != null && EVALUATIVE_AREA_SLUGS.has(group.areaSlug);
-                return (
-                  <div key={group.areaId ?? "other"} className="mt-4">
-                    {/* The heading lives OUTSIDE the summary, sr-only — same
-                        rule as the finance disclosure above: <summary> maps to
-                        a button, and a heading inside it can drop out of
-                        screen-reader heading navigation. "Track record — "
-                        prefixes the area so the heading reads meaningfully
-                        when jumped to on its own, and keeps its text distinct
-                        from the visible summary line (which repeats the bare
-                        area name). */}
-                    <h3 className="sr-only">{`Track record — ${group.areaName}`}</h3>
-                    {/* Every group starts collapsed; with no `open` prop React
-                        never re-applies a default, so a reader's toggles
-                        survive a view switch that reorders the groups. */}
-                    <details
-                      className="group"
-                      onToggle={(event) =>
-                        track("detail_control", {
-                          control: "record_group_toggle",
-                          value: event.currentTarget.open ? "open" : "close",
-                        })
-                      }
-                    >
-                      {/* The app's own chevron right after the text (flips
-                          open), not the native left triangle: one disclosure
-                          mark everywhere, and the native one renders tiny on
-                          Safari. Hugs the label rather than the row's far
-                          edge, which on a wide screen put it a screen-width
-                          away. list-none + the webkit marker rule hide the
-                          triangle; the hover tint says "button" at rest. */}
-                      <summary className="-mx-2 flex cursor-pointer select-none list-none items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-surface [&::-webkit-details-marker]:hidden">
-                        <span>
-                        {/* Title-case ink subheading, one role step below the
-                            finance/Track-record h2 tier. Not the eyebrow idiom
-                            (small caps, soft gray): that marks static captions,
-                            and these rows are the page's main navigation. */}
-                        <span className="text-subheading font-semibold text-ink">
-                          {group.areaName}
-                        </span>{" "}
-                        {/* The total is redundant when every record in the
-                            group has a stance — "2 records · 2 support" said
-                            the same thing twice. It stays for stance-less
-                            groups (General, Other) and when neutral records
-                            make the tallies fall short of the total. */}
-                        {forCount + againstCount !== group.records.length ? (
-                          <span className="text-xs text-ink-soft">
-                            · {group.records.length} record{group.records.length === 1 ? "" : "s"}
-                          </span>
-                        ) : null}
-                        {forCount > 0 ? (
-                          <span className="text-xs font-medium text-green-900">
-                            {" "}
-                            · {forCount} {evaluative ? "favorable" : "support"}
-                          </span>
-                        ) : null}
-                        {againstCount > 0 ? (
-                          <span className="text-xs font-medium text-red-900">
-                            {" "}
-                            · {againstCount} {evaluative ? "unfavorable" : "oppose"}
-                          </span>
-                        ) : null}
-                        </span>
-                        <svg
-                          aria-hidden="true"
-                          viewBox="0 0 12 12"
-                          className="h-3.5 w-3.5 shrink-0 text-ink-soft transition-transform group-open:rotate-180"
-                        >
-                          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </summary>
-                      <ul className="mt-2 space-y-3">
-                        {group.records.map((record) => (
-                          <RecordItem
-                            key={`${group.areaId ?? "other"}-${record.id}`}
-                            record={record}
-                            showTags={false}
-                            reporterEmail={me?.email}
-                            stanceAreaId={group.areaId}
-                          />
-                        ))}
-                      </ul>
-                    </details>
-                  </div>
-                );
-              })
-            )}
-          </section>
-        ) : (
-          // An empty record list is ambiguous on its own: researched-and-none-
-          // found and not-researched-yet must read differently or absence looks
-          // like a completed (empty) record. "Verified", not "found": a search
-          // can finish with every discovered record dropped for permanently
-          // failing source checks, and the checkpoint still advances — the
-          // array only proves nothing verifiable was kept.
-          <p className="mt-6 text-sm text-ink-soft">
-            {candidate.records_researched_through
-              ? `No verified public records for this candidate — record history researched through ${formatElectionDate(candidate.records_researched_through)}.`
-              : "This candidate's record history has not been researched yet."}
-          </p>
-        )}
+        <TrackRecordSection
+          // Keyed by candidate: the roster pager keeps this page mounted
+          // across candidates, and the "show all" expansion must not leak
+          // from one candidate's 50-record list into the next. The view
+          // pick (recordView) is a preference that travels, so it lives here.
+          // Prefixed: StanceSummary above is a sibling keyed by the same id,
+          // and React treats equal sibling keys as one child.
+          key={`track-record-${candidate.candidate_id}`}
+          records={candidate.records}
+          preferences={preferences}
+          view={recordView}
+          onViewChange={setRecordView}
+          reporterEmail={me?.email}
+          headingRef={trackRecordRef}
+          emptyState={
+            // An empty record list is ambiguous on its own: researched-and-
+            // none-found and not-researched-yet must read differently or
+            // absence looks like a completed (empty) record. "Verified", not
+            // "found": a search can finish with every discovered record
+            // dropped for permanently failing source checks, and the
+            // checkpoint still advances — the array only proves nothing
+            // verifiable was kept.
+            <p className="mt-6 text-sm text-ink-soft">
+              {candidate.records_researched_through
+                ? `No verified public records for this candidate — record history researched through ${formatElectionDate(candidate.records_researched_through)}.`
+                : "This candidate's record history has not been researched yet."}
+            </p>
+          }
+        />
 
         {/* Not a bare "Elections": on a candidate page that reads as a generic
             section of election news. Name the person and the relationship, and
@@ -1129,22 +784,10 @@ export function CandidatePage() {
           >
             {isJudicialRetentionTitle(primaryPickElection.official_ballot_title) ? (
               // Retention race: the sticky card asks Yes/No on keeping the
-              // judge instead of offering a candidate pick.
+              // judge instead of offering a candidate pick. No caption and no
+              // auto-pick here — the profile is reference material; the
+              // election page owns the explanation and the alignment control.
               <>
-                <p className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</p>
-                {/* Same control as the election page's judge section: the
-                    engine answers the Yes/No from this judge's records. Only
-                    here, not on other candidates' cards — auto-pick compares
-                    a roster, and a retention page IS the whole roster. */}
-                <div className="mb-2">
-                  <AutoPickControl
-                    key={primaryPickElection.election_id}
-                    electionId={primaryPickElection.election_id}
-                    seatsToFill={null}
-                    compact
-                    retention
-                  />
-                </div>
                 <MeasureChoiceButtons
                   key={candidate.candidate_id}
                   electionId={primaryPickElection.election_id}

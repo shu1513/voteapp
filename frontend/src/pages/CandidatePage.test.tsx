@@ -921,7 +921,7 @@ describe("CandidatePage", () => {
     expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
   });
 
-  it("puts the retention auto-pick teaser on the sticky Yes/No card for a judge", async () => {
+  it("asks a bare Yes/No on the sticky card for a retention judge — no caption, no auto-pick", async () => {
     clearBallotDraft();
     setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
@@ -931,11 +931,13 @@ describe("CandidatePage", () => {
       })
     );
 
-    // Yes/No on keeping the judge, never a candidate pick — plus the same
-    // alignment control the election page's judge section offers.
+    // Yes/No on keeping the judge, never a candidate pick. The profile is
+    // reference material: the explanation caption and the alignment control
+    // live on the election page's judge section, not here.
     expect(await screen.findByRole("button", { name: "No" })).toBeInTheDocument();
-    expect(screen.getByText("Yes keeps this judge in office. No removes them.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Does this candidate align with my values?" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Yes" })).toBeInTheDocument();
+    expect(screen.queryByText("Yes keeps this judge in office. No removes them.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /align with my values/ })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
   });
 

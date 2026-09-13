@@ -1032,9 +1032,16 @@ describe("ElectionPage", () => {
     expect(screen.getByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Official site" })).toHaveAttribute("href", "https://judge.example.gov");
     expect(screen.getByText("A candidate summary.")).toBeInTheDocument();
+    // The profile's blocks, verbatim: stance boxes, then the track record
+    // grouped by issue with every group collapsed (the record card sits
+    // inside a closed <details>) and the same view picker.
+    expect(screen.getByRole("heading", { name: "Supports" })).toBeInTheDocument();
+    expect(screen.getByText("Environment (1 record)")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Track record" })).toBeInTheDocument();
-    expect(screen.getByText("Upheld the clean water rule.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Track record — Environment" })).toBeInTheDocument();
+    expect(screen.getByText("Upheld the clean water rule.").closest("details")).not.toHaveAttribute("open");
     expect(screen.getByText("Supports Environment")).toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toHaveValue("my_issues");
     expect(screen.queryByText("See full profile →")).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Jordan Voter" })).not.toBeInTheDocument();
     // The guest teaser asks about alignment, not "which candidate".
