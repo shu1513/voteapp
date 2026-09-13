@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,11 +13,15 @@ import { countBucket, track } from "../lib/usage";
 
 export const meta: MetaFunction = () => [{ title: `Welcome · ${APP_NAME}` }];
 
-// Post-signup onboarding step: pick the issues that drive ballot ordering.
-// Login routes verified users here once, when they have no saved areas and
-// have not skipped. Unlike settings, edits stay local and save as one PUT on
-// "Save and continue" — a brand-new user exploring the list shouldn't fire a
-// network write per tap.
+// Post-signup onboarding: pick the issues that drive ballot ordering, then
+// rank them. Two steps on purpose — with pick and rank on one screen (the
+// settings layout) new users tapped issues and saved without noticing the
+// ranking half. Login routes verified users here once, when they have no
+// saved areas and have not skipped. Unlike settings, edits stay local and
+// save as one PUT on "Save and continue" — a brand-new user exploring the
+// list shouldn't fire a network write per tap.
+
+type Step = "pick" | "rank";
 
 export function WelcomePage() {
   useDocumentTitle("Welcome");
@@ -25,6 +29,21 @@ export function WelcomePage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [ranked, setRanked] = useState<RankedResearchArea[]>([]);
+  const [step, setStep] = useState<Step>("pick");
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const previousStep = useRef<Step>(step);
+
+  // Both steps render their primary button at the same position, so React
+  // reuses the DOM node: without this, Enter on "Next" leaves a keyboard
+  // user focused on "Save and continue" with the ranking rows already behind
+  // them — Tab reaches Back/Skip, never the rows. Focusing the new heading
+  // restarts the tab order at the top of the step and announces it.
+  useEffect(() => {
+    if (previousStep.current !== step) {
+      previousStep.current = step;
+      headingRef.current?.focus();
+    }
+  }, [step]);
 
   const catalog = useQuery({
     queryKey: ["research-areas"],
@@ -42,7 +61,7 @@ export function WelcomePage() {
         body: { preferences: toPreferenceInputs(next) },
       }),
     onSuccess: (saved, next) => {
-      track("welcome_result", { action: "save", ranked_count_bucket: countBucket(next.length) });
+      track("welcome_result", { action: "save", step: "rank", ranked_count_bucket: countBucket(next.length) });
       queryClient.setQueryData(["me", "research-area-preferences"], saved);
       // Saving completes the step just as firmly as skipping does: without
       // the flag, clearing every preference in settings later would make
@@ -112,26 +131,49 @@ export function WelcomePage() {
   }
 
   function skip() {
-    track("welcome_result", { action: "skip", ranked_count_bucket: countBucket(ranked.length) });
+    track("welcome_result", { action: "skip", step, ranked_count_bucket: countBucket(ranked.length) });
     if (me) {
       markWelcomeSeen(me.email);
     }
     navigate("/me/ballot", { replace: true });
   }
 
-  // max-w-4xl, not the app's usual 2xl: the picker is two columns from lg up
-  // and needs the width.
+  function goTo(next: Step) {
+    setStep(next);
+    // The pool grid can run well below the fold; the next step starts at
+    // its own heading, not wherever the last tap left the page.
+    window.scrollTo(0, 0);
+  }
+
+  const primaryButton =
+    "rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line";
+  const linkButton = "text-sm text-ink-soft underline hover:text-ink";
+
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <h1 className="text-title font-bold">
-        {me.first_name ? `Welcome, ${me.first_name}!` : "Welcome!"}
-      </h1>
-      <p className="mt-2 text-sm text-ink">
-        Choose the issues you care about and drag to arrange them into priority order.
-        We&rsquo;ll rank elections and candidates by how well they align with your issues. Choose
-        &ldquo;Must&rdquo; if you will absolutely not accept a candidate or ballot measure that
-        takes the opposite stance from yours. You can change this any time in Settings.
+    <div className="mx-auto max-w-2xl px-4 py-10">
+      <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+        Step {step === "pick" ? 1 : 2} of 2
       </p>
+      {step === "pick" ? (
+        <>
+          <h1 ref={headingRef} tabIndex={-1} className="mt-1 text-title font-bold">
+            {me.first_name ? `Welcome, ${me.first_name}!` : "Welcome!"}
+          </h1>
+          <p className="mt-2 text-base font-medium text-ink">
+            First, choose the issues you care about. You can change this any time in Settings.
+          </p>
+        </>
+      ) : (
+        <>
+          <h1 ref={headingRef} tabIndex={-1} className="mt-1 text-title font-bold">
+            Put my issues in order
+          </h1>
+          <p className="mt-2 text-base font-medium text-ink">
+            Drag to arrange them, most important first. Choose &ldquo;Must&rdquo; if you will not
+            accept a candidate or ballot measure that takes the opposite stance.
+          </p>
+        </>
+      )}
 
       {catalog.isPending ? <LoadingNotice text="Loading issues…" /> : null}
       {catalog.isError ? (
@@ -140,21 +182,38 @@ export function WelcomePage() {
         </div>
       ) : null}
       {catalog.isSuccess ? (
-        <ResearchAreaPicker areas={catalog.data.research_areas} ranked={ranked} disabled={saving} onChange={setRanked} />
+        <ResearchAreaPicker
+          areas={catalog.data.research_areas}
+          ranked={ranked}
+          disabled={saving}
+          onChange={setRanked}
+          layout={step === "pick" ? "pool" : "ranked"}
+        />
       ) : null}
 
       <div className="mt-8 flex items-center gap-4">
-        <button
-          type="button"
-          disabled={ranked.length === 0 || saving}
-          onClick={saveAndContinue}
-          className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line"
-        >
-          {save.isPending ? "Saving…" : "Save and continue"}
-        </button>
-        <button type="button" onClick={skip} className="text-sm text-ink-soft underline hover:text-ink">
-          Skip for now
-        </button>
+        {step === "pick" ? (
+          <>
+            <button type="button" disabled={ranked.length === 0} onClick={() => goTo("rank")} className={primaryButton}>
+              Next
+            </button>
+            <button type="button" onClick={skip} className={linkButton}>
+              Skip for now
+            </button>
+          </>
+        ) : (
+          <>
+            <button type="button" disabled={ranked.length === 0 || saving} onClick={saveAndContinue} className={primaryButton}>
+              {save.isPending ? "Saving…" : "Save and continue"}
+            </button>
+            <button type="button" disabled={saving} onClick={() => goTo("pick")} className={linkButton}>
+              Back
+            </button>
+            <button type="button" disabled={saving} onClick={skip} className={linkButton}>
+              Skip for now
+            </button>
+          </>
+        )}
       </div>
       {save.isError ? (
         <div className="mt-4">

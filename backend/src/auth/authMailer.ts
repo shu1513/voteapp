@@ -6,6 +6,11 @@ export type AuthMailer = {
   sendPasswordResetEmail(input: AuthMailerEmailInput): Promise<void>;
   /** Sent to the requested NEW address; the link proves control of it. */
   sendEmailChangeEmail(input: AuthMailerEmailInput): Promise<void>;
+  /** Sent when someone registers an address that already has a verified
+   * account: the form shows the same "check your email" screen either way
+   * (no enumeration), so the account holder must learn by email why no
+   * verification link came. linkUrl is the log-in page. */
+  sendExistingAccountEmail(input: AuthMailerEmailInput): Promise<void>;
 };
 
 export type AuthMailerEmailInput = {
@@ -20,7 +25,7 @@ export type SesAuthMailerOptions = {
   sesClient: Pick<SESv2Client, "send">;
 };
 
-type EmailMessageKind = "verification" | "password_reset" | "email_change";
+type EmailMessageKind = "verification" | "password_reset" | "email_change" | "existing_account";
 
 function normalizeEmailAddress(email: string): string {
   if (typeof email !== "string") {
@@ -70,10 +75,20 @@ function buildSubject(kind: EmailMessageKind, appName: string): string {
   if (kind === "email_change") {
     return `[${appName}] Confirm your new email address`;
   }
+  if (kind === "existing_account") {
+    return `[${appName}] You already have an account`;
+  }
   return `[${appName}] Reset your password`;
 }
 
+const EXISTING_ACCOUNT_INTRO = (appName: string) =>
+  `Someone tried to sign up for ${appName} with this email address, but it already has an account.`;
+const EXISTING_ACCOUNT_RESET_HINT = "Forgot your password? Use “Forgot your password?” on the log-in page.";
+
 function buildTextBody(kind: EmailMessageKind, appName: string, linkUrl: string): string {
+  if (kind === "existing_account") {
+    return `${EXISTING_ACCOUNT_INTRO(appName)}\n\nIf that was you, log in here:\n${linkUrl}\n\n${EXISTING_ACCOUNT_RESET_HINT}\n\nIf this was not you, you can ignore this email.`;
+  }
   const intro =
     kind === "verification"
       ? `Verify your email for ${appName}.`
@@ -84,6 +99,17 @@ function buildTextBody(kind: EmailMessageKind, appName: string, linkUrl: string)
 }
 
 function buildHtmlBody(kind: EmailMessageKind, appName: string, linkUrl: string): string {
+  if (kind === "existing_account") {
+    return `<!doctype html>
+<html lang="en">
+  <body>
+    <p>${escapeHtml(EXISTING_ACCOUNT_INTRO(appName))}</p>
+    <p>If that was you, <a href="${escapeHtml(linkUrl)}">log in</a>.</p>
+    <p>${escapeHtml(EXISTING_ACCOUNT_RESET_HINT)}</p>
+    <p>If this was not you, you can ignore this email.</p>
+  </body>
+</html>`;
+  }
   const title =
     kind === "verification"
       ? "Verify your email"
@@ -165,6 +191,9 @@ export function createSesAuthMailer(options: SesAuthMailerOptions): AuthMailer {
     async sendEmailChangeEmail(input) {
       await sendAuthEmail(options, "email_change", input);
     },
+    async sendExistingAccountEmail(input) {
+      await sendAuthEmail(options, "existing_account", input);
+    },
   };
 }
 
@@ -189,6 +218,10 @@ export function createConsoleAuthMailer(options: ConsoleAuthMailerOptions = {}):
     async sendEmailChangeEmail(input) {
       const linkUrl = normalizeAbsoluteLinkUrl(input.linkUrl);
       log(`[auth-mailer:console] email change email for ${normalizeEmailAddress(input.email)}: ${linkUrl}`);
+    },
+    async sendExistingAccountEmail(input) {
+      const linkUrl = normalizeAbsoluteLinkUrl(input.linkUrl);
+      log(`[auth-mailer:console] existing account email for ${normalizeEmailAddress(input.email)}: ${linkUrl}`);
     },
   };
 }

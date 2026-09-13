@@ -270,6 +270,10 @@ function toEmailChangeLink(baseUrl: URL, token: string): string {
   return buildEmailLink(baseUrl, "/verify-email-change", token);
 }
 
+function toLoginLink(baseUrl: URL): string {
+  return new URL("/login", baseUrl).toString();
+}
+
 function normalizeUserId(userId: string): string {
   const normalized = typeof userId === "string" ? userId.trim() : "";
   if (!isUuid(normalized)) {
@@ -834,15 +838,12 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           acceptedTermsVersion,
         });
 
-        if (user.email_verified) {
-          await client.query("COMMIT");
-          return;
+        if (!user.email_verified) {
+          token = await issueEmailVerificationToken(client, {
+            userId: user.id,
+            ttlSeconds: emailVerificationTtlSeconds,
+          });
         }
-
-        token = await issueEmailVerificationToken(client, {
-          userId: user.id,
-          ttlSeconds: emailVerificationTtlSeconds,
-        });
 
         await client.query("COMMIT");
       } catch (error) {
@@ -856,6 +857,14 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       // not hold a pool slot, and a mail failure must not run ROLLBACK on a
       // committed transaction. If the send fails the account still exists;
       // retrying the form re-registers the unverified address and resends.
+      if (token === null) {
+        // Address already has a verified account. The response is identical
+        // to a fresh signup (no enumeration), so the only way the account
+        // holder learns why no verification link arrives is this email —
+        // which goes to the address itself, revealing nothing to the form.
+        await options.mailer.sendExistingAccountEmail({ email, linkUrl: toLoginLink(publicBaseUrl) });
+        return;
+      }
       await options.mailer.sendVerificationEmail({
         email,
         linkUrl: toEmailVerificationLink(publicBaseUrl, token.rawToken),

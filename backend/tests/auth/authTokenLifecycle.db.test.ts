@@ -64,6 +64,7 @@ describe.skipIf(!databaseUrl)("auth-token lifecycle (requires DATABASE_URL)", ()
     sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
     sendPasswordResetEmail: vi.fn().mockResolvedValue(undefined),
     sendEmailChangeEmail: vi.fn().mockResolvedValue(undefined),
+    sendExistingAccountEmail: vi.fn().mockResolvedValue(undefined),
   };
   const service = (overrides: { emailVerificationTtlSeconds?: number } = {}) =>
     createAuthService({

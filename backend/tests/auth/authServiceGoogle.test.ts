@@ -45,6 +45,7 @@ function createMailerMock() {
     sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
     sendPasswordResetEmail: vi.fn().mockResolvedValue(undefined),
     sendEmailChangeEmail: vi.fn().mockResolvedValue(undefined),
+    sendExistingAccountEmail: vi.fn().mockResolvedValue(undefined),
   };
 }
 

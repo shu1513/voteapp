@@ -47,17 +47,25 @@ export type ResearchAreaOption = {
   description: string | null;
 };
 
+// layout: "split" shows both panels (settings); "pool" and "ranked" show one
+// panel each, for the welcome flow's two steps — new users kept missing the
+// ranking half when both panels shared a screen, so it gets its own step.
+// In "pool" the cards mark selection with a check, not a rank number:
+// ordering is not a concept yet on that step.
+export type ResearchAreaPickerLayout = "split" | "pool" | "ranked";
+
 type ResearchAreaPickerProps = {
   areas: ResearchAreaOption[];
   ranked: RankedResearchArea[];
   disabled: boolean;
   onChange: (next: RankedResearchArea[]) => void;
+  layout?: ResearchAreaPickerLayout;
 };
 
 const RANKED_PANEL_ID = "ranked-panel";
 const POOL_ID_PREFIX = "pool-";
 
-export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: ResearchAreaPickerProps) {
+export function ResearchAreaPicker({ areas, ranked, disabled, onChange, layout = "split" }: ResearchAreaPickerProps) {
   // Mouse: drag starts after 4px of movement, so the buttons stay plain
   // clicks. Touch: press-and-hold (200ms) then drag, so the lists do not
   // hijack page scrolling. Keyboard sorting stays for accessibility.
@@ -133,12 +141,16 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
     onChange(ranked.map((row) => (row.research_area_id === id ? { ...row, ...patch } : row)));
   }
 
+  const showRanked = layout !== "pool";
+  const showPool = layout !== "ranked";
+
   return (
     <DndContext sensors={sensors} collisionDetection={collisionDetection} onDragEnd={onDragEnd}>
-      <div className="mt-3 gap-x-6 lg:grid lg:grid-cols-2 lg:items-start">
+      <div className={`mt-3 ${layout === "split" ? "gap-x-6 lg:grid lg:grid-cols-2 lg:items-start" : ""}`}>
+        {showRanked ? (
         <div>
           <p className="text-sm font-medium text-ink">
-            Your priorities{" "}
+            My priorities{" "}
             <span className="font-normal text-ink-soft">(drag to arrange)</span>
           </p>
           <RankedDropZone empty={ranked.length === 0}>
@@ -164,12 +176,14 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
               </SortableContext>
             ) : (
               <p className="px-4 py-8 text-center text-sm text-ink-soft">
-                Tap an issue to add it here.
+                {layout === "ranked" ? "Nothing to rank yet. Go back and choose an issue." : "Tap an issue to add it here."}
               </p>
             )}
           </RankedDropZone>
         </div>
-        <div className="mt-6 lg:mt-0">
+        ) : null}
+        {showPool ? (
+        <div className={layout === "split" ? "mt-6 lg:mt-0" : ""}>
           <p className="text-sm font-medium text-ink">
             Choose issues{" "}
             <span className="font-normal text-ink-soft">
@@ -188,12 +202,14 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
                   area={area}
                   rank={rank}
                   disabled={disabled}
+                  draggable={layout === "split"}
                   onToggle={() => (rank >= 0 ? remove(area.id) : addAt(area.id, ranked.length))}
                 />
               );
             })}
           </ul>
         </div>
+        ) : null}
       </div>
     </DndContext>
   );
@@ -233,28 +249,33 @@ function RankedDropZone({ empty, children }: { empty: boolean; children: React.R
 // Chosen cards stay put — tinted green with a rank badge, tap to unselect —
 // so the grid never reflows mid-selection; only unchosen cards drag (the
 // chosen issue already has a draggable row in the ranked panel).
+// draggable=false (pool-only layout): there is no ranked panel to drop on,
+// so the card is a plain toggle — no drag listeners, no grab cursor — and the
+// badge is a check, not a rank number.
 function PoolAreaCard({
   area,
   rank,
   disabled,
+  draggable,
   onToggle,
 }: {
   area: ResearchAreaOption;
   rank: number;
   disabled: boolean;
+  draggable: boolean;
   onToggle: () => void;
 }) {
   const [showInfo, setShowInfo] = useState(false);
   const selected = rank >= 0;
   const { setNodeRef, listeners, transform, isDragging } = useDraggable({
     id: `${POOL_ID_PREFIX}${area.id}`,
-    disabled: disabled || selected,
+    disabled: disabled || selected || !draggable,
   });
   const { onKeyDown: _keyboardDrag, ...dragListeners } = listeners ?? {};
   return (
     <li
       ref={setNodeRef}
-      {...(selected ? {} : dragListeners)}
+      {...(selected || !draggable ? {} : dragListeners)}
       style={{ transform: CSS.Translate.toString(transform) }}
       // flex-col justify-center: grid rows stretch every card to the tallest
       // one in the row, so a short name next to a wrapped two-line neighbor
@@ -267,7 +288,7 @@ function PoolAreaCard({
       className={`flex flex-col justify-center touch-manipulation select-none rounded-lg border transition hover:border-green-700 active:translate-y-0 active:shadow-sm ${
         selected
           ? "border-green-700 bg-green-50 shadow-none hover:shadow-sm"
-          : "cursor-grab bg-white shadow-sm hover:-translate-y-0.5 hover:shadow-md"
+          : `${draggable ? "cursor-grab" : ""} bg-surface shadow-sm hover:-translate-y-0.5 hover:shadow-md`
       } ${isDragging ? "z-10 border-green-700 shadow-md" : selected ? "" : "border-line"}`}
     >
       <span className="flex items-stretch">
@@ -275,9 +296,15 @@ function PoolAreaCard({
           type="button"
           disabled={disabled}
           aria-pressed={selected}
-          aria-label={selected ? `${area.name}, rank ${rank + 1}. Click to remove.` : undefined}
+          aria-label={
+            selected
+              ? draggable
+                ? `${area.name}, rank ${rank + 1}. Click to remove.`
+                : `${area.name}, selected. Click to remove.`
+              : undefined
+          }
           onClick={onToggle}
-          className="flex min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left text-sm font-medium text-ink disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left text-sm font-medium text-navy disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span className="min-w-0 flex-1">{area.name}</span>
           {selected ? (
@@ -285,7 +312,7 @@ function PoolAreaCard({
               aria-hidden
               className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-700 text-[11px] font-semibold text-white"
             >
-              {rank + 1}
+              {draggable ? rank + 1 : "✓"}
             </span>
           ) : null}
         </button>
@@ -352,7 +379,7 @@ function SortableAreaRow({
       // touch-manipulation, not touch-none: the TouchSensor prevents
       // scrolling itself once its press-and-hold delay activates, so plain
       // touches on the list still scroll the page.
-      className={`flex cursor-grab touch-manipulation flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-line bg-white px-2 py-2 text-sm select-none ${
+      className={`flex cursor-grab touch-manipulation flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-line bg-surface px-2 py-2 text-sm select-none ${
         isDragging ? "z-10 shadow-md" : ""
       }`}
     >
