@@ -72,9 +72,13 @@ describe("WelcomePage", () => {
     expect(screen.getByRole("button", { name: "Housing, selected. Click to remove." })).toBeInTheDocument();
     expect(screen.queryByText("#1")).not.toBeInTheDocument();
 
-    await user.click(nextButton);
+    // Enter on the focused Next button: React reuses that DOM node as "Save
+    // and continue", so focus must move to the new step's heading or a
+    // keyboard user tabs straight past the ranking rows.
+    nextButton.focus();
+    await user.keyboard("{Enter}");
     expect(screen.getByText("Step 2 of 2")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Put my issues in order" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Put my issues in order" })).toHaveFocus();
     // Step 2 is rank-only: the rows carry tap order as the starting rank.
     expect(screen.getByText("#1")).toBeInTheDocument();
     expect(screen.getByText("#2")).toBeInTheDocument();
@@ -83,6 +87,7 @@ describe("WelcomePage", () => {
 
     // Back returns to the pool with the picks intact.
     await user.click(screen.getByRole("button", { name: "Back" }));
+    expect(screen.getByRole("heading", { name: "Welcome, Sam!" })).toHaveFocus();
     expect(screen.getByRole("button", { name: "Environment, selected. Click to remove." })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Next" }));
 

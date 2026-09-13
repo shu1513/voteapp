@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -30,6 +30,20 @@ export function WelcomePage() {
   const queryClient = useQueryClient();
   const [ranked, setRanked] = useState<RankedResearchArea[]>([]);
   const [step, setStep] = useState<Step>("pick");
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const previousStep = useRef<Step>(step);
+
+  // Both steps render their primary button at the same position, so React
+  // reuses the DOM node: without this, Enter on "Next" leaves a keyboard
+  // user focused on "Save and continue" with the ranking rows already behind
+  // them — Tab reaches Back/Skip, never the rows. Focusing the new heading
+  // restarts the tab order at the top of the step and announces it.
+  useEffect(() => {
+    if (previousStep.current !== step) {
+      previousStep.current = step;
+      headingRef.current?.focus();
+    }
+  }, [step]);
 
   const catalog = useQuery({
     queryKey: ["research-areas"],
@@ -142,7 +156,7 @@ export function WelcomePage() {
       </p>
       {step === "pick" ? (
         <>
-          <h1 className="mt-1 text-title font-bold">
+          <h1 ref={headingRef} tabIndex={-1} className="mt-1 text-title font-bold">
             {me.first_name ? `Welcome, ${me.first_name}!` : "Welcome!"}
           </h1>
           <p className="mt-2 text-base font-medium text-ink">
@@ -151,7 +165,9 @@ export function WelcomePage() {
         </>
       ) : (
         <>
-          <h1 className="mt-1 text-title font-bold">Put my issues in order</h1>
+          <h1 ref={headingRef} tabIndex={-1} className="mt-1 text-title font-bold">
+            Put my issues in order
+          </h1>
           <p className="mt-2 text-base font-medium text-ink">
             Drag to arrange them, most important first. Choose &ldquo;Must&rdquo; if you will not
             accept a candidate or ballot measure that takes the opposite stance.
