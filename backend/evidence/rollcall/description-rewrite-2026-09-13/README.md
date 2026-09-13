@@ -34,3 +34,4 @@ promotion.
 | Jurisdiction | Rolls | Records rewritten | Left alone |
 |---|---|---|---|
 | DE | 63 | 933 | 0 |
+| PA | 179 | 26098 | 0 |
