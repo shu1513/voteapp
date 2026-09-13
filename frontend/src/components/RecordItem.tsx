@@ -40,7 +40,7 @@ function StanceChip({ stance, label }: { stance: "for" | "against"; label: strin
 // One record card, shared by the grouped and flat views (the flat view adds
 // the area tags to the meta line since there is no group heading to carry
 // them). `stanceAreaId` is the group's area in grouped views (null for the
-// untagged "Other records" pseudo-group); undefined in the flat view, which
+// synthetic General group of untagged records); undefined in the flat view, which
 // has no single chip.
 export function RecordItem({
   record,

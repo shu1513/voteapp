@@ -15,20 +15,26 @@ export type RecordView = "my_issues" | "newest";
 const INITIAL_NEWEST_RECORDS = 20;
 
 type RecordGroup = {
-  /** null for the untagged "Other records" pseudo-group. */
+  /** null only for the synthetic General group (untagged records on a
+   * candidate with no real General-tagged record to join). */
   areaId: string | null;
-  /** null for "Other records"; drives the public-salience ordering. */
+  /** null for that synthetic group; drives the public-salience ordering. */
   areaSlug: string | null;
   areaName: string;
   records: CandidateRecord[];
 };
 
 // Records grouped by research area (a record with several tags appears under
-// each; untagged records fall into "Other records"). Groups key on the
-// stable research_area_id — display names are presentation, not identity.
+// each). Untagged records belong to General: the real General group when the
+// candidate has one (so the page never shows two general-purpose groups), or
+// a synthetic "General" group otherwise — never a separate "Other records"
+// bucket, which read as a category the catalog does not have. Groups key on
+// the stable research_area_id — display names are presentation, not identity.
 // Groups order by public salience (same ranking as election-card chips), not
-// alphabetically, so the issues voters care about most lead; "Other records"
-// stays last.
+// alphabetically, so the issues voters care about most lead; the synthetic
+// General group stays last.
+const GENERAL_AREA_SLUG = "general";
+
 function groupRecords(records: CandidateRecord[]): RecordGroup[] {
   const groups = new Map<string | null, RecordGroup>();
   for (const record of records) {
@@ -38,12 +44,18 @@ function groupRecords(records: CandidateRecord[]): RecordGroup[] {
           areaSlug: tag.slug,
           areaName: tag.name,
         }))
-      : [{ areaId: null, areaSlug: null, areaName: "Other records" }];
+      : [{ areaId: null, areaSlug: null, areaName: "General" }];
     for (const area of areas) {
       const group = groups.get(area.areaId) ?? { ...area, records: [] };
       group.records.push(record);
       groups.set(area.areaId, group);
     }
+  }
+  const untagged = groups.get(null);
+  const general = [...groups.values()].find((group) => group.areaSlug === GENERAL_AREA_SLUG);
+  if (untagged && general) {
+    general.records.push(...untagged.records);
+    groups.delete(null);
   }
   return [...groups.values()].sort((a, b) =>
     a.areaId === null || a.areaSlug === null
@@ -81,7 +93,7 @@ function orderGroupsByPreference(
 // against THIS group's area (a record can lean differently per area, so the
 // count must come from the group's own tag, same rule as recordStanceTag).
 // Neutral-tagged records count toward neither, so the two numbers need not
-// sum to the record count. The "Other records" group has no area and gets
+// sum to the record count. The synthetic General group has no area and gets
 // zeros.
 function groupStanceCounts(group: RecordGroup): { forCount: number; againstCount: number } {
   let forCount = 0;

@@ -428,7 +428,7 @@ describe("CandidatePage", () => {
       candidateDetail({
         records: [
           // Payload arrives alphabetical-ish; salience rank must win, with
-          // the untagged pseudo-group sinking to the end.
+          // the untagged record's synthetic General group sinking to the end.
           record("r-1", [{ areaId: "a-civ", slug: "civil_rights", name: "Civil Rights" }]),
           record("r-2", []),
           record("r-3", [{ areaId: "a-env", slug: "environment_and_public_health", name: "Environment and Public Health" }]),
@@ -448,8 +448,36 @@ describe("CandidatePage", () => {
       "Track record — Environment and Public Health",
       "Track record — Gun Control",
       "Track record — Civil Rights",
-      "Track record — Other records",
+      "Track record — General",
     ]);
+  });
+
+  it("folds untagged records into the real General group instead of a separate bucket", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const record = (id: string, tags: { areaId: string; slug: string; name: string }[]) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: tags.map((tag) => ({ research_area_id: tag.areaId, slug: tag.slug, name: tag.name, stance: null })),
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          record("r-1", [{ areaId: "a-gen", slug: "general", name: "General" }]),
+          record("r-2", []),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Track record" });
+    const headings = screen.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
+    expect(headings).toEqual(["Track record — General"]);
+    expect(screen.queryByText(/Other records/)).not.toBeInTheDocument();
+    // Both records sit inside the one General group.
+    expect(screen.getByText("General").closest("details")).toHaveTextContent("Did a thing (r-1).");
+    expect(screen.getByText("General").closest("details")).toHaveTextContent("Did a thing (r-2).");
   });
 
   it("defaults the record view to \"My issues first\" and personalizes once saved areas load", async () => {
