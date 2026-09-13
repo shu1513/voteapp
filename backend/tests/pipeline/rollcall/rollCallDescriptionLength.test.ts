@@ -11,6 +11,7 @@ describe("splitRollCallSentences", () => {
     expect(splitRollCallSentences("Voted to pass S. 5. The Senate passed it 64-35.")).toHaveLength(2);
     expect(splitRollCallSentences("Voted for S.J.Res. 3 with A.J. Smith at 8 a.m. on Monday. It passed 30-20.")).toHaveLength(2);
     expect(splitRollCallSentences("Voted for the U.S. Senate version of the bill. It passed 51-49.")).toHaveLength(2);
+    expect(splitRollCallSentences("Voted to pass the Freedom to Vote: John R. Lewis Act, a bill to expand voting. It passed 220-203.")).toHaveLength(2);
   });
 
   it("does not split on decimals or dollar figures", () => {

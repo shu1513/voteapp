@@ -14,11 +14,12 @@ export const ROLL_CALL_DESCRIPTION_MAX_CHARS = 320;
 export const ROLL_CALL_DESCRIPTION_MAX_SENTENCE_WORDS = 30;
 
 // Dots that do not end a sentence: bill-type prefixes ("H.R. 1", "S. 5",
-// "S.J.Res. 3"), initials ("A.J."), and common title/time abbreviations.
+// "S.J.Res. 3"), initials ("A.J.", "John R. Lewis"), and common title/time
+// abbreviations.
 // They are masked before splitting so "H.R. 1. It passed 215-214." counts
 // as two sentences, not four.
 const ABBREVIATION_DOT =
-  /\b(?:H\.R|H\.J\.Res|H\.Con\.Res|H\.Res|S\.J\.Res|S\.Con\.Res|S\.Res|U\.S|a\.m|p\.m|No|Nos|Rep|Sen|Gov|Dr|Mr|Mrs|Ms|Jr|Sr|St|vs|Inc|Co|Corp|Ltd|Sec|Art|Ch|Amdt|Const)\.|\b(?:[A-Za-z]\.){2,}|\bS\.(?=\s\d)/g;
+  /\b(?:H\.R|H\.J\.Res|H\.Con\.Res|H\.Res|S\.J\.Res|S\.Con\.Res|S\.Res|U\.S|a\.m|p\.m|No|Nos|Rep|Sen|Gov|Dr|Mr|Mrs|Ms|Jr|Sr|St|vs|Inc|Co|Corp|Ltd|Sec|Art|Ch|Amdt|Const)\.|\b(?:[A-Za-z]\.){2,}|\b[A-Z]\.(?=\s[A-Z][a-z])|\bS\.(?=\s\d)/g;
 const SENTENCE_BREAK = /(?<=[.!?])\s+(?=["'“(]?[A-Z0-9$])/;
 
 export function splitRollCallSentences(text: string): string[] {

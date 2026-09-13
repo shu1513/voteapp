@@ -35,3 +35,4 @@ promotion.
 |---|---|---|---|
 | DE | 63 | 933 | 0 |
 | PA | 179 | 26098 | 0 |
+| US | 140 (of 398; the rest already fit) | 13352 | 0 |
