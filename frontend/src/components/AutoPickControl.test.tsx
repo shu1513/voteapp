@@ -95,12 +95,14 @@ function pickedResult(overrides: Partial<AutoPickElectionResult> = {}): AutoPick
   };
 }
 
-function renderControl(seatsToFill: number | null = null, measure = false) {
+function renderControl(seatsToFill: number | null = null, measure = false, retention = false) {
   return renderRoutes(
     [
       {
         path: "/elections/:id",
-        element: <AutoPickControl electionId={ELECTION_ID} seatsToFill={seatsToFill} measure={measure} />,
+        element: (
+          <AutoPickControl electionId={ELECTION_ID} seatsToFill={seatsToFill} measure={measure} retention={retention} />
+        ),
       },
       { path: "/register", element: <p>Register page</p> },
       { path: "/login", element: <p>Login page</p> },
@@ -146,6 +148,15 @@ describe("AutoPickControl", () => {
     expect(screen.queryByRole("button", { name: /Which candidate/ })).not.toBeInTheDocument();
     await userEvent.setup().click(screen.getByRole("button", { name: "Does this measure match my values?" }));
     expect(await screen.findByText(/see whether this measure matches what you believe/)).toBeInTheDocument();
+  });
+
+  it("asks whether the candidate aligns on a judicial retention race", async () => {
+    mockMe = null;
+    stubApiRoutes({});
+    renderControl(null, false, true);
+    expect(screen.queryByRole("button", { name: /Which candidate/ })).not.toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Does this candidate align with my values?" }));
+    expect(await screen.findByText(/see whether this candidate aligns with what you believe/)).toBeInTheDocument();
   });
 
   it("renders nothing while the session is still resolving", () => {
@@ -340,6 +351,50 @@ describe("AutoPickControl", () => {
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent("Bob Boone excluded — crossed your line on Climate");
     expect(panel).toHaveTextContent("Voted to repeal the emissions standard");
+  });
+
+  it("explains a retention No as a crossed line, not an exclusion, with the judge's alignment", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            pickedResult({
+              reason: "veto",
+              picked_candidate_ids: [],
+              measure_position: "no",
+              candidates: [
+                {
+                  candidate_id: CAND_B,
+                  display_name: "Judge Bob Boone",
+                  score: 0.5,
+                  has_evidence: true,
+                  vetoed_by: [
+                    {
+                      research_area_id: AREA_CLIMATE,
+                      record_id: "cccccccc-0000-4000-8000-000000000001",
+                      description: "Voted to repeal the emissions standard",
+                    },
+                  ],
+                  per_issue: [{ research_area_id: AREA_HOUSING, net: 1, for_count: 1, against_count: 0 }],
+                },
+              ],
+              measure_per_issue: [{ research_area_id: AREA_HOUSING, net: 1 }],
+              unresearched: [],
+            }),
+          ],
+        },
+      },
+    });
+    renderControl(null, false, true);
+    await clickPickForMe();
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent("Vote No — this judge's record goes against an issue you drew a line on.");
+    expect(panel).toHaveTextContent("On your issues: aligned on Housing");
+    expect(panel).toHaveTextContent("Judge Bob Boone — crossed your line on Climate");
+    expect(panel).not.toHaveTextContent("excluded");
   });
 
   it("counts four or more aligned issues and lists the names behind a toggle, in rank order", async () => {

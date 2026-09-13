@@ -43,6 +43,9 @@ type AutoPickControlProps = {
   /** Ballot measure: the guest teaser asks about "this measure", not a
    * candidate. */
   measure?: boolean;
+  /** Judicial retention: the engine answers Yes/No on keeping the one
+   * judge, so the teaser asks whether "this candidate" aligns. */
+  retention?: boolean;
   /** Fires after a run that made a pick. The engine scores the whole
    * roster, not the party-filtered view the button sits under — the page
    * uses this to clear its filter so the picked card is never hidden. */
@@ -54,6 +57,7 @@ export function AutoPickControl({
   seatsToFill,
   compact = false,
   measure = false,
+  retention = false,
   onPicked,
 }: AutoPickControlProps) {
   const { me } = useMe();
@@ -85,7 +89,9 @@ export function AutoPickControl({
   if (me === null) {
     const question = measure
       ? "Does this measure match my values?"
-      : "Which candidate best matches my values?";
+      : retention
+        ? "Does this candidate align with my values?"
+        : "Which candidate best matches my values?";
     return (
       <>
         <button
@@ -105,7 +111,9 @@ export function AutoPickControl({
           description={
             measure
               ? "Sign up or log in to pick the issues you care about, and see whether this measure matches what you believe. Signing up is free."
-              : "Sign up or log in to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
+              : retention
+                ? "Sign up or log in to pick the issues you care about, and see whether this candidate aligns with what you believe. Signing up is free."
+                : "Sign up or log in to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
           }
         />
       </>
@@ -167,7 +175,11 @@ export function AutoPickControl({
       <span>
         <button
           type="button"
-          title="Picks the candidate whose record best aligns with my issues, in the order I ranked them"
+          title={
+            retention
+              ? "Answers Yes or No on keeping this judge, based on whether their record aligns with my issues"
+              : "Picks the candidate whose record best aligns with my issues, in the order I ranked them"
+          }
           // Disabled while the preferences load: clicking then would hit the
           // issue-floor check against a still-empty list and misdirect a
           // ready user to the issue editor.
@@ -347,7 +359,9 @@ function WhyThisPickPanel({ result, seatsToFill, areaName, issueOrder, onDismiss
           Hide
         </button>
       </div>
-      {result.race_type === "ballot_measure" && result.measure_per_issue.length > 0 ? (
+      {/* Measures and retention Yes/No answers both carry the per-issue
+          list here (a retention judge is never in picked_candidate_ids). */}
+      {result.measure_per_issue.length > 0 ? (
         <p className="mt-2">
           <span className="font-medium text-ink-soft">On your issues:</span>{" "}
           <IssueAlignment perIssue={result.measure_per_issue} issueOrder={issueOrder} areaName={areaName} />
@@ -368,7 +382,9 @@ function WhyThisPickPanel({ result, seatsToFill, areaName, issueOrder, onDismiss
       ))}
       {vetoedReports.map((report) => (
         <p key={report.candidate_id} className="mt-2 text-red-900">
-          <span className="font-medium">{report.display_name}</span> excluded — crossed your line on{" "}
+          {/* A retention veto is a No answer, not an exclusion from a field. */}
+          <span className="font-medium">{report.display_name}</span>
+          {result.measure_position === null ? " excluded" : ""} — crossed your line on{" "}
           {joinNames([...new Set(report.vetoed_by.map((veto) => areaName(veto.research_area_id)))])}:{" "}
           <span className="text-ink-soft">
             {report.vetoed_by[0]?.description}

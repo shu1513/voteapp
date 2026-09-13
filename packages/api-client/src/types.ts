@@ -574,8 +574,7 @@ export type AutoPickReason =
   | "all_vetoed"
   | "veto"
   | "too_few_issues"
-  | "election_closed"
-  | "retention";
+  | "election_closed";
 
 export type AutoPickRequest = {
   election_ids: string[];

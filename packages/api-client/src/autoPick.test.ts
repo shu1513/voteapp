@@ -141,23 +141,58 @@ describe("summarizeAutoPick", () => {
   });
 });
 
-describe("retention no-pick copy", () => {
-  it("says the yes/no on a judge is the voter's call", () => {
-    expect(reasonLabel("retention")).toBe("a yes/no on keeping a judge — your call");
-    const result = {
+describe("retention Yes/No copy", () => {
+  const judge = {
+    candidate_id: "c-judge",
+    display_name: "Judge Pat Example",
+    score: 0.5,
+    has_evidence: true,
+    vetoed_by: [],
+    per_issue: [{ research_area_id: "a1", net: 1, for_count: 1, against_count: 0 }],
+  };
+  function retention(overrides: Partial<AutoPickElectionResult>): AutoPickElectionResult {
+    return {
       election_id: "e-1",
       race_type: "office",
-      outcome: "no_pick",
-      reason: "retention",
+      outcome: "picked",
+      reason: null,
       picked_candidate_ids: [],
-      measure_position: null,
+      measure_position: "yes",
       shortlist_candidate_ids: [],
-      candidates: [],
+      candidates: [judge],
       unresearched: [],
+      measure_per_issue: [{ research_area_id: "a1", net: 1 }],
+      ...overrides,
+    } as AutoPickElectionResult;
+  }
+
+  it("answers Yes or No on keeping the judge", () => {
+    expect(summarizeAutoPick(retention({}), 1)).toBe("Vote Yes — this judge's record supports your issues overall.");
+    expect(summarizeAutoPick(retention({ measure_position: "no" }), 1)).toBe(
+      "Vote No — this judge's record goes against your issues overall."
+    );
+    expect(summarizeAutoPick(retention({ measure_position: "no", reason: "veto" }), 1)).toBe(
+      "Vote No — this judge's record goes against an issue you drew a line on."
+    );
+  });
+
+  it("names the one-candidate gap when there is no answer", () => {
+    const noRecords = retention({
+      outcome: "no_pick",
+      reason: "insufficient_evidence",
+      measure_position: null,
+      candidates: [{ ...judge, score: 0, has_evidence: false, per_issue: [] }],
       measure_per_issue: [],
-    } as unknown as AutoPickElectionResult;
-    expect(summarizeAutoPick(result, 1)).toBe(
-      "No pick: this is a yes/no question on keeping a judge, and that call is yours."
+    });
+    expect(summarizeAutoPick(noRecords, 1)).toBe("No pick: this candidate has no record on your issues yet.");
+    const cancelled = retention({
+      outcome: "no_pick",
+      reason: "insufficient_evidence",
+      measure_position: null,
+      candidates: [{ ...judge, score: 0 }],
+    });
+    expect(summarizeAutoPick(cancelled, 1)).toBe(
+      "No pick: this candidate's record helps some of your issues and hurts others about equally, so it's your call."
     );
   });
 });

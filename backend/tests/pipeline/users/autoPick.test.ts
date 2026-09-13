@@ -6,6 +6,7 @@ import {
   clearAutoPicks,
   decideMeasure,
   decideOfficeRace,
+  decideRetentionRace,
   type AutoPickCandidate,
   type AutoPickIssue,
   type AutoPickMeasureTag,
@@ -376,6 +377,42 @@ describe("decideOfficeRace", () => {
   });
 });
 
+describe("decideRetentionRace", () => {
+  const judge = candidate(CAND_A, "Judge Pat Example");
+
+  it("answers Yes on a positive score and No on a negative one", () => {
+    expect(decideRetentionRace(THREE_ISSUES, judge, [tag(CAND_A, AREA_1, "for")])).toMatchObject({
+      outcome: "picked",
+      reason: null,
+      measurePosition: "yes",
+    });
+    expect(decideRetentionRace(THREE_ISSUES, judge, [tag(CAND_A, AREA_1, "against")])).toMatchObject({
+      outcome: "picked",
+      reason: null,
+      measurePosition: "no",
+    });
+  });
+
+  it("answers No outright when a record crosses a line in the sand", () => {
+    const issues = [issue(AREA_1, 1), issue(AREA_2, 2, { hardVeto: true }), issue(AREA_3, 3)];
+    const decision = decideRetentionRace(issues, judge, [tag(CAND_A, AREA_1, "for"), tag(CAND_A, AREA_2, "against")]);
+    expect(decision).toMatchObject({ outcome: "picked", reason: "veto", measurePosition: "no" });
+    expect(decision.candidate.vetoed_by).toHaveLength(1);
+  });
+
+  it("gives no answer with no records on the user's issues, or when the sides cancel", () => {
+    expect(decideRetentionRace(THREE_ISSUES, judge, [])).toMatchObject({
+      outcome: "no_pick",
+      reason: "insufficient_evidence",
+      measurePosition: null,
+    });
+    // Equal weight on one issue: one for, one against → net 0.
+    expect(
+      decideRetentionRace(THREE_ISSUES, judge, [tag(CAND_A, AREA_1, "for"), tag(CAND_A, AREA_1, "against")])
+    ).toMatchObject({ outcome: "no_pick", reason: "insufficient_evidence", measurePosition: null });
+  });
+});
+
 describe("decideMeasure", () => {
   it("answers Yes when the weighted tags align with the user's directions", () => {
     const decision = decideMeasure(THREE_ISSUES, [measureTag(AREA_1, "for"), measureTag(AREA_2, "against")]);
@@ -506,7 +543,7 @@ describe("applyAutoPicks", () => {
     ]);
   });
 
-  it("leaves a judicial retention race open with reason retention and writes nothing", async () => {
+  it("answers Yes on a judicial retention race from the judge's records, as a measure position", async () => {
     const { db } = createMockDb();
     db.query
       .mockResolvedValueOnce(userRow)
@@ -519,23 +556,118 @@ describe("applyAutoPicks", () => {
             race_type: "office",
             official_ballot_title: "Retention of District Court Judge Pat Example",
             seats_to_fill: 1,
+            office_id: null,
             is_upcoming: true,
           },
         ],
-      });
+      })
+      .mockResolvedValueOnce({
+        rows: [{ candidate_id: CAND_A, display_name: "Pat Example", never_researched: false }],
+      }) // loadCandidates
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: CAND_A,
+            record_id: "cccccccc-0000-4000-8000-000000009999",
+            research_area_id: AREA_1,
+            stance: "for",
+            description: "a record",
+          },
+        ],
+      }); // loadRecordTags
     const result = await applyAutoPicks(db, USER_ID, {
       electionIds: [ELECTION_ID],
       mode: "replace",
       dryRun: true,
     });
     expect(result.results[0]).toMatchObject({
-      outcome: "no_pick",
-      reason: "retention",
+      race_type: "office",
+      outcome: "picked",
+      reason: null,
       picked_candidate_ids: [],
-      measure_position: null,
+      measure_position: "yes",
+      measure_per_issue: [{ research_area_id: AREA_1, net: 1 / 3 }],
     });
-    // Nothing past loadElection: no candidate load, no tag load, no write.
-    expect(db.query).toHaveBeenCalledTimes(4);
+    expect(result.results[0]!.candidates[0]).toMatchObject({ candidate_id: CAND_A, display_name: "Pat Example" });
+    expect(db.query).toHaveBeenCalledTimes(6);
+  });
+
+  it("gives a retention race no answer when the roster is not exactly one judge", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow)
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] })
+      .mockResolvedValueOnce(threeIssueRows)
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: ELECTION_ID,
+            race_type: "office",
+            official_ballot_title: "Retention of District Court Judge Pat Example",
+            seats_to_fill: 1,
+            office_id: null,
+            is_upcoming: true,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          { candidate_id: CAND_A, display_name: "Pat Example", never_researched: false },
+          { candidate_id: CAND_B, display_name: "Stray Row", never_researched: false },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+    const result = await applyAutoPicks(db, USER_ID, { electionIds: [ELECTION_ID], mode: "replace", dryRun: true });
+    expect(result.results[0]).toMatchObject({ outcome: "no_pick", reason: "insufficient_evidence", measure_position: null });
+  });
+
+  it("writes a retention No as an office-race measure position with origin auto", async () => {
+    const { db, client } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow) // pool assertActiveUser
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }); // prevalidate election ids
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce(userRow) // assertActiveUser FOR UPDATE
+      .mockResolvedValueOnce(threeIssueRows) // loadIssues
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: ELECTION_ID,
+            race_type: "office",
+            official_ballot_title: "Shall Judge Pat Example be retained in office?",
+            seats_to_fill: 1,
+            office_id: null,
+            is_upcoming: true,
+          },
+        ],
+      }) // loadElection
+      .mockResolvedValueOnce({
+        rows: [{ candidate_id: CAND_A, display_name: "Pat Example", never_researched: false }],
+      }) // loadCandidates
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: CAND_A,
+            record_id: "cccccccc-0000-4000-8000-000000009998",
+            research_area_id: AREA_1,
+            stance: "against",
+            description: "a record",
+          },
+        ],
+      }) // loadRecordTags
+      .mockResolvedValueOnce({ rows: [] }) // DELETE existing picks
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // INSERT measure position
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const result = await applyAutoPicks(db, USER_ID, { electionIds: [ELECTION_ID], mode: "replace" });
+    expect(result.results[0]).toMatchObject({ outcome: "picked", measure_position: "no", picked_candidate_ids: [] });
+    const insertCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.user_election_choices")
+    );
+    expect(String(insertCall![0])).toContain("measure_position");
+    expect(insertCall![1]).toEqual([USER_ID, ELECTION_ID, "no", "office"]);
+    const sql = client.query.mock.calls.map((call) => String(call[0]));
+    expect(sql[sql.length - 1]).toBe("COMMIT");
   });
 
   it("reports an answered retention race as skipped_existing in fill_empty mode", async () => {

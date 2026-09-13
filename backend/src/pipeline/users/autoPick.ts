@@ -36,9 +36,7 @@ export type AutoPickReason =
   | "all_vetoed"
   | "veto"
   | "too_few_issues"
-  | "election_closed"
-  /** Judicial retention: a Yes/No on keeping a judge, never auto-answered. */
-  | "retention";
+  | "election_closed";
 
 export type AutoPickIssue = {
   researchAreaId: string;
@@ -409,6 +407,36 @@ export type MeasureDecision = {
  * tags on ranked issues. A crossed veto answers No outright; otherwise Yes
  * for score > 0, No for score < 0, and no answer for 0 or no tagged overlap.
  */
+export type RetentionDecision = {
+  outcome: "picked" | "no_pick";
+  reason: AutoPickReason | null;
+  measurePosition: "yes" | "no" | null;
+  candidate: AutoPickCandidateReport;
+};
+
+/**
+ * Judicial retention: an office race with one candidate that the ballot
+ * asks as Yes/No on keeping them. The judge is scored exactly like an
+ * office candidate (same per-issue nets, caps, and vetoes), and the score
+ * maps to a side the way decideMeasure's does: a crossed line is No, a
+ * positive score Yes, a negative score No, and zero (no records on the
+ * user's issues, or sides that cancel) is no answer.
+ */
+export function decideRetentionRace(
+  issues: readonly AutoPickIssue[],
+  candidate: AutoPickCandidate,
+  tags: readonly AutoPickRecordTag[]
+): RetentionDecision {
+  const report = buildCandidateReport(candidate, issues, issueWeights(issues), tags);
+  if (report.vetoed_by.length > 0) {
+    return { outcome: "picked", reason: "veto", measurePosition: "no", candidate: report };
+  }
+  if (report.score === 0) {
+    return { outcome: "no_pick", reason: "insufficient_evidence", measurePosition: null, candidate: report };
+  }
+  return { outcome: "picked", reason: null, measurePosition: report.score > 0 ? "yes" : "no", candidate: report };
+}
+
 export function decideMeasure(
   issues: readonly AutoPickIssue[],
   tags: readonly AutoPickMeasureTag[]
@@ -522,6 +550,17 @@ type ElectionRow = {
   office_id: string | null;
   is_upcoming: boolean;
 };
+
+// Retention races are catalogued as office races with the judge as the only
+// candidate, but the ballot asks Yes/No on keeping them; the answer is stored
+// as measure_position on the office race (see userElectionChoices).
+function isRetentionElection(election: ElectionRow): boolean {
+  return (
+    election.race_type === "office" &&
+    typeof election.official_ballot_title === "string" &&
+    isJudicialRetentionTitle(election.official_ballot_title)
+  );
+}
 
 async function loadElection(db: Queryable, normalizedElectionId: string): Promise<ElectionRow> {
   const result = await db.query<ElectionRow>(
@@ -782,6 +821,22 @@ async function computeDecision(
     areaIds,
     election.office_id
   );
+  if (isRetentionElection(election)) {
+    // Exactly one live judge is the retention shape; anything else is a
+    // roster problem the engine must not paper over with a Yes/No.
+    if (candidates.length !== 1) {
+      return emptyResult(election.id, election.race_type, "no_pick", "insufficient_evidence");
+    }
+    const decision = decideRetentionRace(issues, candidates[0]!, tags);
+    return {
+      ...emptyResult(election.id, election.race_type, decision.outcome, decision.reason),
+      measure_position: decision.measurePosition,
+      candidates: [decision.candidate],
+      // The judge's per-issue nets double as the measure-style alignment
+      // list, so the "Why this pick" panel reads the same for a Yes/No.
+      measure_per_issue: decision.candidate.per_issue.map(({ research_area_id, net }) => ({ research_area_id, net })),
+    };
+  }
   const decision = decideOfficeRace(issues, candidates, tags, election.seats_to_fill);
   return {
     election_id: election.id,
@@ -816,6 +871,29 @@ async function rollbackQuietly(client: TransactionClient): Promise<void> {
  * closed between compute and write — the only reachable path, since compute
  * and write share the transaction's snapshot for catalog reads).
  */
+async function writeMeasurePosition(
+  client: Queryable,
+  normalizedUserId: string,
+  electionId: string,
+  position: "yes" | "no",
+  raceType: "ballot_measure" | "office"
+): Promise<boolean> {
+  const inserted = await client.query(
+    `
+      INSERT INTO public.user_election_choices (user_id, election_id, measure_position, origin)
+      SELECT $1::uuid, election.id, $3, 'auto'
+      FROM public.elections AS election
+      WHERE election.id = $2::uuid
+        AND election.race_type = $4
+        AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+      ON CONFLICT (user_id, election_id) WHERE measure_position IS NOT NULL
+      DO UPDATE SET measure_position = EXCLUDED.measure_position, origin = 'auto', updated_at = now()
+    `,
+    [normalizedUserId, electionId, position, raceType]
+  );
+  return (inserted.rowCount ?? 0) > 0;
+}
+
 async function writeDecision(
   client: Queryable,
   normalizedUserId: string,
@@ -825,20 +903,12 @@ async function writeDecision(
     if (result.measure_position === null) {
       return true;
     }
-    const inserted = await client.query(
-      `
-        INSERT INTO public.user_election_choices (user_id, election_id, measure_position, origin)
-        SELECT $1::uuid, election.id, $3, 'auto'
-        FROM public.elections AS election
-        WHERE election.id = $2::uuid
-          AND election.race_type = 'ballot_measure'
-          AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
-        ON CONFLICT (user_id, election_id) WHERE measure_position IS NOT NULL
-        DO UPDATE SET measure_position = EXCLUDED.measure_position, origin = 'auto', updated_at = now()
-      `,
-      [normalizedUserId, result.election_id, result.measure_position]
-    );
-    return (inserted.rowCount ?? 0) > 0;
+    return writeMeasurePosition(client, normalizedUserId, result.election_id, result.measure_position, "ballot_measure");
+  }
+  if (result.measure_position !== null) {
+    // Retention: the Yes/No lands on the office race itself, the same row
+    // shape the manual writer uses (userElectionChoices.writeMeasurePosition).
+    return writeMeasurePosition(client, normalizedUserId, result.election_id, result.measure_position, "office");
   }
 
   for (const candidateId of result.picked_candidate_ids) {
@@ -966,19 +1036,6 @@ async function computeOne(
   }
   if (mode === "fill_empty" && (await countExistingPicks(db, normalizedUserId, normalizedElectionId)) > 0) {
     return emptyResult(election.id, election.race_type, "skipped_existing", null);
-  }
-  // Retention races are catalogued as office races with the judge as the
-  // only candidate, but the ballot asks Yes/No on keeping them. Whether an
-  // issue match should ever mean "retain" is its own decision rule, not an
-  // office-race fill, so the engine leaves these open and says why. After
-  // the fill_empty check: an answered retention race is "already picked",
-  // not "your call".
-  if (
-    election.race_type === "office" &&
-    typeof election.official_ballot_title === "string" &&
-    isJudicialRetentionTitle(election.official_ballot_title)
-  ) {
-    return emptyResult(election.id, election.race_type, "no_pick", "retention");
   }
   if (issues.length < MIN_AUTO_PICK_ISSUES) {
     return emptyResult(election.id, election.race_type, "no_pick", "too_few_issues");
