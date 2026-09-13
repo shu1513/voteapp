@@ -628,6 +628,26 @@ describe("CandidatePage", () => {
     expect(electionsHeading.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
+  it("links a retention judge to the Yes/No question in one line instead of a race list", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection({
+            official_ballot_title: "Shall Judge Jordan Voter be retained in office?",
+            election_date: "2026-11-03",
+          }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.queryByRole("heading", { name: /is in:/ })).not.toBeInTheDocument();
+    const link = screen.getByRole("link", { name: "Retention question" });
+    expect(link).toHaveAttribute("href", "/elections/e-1");
+    expect(link.parentElement).toHaveTextContent("Retention question · November 3, 2026");
+  });
+
   it("splits the election list into upcoming and past races, pluralized per section", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() =>

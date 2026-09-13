@@ -1053,7 +1053,22 @@ export function CandidatePage() {
             section of election news. Name the person and the relationship, and
             split on the election date — "is in" would misread on a race that
             finished years ago, and on a race the candidate withdrew from. */}
-        {activeOngoingElections.length > 0 ? (
+        {activeOngoingElections.length === 1 &&
+        isJudicialRetentionTitle(activeOngoingElections[0]!.official_ballot_title) ? (
+          // A retention judge is not "in a race" against anyone: one line
+          // pointing at the Yes/No question, not a race list with the full
+          // ballot title, state, and incumbent tag repeated.
+          <p className="mt-6 text-sm text-ink-soft">
+            <Link
+              to={`/elections/${activeOngoingElections[0]!.election_id}`}
+              state={electionNavState}
+              className="text-ink underline hover:text-rausch"
+            >
+              Retention question
+            </Link>{" "}
+            · {formatElectionDate(activeOngoingElections[0]!.election_date)}
+          </p>
+        ) : activeOngoingElections.length > 0 ? (
           <ElectionHistorySection
             heading={`${activeOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
             elections={activeOngoingElections}
