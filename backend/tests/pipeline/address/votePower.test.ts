@@ -136,6 +136,39 @@ describe("calculateVotePower", () => {
     ).toBe(label);
   });
 
+  it("gives a judicial retention race no rating at all, whatever the inputs", () => {
+    // One candidate, but not uncontested: the Yes/No vote decides. Checked
+    // before the uncontested rule, so neither the score cap nor the
+    // uncontested factor applies.
+    expect(
+      calculateVotePower({
+        raceType: "office",
+        officialBallotTitle: "Shall Presiding Justice THERESE M. STEWART be elected to the office for the term provided by law?",
+        candidateCount: 1,
+        representationPowerScore: 90,
+        competitivenessLabel: "toss_up",
+      })
+    ).toEqual({
+      score: null,
+      label: "retention",
+      confidence: "high",
+      representation_level: "unknown",
+      decisiveness_level: "unknown",
+      factors: [],
+    });
+    // The title alone is not enough: a ballot measure that mentions a court
+    // stays a measure.
+    expect(
+      calculateVotePower({
+        raceType: "ballot_measure",
+        officialBallotTitle: "Shall the county retain its Superior Court facilities levy?",
+        candidateCount: 0,
+        representationPowerScore: 50,
+        competitivenessLabel: null,
+      }).label
+    ).not.toBe("retention");
+  });
+
   it("rates high representation plus high decisiveness as very high", () => {
     expect(
       calculateVotePower({
@@ -537,6 +570,22 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]?.stat).toBe("11.45-point weighted margin across 2024 and 2022");
+  });
+
+  it("explains a retention race with no graded parts", () => {
+    const input = {
+      raceType: "office" as const,
+      officialBallotTitle: "Retention of District Court Judge Pat Example",
+      candidateCount: 1,
+      representationPowerScore: 90,
+      competitivenessLabel: null,
+    };
+    expect(explainVotePower(input, calculateVotePower(input))).toEqual({
+      how: "Yes or No on keeping one judge. No representation or competitiveness score applies.",
+      parts: [],
+      result: "Retention race",
+      caveat: null,
+    });
   });
 
   it("explains an uncontested race without a margin stat", () => {

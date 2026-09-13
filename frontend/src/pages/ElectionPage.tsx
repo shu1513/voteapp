@@ -607,7 +607,9 @@ export function ElectionPage() {
             </span>
           </div>
         ) : null}
-        {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
+        {/* No "how" panel on a retention race: nothing was graded, and the
+            header value already names the race kind. */}
+        {data.vote_power.label !== "unknown" && data.vote_power.label !== "retention" && data.vote_power.explanation ? (
           <details
             className="mt-2 text-sm"
             onToggle={(event) =>

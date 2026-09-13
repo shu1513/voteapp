@@ -185,6 +185,20 @@ describe("ElectionPage", () => {
     expect(screen.queryByText("How do we calculate my vote power?")).not.toBeInTheDocument();
   });
 
+  it("names a retention race in the vote power slot, with no explanation panel", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        official_ballot_title: "Shall Judge Jordan Voter be retained in office?",
+        vote_power: { ...VOTE_POWER_WITH_EXPLANATION, label: "retention", score: null },
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Shall Judge Jordan Voter be retained in office?" });
+    expect(screen.getByText("My vote power").nextElementSibling).toHaveTextContent("Retention race");
+    expect(screen.queryByText("How do we calculate my vote power?")).not.toBeInTheDocument();
+  });
+
   it("hides the vote power explanation entirely for an unknown label", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>

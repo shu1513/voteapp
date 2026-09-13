@@ -175,6 +175,11 @@ describe("electionPartisanshipPolicy", () => {
   it("treats judicial retention contests as nonpartisan in partisan-judicial states", () => {
     expect(isJudicialRetentionTitle("Justice of the Supreme Court (Retention)")).toBe(true);
     expect(isJudicialRetentionTitle("Water Retention District Director")).toBe(false);
+    // California phrasing: no "retain" anywhere, but a Yes/No on one justice.
+    expect(
+      isJudicialRetentionTitle("Shall Presiding Justice THERESE M. STEWART be elected to the office for the term provided by law?")
+    ).toBe(true);
+    expect(isJudicialRetentionTitle("Shall Pat Example be elected to the office for the term provided by law?")).toBe(false);
 
     const resolved = resolveElectionIsPartisan({
       draft: {

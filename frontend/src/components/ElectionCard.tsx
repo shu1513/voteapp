@@ -365,7 +365,7 @@ function ElectionCard({
         {/* The group wraps between chip and count on very narrow screens;
             nowrap sits on each label so neither breaks mid-phrase. */}
         <span className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
-          {election.vote_power.label !== "unknown" ? (
+          {election.vote_power.label !== "unknown" && election.vote_power.label !== "retention" ? (
             // Colored text, not a pill: the tinted badge read as a button.
             <span
               className={`whitespace-nowrap text-sm font-medium ${votePowerBadgeClass(election.vote_power.label)}`}

@@ -99,7 +99,10 @@ export type VotePowerExplanation = {
 
 export type VotePower = {
   score: number | null;
-  label: "very_low" | "low" | "medium" | "above_average" | "high" | "very_high" | "unknown";
+  /** "retention" = a judicial retention race: no rating at all (score
+   * null), the ballot list hides the badge and the detail page names the
+   * race kind instead. */
+  label: "very_low" | "low" | "medium" | "above_average" | "high" | "very_high" | "unknown" | "retention";
   confidence: string;
   representation_level: string;
   decisiveness_level: string;

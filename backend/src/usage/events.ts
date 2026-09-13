@@ -172,7 +172,7 @@ const CATALOG: Record<string, { required: Record<string, PropRule>; optional?: R
   election_open: {
     required: {
       race_type: oneOf("office", "ballot_measure"),
-      vote_power: oneOf("very_low", "low", "medium", "above_average", "high", "very_high", "unknown"),
+      vote_power: oneOf("very_low", "low", "medium", "above_average", "high", "very_high", "unknown", "retention"),
       position_bucket: oneOf("1-3", "4-10", "11+"),
       awaiting: bool,
     },

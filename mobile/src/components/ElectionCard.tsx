@@ -122,7 +122,7 @@ export function ElectionCard({
           // to open the race, so it no longer renders. Same as the web card.
           <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">1 candidate</Text>
         ) : null}
-        {election.vote_power.label !== "unknown" ? (
+        {election.vote_power.label !== "unknown" && election.vote_power.label !== "retention" ? (
           // Colored text, not a tinted pill: the label glows warm for
           // high-leverage races and fades to gray for low ones — never
           // rausch, which is the brand/CTA color, and never purple, which

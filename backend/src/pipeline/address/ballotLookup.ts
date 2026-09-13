@@ -1913,6 +1913,7 @@ export async function lookupBallotSummariesByDistrictIds(
       current_competitiveness: currentCompetitiveness,
       vote_power: calculateVotePower({
         raceType: row.race_type,
+        officialBallotTitle: row.official_ballot_title,
         candidateCount,
         representationPowerScore: district.representation_power_score,
         // A fresh, confident current rating outranks historic margins.
@@ -2197,6 +2198,7 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
 
   const votePowerInput = {
     raceType: detail.race_type,
+    officialBallotTitle: detail.official_ballot_title,
     candidateCount: detail.candidates.length,
     representationPowerScore: detail.district.representation_power_score,
     // A fresh, confident current rating outranks historic margins.
