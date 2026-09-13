@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { hasClearableAutoPicks, reasonLabel, summarizeAutoPick } from "./autoPick";
-import type { AutoPickElectionResult, ElectionChoice } from "./types";
+import type { AutoPickElectionResult, AutoPickReason, ElectionChoice } from "./types";
 
 // The full summary/panel copy matrix is exercised by the web control tests
 // (AutoPickControl.test.tsx renders these sentences); this file pins the
@@ -41,6 +41,9 @@ describe("reasonLabel", () => {
     expect(reasonLabel(null)).toBe("not enough evidence");
     expect(reasonLabel("tie")).toBe("a tie");
     expect(reasonLabel("too_few_issues")).toBe("fewer than 3 ranked issues");
+    // A reason this build does not know (older backend mid-deploy) must
+    // never render as "undefined".
+    expect(reasonLabel("retention" as unknown as AutoPickReason)).toBe("not enough evidence");
   });
 });
 

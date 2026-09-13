@@ -21,8 +21,11 @@ Reform work moves to `anti_corruption` with a stance.
 
 - 331 live tagged records reviewed one by one (329 in the first dump plus 2 written
   overnight by a concurrent research session) → 280 kept, 51 untagged.
-- 51 untags across 40 candidates; 4 records tagged `anti_corruption:for`
-  (2 more already carried it).
+- 51 untags across 40 candidates; 4 records tagged `anti_corruption:for`.
+  The adds manifest lists 6: the tag tool reported the other 2 as
+  `skipped: already tagged anti_corruption:for` (they carried the tag from an
+  earlier pass) and, as it does for any skip, exited nonzero. Nothing to redo;
+  a prod replay of the same file reports the same two skips.
 - Applied with `npm run manual:records:untag -- --untags-file untags.json --apply`
   and `npm run manual:records:tag -- --tags-file anti-corruption-adds.json --apply`
   (`DATABASE_URL` set inline).

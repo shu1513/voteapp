@@ -36,7 +36,10 @@ const REASON_LABELS: Record<AutoPickReason, string> = {
  * enough evidence"). null (a no-pick with no recorded reason) reads as the
  * evidence gap. */
 export function reasonLabel(reason: AutoPickReason | null): string {
-  return reason === null ? "not enough evidence" : REASON_LABELS[reason];
+  // The fallback also covers a reason this build no longer knows (an older
+  // backend during a deploy-skew window can still send "retention"): the
+  // evidence-gap phrase is never wrong for a no-pick, "undefined" is.
+  return reason === null ? "not enough evidence" : (REASON_LABELS[reason] ?? "not enough evidence");
 }
 
 /**

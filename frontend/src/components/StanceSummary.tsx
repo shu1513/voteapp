@@ -30,6 +30,9 @@ export function StanceSummary({
   headingLevel?: "h2" | "h3";
 }) {
   const Heading = headingLevel;
+  // Box titles sit one level below the section heading (h3 under the
+  // profile's h2, h4 under a judge section's h3), same as TrackRecordSection.
+  const BoxHeading = headingLevel === "h2" ? "h3" : "h4";
   const { supports, opposes, mixed } = classifyStanceSummary(records, preferences);
   if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
     return null;
@@ -55,7 +58,7 @@ export function StanceSummary({
             : "rounded border border-red-200 bg-red-50 p-3"
         }
       >
-        <h3
+        <BoxHeading
           className={
             side === "supports"
               ? "text-sm font-semibold text-green-900"
@@ -63,7 +66,7 @@ export function StanceSummary({
           }
         >
           {side === "supports" ? "Supports" : "Opposes"}
-        </h3>
+        </BoxHeading>
         <CappedInlineList
           noun="issues"
           className="mt-1 text-sm text-ink"
@@ -90,7 +93,7 @@ export function StanceSummary({
       ) : null}
       {mixed.length > 0 ? (
         <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3">
-          <h3 className="text-subheading font-semibold text-amber-900">Mixed record</h3>
+          <BoxHeading className="text-subheading font-semibold text-amber-900">Mixed record</BoxHeading>
           {/* Same "N support · N oppose" phrasing as the record group
               headers, so the two surfaces can't drift apart. */}
           <CappedInlineList
