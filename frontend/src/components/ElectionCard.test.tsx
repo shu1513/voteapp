@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ElectionList } from "./ElectionCard";
 import { renderRoutes } from "../test/render";
 import { DISTRICT, electionSummary, VOTE_POWER } from "../test/fixtures";
@@ -816,6 +817,60 @@ describe("ElectionCard result chip", () => {
     // The seat name still reads from the title; the card carries no line of its own.
     expect(screen.getByText("Justice of the Peace Ward 3")).toBeInTheDocument();
     expect(screen.queryByText("Ward 3")).not.toBeInTheDocument();
+  });
+
+  it("sections each date by government level under the district-size sorts, open by default", async () => {
+    // Payload order is the backend's: level walk, then population. The list
+    // only splits consecutive runs, so the section order is the payload's.
+    const level = (id: string, title: string, scope: string | null, district_type: string, family?: string) =>
+      electionSummary({
+        id,
+        official_ballot_title: title,
+        district: { ...DISTRICT, id: `d-${id}`, district_type },
+        office: scope ? { id: `o-${id}`, scope, canonical_name: title, summary: "" } : null,
+        discovery_contest_family: family ?? "non_judicial_office",
+      });
+    const elections = [
+      // Senate offices are scope "statewide"; the contest family makes them federal.
+      level("e-1", "U.S. Senator", "statewide", "statewide", "us_senate"),
+      level("e-2", "Governor", "statewide", "statewide"),
+      level("e-3", "Proposition 4", null, "statewide"),
+      level("e-4", "County Sheriff", "county", "county"),
+      level("e-5", "School Board", "school_unified", "school_unified"),
+    ];
+    renderRoutes([{ path: "/", element: <ElectionList elections={elections} sort="district_size" /> }], "/");
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const sections = screen.getAllByRole("button", { expanded: true });
+    expect(sections.map((button) => button.textContent)).toEqual(["Federal(1)", "State(2)", "County(1)", "City(1)"]);
+    // No Presidential section: none on this ballot. School boards read as City.
+    expect(screen.queryByText(/Presidential/)).not.toBeInTheDocument();
+    expect(screen.getByText("School Board")).toBeInTheDocument();
+
+    // Collapsing hides that level's cards and nothing else.
+    await user.click(sections[1]);
+    expect(sections[1]).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByText("Governor")).not.toBeInTheDocument();
+    expect(screen.queryByText("Proposition 4")).not.toBeInTheDocument();
+    expect(screen.getByText("County Sheriff")).toBeInTheDocument();
+  });
+
+  it("renders the date groups flat under every other sort", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[electionSummary({ id: "e-1" }), electionSummary({ id: "e-2", official_ballot_title: "Mayor" })]}
+              sort="vote_power"
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+    expect(screen.queryByRole("button", { expanded: true })).not.toBeInTheDocument();
+    expect(screen.getByText("Mayor")).toBeInTheDocument();
   });
 
   it("leaves ordinary races unflagged, including on a backend that predates the field", () => {

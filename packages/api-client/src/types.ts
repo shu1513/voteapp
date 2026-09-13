@@ -168,6 +168,13 @@ export type ElectionSummary = {
   election_date: string;
   election_stage: string | null;
   is_partisan: boolean | null;
+  /**
+   * The backend's contest family ("us_senate" | "non_judicial_office" |
+   * "judicial_office" | "ballot_measure"). Read only to place US Senate
+   * races in the Federal level section — their office scope is "statewide".
+   * Optional: older payloads omit it.
+   */
+  discovery_contest_family?: string | null;
   candidate_count: number;
   /** null unless race_type is "office" and candidate_count is 0. */
   candidate_roster_status: CandidateRosterStatus | null;
@@ -442,8 +449,8 @@ export const PUBLIC_BALLOT_SORTS = BALLOT_SORTS.filter((option) => option.value 
 export const BALLOT_SORT_DESCRIPTIONS: Record<BallotSort, string> = {
   my_areas: "ordered by how much each race affects the issues you care about.",
   vote_power: "ordered by where your vote carries the most weight.",
-  district_size: "ordered by district population, biggest first.",
-  district_size_smallest: "ordered by district population, smallest first.",
+  district_size: "grouped by level, biggest districts first.",
+  district_size_smallest: "grouped by level, smallest districts first.",
 };
 
 export type ElectionDetail = {
