@@ -465,8 +465,11 @@ describe("CandidatePage", () => {
     renderCandidate(() =>
       candidateDetail({
         records: [
+          // Payload order is newest-first; the untagged record sits between
+          // two General-tagged ones and must stay there after the merge.
           record("r-1", [{ areaId: "a-gen", slug: "general", name: "General" }]),
           record("r-2", []),
+          record("r-3", [{ areaId: "a-gen", slug: "general", name: "General" }]),
         ],
       })
     );
@@ -475,9 +478,10 @@ describe("CandidatePage", () => {
     const headings = screen.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
     expect(headings).toEqual(["Track record — General"]);
     expect(screen.queryByText(/Other records/)).not.toBeInTheDocument();
-    // Both records sit inside the one General group.
-    expect(screen.getByText("General").closest("details")).toHaveTextContent("Did a thing (r-1).");
-    expect(screen.getByText("General").closest("details")).toHaveTextContent("Did a thing (r-2).");
+    // All three sit inside the one General group, in payload order.
+    const group = screen.getByText("General").closest("details") as HTMLElement;
+    const shown = [...group.querySelectorAll("li")].map((li) => li.textContent?.match(/\(r-\d\)/)?.[0]);
+    expect(shown).toEqual(["(r-1)", "(r-2)", "(r-3)"]);
   });
 
   it("defaults the record view to \"My issues first\" and personalizes once saved areas load", async () => {

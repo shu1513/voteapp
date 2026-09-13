@@ -87,7 +87,11 @@ function groupRecords(records: CandidateRecord[]): RecordGroup[] {
   const untagged = groups.get(null);
   const general = [...groups.values()].find((group) => group.areaSlug === GENERAL_AREA_SLUG);
   if (untagged && general) {
-    general.records.push(...untagged.records);
+    // Rebuild from the source array so the merged group keeps the payload's
+    // newest-first order — appending the untagged block would put a 2025
+    // record after a 2024 one.
+    const merged = new Set([...general.records, ...untagged.records].map((record) => record.id));
+    general.records = records.filter((record) => merged.has(record.id));
     groups.delete(null);
   }
   return [...groups.values()].sort((a, b) =>
