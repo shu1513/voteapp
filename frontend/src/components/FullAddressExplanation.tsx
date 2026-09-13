@@ -29,7 +29,7 @@ export function FullAddressExplanation({ onOpen }: { onOpen?: () => void } = {})
           <div className="flex min-h-full items-center justify-center">
             <DialogPanel className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
               <DialogTitle className="text-lg font-bold text-ink">
-                Why do we need the full address?
+                Why do you need the full address?
               </DialogTitle>
               <div className="mt-3 space-y-3 text-sm text-ink-soft">
                 <p>

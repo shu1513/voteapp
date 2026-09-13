@@ -17,6 +17,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
 import { BallotFiltersControl } from "../../components/BallotFiltersControl";
 import { ElectionCard } from "../../components/ElectionCard";
+import { FullAddressExplanation } from "../../components/FullAddressExplanation";
 import { SavedAddressForm } from "../../components/SavedAddressForm";
 import { SortChips } from "../../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status";
@@ -132,6 +133,7 @@ function SavedBallotBody({ email }: { email: string }) {
   const [onlyMyIssues, setOnlyMyIssues] = useState(false);
   const [impactLevel, setImpactLevel] = useState<VoteImpactThreshold | null>(null);
   const [handoffState, setHandoffState] = useState<HandoffState>("checking");
+  const [addressExplanationVisible, setAddressExplanationVisible] = useState(false);
   const handoffFiredRef = useRef(false);
 
   useEffect(() => {
@@ -243,12 +245,23 @@ function SavedBallotBody({ email }: { email: string }) {
     return (
       <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-10" keyboardShouldPersistTaps="handled">
         <Text className="text-2xl font-bold text-ink">Set your address</Text>
-        <Text className="mt-2 text-sm text-ink-soft">
-          Enter your address once and your ballot will be waiting every time you come back.
-        </Text>
+        <Text className="mt-2 text-sm text-ink-soft">Enter your address once to get the correct ballot.</Text>
+        {/* Same explainer as the home tab so a new member who lands here
+            right after sign-up can see why a street address matters. */}
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => setAddressExplanationVisible(true)}
+          className="mt-1 self-start"
+        >
+          <Text className="text-sm text-ink-soft underline">Why full address?</Text>
+        </Pressable>
         <View className="mt-4">
           <SavedAddressForm label="Your address" />
         </View>
+        <FullAddressExplanation
+          visible={addressExplanationVisible}
+          onClose={() => setAddressExplanationVisible(false)}
+        />
       </ScrollView>
     );
   }

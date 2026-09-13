@@ -189,7 +189,7 @@ describe("HomePage pre-search clickwrap", () => {
 
     await user.click(trigger);
 
-    const dialog = screen.getByRole("dialog", { name: "Why do we need the full address?" });
+    const dialog = screen.getByRole("dialog", { name: "Why do you need the full address?" });
     expect(dialog).toHaveTextContent(
       "Your ballot depends on your voting districts, whose boundaries don’t follow ZIP codes"
     );

@@ -10,6 +10,7 @@ import {
   type AddressSavedNoticeData,
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
+import { FullAddressExplanation } from "../components/FullAddressExplanation";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, railSortForBallotSort, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
@@ -314,8 +315,12 @@ export function SavedBallotPage() {
           </div>
         ) : null}
         <h1 className="text-title font-bold">Set your address</h1>
+        {/* Same explainer as the home page so a new member who lands here
+            right after sign-up can see why a street address matters before
+            typing one. */}
         <p className="mt-2 text-sm text-ink-soft">
-          Enter your address once and your ballot will be waiting every time you come back.
+          Enter your address once to get the correct ballot.{" "}
+          <FullAddressExplanation onOpen={() => track("why_address_open", { after_input: false })} />
         </p>
         <div className="mt-3">
           <SavedAddressForm inputId="saved-address" label="Your address" />
