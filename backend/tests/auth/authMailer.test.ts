@@ -91,6 +91,27 @@ describe("authMailer", () => {
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain(changeLinkUrl);
   });
 
+  it("sends existing-account notices through SES pointing at the log-in page", async () => {
+    const sesClient = createSesClientMock();
+    const mailer = createSesAuthMailer({
+      fromEmailAddress,
+      sesClient,
+    });
+
+    await mailer.sendExistingAccountEmail({
+      email: recipientEmail,
+      linkUrl: "https://example.com/login",
+    });
+
+    expect(sesClient.send).toHaveBeenCalledTimes(1);
+    const command = sesClient.send.mock.calls[0][0];
+    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[Elections Simplified] You already have an account");
+    expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain("already has an account");
+    expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain("https://example.com/login");
+    expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain("https://example.com/login");
+    expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain("Forgot your password?");
+  });
+
   it("rejects malformed link URLs before sending", async () => {
     const sesClient = createSesClientMock();
     const mailer = createSesAuthMailer({

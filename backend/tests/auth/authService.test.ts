@@ -43,6 +43,7 @@ function createMailerMock() {
     sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
     sendPasswordResetEmail: vi.fn().mockResolvedValue(undefined),
     sendEmailChangeEmail: vi.fn().mockResolvedValue(undefined),
+    sendExistingAccountEmail: vi.fn().mockResolvedValue(undefined),
   };
 }
 
@@ -206,10 +207,11 @@ describe("createAuthService register terms acceptance", () => {
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: true })] }) // existing VERIFIED user
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
 
+    const mailer = createMailerMock();
     const service = createAuthService({
       db: createDbMock(client) as never,
       redis: {} as never,
-      mailer: createMailerMock(),
+      mailer,
       publicBaseUrl: "https://example.com",
     });
 
@@ -227,6 +229,14 @@ describe("createAuthService register terms acceptance", () => {
       String(call[0]).includes("INSERT INTO public.user_terms_acceptances")
     );
     expect(ledgerCall).toBeUndefined();
+    // The form shows the same screen as a fresh signup, so the account holder
+    // is told by email (to the address itself) why no verification link came.
+    expect(mailer.sendVerificationEmail).not.toHaveBeenCalled();
+    expect(mailer.sendExistingAccountEmail).toHaveBeenCalledWith({
+      email: "user@example.com",
+      linkUrl: "https://example.com/login",
+    });
+    expect(client.release).toHaveBeenCalled();
   });
 
   it("rejects blank or stale terms versions before touching the database", async () => {
