@@ -27,7 +27,7 @@ export function FullAddressExplanation({ visible, onClose }: FullAddressExplanat
         />
         <View className="max-h-[88%] w-full max-w-md rounded-2xl bg-white p-6">
           <Text accessibilityRole="header" className="text-lg font-bold text-ink">
-            Why do we need the full address?
+            Why do you need the full address?
           </Text>
           <ScrollView className="mt-3">
             <Text className="text-sm text-ink-soft">
