@@ -581,7 +581,7 @@ describe("explainVotePower", () => {
       competitivenessLabel: null,
     };
     expect(explainVotePower(input, calculateVotePower(input))).toEqual({
-      how: "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the vote power rating doesn't apply.",
+      how: "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.",
       parts: [],
       result: "Retention race",
       caveat: null,

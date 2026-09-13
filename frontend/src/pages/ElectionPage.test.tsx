@@ -195,7 +195,7 @@ describe("ElectionPage", () => {
           label: "retention",
           score: null,
           explanation: {
-            how: "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the vote power rating doesn't apply.",
+            how: "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.",
             parts: [],
             result: "Retention race",
             caveat: null,
@@ -206,9 +206,14 @@ describe("ElectionPage", () => {
 
     await screen.findByRole("heading", { name: "Shall Judge Jordan Voter be retained in office?" });
     expect(screen.getByText("My vote power").nextElementSibling).toHaveTextContent("Retention race");
-    // The label alone is opaque: the backend's one-line explanation renders
-    // under the header instead of the how-panel.
-    expect(screen.getByText("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the vote power rating doesn't apply.")).toBeInTheDocument();
+    // The label alone is opaque, but the header stays clean: the backend's
+    // one-line explanation sits behind an ⓘ toggle, not inline.
+    expect(screen.queryByText("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.")).not.toBeInTheDocument();
+    const info = screen.getByRole("button", { name: "What is a retention race?" });
+    expect(info).toHaveAttribute("aria-expanded", "false");
+    await userEvent.setup().click(info);
+    expect(screen.getByText("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.")).toBeInTheDocument();
+    expect(info).toHaveAttribute("aria-expanded", "true");
     expect(screen.queryByText("How do we calculate my vote power?")).not.toBeInTheDocument();
   });
 

@@ -186,6 +186,10 @@ export function ElectionPage() {
 
   const data = useLoaderData<typeof loader>();
   const competitiveness = competitivenessChip(data);
+  // The ⓘ next to "Retention race": the one-line explanation is a tap
+  // target, not a title tooltip (touch never sees tooltips). Component
+  // state, so it closes again on a sibling walk to the next race.
+  const [retentionInfoOpen, setRetentionInfoOpen] = useState(false);
   // Usage: which parts of the page reached the viewport, once per election
   // (this element stays mounted across rail walks, hence the key).
   const votePowerRef = useSectionExposure("vote_power", data.id);
@@ -579,8 +583,27 @@ export function ElectionPage() {
           {data.vote_power.label !== "unknown" ? (
             <div>
               <p className="text-sm text-ink">My vote power</p>
-              <p className={`mt-1 text-lg font-semibold ${votePowerBadgeClass(data.vote_power.label)}`}>
+              <p className={`mt-1 flex items-center gap-1.5 text-lg font-semibold ${votePowerBadgeClass(data.vote_power.label)}`}>
                 {formatVotePowerLabel(data.vote_power.label)}
+                {/* "Retention race" alone means nothing to a first-time
+                    reader; the ⓘ reveals the backend's one-line explanation
+                    below the grid (the value column is too narrow for it). */}
+                {data.vote_power.label === "retention" && data.vote_power.explanation ? (
+                  <button
+                    type="button"
+                    aria-expanded={retentionInfoOpen}
+                    aria-label="What is a retention race?"
+                    onClick={() => setRetentionInfoOpen((open) => !open)}
+                    className="text-ink-soft hover:text-ink"
+                  >
+                    <span
+                      aria-hidden
+                      className="flex h-4 w-4 items-center justify-center rounded-full border border-current text-[10px] font-serif italic"
+                    >
+                      i
+                    </span>
+                  </button>
+                ) : null}
               </p>
             </div>
           ) : null}
@@ -594,10 +617,7 @@ export function ElectionPage() {
             </p>
           </div>
         </div>
-        {/* "Retention race" alone means nothing to a first-time reader: one
-            backend-authored line says what the race is and why there is no
-            rating. Full width under the grid — the value column is narrow. */}
-        {data.vote_power.label === "retention" && data.vote_power.explanation ? (
+        {retentionInfoOpen && data.vote_power.label === "retention" && data.vote_power.explanation ? (
           <p className="mt-2 text-sm text-ink-soft">{data.vote_power.explanation.how}</p>
         ) : null}
         {/* The detail page has room for the whole caveat, where the ballot card

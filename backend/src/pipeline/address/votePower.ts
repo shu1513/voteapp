@@ -921,7 +921,7 @@ export function isRetentionVotePowerInput(input: Pick<VotePowerInput, "raceType"
 // Shown under the "Retention race" value on the detail page: a reader who
 // has never met the term needs both what the race is and why no rating.
 const RETENTION_EXPLANATION =
-  "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the vote power rating doesn't apply.";
+  "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.";
 
 export function calculateVotePower(input: VotePowerInput): VotePowerResult {
   // Checked before the uncontested rule: a retention race has exactly one
