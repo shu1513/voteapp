@@ -8,6 +8,20 @@ describe("isJudicialRetentionTitle", () => {
     expect(isJudicialRetentionTitle("Supreme Court Justice - Retain Jane Doe?")).toBe(true);
   });
 
+  it("matches California's retention phrasing, which never says retain", () => {
+    expect(
+      isJudicialRetentionTitle(
+        "Shall Administrative Presiding Justice LAURIE EARL be elected to the office for the term provided by law?"
+      )
+    ).toBe(true);
+    expect(
+      isJudicialRetentionTitle("Shall Associate Justice of the Supreme Court KELLI M. EVANS be elected to the office for the term provided by law?")
+    ).toBe(true);
+    // The ballot sometimes drops the office word; the prescribed phrase is
+    // judicial on its own.
+    expect(isJudicialRetentionTitle("Shall DAVID B. SAPP be elected to the office for the term provided by law?")).toBe(true);
+  });
+
   it("leaves ordinary races alone", () => {
     expect(isJudicialRetentionTitle("District Court Judge, Division 3")).toBe(false);
     expect(isJudicialRetentionTitle("State Senator, District 4")).toBe(false);

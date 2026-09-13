@@ -99,7 +99,10 @@ export type VotePowerExplanation = {
 
 export type VotePower = {
   score: number | null;
-  label: "very_low" | "low" | "medium" | "above_average" | "high" | "very_high" | "unknown";
+  /** "retention" = a judicial retention race: no rating at all (score
+   * null), the ballot list hides the badge and the detail page names the
+   * race kind instead. */
+  label: "very_low" | "low" | "medium" | "above_average" | "high" | "very_high" | "unknown" | "retention";
   confidence: string;
   representation_level: string;
   decisiveness_level: string;
@@ -378,6 +381,8 @@ export type ElectionCandidate = {
   is_incumbent: boolean;
   status: string;
   summary: string | null;
+  /** Optional: a not-yet-redeployed backend omits it. */
+  official_website_url?: string | null;
   finance_summary: FinanceSummary | null;
   /** Full record history with research-area stance tags; drives the stance chips. */
   records: CandidateRecord[];
@@ -578,8 +583,7 @@ export type AutoPickReason =
   | "all_vetoed"
   | "veto"
   | "too_few_issues"
-  | "election_closed"
-  | "retention";
+  | "election_closed";
 
 export type AutoPickRequest = {
   election_ids: string[];

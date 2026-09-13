@@ -95,6 +95,7 @@ const VOTE_POWER_LABELS: Record<string, string> = {
   high: "High",
   very_high: "Very high",
   unknown: "Unknown",
+  retention: "Retention race",
 };
 
 export function formatVotePowerLabel(label: string): string {

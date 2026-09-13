@@ -428,7 +428,7 @@ describe("CandidatePage", () => {
       candidateDetail({
         records: [
           // Payload arrives alphabetical-ish; salience rank must win, with
-          // the untagged pseudo-group sinking to the end.
+          // the untagged record's synthetic General group sinking to the end.
           record("r-1", [{ areaId: "a-civ", slug: "civil_rights", name: "Civil Rights" }]),
           record("r-2", []),
           record("r-3", [{ areaId: "a-env", slug: "environment_and_public_health", name: "Environment and Public Health" }]),
@@ -448,8 +448,40 @@ describe("CandidatePage", () => {
       "Track record — Environment and Public Health",
       "Track record — Gun Control",
       "Track record — Civil Rights",
-      "Track record — Other records",
+      "Track record — General",
     ]);
+  });
+
+  it("folds untagged records into the real General group instead of a separate bucket", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const record = (id: string, tags: { areaId: string; slug: string; name: string }[]) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: tags.map((tag) => ({ research_area_id: tag.areaId, slug: tag.slug, name: tag.name, stance: null })),
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          // Payload order is newest-first; the untagged record sits between
+          // two General-tagged ones and must stay there after the merge.
+          record("r-1", [{ areaId: "a-gen", slug: "general", name: "General" }]),
+          record("r-2", []),
+          record("r-3", [{ areaId: "a-gen", slug: "general", name: "General" }]),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Track record" });
+    const headings = screen.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
+    expect(headings).toEqual(["Track record — General"]);
+    expect(screen.queryByText(/Other records/)).not.toBeInTheDocument();
+    // All three sit inside the one General group, in payload order.
+    const group = screen.getByText("General").closest("details") as HTMLElement;
+    const shown = [...group.querySelectorAll("li")].map((li) => li.textContent?.match(/\(r-\d\)/)?.[0]);
+    expect(shown).toEqual(["(r-1)", "(r-2)", "(r-3)"]);
   });
 
   it("defaults the record view to \"My issues first\" and personalizes once saved areas load", async () => {
@@ -626,6 +658,26 @@ describe("CandidatePage", () => {
     const button = screen.getByRole("button", { name: "Report an issue with candidate profile" });
     const electionsHeading = screen.getByRole("heading", { name: "Race Jordan Voter is in:" });
     expect(electionsHeading.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("links a retention judge to the Yes/No question in one line instead of a race list", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection({
+            official_ballot_title: "Shall Judge Jordan Voter be retained in office?",
+            election_date: "2026-11-03",
+          }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.queryByRole("heading", { name: /is in:/ })).not.toBeInTheDocument();
+    const link = screen.getByRole("link", { name: "Retention question" });
+    expect(link).toHaveAttribute("href", "/elections/e-1");
+    expect(link.parentElement).toHaveTextContent("Retention question · November 3, 2026");
   });
 
   it("splits the election list into upcoming and past races, pluralized per section", async () => {
@@ -899,6 +951,26 @@ describe("CandidatePage", () => {
     const ctas = await screen.findAllByRole("button", { name: "Make my pick: Jordan Voter" });
     expect(ctas).toHaveLength(1);
     expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
+  });
+
+  it("asks a bare Yes/No on the sticky card for a retention judge — no caption, no auto-pick", async () => {
+    clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [candidateElection({ official_ballot_title: "Shall Judge Jordan Voter be retained in office?" })],
+      })
+    );
+
+    // Yes/No on keeping the judge, never a candidate pick. The profile is
+    // reference material: the explanation caption and the alignment control
+    // live on the election page's judge section, not here.
+    expect(await screen.findByRole("button", { name: "No" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Yes" })).toBeInTheDocument();
+    expect(screen.queryByText("Yes keeps this judge in office. No removes them.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /align with my values/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
   });
 
   it("renders no primary pick CTA when the candidate is in several pickable races", async () => {

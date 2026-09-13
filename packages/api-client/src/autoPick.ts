@@ -30,14 +30,16 @@ const REASON_LABELS: Record<AutoPickReason, string> = {
   by_elimination: "picked by elimination",
   too_few_issues: `fewer than ${MIN_AUTO_PICK_ISSUES} ranked issues`,
   election_closed: "no longer open",
-  retention: "a yes/no on keeping a judge — your call",
 };
 
 /** One-phrase reason for the inline race-row annotations ("auto pick: not
  * enough evidence"). null (a no-pick with no recorded reason) reads as the
  * evidence gap. */
 export function reasonLabel(reason: AutoPickReason | null): string {
-  return reason === null ? "not enough evidence" : REASON_LABELS[reason];
+  // The fallback also covers a reason this build no longer knows (an older
+  // backend during a deploy-skew window can still send "retention"): the
+  // evidence-gap phrase is never wrong for a no-pick, "undefined" is.
+  return reason === null ? "not enough evidence" : (REASON_LABELS[reason] ?? "not enough evidence");
 }
 
 /**
@@ -87,8 +89,15 @@ export function summarizeAutoPick(result: AutoPickElectionResult, seatsToFill: n
   if (result.reason === "election_closed") {
     return "This election is no longer open for picks.";
   }
-  if (result.reason === "retention") {
-    return "No pick: this is a yes/no question on keeping a judge, and that call is yours.";
+  if (result.race_type === "office" && result.measure_position !== null) {
+    // Judicial retention: the office race is answered Yes/No on keeping the
+    // one judge, scored on their records like any candidate.
+    if (result.reason === "veto") {
+      return "Vote No — this judge's record goes against an issue you drew a line on.";
+    }
+    return result.measure_position === "yes"
+      ? "Vote Yes — this judge's record supports your issues overall."
+      : "Vote No — this judge's record goes against your issues overall.";
   }
   const shortlist = joinNames(result.shortlist_candidate_ids.map((id) => candidateName(result, id)));
   if (result.race_type === "ballot_measure") {
@@ -136,8 +145,20 @@ export function summarizeAutoPick(result: AutoPickElectionResult, seatsToFill: n
         : "No pick: every candidate with a record here works against your issues.";
     case "all_vetoed":
       return "No pick: every candidate goes against one of your musts.";
-    default:
+    default: {
+      // One candidate (a retention judge, or an unopposed race): name the
+      // gap for them, not for "these candidates". Records that cancel out
+      // (a retention judge scoring exactly zero with evidence) get the
+      // measure page's even-split wording.
+      const only = result.candidates.length === 1 ? result.candidates[0] : undefined;
+      if (only && only.per_issue.length > 0) {
+        return "No pick: this candidate's record helps some of your issues and hurts others about equally, so it's your call.";
+      }
+      if (only) {
+        return "No pick: this candidate has no record on your issues yet.";
+      }
       return "No pick: none of these candidates has a record on your issues yet.";
+    }
   }
 }
 

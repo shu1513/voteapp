@@ -51,7 +51,8 @@ import { usLatestLocalDate } from "../../lib/usLatestLocalDate";
 type RecordView = "my_issues" | "newest";
 
 type RecordGroup = {
-  /** null for the untagged "Other records" pseudo-group. */
+  /** null only for the synthetic General group (untagged records on a
+   * candidate with no real General-tagged record to join). */
   areaId: string | null;
   areaSlug: string | null;
   areaName: string;
@@ -59,10 +60,14 @@ type RecordGroup = {
 };
 
 // Records grouped by research area (a record with several tags appears under
-// each; untagged records fall into "Other records"). Same logic as the web
-// CandidatePage: groups order by public salience (the same ranking the
-// stance summary above uses, so the two surfaces agree), not alphabetically;
-// "Other records" stays last.
+// each). Untagged records belong to General: the real General group when the
+// candidate has one, else a synthetic "General" group — never a separate
+// "Other records" bucket. Same logic as the web TrackRecordSection: groups
+// order by public salience (the same ranking the stance summary above uses,
+// so the two surfaces agree), not alphabetically; the synthetic General
+// group stays last.
+const GENERAL_AREA_SLUG = "general";
+
 function groupRecords(records: CandidateRecord[]): RecordGroup[] {
   const groups = new Map<string | null, RecordGroup>();
   for (const record of records) {
@@ -72,12 +77,22 @@ function groupRecords(records: CandidateRecord[]): RecordGroup[] {
           areaSlug: tag.slug,
           areaName: tag.name,
         }))
-      : [{ areaId: null, areaSlug: null, areaName: "Other records" }];
+      : [{ areaId: null, areaSlug: null, areaName: "General" }];
     for (const area of areas) {
       const group = groups.get(area.areaId) ?? { ...area, records: [] };
       group.records.push(record);
       groups.set(area.areaId, group);
     }
+  }
+  const untagged = groups.get(null);
+  const general = [...groups.values()].find((group) => group.areaSlug === GENERAL_AREA_SLUG);
+  if (untagged && general) {
+    // Rebuild from the source array so the merged group keeps the payload's
+    // newest-first order — appending the untagged block would put a 2025
+    // record after a 2024 one.
+    const merged = new Set([...general.records, ...untagged.records].map((record) => record.id));
+    general.records = records.filter((record) => merged.has(record.id));
+    groups.delete(null);
   }
   return [...groups.values()].sort((a, b) =>
     a.areaId === null || a.areaSlug === null

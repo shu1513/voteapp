@@ -217,6 +217,9 @@ export type BallotLookupCandidate = {
   status: CandidateElectionStatus;
   summary: string | null;
   current_office: string | null;
+  // The campaign/office site, for the retention layout that shows the
+  // judge inline on the election page (no profile hop).
+  official_website_url: string | null;
   state: string;
   fec_ids: string[];
   state_filing_ids: string[];
@@ -543,6 +546,7 @@ type CandidateRow = {
   status: CandidateElectionStatus;
   summary: string | null;
   current_office: string | null;
+  official_website_url: string | null;
   state: string;
   fec_ids: unknown;
   state_filing_ids: unknown;
@@ -1290,6 +1294,7 @@ async function loadFullElectionDetails(
           ce.status,
           c.summary,
           c.current_office,
+          c.official_website_url,
           c.state,
           c.fec_ids,
           c.state_filing_ids,
@@ -1545,6 +1550,7 @@ async function loadFullElectionDetails(
       status: row.status,
       summary: row.summary,
       current_office: row.current_office,
+      official_website_url: row.official_website_url ?? null,
       state: row.state,
       fec_ids: parseStringArray(row.fec_ids),
       state_filing_ids: parseStringArray(row.state_filing_ids),
@@ -1913,6 +1919,7 @@ export async function lookupBallotSummariesByDistrictIds(
       current_competitiveness: currentCompetitiveness,
       vote_power: calculateVotePower({
         raceType: row.race_type,
+        officialBallotTitle: row.official_ballot_title,
         candidateCount,
         representationPowerScore: district.representation_power_score,
         // A fresh, confident current rating outranks historic margins.
@@ -2197,6 +2204,7 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
 
   const votePowerInput = {
     raceType: detail.race_type,
+    officialBallotTitle: detail.official_ballot_title,
     candidateCount: detail.candidates.length,
     representationPowerScore: detail.district.representation_power_score,
     // A fresh, confident current rating outranks historic margins.

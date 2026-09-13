@@ -1,6 +1,7 @@
 import type { ElectionRaceType } from "../../types/election.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
 import { binMeanIntensity } from "../competitiveness/currentRaceRatingConsensus.js";
+import { isJudicialRetentionTitle } from "../../ai/electionPartisanshipPolicy.js";
 
 // Fixed ruler for the state-anchored representation model: a district this
 // many times smaller than its state scores 100. Data-derived 2026-08-24
@@ -14,8 +15,24 @@ export const REPRESENTATION_RULER_K = 50000;
 // Six graded tiers plus unknown. "medium" is the statewide baseline (shown as
 // "Average"); "above_average" sits between it and "high" so a county, city, or
 // US House vote — a few times the weight of a statewide one — is not lumped in
-// with the statewide baseline itself.
-export type VotePowerLabel = "very_low" | "low" | "medium" | "above_average" | "high" | "very_high" | "unknown";
+// with the statewide baseline itself. "retention" is not a grade: a judicial
+// retention race (Yes/No on keeping one judge) gets no rating at all — the
+// one-candidate rule would call it uncontested, which it is not, and there
+// is no decisiveness source for it — so the label names the race kind
+// instead, and the score is null.
+export type VotePowerLabel =
+  | "very_low"
+  | "low"
+  | "medium"
+  | "above_average"
+  | "high"
+  | "very_high"
+  | "unknown"
+  | "retention";
+
+// The labels the level matrix can produce (everything but the two
+// non-grades).
+type GradedVotePowerLabel = Exclude<VotePowerLabel, "unknown" | "retention">;
 
 export type VotePowerConfidence = "high" | "medium" | "low";
 
@@ -39,6 +56,9 @@ export type VotePowerFactor =
 export type VotePowerInput = {
   raceType: ElectionRaceType;
   candidateCount: number;
+  // Only read to recognise a judicial retention race (see VotePowerLabel);
+  // optional so the many direct unit-test calls need not carry a title.
+  officialBallotTitle?: string | null;
   representationPowerScore: number | null | undefined;
   competitivenessLabel: HistoricalContestCompetitivenessLabel | null | undefined;
 };
@@ -117,7 +137,7 @@ export type VotePowerExplanationContext = VotePowerInput & {
   marginContests?: { marginPercent: number; electionYear: number; weight: number }[] | null;
 };
 
-const LABELS: readonly Exclude<VotePowerLabel, "unknown">[] = [
+const LABELS: readonly GradedVotePowerLabel[] = [
   "very_low",
   "low",
   "medium",
@@ -195,7 +215,7 @@ export function decisivenessLevelFromContest(input: {
 function matrixLabel(
   representationLevel: Exclude<VotePowerRepresentationLevel, "unknown">,
   decisivenessLevel: Exclude<VotePowerDecisivenessLevel, "unknown">
-): Exclude<VotePowerLabel, "unknown"> {
+): GradedVotePowerLabel {
   if (representationLevel === "high") {
     switch (decisivenessLevel) {
       case "none":
@@ -264,8 +284,8 @@ function labelFromKnownAxis(input: {
   return "unknown";
 }
 
-function capLabel(label: VotePowerLabel, maxLabel: Exclude<VotePowerLabel, "unknown">): VotePowerLabel {
-  if (label === "unknown") {
+function capLabel(label: VotePowerLabel, maxLabel: GradedVotePowerLabel): VotePowerLabel {
+  if (label === "unknown" || label === "retention") {
     return label;
   }
   const labelIndex = LABELS.indexOf(label);
@@ -274,7 +294,7 @@ function capLabel(label: VotePowerLabel, maxLabel: Exclude<VotePowerLabel, "unkn
 }
 
 function bumpLabel(label: VotePowerLabel): VotePowerLabel {
-  if (label === "unknown") {
+  if (label === "unknown" || label === "retention") {
     return label;
   }
   return LABELS[Math.min(LABELS.indexOf(label) + 1, LABELS.length - 1)] ?? label;
@@ -761,6 +781,11 @@ function explanationResultFor(
   if (result.label === "unknown") {
     return "Not enough data → no rating yet.";
   }
+  // Unreachable in practice (explainVotePower returns before building
+  // parts for a retention race); kept so the label map below stays total.
+  if (result.label === "retention") {
+    return "Retention race";
+  }
 
   // Unknown axes stay out of the sum: their part rows and the missing-data
   // caveat already disclose the gap, and "high representation + unknown
@@ -789,7 +814,7 @@ function explanationResultFor(
 // Display words for the rating in the result line. "low" reads as a verdict
 // on the voter and "medium" as a size word, so they ship as "below average"
 // and "average" (mirrors the api-client's formatVotePowerLabel chip copy).
-const RESULT_LABEL_TEXT: Record<Exclude<VotePowerLabel, "unknown">, string> = {
+const RESULT_LABEL_TEXT: Record<GradedVotePowerLabel, string> = {
   very_low: "very low",
   low: "below average",
   medium: "average",
@@ -831,6 +856,10 @@ function currentRatingCaveat(currentRating: VotePowerCurrentRating | null): stri
 // from the same levels the rating used, so the explanation can never drift
 // from the rating logic that produced it.
 export function explainVotePower(input: VotePowerExplanationContext, result: VotePowerResult): VotePowerExplanation {
+  if (result.label === "retention") {
+    // Nothing was graded, so there are no parts to show; the copy says why.
+    return { how: RETENTION_EXPLANATION, parts: [], result: "Retention race", caveat: null };
+  }
   const isBallotMeasure = input.raceType === "ballot_measure";
   // Measures with a known representation grade rate fine without history
   // (mirrors factorsFor's omitMissingDecisiveness): a "no past results"
@@ -881,7 +910,33 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
   };
 }
 
+export function isRetentionVotePowerInput(input: Pick<VotePowerInput, "raceType" | "officialBallotTitle">): boolean {
+  return (
+    input.raceType === "office" &&
+    typeof input.officialBallotTitle === "string" &&
+    isJudicialRetentionTitle(input.officialBallotTitle)
+  );
+}
+
+// Shown under the "Retention race" value on the detail page: a reader who
+// has never met the term needs both what the race is and why no rating.
+const RETENTION_EXPLANATION =
+  "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.";
+
 export function calculateVotePower(input: VotePowerInput): VotePowerResult {
+  // Checked before the uncontested rule: a retention race has exactly one
+  // candidate but is decided by the Yes/No vote, so "uncontested" would be
+  // wrong, and no data source grades how close a retention vote will be.
+  if (isRetentionVotePowerInput(input)) {
+    return {
+      score: null,
+      label: "retention",
+      confidence: "high",
+      representation_level: "unknown",
+      decisiveness_level: "unknown",
+      factors: [],
+    };
+  }
   const representationPowerScore = normalizeRepresentationPowerScore(input.representationPowerScore);
   const representationLevel = representationLevelFromScore(representationPowerScore);
   const decisivenessLevel = decisivenessLevelFromContest(input);

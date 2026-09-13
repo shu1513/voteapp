@@ -101,6 +101,13 @@ describe("ElectionCard", () => {
     expect(screen.queryByText(/Uncontested/)).not.toBeInTheDocument();
   });
 
+  it("shows no vote-power badge on a judicial retention race", () => {
+    // The backend labels a retention race "retention" with no score: there
+    // is no rating to show, so the row carries no badge (like "unknown").
+    renderCard(electionSummary({ candidate_count: 1, vote_power: { ...VOTE_POWER, label: "retention", score: null } }));
+    expect(screen.queryByText(/My vote power:/)).not.toBeInTheDocument();
+  });
+
   it("color-codes the vote-power badge by level", () => {
     // Fixture default is "high" → orange; hotter and cooler levels shift hue.
     renderCard(electionSummary());

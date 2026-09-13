@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { BallotRaceType, ElectionDetail, PartyBucket, RailSortKey } from "@voteapp/api-client";
@@ -41,6 +41,7 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CappedInlineList } from "../components/CappedInlineList";
 import { AutoPickControl } from "../components/AutoPickControl";
+import { RetentionJudgeSection } from "../components/RetentionJudgeSection";
 import { CandidatePickButton, MeasureChoiceButtons, StrandedPicksNotice } from "../components/ElectionChoiceControls";
 import { PostPickActions } from "../components/PostPickActions";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
@@ -185,6 +186,34 @@ export function ElectionPage() {
 
   const data = useLoaderData<typeof loader>();
   const competitiveness = competitivenessChip(data);
+  // The ⓘ next to "Retention race": the one-line explanation is a tap
+  // target, not a title tooltip (touch never sees tooltips). Component
+  // state, so it closes again on a sibling walk to the next race.
+  const [retentionInfoOpen, setRetentionInfoOpen] = useState(false);
+  const retentionInfoRef = useRef<HTMLDivElement>(null);
+  // Popover, not in-flow text: opening it must not push the page down. It
+  // closes on Escape or a click anywhere outside the ⓘ and its bubble.
+  useEffect(() => {
+    if (!retentionInfoOpen) {
+      return;
+    }
+    const onPointerDown = (event: PointerEvent) => {
+      if (!retentionInfoRef.current?.contains(event.target as Node)) {
+        setRetentionInfoOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setRetentionInfoOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [retentionInfoOpen]);
   // Usage: which parts of the page reached the viewport, once per election
   // (this element stays mounted across rail walks, hence the key).
   const votePowerRef = useSectionExposure("vote_power", data.id);
@@ -287,6 +316,9 @@ export function ElectionPage() {
   // card gets no pick button; the answer lives in the sticky Yes/No pair
   // below, and auto pick leaves it open (reason "retention").
   const retention = isRetentionRace(data);
+  // The retention layout needs the one judge; any other roster shape (none
+  // loaded yet, a stray second row) falls back to the plain candidate list.
+  const retentionJudge = retention && data.candidates.length === 1 ? data.candidates[0]! : null;
   // The nav bar exists only for in-app arrivals: router state carries where
   // "back" goes and the ballot sequence. Deep links (shares, search
   // engines) have neither — they get no bar at all, by product choice.
@@ -573,11 +605,55 @@ export function ElectionPage() {
           }
         >
           {data.vote_power.label !== "unknown" ? (
-            <div>
+            // relative: the retention popover anchors to this column's left
+            // edge (under the label), not to the ⓘ, which can sit after a
+            // wrapped word and leave the bubble hanging mid-line.
+            <div ref={retentionInfoRef} className="relative">
               <p className="text-sm text-ink">My vote power</p>
-              <p className={`mt-1 text-lg font-semibold ${votePowerBadgeClass(data.vote_power.label)}`}>
+              <p className={`mt-1 flex items-center gap-1.5 text-lg font-semibold ${votePowerBadgeClass(data.vote_power.label)}`}>
                 {formatVotePowerLabel(data.vote_power.label)}
+                {/* "Retention race" alone means nothing to a first-time
+                    reader; the ⓘ reveals the backend's one-line explanation
+                    below the grid (the value column is too narrow for it). */}
+                {data.vote_power.label === "retention" && data.vote_power.explanation ? (
+                  <button
+                    type="button"
+                    aria-expanded={retentionInfoOpen}
+                    aria-label="What is a retention race?"
+                    onClick={() => setRetentionInfoOpen((open) => !open)}
+                    className="text-ink-soft hover:text-ink"
+                  >
+                    <span
+                      aria-hidden
+                      className="flex h-4 w-4 items-center justify-center rounded-full border border-current text-[10px] font-serif italic"
+                    >
+                      i
+                    </span>
+                  </button>
+                ) : null}
               </p>
+              {retentionInfoOpen && data.vote_power.label === "retention" && data.vote_power.explanation ? (
+                // Absolutely positioned bubble under the column: floats over
+                // the page instead of reflowing it, flush with the label's
+                // left edge. Capped to the viewport so a phone never clips it.
+                <div
+                  role="note"
+                  className="absolute left-0 top-full z-20 mt-1 flex w-72 max-w-[calc(100vw-2rem)] items-start gap-2 rounded-lg border border-line bg-surface p-3 text-sm font-normal text-ink shadow-lg"
+                >
+                  <span className="min-w-0 flex-1">{data.vote_power.explanation.how}</span>
+                  {/* A visible way out, not only Escape / click-away — touch
+                      users have no Escape key and may not guess that tapping
+                      elsewhere closes it. */}
+                  <button
+                    type="button"
+                    aria-label="Close"
+                    onClick={() => setRetentionInfoOpen(false)}
+                    className="-mr-1 -mt-1 rounded p-1 leading-none text-ink-soft hover:text-ink"
+                  >
+                    <span aria-hidden>×</span>
+                  </button>
+                </div>
+              ) : null}
             </div>
           ) : null}
           <div className={data.vote_power.label !== "unknown" ? "border-l border-line pl-6" : undefined}>
@@ -607,7 +683,9 @@ export function ElectionPage() {
             </span>
           </div>
         ) : null}
-        {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
+        {/* No "how" panel on a retention race: nothing was graded, and the
+            header value already names the race kind. */}
+        {data.vote_power.label !== "unknown" && data.vote_power.label !== "retention" && data.vote_power.explanation ? (
           <details
             className="mt-2 text-sm"
             onToggle={(event) =>
@@ -859,7 +937,24 @@ export function ElectionPage() {
         {/* hasStrandedPicks keeps this section alive when EVERY candidacy
             withdrew: the payload then lists no candidates, but the stranded
             notice below is the page's only removal control. */}
-        {data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
+        {retentionJudge ? (
+          // One question about one person: the judge inline, no roster.
+          <>
+            <RetentionJudgeSection
+              key={data.id}
+              electionId={data.id}
+              candidate={retentionJudge}
+              showAutoPick={showChoiceControls}
+              reporterEmail={me?.email}
+              headingRef={candidatesRef}
+            />
+            {showAddressNudge ? (
+              <div className="mt-3">
+                <AddressNudge />
+              </div>
+            ) : null}
+          </>
+        ) : data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
           <section className="mt-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 ref={candidatesRef} className="text-heading font-semibold">Candidates</h2>

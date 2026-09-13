@@ -66,7 +66,9 @@ function makeSummary(elections: FakeElection[]): BallotSummaryResult {
         })),
         historical_competitiveness: null,
         vote_power: {
-          score: e.vote_power_score ?? 50,
+          // undefined = the fixture default; an explicit null is a race with
+          // no score (unknown data, or a retention race).
+          score: e.vote_power_score === undefined ? 50 : e.vote_power_score,
           label: "medium",
           confidence: "medium",
           representation_level: "medium",
@@ -112,6 +114,19 @@ describe("applyBallotElectionOrdering", () => {
 
     expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
     expect(result.elections.every((e) => e.followed_candidates.length === 0)).toBe(true);
+  });
+
+  it("sorts a null score (a retention race) after every scored race under vote_power", async () => {
+    const query = makeFollowsQuery([]);
+    const result = await applyBallotElectionOrdering(
+      { query },
+      makeSummary([
+        { id: electionA, vote_power_score: null },
+        { id: electionB, vote_power_score: 5 },
+      ])
+    );
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
   });
 
   it("keeps election date as the outer order: earliest date first, the sort applies within a date", async () => {

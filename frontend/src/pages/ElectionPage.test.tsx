@@ -185,6 +185,51 @@ describe("ElectionPage", () => {
     expect(screen.queryByText("How do we calculate my vote power?")).not.toBeInTheDocument();
   });
 
+  it("names a retention race in the vote power slot, with no explanation panel", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        official_ballot_title: "Shall Judge Jordan Voter be retained in office?",
+        vote_power: {
+          ...VOTE_POWER_WITH_EXPLANATION,
+          label: "retention",
+          score: null,
+          explanation: {
+            how: "A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.",
+            parts: [],
+            result: "Retention race",
+            caveat: null,
+          },
+        },
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Shall Judge Jordan Voter be retained in office?" });
+    expect(screen.getByText("My vote power").nextElementSibling).toHaveTextContent("Retention race");
+    // The label alone is opaque, but the header stays clean: the backend's
+    // one-line explanation sits behind an ⓘ toggle, not inline.
+    expect(screen.queryByText("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.")).not.toBeInTheDocument();
+    const info = screen.getByRole("button", { name: "What is a retention race?" });
+    expect(info).toHaveAttribute("aria-expanded", "false");
+    const user = userEvent.setup();
+    await user.click(info);
+    const note = screen.getByRole("note");
+    expect(note).toHaveTextContent("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.");
+    // A floating bubble, not in-flow text: it must not push the page down.
+    expect(note.className).toContain("absolute");
+    expect(info).toHaveAttribute("aria-expanded", "true");
+    // Its own close button, Escape, and a click anywhere else all close it.
+    await user.click(within(note).getByRole("button", { name: "Close" }));
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+    await user.click(info);
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+    await user.click(info);
+    await user.click(screen.getByRole("heading", { name: "Shall Judge Jordan Voter be retained in office?" }));
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate my vote power?")).not.toBeInTheDocument();
+  });
+
   it("hides the vote power explanation entirely for an unknown label", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
@@ -977,18 +1022,61 @@ describe("ElectionPage", () => {
     clearBallotDraft();
     setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
+    const judge = electionDetail().candidates[0]!;
     renderElection(() =>
-      electionDetail({ official_ballot_title: "Shall Judge Jordan Voter be retained in office?" })
+      electionDetail({
+        official_ballot_title: "Shall Judge Jordan Voter be retained in office?",
+        candidates: [
+          {
+            ...judge,
+            party: "Nonpartisan",
+            is_incumbent: true,
+            official_website_url: "https://judge.example.gov",
+            records: [
+              {
+                id: "r-1",
+                description: "Upheld the clean water rule.",
+                source_url: "https://example.gov/record",
+                event_date: "2026-05-01",
+                created_at: "2026-05-02T00:00:00.000Z",
+                research_area_tags: [
+                  { research_area_id: "a-env", slug: "environment", name: "Environment", stance: "for" },
+                ],
+              },
+            ],
+          },
+        ],
+      })
     );
 
-    // The sticky pair is the one control (it appears once the district gate
-    // settles): no candidate pick button on the judge card, no auto-pick
-    // teaser.
+    // The sticky pair is the one pick control (it appears once the district
+    // gate settles): no candidate pick button, no roster.
     const no = await screen.findByRole("button", { name: "No" });
     expect(screen.getAllByRole("button", { name: "No" })).toHaveLength(1);
     expect(screen.getByText("Yes keeps this judge in office. No removes them.")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /match my values/ })).not.toBeInTheDocument();
+    // One question about one person: the judge inline (name as the section
+    // heading, site, summary, records) instead of a "Candidates" list that
+    // only linked to the profile.
+    expect(screen.queryByRole("heading", { name: "Candidates" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Official site" })).toHaveAttribute("href", "https://judge.example.gov");
+    expect(screen.getByText("A candidate summary.")).toBeInTheDocument();
+    // The profile's blocks, verbatim: stance boxes, then the track record
+    // grouped by issue with every group collapsed (the record card sits
+    // inside a closed <details>) and the same view picker.
+    expect(screen.getByRole("heading", { name: "Supports" })).toBeInTheDocument();
+    expect(screen.getByText("Environment (1 record)")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Track record" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Track record — Environment" })).toBeInTheDocument();
+    expect(screen.getByText("Upheld the clean water rule.").closest("details")).not.toHaveAttribute("open");
+    expect(screen.getByText("Supports Environment")).toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toHaveValue("my_issues");
+    expect(screen.queryByText("See full profile →")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Jordan Voter" })).not.toBeInTheDocument();
+    // The guest teaser asks about alignment, not "which candidate".
+    expect(screen.getByRole("button", { name: "Does this candidate align with my values?" })).toBeInTheDocument();
     await userEvent.setup().click(no);
 
     expect(await screen.findByRole("button", { name: "✓ No" })).toBeInTheDocument();
