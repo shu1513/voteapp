@@ -31,13 +31,19 @@ pending status) exactly.
 Production holds only WV + ND roll-call records; rewrite local before any
 promotion.
 
+Status 2026-09-13 (end of day): every jurisdiction is done. All 4,9xx
+approved rolls pass the gate, and all 248,713 live roll-call records fit
+it (average 207 characters, longest 320). `tools/<JUR>_effects.py` holds
+the effect clauses that were written for each state; `tools/CONTINUE.md`
+keeps the recipe for any future import that needs the same pass.
+
 | Jurisdiction | Rolls | Records rewritten | Left alone |
 |---|---|---|---|
 | DE | 63 | 933 | 0 |
 | PA | 179 | 26098 | 0 |
-| US | 140 (of 398; the rest already fit) | 13352 | 0 |
+| US | 141 (of 398; the rest already fit) | 13434 | 0 |
 | MD | 198 | 16695 | 0 |
-| IL | 193 | 13217 | 95 |
+| IL | 193 | 13217 + 95 (older revision, rewritten later with `--stale-too`) | 0 |
 | WA | 220 | 11002 | 0 |
 | CO | 474 | 13473 | 0 |
 | CA | 343 | 10949 | 0 (478 stale-revision records rewritten via `--stale-too`) |
@@ -55,7 +61,6 @@ promotion.
 | IA | 94 | 4737 | 0 |
 | UT | 93 | 2612 | 0 |
 | ID | 92 | 3891 | 0 |
-| US | 1 | 82 | 0 |
 | TN | 81 | 5076 | 0 |
 | OK | 63 | 1588 | 0 |
 | AR | 61 | 2708 | 0 |

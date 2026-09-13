@@ -1,9 +1,9 @@
 # Continuing the rewrite (one jurisdiction per pass)
 
-Done: DE, PA, US, MD, IL, WA (see ../README.md table). Everything else is
-still bill digests. Largest remaining by fan-out: CO (474 rolls), CA (343),
-MT (267), AL, OR, AZ, MI, NV, WI, SD, NM, ME, KY, IA, UT, ID, TN, OK, AR,
-TX, GA, IN, CT, NC, NY, ND, WY, MO, WV, AK, KS, OH, NE, SC, FL, HI, MN.
+Done: every jurisdiction, as of 2026-09-13 (see ../README.md table). Use
+this recipe again only when a later import approves new rolls that were
+written before the gate, or when a roll's description is re-approved in
+digest form.
 
 Recipe (all paths from `backend/`; scripts here are python3, no deps):
 

@@ -279,7 +279,7 @@ async function main(): Promise<void> {
       for (const entry of entries) {
         const roll = `${entry.jurisdiction}:${entry.chamber}:${entry.session}:${entry.rollNumber}`;
         const applied = await applyLegislativeVoteDescriptionRewrite(client, entry);
-        if (applied.outcome === "unchanged") {
+        if (applied.outcome === "unchanged" && !staleToo) {
           rows.push({ roll, outcome: "unchanged", rewritten: 0, leftAlone: 0, leftAloneIds: [] });
           continue;
         }
@@ -289,7 +289,7 @@ async function main(): Promise<void> {
           oldNayDescription: applied.oldNayDescription,
           staleToo,
         });
-        rows.push({ roll, outcome: "updated", ...result, leftAloneIds: result.leftAloneIds.slice(0, 5) });
+        rows.push({ roll, outcome: applied.outcome, ...result, leftAloneIds: result.leftAloneIds.slice(0, 5) });
       }
       await client.query(dryRun ? "ROLLBACK" : "COMMIT");
     } catch (error) {
