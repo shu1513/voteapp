@@ -41,6 +41,7 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CappedInlineList } from "../components/CappedInlineList";
 import { AutoPickControl } from "../components/AutoPickControl";
+import { RetentionJudgeSection } from "../components/RetentionJudgeSection";
 import { CandidatePickButton, MeasureChoiceButtons, StrandedPicksNotice } from "../components/ElectionChoiceControls";
 import { PostPickActions } from "../components/PostPickActions";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
@@ -287,6 +288,9 @@ export function ElectionPage() {
   // card gets no pick button; the answer lives in the sticky Yes/No pair
   // below, and auto pick leaves it open (reason "retention").
   const retention = isRetentionRace(data);
+  // The retention layout needs the one judge; any other roster shape (none
+  // loaded yet, a stray second row) falls back to the plain candidate list.
+  const retentionJudge = retention && data.candidates.length === 1 ? data.candidates[0]! : null;
   // The nav bar exists only for in-app arrivals: router state carries where
   // "back" goes and the ballot sequence. Deep links (shares, search
   // engines) have neither — they get no bar at all, by product choice.
@@ -861,7 +865,24 @@ export function ElectionPage() {
         {/* hasStrandedPicks keeps this section alive when EVERY candidacy
             withdrew: the payload then lists no candidates, but the stranded
             notice below is the page's only removal control. */}
-        {data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
+        {retentionJudge ? (
+          // One question about one person: the judge inline, no roster.
+          <>
+            <RetentionJudgeSection
+              key={data.id}
+              electionId={data.id}
+              candidate={retentionJudge}
+              showAutoPick={showChoiceControls}
+              reporterEmail={me?.email}
+              headingRef={candidatesRef}
+            />
+            {showAddressNudge ? (
+              <div className="mt-3">
+                <AddressNudge />
+              </div>
+            ) : null}
+          </>
+        ) : data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
           <section className="mt-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 ref={candidatesRef} className="text-heading font-semibold">Candidates</h2>

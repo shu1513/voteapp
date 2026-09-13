@@ -374,6 +374,8 @@ export type ElectionCandidate = {
   is_incumbent: boolean;
   status: string;
   summary: string | null;
+  /** Optional: a not-yet-redeployed backend omits it. */
+  official_website_url?: string | null;
   finance_summary: FinanceSummary | null;
   /** Full record history with research-area stance tags; drives the stance chips. */
   records: CandidateRecord[];
