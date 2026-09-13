@@ -1,4 +1,4 @@
-import { APP_NAME } from "../constants/brand.js";
+import { APP_NAME, copyrightLine } from "../constants/brand.js";
 import { EMAIL_UNSUBSCRIBE_PREFERENCES, type EmailUnsubscribePreference } from "./apiValidation.js";
 
 // Standalone HTML pages behind GET/POST /api/email/unsubscribe. They are
@@ -137,6 +137,7 @@ function renderPage(title: string, body: string): string {
     `<title>${escapeHtml(title)}</title><style>${PAGE_STYLE}</style></head><body><main>` +
     `<p class="brand">${escapeHtml(APP_NAME)}</p>` +
     body +
+    `<p class="footer">${escapeHtml(copyrightLine())}</p>` +
     "</main></body></html>"
   );
 }
