@@ -594,6 +594,12 @@ export function ElectionPage() {
             </p>
           </div>
         </div>
+        {/* "Retention race" alone means nothing to a first-time reader: one
+            backend-authored line says what the race is and why there is no
+            rating. Full width under the grid — the value column is narrow. */}
+        {data.vote_power.label === "retention" && data.vote_power.explanation ? (
+          <p className="mt-2 text-sm text-ink-soft">{data.vote_power.explanation.how}</p>
+        ) : null}
         {/* The detail page has room for the whole caveat, where the ballot card
             only has room to flag it. Same rule as ElectionCard: name the seat's
             area, say plainly that we cannot match an address to it, and never
