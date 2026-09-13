@@ -193,38 +193,61 @@ describe("applyBallotElectionOrdering", () => {
     // A House district (~760k) is smaller than the county (~9.8M), yet
     // federal outranks county under district_size — level is the outer key,
     // population orders within a level. Measures level on district_type.
+    // US Senate offices carry scope "statewide" (no us_senate scope exists);
+    // the contest family is what makes them federal, above the House seat
+    // by population and above the governor's identical statewide district.
     const elections = [
-      { id: electionA, population: 9_800_000 }, // county (no office)
-      { id: electionB, population: 760_000, office_scope: "us_house" },
-      { id: electionC, population: 39_000_000, office_scope: "statewide" },
-      { id: "dddddddd-4444-4444-8444-dddddddddddd", population: 4_000_000, office_scope: "place" },
-      { id: "eeeeeeee-5555-4555-8555-eeeeeeeeeeee", population: 39_000_000, office_scope: "presidential" },
-      { id: "ffffffff-6666-4666-8666-ffffffffffff", population: 20_000, office_scope: "school_unified" },
+      { id: electionA, population: 9_800_000, official_ballot_title: "Sheriff" }, // county (no office)
+      { id: electionB, population: 760_000, office_scope: "us_house", official_ballot_title: "US House" },
+      { id: electionC, population: 39_000_000, office_scope: "statewide", official_ballot_title: "Governor" },
+      { id: "dddddddd-4444-4444-8444-dddddddddddd", population: 4_000_000, office_scope: "place", official_ballot_title: "Mayor" },
+      { id: "eeeeeeee-5555-4555-8555-eeeeeeeeeeee", population: 39_000_000, office_scope: "presidential", official_ballot_title: "President" },
+      { id: "ffffffff-6666-4666-8666-ffffffffffff", population: 20_000, office_scope: "school_unified", official_ballot_title: "School Board" },
+      { id: "99999999-7777-4777-8777-999999999999", population: 39_000_000, office_scope: "statewide", contest_family: "us_senate", official_ballot_title: "US Senate" },
     ];
     const biggest = await applyBallotElectionOrdering({ query: makeFollowsQuery([]) }, makeSummary(elections), {
       sort: "district_size",
     });
-    expect(biggest.elections.map((e) => e.office?.scope ?? e.district.district_type)).toEqual([
-      "presidential",
-      "us_house",
-      "statewide",
-      "county",
-      "place",
-      "school_unified",
+    expect(biggest.elections.map((e) => e.official_ballot_title)).toEqual([
+      "President",
+      "US Senate",
+      "US House",
+      "Governor",
+      "Sheriff",
+      "Mayor",
+      "School Board",
     ]);
 
     const smallest = await applyBallotElectionOrdering({ query: makeFollowsQuery([]) }, makeSummary(elections), {
       sort: "district_size_smallest",
     });
-    // Reverse walk, and within the city tier the smaller school district leads.
-    expect(smallest.elections.map((e) => e.office?.scope ?? e.district.district_type)).toEqual([
-      "school_unified",
-      "place",
-      "county",
-      "statewide",
-      "us_house",
-      "presidential",
+    // Reverse walk, and within a tier the smaller district leads.
+    expect(smallest.elections.map((e) => e.official_ballot_title)).toEqual([
+      "School Board",
+      "Mayor",
+      "Sheriff",
+      "Governor",
+      "US House",
+      "US Senate",
+      "President",
     ]);
+  });
+
+  it("keeps a followed race inside its level under the district-size sorts", async () => {
+    // Followed-first hoisting a county race above the federal one would
+    // split County into two list sections; the tier applies within a level.
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([{ election_id: electionC, candidate_id: candidateId, display_name: "Followed" }]) },
+      makeSummary([
+        { id: electionA, population: 760_000, office_scope: "us_house" },
+        { id: electionB, population: 9_800_000, official_ballot_title: "Assessor" },
+        { id: electionC, population: 9_800_000, official_ballot_title: "Sheriff" },
+      ]),
+      { userId, sort: "district_size" }
+    );
+
+    // Federal still leads; within County the followed Sheriff jumps Assessor.
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionC, electionB]);
   });
 
   it("groups followed elections first by default for authenticated calls and annotates them", async () => {

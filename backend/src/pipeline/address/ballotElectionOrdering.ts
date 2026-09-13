@@ -278,6 +278,16 @@ function sortBallotElections(
     if (a.election_date !== b.election_date) {
       return a.election_date < b.election_date ? -1 : 1;
     }
+    // Level sits ABOVE the followed tier for the district-size sorts: the
+    // list pages section these sorts by level as consecutive runs, and a
+    // followed race hoisted out of its level would split one level into two
+    // sections. Followed-first still applies within each level.
+    if (sort === "district_size" || sort === "district_size_smallest") {
+      const byLevel = ballotLevelRank(a, sort) - ballotLevelRank(b, sort);
+      if (byLevel !== 0) {
+        return byLevel;
+      }
+    }
     if (followedFirst) {
       const aFollowed = a.followed_candidates.length > 0 ? 0 : 1;
       const bFollowed = b.followed_candidates.length > 0 ? 0 : 1;
@@ -325,17 +335,10 @@ function compareBySort(
     }
   }
   if (sort === "district_size" || sort === "district_size_smallest") {
-    // Level first: population alone interleaves levels (a big county
-    // outranks a House district), and the list pages section these sorts by
-    // level. district_size walks presidential → city; district_size_smallest
-    // walks city → presidential. Unknown levels stay last either way.
-    const aLevel = ballotLevelRank(a, sort);
-    const bLevel = ballotLevelRank(b, sort);
-    if (aLevel !== bLevel) {
-      return aLevel - bLevel;
-    }
-    // district_size: larger population first; district_size_smallest: smaller
-    // first. Unknown populations (null) sort last in both directions.
+    // Level was already compared in sortBallotElections (above the followed
+    // tier); here only population remains. district_size: larger population
+    // first; district_size_smallest: smaller first. Unknown populations
+    // (null) sort last in both directions.
     const missing = sort === "district_size" ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
     const aPopulation = typeof a.district.population === "number" ? a.district.population : missing;
     const bPopulation = typeof b.district.population === "number" ? b.district.population : missing;
@@ -351,9 +354,11 @@ function compareBySort(
 // sections — keep the two in step. office.scope leads (a place office on a
 // coextensive county row is still a city race); district_type covers ballot
 // measures, which have no office. School boards fold into the city tier.
+// US Senate is the one level the scope cannot tell: its offices are scope
+// "statewide" (there is no us_senate scope), so the contest family is what
+// lifts it to the federal tier.
 const BALLOT_LEVEL_RANKS: Record<string, number> = {
   presidential: 0,
-  us_senate: 1,
   us_house: 1,
   statewide: 2,
   state_upper: 2,
@@ -364,10 +369,14 @@ const BALLOT_LEVEL_RANKS: Record<string, number> = {
   school_elementary: 4,
   school_secondary: 4,
 };
+const FEDERAL_LEVEL_RANK = 1;
 const UNKNOWN_LEVEL_RANK = 5;
 
 function ballotLevelRank(election: OrderedBallotElectionSummary, sort: BallotSummarySort): number {
-  const rank = BALLOT_LEVEL_RANKS[election.office?.scope ?? election.district.district_type];
+  const rank =
+    election.discovery_contest_family === "us_senate"
+      ? FEDERAL_LEVEL_RANK
+      : BALLOT_LEVEL_RANKS[election.office?.scope ?? election.district.district_type];
   if (rank === undefined) {
     return UNKNOWN_LEVEL_RANK;
   }

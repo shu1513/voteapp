@@ -822,15 +822,17 @@ describe("ElectionCard result chip", () => {
   it("sections each date by government level under the district-size sorts, open by default", async () => {
     // Payload order is the backend's: level walk, then population. The list
     // only splits consecutive runs, so the section order is the payload's.
-    const level = (id: string, title: string, scope: string | null, district_type: string) =>
+    const level = (id: string, title: string, scope: string | null, district_type: string, family?: string) =>
       electionSummary({
         id,
         official_ballot_title: title,
         district: { ...DISTRICT, id: `d-${id}`, district_type },
         office: scope ? { id: `o-${id}`, scope, canonical_name: title, summary: "" } : null,
+        discovery_contest_family: family ?? "non_judicial_office",
       });
     const elections = [
-      level("e-1", "U.S. Senator", "us_senate", "statewide"),
+      // Senate offices are scope "statewide"; the contest family makes them federal.
+      level("e-1", "U.S. Senator", "statewide", "statewide", "us_senate"),
       level("e-2", "Governor", "statewide", "statewide"),
       level("e-3", "Proposition 4", null, "statewide"),
       level("e-4", "County Sheriff", "county", "county"),

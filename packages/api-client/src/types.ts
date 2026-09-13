@@ -168,6 +168,13 @@ export type ElectionSummary = {
   election_date: string;
   election_stage: string | null;
   is_partisan: boolean | null;
+  /**
+   * The backend's contest family ("us_senate" | "non_judicial_office" |
+   * "judicial_office" | "ballot_measure"). Read only to place US Senate
+   * races in the Federal level section — their office scope is "statewide".
+   * Optional: older payloads omit it.
+   */
+  discovery_contest_family?: string | null;
   candidate_count: number;
   /** null unless race_type is "office" and candidate_count is 0. */
   candidate_roster_status: CandidateRosterStatus | null;

@@ -116,7 +116,11 @@ function SeatRun({ district, count, children }: { district: string | null; count
 function splitLevelRuns(elections: ElectionSummary[]): { level: BallotLevel; elections: ElectionSummary[] }[] {
   const runs: { level: BallotLevel; elections: ElectionSummary[] }[] = [];
   for (const election of elections) {
-    const level = ballotLevel(election.office?.scope, election.district.district_type);
+    const level = ballotLevel(
+      election.office?.scope,
+      election.district.district_type,
+      election.discovery_contest_family
+    );
     const lastRun = runs[runs.length - 1];
     if (lastRun && lastRun.level === level) {
       lastRun.elections.push(election);
