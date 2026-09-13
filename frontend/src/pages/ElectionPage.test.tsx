@@ -218,7 +218,10 @@ describe("ElectionPage", () => {
     // A floating bubble, not in-flow text: it must not push the page down.
     expect(note.className).toContain("absolute");
     expect(info).toHaveAttribute("aria-expanded", "true");
-    // Escape closes it; so does a click anywhere else.
+    // Its own close button, Escape, and a click anywhere else all close it.
+    await user.click(within(note).getByRole("button", { name: "Close" }));
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+    await user.click(info);
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("note")).not.toBeInTheDocument();
     await user.click(info);
