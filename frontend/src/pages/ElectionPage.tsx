@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { BallotRaceType, ElectionDetail, PartyBucket, RailSortKey } from "@voteapp/api-client";
@@ -190,6 +190,30 @@ export function ElectionPage() {
   // target, not a title tooltip (touch never sees tooltips). Component
   // state, so it closes again on a sibling walk to the next race.
   const [retentionInfoOpen, setRetentionInfoOpen] = useState(false);
+  const retentionInfoRef = useRef<HTMLSpanElement>(null);
+  // Popover, not in-flow text: opening it must not push the page down. It
+  // closes on Escape or a click anywhere outside the ⓘ and its bubble.
+  useEffect(() => {
+    if (!retentionInfoOpen) {
+      return;
+    }
+    const onPointerDown = (event: PointerEvent) => {
+      if (!retentionInfoRef.current?.contains(event.target as Node)) {
+        setRetentionInfoOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setRetentionInfoOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [retentionInfoOpen]);
   // Usage: which parts of the page reached the viewport, once per election
   // (this element stays mounted across rail walks, hence the key).
   const votePowerRef = useSectionExposure("vote_power", data.id);
@@ -589,20 +613,33 @@ export function ElectionPage() {
                     reader; the ⓘ reveals the backend's one-line explanation
                     below the grid (the value column is too narrow for it). */}
                 {data.vote_power.label === "retention" && data.vote_power.explanation ? (
-                  <button
-                    type="button"
-                    aria-expanded={retentionInfoOpen}
-                    aria-label="What is a retention race?"
-                    onClick={() => setRetentionInfoOpen((open) => !open)}
-                    className="text-ink-soft hover:text-ink"
-                  >
-                    <span
-                      aria-hidden
-                      className="flex h-4 w-4 items-center justify-center rounded-full border border-current text-[10px] font-serif italic"
+                  <span ref={retentionInfoRef} className="relative inline-flex">
+                    <button
+                      type="button"
+                      aria-expanded={retentionInfoOpen}
+                      aria-label="What is a retention race?"
+                      onClick={() => setRetentionInfoOpen((open) => !open)}
+                      className="text-ink-soft hover:text-ink"
                     >
-                      i
-                    </span>
-                  </button>
+                      <span
+                        aria-hidden
+                        className="flex h-4 w-4 items-center justify-center rounded-full border border-current text-[10px] font-serif italic"
+                      >
+                        i
+                      </span>
+                    </button>
+                    {retentionInfoOpen ? (
+                      // Absolutely positioned bubble under the icon: floats
+                      // over the page instead of reflowing it. Normal weight
+                      // and ink color — the parent line is the bold value.
+                      <span
+                        role="note"
+                        className="absolute left-0 top-full z-20 mt-1 w-72 rounded-lg border border-line bg-surface p-3 text-sm font-normal text-ink shadow-lg"
+                      >
+                        {data.vote_power.explanation.how}
+                      </span>
+                    ) : null}
+                  </span>
                 ) : null}
               </p>
             </div>
@@ -617,9 +654,6 @@ export function ElectionPage() {
             </p>
           </div>
         </div>
-        {retentionInfoOpen && data.vote_power.label === "retention" && data.vote_power.explanation ? (
-          <p className="mt-2 text-sm text-ink-soft">{data.vote_power.explanation.how}</p>
-        ) : null}
         {/* The detail page has room for the whole caveat, where the ballot card
             only has room to flag it. Same rule as ElectionCard: name the seat's
             area, say plainly that we cannot match an address to it, and never

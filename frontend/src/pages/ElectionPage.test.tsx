@@ -211,9 +211,19 @@ describe("ElectionPage", () => {
     expect(screen.queryByText("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.")).not.toBeInTheDocument();
     const info = screen.getByRole("button", { name: "What is a retention race?" });
     expect(info).toHaveAttribute("aria-expanded", "false");
-    await userEvent.setup().click(info);
-    expect(screen.getByText("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.")).toBeInTheDocument();
+    const user = userEvent.setup();
+    await user.click(info);
+    const note = screen.getByRole("note");
+    expect(note).toHaveTextContent("A retention race asks Yes or No on keeping one judge in office. With no competing candidates, the normal vote power rating methods don't apply.");
+    // A floating bubble, not in-flow text: it must not push the page down.
+    expect(note.className).toContain("absolute");
     expect(info).toHaveAttribute("aria-expanded", "true");
+    // Escape closes it; so does a click anywhere else.
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+    await user.click(info);
+    await user.click(screen.getByRole("heading", { name: "Shall Judge Jordan Voter be retained in office?" }));
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
     expect(screen.queryByText("How do we calculate my vote power?")).not.toBeInTheDocument();
   });
 
