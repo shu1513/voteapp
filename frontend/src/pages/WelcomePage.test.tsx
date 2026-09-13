@@ -43,7 +43,7 @@ describe("WelcomePage", () => {
     expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
   });
 
-  it("saves picked issues as ranked preferences in one PUT, then continues to the ballot", async () => {
+  it("picks issues on step 1, ranks them on step 2, then saves one PUT and continues to the ballot", async () => {
     const user = userEvent.setup();
     const fetchMock = stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
@@ -55,10 +55,11 @@ describe("WelcomePage", () => {
     });
     const { router } = renderWelcome();
 
-    // Save is disabled until something is picked — an empty save would be a
-    // no-op that still skips the step.
-    const saveButton = await screen.findByRole("button", { name: "Save and continue" });
-    expect(saveButton).toBeDisabled();
+    // Step 1 is pick-only: no ranked list, and Next waits for a first pick.
+    const nextButton = await screen.findByRole("button", { name: "Next" });
+    expect(nextButton).toBeDisabled();
+    expect(screen.getByText("Step 1 of 2")).toBeInTheDocument();
+    expect(screen.queryByText("My priorities")).not.toBeInTheDocument();
 
     // Descriptions sit behind a tap-to-open ⓘ toggle, not a title tooltip.
     expect(screen.queryByText("Climate, energy, land use.")).not.toBeInTheDocument();
@@ -67,12 +68,25 @@ describe("WelcomePage", () => {
 
     await user.click(screen.getByRole("button", { name: "Housing" }));
     await user.click(screen.getByRole("button", { name: "Environment" }));
+    // Picked cards show a check, not a rank: order is step 2's job.
+    expect(screen.getByRole("button", { name: "Housing, selected. Click to remove." })).toBeInTheDocument();
+    expect(screen.queryByText("#1")).not.toBeInTheDocument();
+
+    await user.click(nextButton);
+    expect(screen.getByText("Step 2 of 2")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Put my issues in order" })).toBeInTheDocument();
+    // Step 2 is rank-only: the rows carry tap order as the starting rank.
     expect(screen.getByText("#1")).toBeInTheDocument();
     expect(screen.getByText("#2")).toBeInTheDocument();
-    // Chosen issues stay in the pool as tinted, rank-badged toggles.
-    expect(screen.getByRole("button", { name: "Housing, rank 1. Click to remove." })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "About Environment" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Skip for now" })).toBeInTheDocument();
 
-    await user.click(saveButton);
+    // Back returns to the pool with the picks intact.
+    await user.click(screen.getByRole("button", { name: "Back" }));
+    expect(screen.getByRole("button", { name: "Environment, selected. Click to remove." })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
     expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
 
     const putCall = fetchMock.mock.calls.find(([, init]) => init?.method === "PUT");

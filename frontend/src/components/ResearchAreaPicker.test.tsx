@@ -76,6 +76,25 @@ describe("ResearchAreaPicker", () => {
   });
 });
 
+describe("single-panel layouts", () => {
+  const areas = [area("a-health", "healthcare_affordability", "Healthcare Affordability")];
+  const ranked = [{ research_area_id: "a-health", direction: "support" as const, hard_veto: false }];
+
+  it("pool layout shows only the pool, with a check instead of a rank", () => {
+    render(<ResearchAreaPicker areas={areas} ranked={ranked} disabled={false} onChange={() => {}} layout="pool" />);
+    expect(screen.queryByText("My priorities")).not.toBeInTheDocument();
+    expect(screen.queryByText("#1")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Healthcare Affordability, selected. Click to remove." })).toBeInTheDocument();
+  });
+
+  it("ranked layout shows only the ranked rows", () => {
+    render(<ResearchAreaPicker areas={areas} ranked={ranked} disabled={false} onChange={() => {}} layout="ranked" />);
+    expect(screen.queryByText("Choose issues")).not.toBeInTheDocument();
+    expect(screen.getByText("#1")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove Healthcare Affordability" })).toBeInTheDocument();
+  });
+});
+
 describe("physical keyboard on pool cards", () => {
   // Regression: the drag listeners on the card used to include dnd-kit's
   // keyboard handler, which treated Enter/Space on the inner buttons as

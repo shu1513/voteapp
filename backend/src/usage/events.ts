@@ -305,7 +305,11 @@ const CATALOG: Record<string, { required: Record<string, PropRule>; optional?: R
     },
     optional: { error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other") },
   },
-  welcome_result: { required: { action: oneOf("save", "skip"), ranked_count_bucket: oneOf(...COUNT_BUCKETS) } },
+  welcome_result: {
+    required: { action: oneOf("save", "skip"), ranked_count_bucket: oneOf(...COUNT_BUCKETS) },
+    // Which of the two welcome screens the user was on (pick issues / rank them).
+    optional: { step: oneOf("pick", "rank") },
+  },
   handoff_result: { required: { outcome: oneOf("done", "rejected", "failed") } },
   draft_complete_notice: { required: { action: oneOf("shown", "review", "dismiss") } },
   follow_result: {
