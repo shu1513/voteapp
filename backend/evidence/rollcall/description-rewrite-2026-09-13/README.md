@@ -1,0 +1,36 @@
+# Roll-call description rewrite (2026-09-13)
+
+An audit found every approved state roll call had drifted from the plan's
+"vote + one-line effect + tally, ≤ 2 sentences" rule into bill digests:
+4,900 rolls averaging 6 sentences / 523 characters, fanned out to ~251k
+candidate records (hand-written records average 182 characters). Nothing
+checked length at approval time.
+
+Fix, in order:
+
+1. Hard gate (`rollCallDescriptionLength.ts`): `rollcall:judge` and
+   `rollcall:rewrite` refuse a description over 3 sentences, 320
+   characters, or 30 words in one sentence.
+2. Per jurisdiction: `rollcall:export-rewrites` → rewrite the effect
+   clause from the existing text only (no new research, no AI) →
+   `rollcall:rewrite --dry-run` → apply. Each `<JUR>/` folder holds the
+   applied `rewrites.json` (with the old sentence/char counts under
+   `_current`) and the `apply-report.json` ledger.
+3. Records are rewritten in place (same row id, tags, dates, URLs,
+   origin_run_id); the identity key is recomputed with a
+   `plain_language_rewrite` transition and a `plain_language_rewrites`
+   audit row (`model = rollcall-rewrite`). Records whose text no longer
+   matched the roll's old sentence are listed as `leftAlone`, never
+   touched.
+
+Wording rule for the effect clause: say what changes for people — who
+pays, who is covered, what is now allowed or banned — not the bill's
+mechanics. Keep the original opener and closing (tally, enacted/vetoed/
+pending status) exactly.
+
+Production holds only WV + ND roll-call records; rewrite local before any
+promotion.
+
+| Jurisdiction | Rolls | Records rewritten | Left alone |
+|---|---|---|---|
+| DE | 63 | 933 | 0 |
