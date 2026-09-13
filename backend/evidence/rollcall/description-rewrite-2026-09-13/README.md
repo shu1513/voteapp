@@ -43,3 +43,4 @@ promotion.
 | CA | 343 | 10949 | 0 (478 stale-revision records rewritten via `--stale-too`) |
 | MT | 267 | 10719 | 0 |
 | OR | 171 | 4949 | 0 |
+| AZ | 149 | 3847 | 0 |
