@@ -26,7 +26,7 @@ def split_parts(text, tally):
     """opener (up to and incl. measure name), closing (sentences from the tally sentence to the end)."""
     ss = sentences(text)
     first = ss[0]
-    m = re.match(r"^(Voted [^,]*?(?:Bill|Resolution|H\.J\.Res\.|S\.J\.Res\.|H\.Con\.Res\.|S\.Con\.Res\.|H\.Res\.|S\.Res\.|H\.R\.|S\.|HB|SB|SJR|HJR|HCR|SCR|AB|LB|HF|SF|LD|A\.B\.|S\.B\.)[^,]*?)(?:, (?:which|the .*?, which)\b|\.)", first)
+    m = re.match(r"^(Voted [^,]*?(?:Bill|Resolution|H\.J\.Res\.|S\.J\.Res\.|H\.Con\.Res\.|S\.Con\.Res\.|H\.Res\.|S\.Res\.|H\.R\.|S\.|HB|SB|SJR|HJR|HCR|SCR|AB|LB|HF|SF|LD|A\.B\.|S\.B\.)[^,]*?\d[A-Z]*(?: and pass it)?)(?:, (?:which|the .*?, which)\b|\.)", first)
     opener = shorten_opener(m.group(1)) if m else None
     if opener is None:
         m2 = re.match(r"^(Voted (?:to pass|for|against passing|against|to override the Governor's veto of|against overriding the Governor's veto of) (?:[A-Z]+\.? ?)+\d+[A-Z]?)\b", first)
@@ -39,6 +39,11 @@ def split_parts(text, tally):
     tp = re.compile(rf"(?<![\d-]){re.escape(tally)}(?!\d)")
     idx = next((i for i, s in enumerate(ss) if tp.search(s)), None)
     closing = " ".join(ss[idx:]) if idx is not None else None
+    if closing:
+        # "…covered too. the New York State Assembly passed it 88-57…" -> keep from the tally clause
+        mlow = re.search(r"\. (the [A-Z].*)$", closing)
+        if mlow and tp.search(mlow.group(1)):
+            closing = mlow.group(1)[0].upper() + mlow.group(1)[1:]
     return opener, closing
 
 def derive_nay(old_yea, old_nay, new_yea):
