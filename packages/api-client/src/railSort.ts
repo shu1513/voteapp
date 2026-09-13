@@ -5,14 +5,16 @@ import { NO_MATCH_BEST_RANK } from "./researchAreaScoring";
 // backend/src/pipeline/address/ballotElectionOrdering.ts compareBySort the
 // way researchAreaScoring mirrors userResearchAreaScoring: same primary
 // keys, same null handling, same date → race_type → numeric-title → id
-// tiebreak tail, and the awaiting-candidates tail stays sunk under every
-// sort (the backend's hasNothingToRead sink). district_size sorts are NOT
+// tiebreak tail, the same fixed outer order by election date (every sort
+// only reorders entries that share a date — the list renders one section
+// per date), and the awaiting-candidates tail stays sunk under every sort
+// (the backend's hasNothingToRead sink). district_size sorts are NOT
 // offered — district population never reaches the client. Followed-first
 // grouping is deliberately not applied either: the rail is an organizing
 // view, and the authoritative order returns from the backend the moment
 // the reader navigates back to the list.
 
-export type RailSortKey = "my_areas" | "vote_power" | "soonest" | "alphabetical";
+export type RailSortKey = "my_areas" | "vote_power" | "alphabetical";
 
 /** The snapshot fields the rail sorts on — a NavContest subset. */
 export type RailSortEntry = {
@@ -30,7 +32,6 @@ export type RailSortEntry = {
 export const RAIL_SORTS: readonly { value: RailSortKey; label: string }[] = [
   { value: "my_areas", label: "My issues" },
   { value: "vote_power", label: "My vote power" },
-  { value: "soonest", label: "Soonest first" },
   { value: "alphabetical", label: "A–Z" },
 ];
 
@@ -40,13 +41,14 @@ export const RAIL_SORTS: readonly { value: RailSortKey; label: string }[] = [
 const TITLE_COLLATOR = new Intl.Collator("en", { numeric: true });
 
 /**
- * The rail sort a ballot list's engaged sort seeds. The three shared sorts
+ * The rail sort a ballot list's engaged sort seeds. The two shared sorts
  * map to themselves; the district-size sorts fall back to vote_power — the
  * rail cannot honor them (district population never reaches the client),
- * and "My vote power" is the ballot's own default order.
+ * and "My vote power" is the ballot's own default order. So does anything
+ * unknown, such as the retired `soonest` value in an old link.
  */
 export function railSortForBallotSort(sort: string): RailSortKey {
-  return sort === "my_areas" || sort === "soonest" ? sort : "vote_power";
+  return sort === "my_areas" ? sort : "vote_power";
 }
 
 /**
@@ -151,6 +153,13 @@ export function sortRailEntries<Entry extends RailSortEntry>(
     if (aAwaiting !== bAwaiting) {
       return aAwaiting - bAwaiting;
     }
+    // Date is the outer structure of every sort, as on the list: earliest
+    // date first, the chosen sort within a date.
+    const aDate = a.election_date ?? "";
+    const bDate = b.election_date ?? "";
+    if (aDate !== bDate) {
+      return aDate < bDate ? -1 : 1;
+    }
     if (sort === "alphabetical") {
       const byTitle = TITLE_COLLATOR.compare(a.title, b.title);
       if (byTitle !== 0) {
@@ -179,7 +188,7 @@ export function sortRailEntries<Entry extends RailSortEntry>(
         return byPower;
       }
     }
-    // soonest, and the tail for equal primary keys.
+    // The tail for equal primary keys.
     return compareTail(a, b);
   });
 }

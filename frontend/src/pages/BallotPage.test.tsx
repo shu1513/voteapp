@@ -571,13 +571,13 @@ describe("BallotPage nav context", () => {
         ]),
       },
     });
-    const { router } = renderBallot("/ballot?d=d-1&sort=soonest");
+    const { router } = renderBallot("/ballot?d=d-1&sort=district_size");
 
     await user.click(await screen.findByRole("link", { name: /Governor/ }));
 
     expect(router.state.location.pathname).toBe("/elections/e-1");
     expect(router.state.location.state).toEqual({
-      backTo: { path: "/ballot?d=d-1&sort=soonest", label: "All elections" },
+      backTo: { path: "/ballot?d=d-1&sort=district_size", label: "All elections" },
       // race_type powers the detail rail's tabs, the sort keys its sort
       // control; the awaiting flag keeps that tail sunk under rail sorts.
       // No raceType field while the list is on the All tab.
@@ -601,7 +601,7 @@ describe("BallotPage nav context", () => {
         },
       ],
       // The list's sort seeds the rail's always-engaged sort control.
-      railSort: "soonest",
+      railSort: "vote_power",
     });
   });
 

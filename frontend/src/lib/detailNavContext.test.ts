@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { pagerNeighbors, readCandidateNavState, readElectionNavState } from "./detailNavContext";
 
-const BACK_TO = { path: "/ballot?d=d-1&sort=soonest", label: "All elections" };
+const BACK_TO = { path: "/ballot?d=d-1&sort=district_size", label: "All elections" };
 
 describe("readElectionNavState", () => {
   it("passes a full valid state through", () => {

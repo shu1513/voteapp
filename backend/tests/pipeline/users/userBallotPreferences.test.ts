@@ -75,14 +75,14 @@ describe("getUserBallotPreferences", () => {
 
 describe("setUserBallotPreferences", () => {
   it("upserts and returns the stored preferences", async () => {
-    const query = vi.fn().mockResolvedValue({ rows: [{ sort: "soonest", followed_first: true }] });
+    const query = vi.fn().mockResolvedValue({ rows: [{ sort: "district_size_smallest", followed_first: true }] });
 
-    const result = await setUserBallotPreferences({ query }, userId, { sort: "soonest", followed_first: true });
+    const result = await setUserBallotPreferences({ query }, userId, { sort: "district_size_smallest", followed_first: true });
 
-    expect(result).toEqual({ sort: "soonest", followed_first: true });
+    expect(result).toEqual({ sort: "district_size_smallest", followed_first: true });
     const [sql, params] = query.mock.calls[0] ?? [];
     expect(String(sql)).toContain("ON CONFLICT (user_id) DO UPDATE");
-    expect(params).toEqual([userId, "soonest", true]);
+    expect(params).toEqual([userId, "district_size_smallest", true]);
   });
 
   it("rejects an invalid sort before touching the database", async () => {

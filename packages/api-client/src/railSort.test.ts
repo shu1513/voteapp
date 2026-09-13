@@ -26,13 +26,8 @@ describe("railSortsOffered", () => {
   const KEYED = [entry("a"), entry("b")];
 
   it("offers everything but my_areas without saved areas", () => {
-    expect(railSortsOffered(KEYED, false)).toEqual(["vote_power", "soonest", "alphabetical"]);
-    expect(railSortsOffered(KEYED, true)).toEqual([
-      "my_areas",
-      "vote_power",
-      "soonest",
-      "alphabetical",
-    ]);
+    expect(railSortsOffered(KEYED, false)).toEqual(["vote_power", "alphabetical"]);
+    expect(railSortsOffered(KEYED, true)).toEqual(["my_areas", "vote_power", "alphabetical"]);
   });
 
   it("offers nothing on an unkeyed (pre-deploy) snapshot or a single entry", () => {
@@ -42,7 +37,7 @@ describe("railSortsOffered", () => {
 
   it("withholds only my_areas when area ids are missing from an entry", () => {
     const noAreas = [entry("a"), { ...entry("b"), research_area_ids: undefined }];
-    expect(railSortsOffered(noAreas, true)).toEqual(["vote_power", "soonest", "alphabetical"]);
+    expect(railSortsOffered(noAreas, true)).toEqual(["vote_power", "alphabetical"]);
   });
 });
 
@@ -59,15 +54,20 @@ describe("sortRailEntries", () => {
     expect(sorted.map((e) => e.id)).toEqual(["high", "low", "unknown"]);
   });
 
-  it("soonest: earliest date first", () => {
-    const sorted = sortRailEntries(
-      [
-        entry("later", { election_date: "2026-11-03" }),
-        entry("sooner", { election_date: "2026-08-18" }),
-      ],
-      "soonest"
-    );
-    expect(sorted.map((e) => e.id)).toEqual(["sooner", "later"]);
+  it("keeps election date as the outer order under every sort, the sort within a date", () => {
+    const entries = [
+      entry("later-high", { election_date: "2026-11-03", vote_power_score: 99, title: "AAA", research_area_ids: ["a-1"] }),
+      entry("sooner-low", { election_date: "2026-08-18", vote_power_score: 1, title: "ZZZ" }),
+      entry("sooner-high", { election_date: "2026-08-18", vote_power_score: 50, title: "MMM" }),
+    ];
+    const weights = buildResearchAreaWeights([{ research_area_id: "a-1", rank: 1 }]);
+    expect(sortRailEntries(entries, "vote_power").map((e) => e.id)).toEqual(["sooner-high", "sooner-low", "later-high"]);
+    expect(sortRailEntries(entries, "my_areas", weights).map((e) => e.id)).toEqual([
+      "sooner-high",
+      "sooner-low",
+      "later-high",
+    ]);
+    expect(sortRailEntries(entries, "alphabetical").map((e) => e.id)).toEqual(["sooner-high", "sooner-low", "later-high"]);
   });
 
   it("alphabetical is numeric-aware: Proposition 4 before Proposition 33", () => {
@@ -117,7 +117,7 @@ describe("sortRailEntries", () => {
       entry("awaiting-high", { vote_power_score: 99, awaiting_candidates: true, title: "AAA" }),
       entry("readable", { vote_power_score: 1, title: "ZZZ" }),
     ];
-    for (const sort of ["my_areas", "vote_power", "soonest", "alphabetical"] as const) {
+    for (const sort of ["my_areas", "vote_power", "alphabetical"] as const) {
       expect(
         sortRailEntries(entries, sort).map((e) => e.id),
         sort

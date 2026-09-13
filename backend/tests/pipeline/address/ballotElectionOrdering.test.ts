@@ -114,17 +114,34 @@ describe("applyBallotElectionOrdering", () => {
     expect(result.elections.every((e) => e.followed_candidates.length === 0)).toBe(true);
   });
 
-  it("orders by earliest date when sort=soonest, ignoring vote power", async () => {
+  it("keeps election date as the outer order: earliest date first, the sort applies within a date", async () => {
     const result = await applyBallotElectionOrdering(
       { query: makeFollowsQuery([]) },
       makeSummary([
-        { id: electionA, election_date: "2026-06-02", vote_power_score: 10 },
-        { id: electionB, election_date: "2026-11-03", vote_power_score: 95 },
-      ]),
-      { sort: "soonest" }
+        { id: electionA, election_date: "2026-11-03", vote_power_score: 95 },
+        { id: electionB, election_date: "2026-08-26", vote_power_score: 10 },
+        { id: electionC, election_date: "2026-08-26", vote_power_score: 40 },
+      ])
     );
 
-    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
+    // August before November despite November's higher score; within August
+    // the higher score leads.
+    expect(result.elections.map((e) => e.id)).toEqual([electionC, electionB, electionA]);
+  });
+
+  it("groups followed candidates first only within their election date", async () => {
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([{ election_id: electionA, candidate_id: candidateId, display_name: "Followed" }]) },
+      makeSummary([
+        { id: electionA, election_date: "2026-11-03", vote_power_score: 10 },
+        { id: electionB, election_date: "2026-11-03", vote_power_score: 95 },
+        { id: electionC, election_date: "2026-08-26", vote_power_score: 5 },
+      ]),
+      { userId }
+    );
+
+    // The followed November race leads November, but never jumps above August.
+    expect(result.elections.map((e) => e.id)).toEqual([electionC, electionA, electionB]);
   });
 
   it("breaks title ties numerically so Proposition 4 sorts before Proposition 33", async () => {
@@ -255,13 +272,14 @@ describe("applyBallotElectionOrdering", () => {
     const result = await applyBallotElectionOrdering(
       { query: makeFollowsQuery([]) },
       makeSummary([
-        { id: electionA, election_date: "2026-06-02", candidate_count: 0 },
-        { id: electionB, election_date: "2026-11-03" },
+        { id: electionA, election_date: "2026-06-02", candidate_count: 0, population: 900000 },
+        { id: electionB, election_date: "2026-11-03", population: 1000 },
       ]),
-      { sort: "soonest" }
+      { sort: "district_size" }
     );
 
-    // Earliest date would normally lead; having nothing to read outranks it.
+    // Earliest date (and the bigger district) would normally lead; having
+    // nothing to read outranks even the date order.
     expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
   });
 
