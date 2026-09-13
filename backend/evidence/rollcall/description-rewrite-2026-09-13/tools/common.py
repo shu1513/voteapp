@@ -10,12 +10,22 @@ def problem(t):
     w = max(len(s.split()) for s in ss)
     if w > 30: return f"{w}-word sentence"
     return None
+OPENER_SHORTEN = [
+    (re.compile(r"^Voted to accept the (Senate|House|Assembly)'s changes to (.+) and pass it$"), r"Voted to pass the \1's version of \2"),
+    (re.compile(r"^Voted against accepting the (Senate|House|Assembly)'s changes to (.+)$"), r"Voted against passing the \1's version of \2"),
+    (re.compile(r"^Voted to adopt the conference committee's report on (.+) and pass it$"), r"Voted to pass the compromise version of \1"),
+    (re.compile(r"^Voted against adopting the conference committee's report on (.+)$"), r"Voted against passing the compromise version of \1"),
+]
+def shorten_opener(o):
+    for rx, rep in OPENER_SHORTEN:
+        if rx.match(o): return rx.sub(rep, o)
+    return o
 def split_parts(text, tally):
     """opener (up to and incl. measure name), closing (sentences from the tally sentence to the end)."""
     ss = sentences(text)
     first = ss[0]
     m = re.match(r"^(Voted [^,]*?(?:Bill|Resolution|H\.J\.Res\.|S\.J\.Res\.|H\.Con\.Res\.|S\.Con\.Res\.|H\.Res\.|S\.Res\.|H\.R\.|S\.|HB|SB|SJR|HJR|HCR|SCR|AB|LB|HF|SF|LD|A\.B\.|S\.B\.)[^,]*?)(?:, (?:which|the .*?, which)\b|\.)", first)
-    opener = m.group(1) if m else None
+    opener = shorten_opener(m.group(1)) if m else None
     if opener is None:
         m2 = re.match(r"^(Voted (?:to pass|for|against passing|against|to override the Governor's veto of|against overriding the Governor's veto of) (?:[A-Z]+\.? ?)+\d+[A-Z]?)\b", first)
         opener = m2.group(1) if m2 else None
