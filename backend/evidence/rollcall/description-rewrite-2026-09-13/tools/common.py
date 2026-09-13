@@ -14,6 +14,8 @@ OPENER_SHORTEN = [
     (re.compile(r"^Voted to accept the (Senate|House|Assembly)'s changes to (.+) and pass it$"), r"Voted to pass the \1's version of \2"),
     (re.compile(r"^Voted against accepting the (Senate|House|Assembly)'s changes to (.+)$"), r"Voted against passing the \1's version of \2"),
     (re.compile(r"^Voted to adopt the conference committee's report on (.+) and pass it$"), r"Voted to pass the compromise version of \1"),
+    (re.compile(r"^Voted for the final, conference committee version of (.+)$"), r"Voted for the compromise version of \1"),
+    (re.compile(r"^Voted against the final, conference committee version of (.+)$"), r"Voted against the compromise version of \1"),
     (re.compile(r"^Voted against adopting the conference committee's report on (.+)$"), r"Voted against passing the compromise version of \1"),
 ]
 def shorten_opener(o):
@@ -28,7 +30,9 @@ def split_parts(text, tally):
     opener = shorten_opener(m.group(1)) if m else None
     if opener is None:
         m2 = re.match(r"^(Voted (?:to pass|for|against passing|against|to override the Governor's veto of|against overriding the Governor's veto of) (?:[A-Z]+\.? ?)+\d+[A-Z]?)\b", first)
-        opener = m2.group(1) if m2 else None
+        if m2 is None:
+            m2 = re.match(r"^(Voted [^.]*?(?:House|Senate|Assembly) Bill \d+[A-Z]?)(?=[,.\s])", first)
+        opener = shorten_opener(m2.group(1)) if m2 else None
     # closing: from the first sentence that contains the tally to the end
     tp = re.compile(rf"(?<![\d-]){re.escape(tally)}(?!\d)")
     idx = next((i for i, s in enumerate(ss) if tp.search(s)), None)

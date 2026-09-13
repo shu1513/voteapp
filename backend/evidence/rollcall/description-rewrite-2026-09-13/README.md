@@ -41,3 +41,4 @@ promotion.
 | WA | 220 | 11002 | 0 |
 | CO | 474 | 13473 | 0 |
 | CA | 343 | 10949 | 0 (478 stale-revision records rewritten via `--stale-too`) |
+| MT | 267 | 10719 | 0 |
