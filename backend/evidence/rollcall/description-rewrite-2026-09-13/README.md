@@ -38,3 +38,4 @@ promotion.
 | US | 140 (of 398; the rest already fit) | 13352 | 0 |
 | MD | 198 | 16695 | 0 |
 | IL | 193 | 13217 | 95 |
+| WA | 220 | 11002 | 0 |
