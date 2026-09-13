@@ -1,5 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
-import { APP_NAME, copyrightLine } from "../../constants/brand.js";
+import { APP_NAME, COPYRIGHT_LINE } from "../../constants/brand.js";
 
 export type ElectionResultAlertItem = {
   electionTitle: string;
@@ -134,7 +134,7 @@ export function buildResultAlertTextBody(
     `\nYou are receiving this because you have the email digest enabled ` +
     `on ${brand}. You can change this in your account settings.` +
     unsubscribeLine +
-    `\n\n${copyrightLine()}`
+    `\n\n${COPYRIGHT_LINE}`
   );
 }
 
@@ -170,7 +170,7 @@ ${
     input.unsubscribeUrl
       ? `    <p><a href="${escapeHtml(input.unsubscribeUrl)}">Unsubscribe from these emails</a></p>\n`
       : ""
-  }    <p>${escapeHtml(copyrightLine())}</p>
+  }    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
   </body>
 </html>`;
 }

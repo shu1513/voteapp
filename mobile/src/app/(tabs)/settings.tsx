@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { copyrightLine, type Me } from "@voteapp/api-client";
+import { COPYRIGHT_LINE, type Me } from "@voteapp/api-client";
 import { useRouter, type Href } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
@@ -93,7 +93,7 @@ function SettingsBody({ me }: { me: Me }) {
         <SettingsRow icon="shield-outline" label="Privacy Policy" onPress={push("/legal/privacy")} />
         <SettingsRow icon="information-circle-outline" label="Disclaimer" onPress={push("/legal/disclaimer")} />
       </View>
-      <Text className="mt-3 text-center text-xs text-ink-soft">{copyrightLine()}</Text>
+      <Text className="mt-3 text-center text-xs text-ink-soft">{COPYRIGHT_LINE}</Text>
 
       <Pressable
         disabled={logout.isPending}

@@ -1,5 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
-import { APP_NAME, copyrightLine } from "../constants/brand.js";
+import { APP_NAME, COPYRIGHT_LINE } from "../constants/brand.js";
 
 export type AuthMailer = {
   sendVerificationEmail(input: AuthMailerEmailInput): Promise<void>;
@@ -87,7 +87,7 @@ const EXISTING_ACCOUNT_RESET_HINT = "Forgot your password? Use “Forgot your pa
 
 function buildTextBody(kind: EmailMessageKind, appName: string, linkUrl: string): string {
   if (kind === "existing_account") {
-    return `${EXISTING_ACCOUNT_INTRO(appName)}\n\nIf that was you, log in here:\n${linkUrl}\n\n${EXISTING_ACCOUNT_RESET_HINT}\n\nIf this was not you, you can ignore this email.\n\n${copyrightLine()}`;
+    return `${EXISTING_ACCOUNT_INTRO(appName)}\n\nIf that was you, log in here:\n${linkUrl}\n\n${EXISTING_ACCOUNT_RESET_HINT}\n\nIf this was not you, you can ignore this email.\n\n${COPYRIGHT_LINE}`;
   }
   const intro =
     kind === "verification"
@@ -95,7 +95,7 @@ function buildTextBody(kind: EmailMessageKind, appName: string, linkUrl: string)
       : kind === "email_change"
         ? `Confirm your new email address for ${appName}.`
         : `Reset your password for ${appName}.`;
-  return `${intro}\n\nOpen this link to continue:\n${linkUrl}\n\nIf you did not request this email, you can ignore it.\n\n${copyrightLine()}`;
+  return `${intro}\n\nOpen this link to continue:\n${linkUrl}\n\nIf you did not request this email, you can ignore it.\n\n${COPYRIGHT_LINE}`;
 }
 
 function buildHtmlBody(kind: EmailMessageKind, appName: string, linkUrl: string): string {
@@ -107,7 +107,7 @@ function buildHtmlBody(kind: EmailMessageKind, appName: string, linkUrl: string)
     <p>If that was you, <a href="${escapeHtml(linkUrl)}">log in</a>.</p>
     <p>${escapeHtml(EXISTING_ACCOUNT_RESET_HINT)}</p>
     <p>If this was not you, you can ignore this email.</p>
-    <p>${escapeHtml(copyrightLine())}</p>
+    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
   </body>
 </html>`;
   }
@@ -130,7 +130,7 @@ function buildHtmlBody(kind: EmailMessageKind, appName: string, linkUrl: string)
     <p>${intro}</p>
     <p><a href="${escapedLink}">${title}</a></p>
     <p>If you did not request this email, you can ignore it.</p>
-    <p>${escapeHtml(copyrightLine())}</p>
+    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
   </body>
 </html>`;
 }

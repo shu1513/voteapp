@@ -1,5 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
-import { APP_NAME, copyrightLine } from "../../constants/brand.js";
+import { APP_NAME, COPYRIGHT_LINE } from "../../constants/brand.js";
 import type { MembershipChangedEmailInput, MembershipStartedEmailInput } from "./membershipService.js";
 
 // The §17602 post-purchase acknowledgment (docs/plans/membership-contributions.md):
@@ -40,7 +40,7 @@ function buildTextBody(input: MembershipStartedEmailInput, manageMembershipUrl: 
     `Your support funds the operation of the service; it is not a contribution to any candidate, campaign, committee, party, or charity, and it is not tax-deductible.\n\n` +
     `Cancel anytime: open Manage membership.\n${manageMembershipUrl}\n\n` +
     `Terms of Use: ${termsUrl}\n\n` +
-    `Questions? Just reply to this email.\n\n${copyrightLine()}`
+    `Questions? Just reply to this email.\n\n${COPYRIGHT_LINE}`
   );
 }
 
@@ -56,7 +56,7 @@ function buildHtmlBody(input: MembershipStartedEmailInput, manageMembershipUrl: 
     <p>Cancel anytime: open <a href="${manageUrl}">Manage membership</a>.</p>
     <p><a href="${terms}">Terms of Use</a></p>
     <p>Questions? Just reply to this email.</p>
-    <p>${escapeHtml(copyrightLine())}</p>
+    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
   </body>
 </html>`;
 }
@@ -152,7 +152,7 @@ function changedTextBody(input: MembershipChangedEmailInput, manageMembershipUrl
       `Your support funds the operation of the service; it is not a contribution to any candidate, campaign, committee, party, or charity, and it is not tax-deductible.\n\n` +
       `Cancel anytime: open Manage membership.\n${manageMembershipUrl}\n\n` +
       `Terms of Use: ${termsUrl}\n\n` +
-      `Questions? Just reply to this email.\n\n${copyrightLine()}`
+      `Questions? Just reply to this email.\n\n${COPYRIGHT_LINE}`
     );
   }
   if (input.kind === "canceled") {
@@ -161,7 +161,7 @@ function changedTextBody(input: MembershipChangedEmailInput, manageMembershipUrl
       `Your monthly membership will not renew${when}. You will not be charged for another month after that.\n\n` +
       `Changed your mind? Open Manage membership and choose Keep membership.\n${manageMembershipUrl}\n\n` +
       `Thank you for having supported ${APP_NAME}.\n\n` +
-      `Questions? Just reply to this email.\n\n${copyrightLine()}`
+      `Questions? Just reply to this email.\n\n${COPYRIGHT_LINE}`
     );
   }
   const amount = formatUsd(input.monthlyAmountCents);
@@ -170,7 +170,7 @@ function changedTextBody(input: MembershipChangedEmailInput, manageMembershipUrl
     `Welcome back. Your monthly membership continues: ${amount} will be charged to your payment method${next} each month until you cancel.\n\n` +
     `Cancel anytime: open Manage membership.\n${manageMembershipUrl}\n\n` +
     `Terms of Use: ${termsUrl}\n\n` +
-    `Questions? Just reply to this email.\n\n${copyrightLine()}`
+    `Questions? Just reply to this email.\n\n${COPYRIGHT_LINE}`
   );
 }
 
@@ -193,7 +193,7 @@ function changedHtmlBody(input: MembershipChangedEmailInput, manageMembershipUrl
   <body>
     ${body}
     <p>Questions? Just reply to this email.</p>
-    <p>${escapeHtml(copyrightLine())}</p>
+    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
   </body>
 </html>`;
 }

@@ -1,5 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
-import { APP_NAME, copyrightLine } from "../../constants/brand.js";
+import { APP_NAME, COPYRIGHT_LINE } from "../../constants/brand.js";
 
 export type IssueBroadcastEmailInput = {
   email: string;
@@ -89,7 +89,7 @@ export function buildBroadcastTextBody(appName: string | undefined, input: Issue
     `You are receiving this because you saved ${describeMatchedAreas(input.matchedAreaNames)} ` +
     `as issues you care about on ${brand}. You can change this in your account settings.` +
     unsubscribeLine +
-    `\n\n${copyrightLine()}`
+    `\n\n${COPYRIGHT_LINE}`
   );
 }
 
@@ -115,7 +115,7 @@ ${
     input.unsubscribeUrl
       ? `    <p><a href="${escapeHtml(input.unsubscribeUrl)}">Unsubscribe from these updates</a></p>\n`
       : ""
-  }    <p>${escapeHtml(copyrightLine())}</p>
+  }    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
   </body>
 </html>`;
 }

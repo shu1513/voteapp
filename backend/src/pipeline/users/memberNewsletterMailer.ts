@@ -1,5 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
-import { APP_NAME, copyrightLine } from "../../constants/brand.js";
+import { APP_NAME, COPYRIGHT_LINE } from "../../constants/brand.js";
 
 // Member-newsletter sibling of issueBroadcastMailer: same SES shape and
 // one-click unsubscribe headers, but the footer names the membership as the
@@ -88,7 +88,7 @@ export function buildNewsletterTextBody(appName: string | undefined, input: Memb
     `You are receiving this because you are a supporting member of ${brand}. ` +
     `Thank you for your support. You can change this in your account settings.` +
     unsubscribeLine +
-    `\n\n${copyrightLine()}`
+    `\n\n${COPYRIGHT_LINE}`
   );
 }
 
@@ -114,7 +114,7 @@ ${
     input.unsubscribeUrl
       ? `    <p><a href="${escapeHtml(input.unsubscribeUrl)}">Unsubscribe from the member newsletter</a></p>\n`
       : ""
-  }    <p>${escapeHtml(copyrightLine())}</p>
+  }    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
   </body>
 </html>`;
 }

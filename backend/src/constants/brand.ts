@@ -14,9 +14,8 @@ export const APP_NAME = "Elections Simplified";
 
 // The legal entity behind the product, used only for the copyright line that
 // closes every outbound email and the unsubscribe page. Kept in step with
-// packages/api-client/src/brand.ts, which the web and mobile footers use.
+// packages/api-client/src/brand.ts, which the web and mobile footers use and
+// which explains why the year is a fixed literal rather than new Date().
 export const LEGAL_ENTITY_NAME = "Elections Simplified Inc.";
-
-export function copyrightLine(year: number = new Date().getFullYear()): string {
-  return `© ${year} ${LEGAL_ENTITY_NAME}`;
-}
+export const COPYRIGHT_YEAR = 2026;
+export const COPYRIGHT_LINE = `© ${COPYRIGHT_YEAR} ${LEGAL_ENTITY_NAME}`;
