@@ -32,6 +32,8 @@ def split_parts(text, tally):
         m2 = re.match(r"^(Voted (?:to pass|for|against passing|against|to override the Governor's veto of|against overriding the Governor's veto of) (?:[A-Z]+\.? ?)+\d+[A-Z]?)\b", first)
         if m2 is None:
             m2 = re.match(r"^(Voted [^.]*?(?:House|Senate|Assembly) Bill \d+[A-Z]?)(?=[,.\s])", first)
+        if m2 is None:
+            m2 = re.match(r"^(Voted (?:yes|no) on LD \d+)(?=[,.\s])", first)
         opener = shorten_opener(m2.group(1)) if m2 else None
     # closing: from the first sentence that contains the tally to the end
     tp = re.compile(rf"(?<![\d-]){re.escape(tally)}(?!\d)")
