@@ -1,5 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
-import { APP_NAME } from "../../constants/brand.js";
+import { APP_NAME, COPYRIGHT_LINE } from "../../constants/brand.js";
 
 export type CandidateFollowDigestItem = {
   candidateDisplayName: string;
@@ -129,7 +129,8 @@ export function buildDigestTextBody(appName: string | undefined, input: Candidat
     remainderLine +
     `\nYou are receiving this because you follow these candidates on ${brand} ` +
     `and have digest emails enabled. You can change this in your account settings.` +
-    unsubscribeLine
+    unsubscribeLine +
+    `\n\n${COPYRIGHT_LINE}`
   );
 }
 
@@ -160,7 +161,8 @@ ${
     input.unsubscribeUrl
       ? `    <p><a href="${escapeHtml(input.unsubscribeUrl)}">Unsubscribe from these digests</a></p>\n`
       : ""
-  }  </body>
+  }    <p>${escapeHtml(COPYRIGHT_LINE)}</p>
+  </body>
 </html>`;
 }
 

@@ -5,7 +5,7 @@ import { ChatWidget } from "./components/chatbot/ChatWidget";
 import { DraftCompleteNotice } from "./components/DraftCompleteNotice";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
-import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, apiRequest, purgeAccountScopedQueries, useMe } from "@voteapp/api-client";
+import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, apiRequest, COPYRIGHT_LINE, purgeAccountScopedQueries, useMe } from "@voteapp/api-client";
 import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
 import { useDistrictHandoffRunner } from "./lib/districtHandoff";
 import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
@@ -340,6 +340,7 @@ export function App() {
             Disclaimer
           </Link>
         </nav>
+        <p className="mt-4">{COPYRIGHT_LINE}</p>
       </footer>
     </div>
   );
