@@ -36,6 +36,7 @@ import { CandidatePickButton, CandidatePickRow, MeasureChoiceButtons } from "../
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { useMyDistricts } from "../lib/useMyDistricts";
 import { AddressNudge } from "../components/AddressNudge";
+import { AutoPickControl } from "../components/AutoPickControl";
 import { PostPickActions } from "../components/PostPickActions";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
@@ -1131,6 +1132,19 @@ export function CandidatePage() {
               // judge instead of offering a candidate pick.
               <>
                 <p className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</p>
+                {/* Same control as the election page's judge section: the
+                    engine answers the Yes/No from this judge's records. Only
+                    here, not on other candidates' cards — auto-pick compares
+                    a roster, and a retention page IS the whole roster. */}
+                <div className="mb-2">
+                  <AutoPickControl
+                    key={primaryPickElection.election_id}
+                    electionId={primaryPickElection.election_id}
+                    seatsToFill={null}
+                    compact
+                    retention
+                  />
+                </div>
                 <MeasureChoiceButtons
                   key={candidate.candidate_id}
                   electionId={primaryPickElection.election_id}

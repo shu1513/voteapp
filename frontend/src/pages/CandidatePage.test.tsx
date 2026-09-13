@@ -921,6 +921,24 @@ describe("CandidatePage", () => {
     expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
   });
 
+  it("puts the retention auto-pick teaser on the sticky Yes/No card for a judge", async () => {
+    clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [candidateElection({ official_ballot_title: "Shall Judge Jordan Voter be retained in office?" })],
+      })
+    );
+
+    // Yes/No on keeping the judge, never a candidate pick — plus the same
+    // alignment control the election page's judge section offers.
+    expect(await screen.findByRole("button", { name: "No" })).toBeInTheDocument();
+    expect(screen.getByText("Yes keeps this judge in office. No removes them.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Does this candidate align with my values?" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
+  });
+
   it("renders no primary pick CTA when the candidate is in several pickable races", async () => {
     // The CTA carries no race name, so with two concurrent races it cannot
     // say which one it would pick — those pages rely on the self-describing
