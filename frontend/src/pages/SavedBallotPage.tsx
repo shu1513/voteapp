@@ -368,6 +368,7 @@ export function SavedBallotPage() {
           raceType={filtersView.raceType}
           // Seed the rail's always-engaged sort from this list's sort.
           railSort={effectiveListSort ? railSortForBallotSort(effectiveListSort) : undefined}
+          sort={effectiveListSort ?? undefined}
         />
       )}
 

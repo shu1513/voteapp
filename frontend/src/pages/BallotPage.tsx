@@ -334,6 +334,7 @@ export function BallotPage() {
               raceType={filtersView.raceType}
               // Seed the rail's always-engaged sort from this list's sort.
               railSort={railSortForBallotSort(sort)}
+              sort={sort}
             />
           )}
         </>

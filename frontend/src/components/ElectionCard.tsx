@@ -1,7 +1,9 @@
-import { Fragment, type ReactNode } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import type {
+  BallotLevel,
   BallotRaceType,
+  BallotSort,
   ElectionChoice,
   ElectionSummary,
   RailSortKey,
@@ -10,6 +12,8 @@ import type {
 } from "@voteapp/api-client";
 import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
+  ballotLevel,
+  ballotLevelLabel,
   buildResultChipParts,
   competitivenessChip,
   formatChoiceLabel,
@@ -104,6 +108,63 @@ function SeatRun({ district, count, children }: { district: string | null; count
 }
 
 /**
+ * Under the district-size sorts the backend orders each date's races by
+ * government level before population, so the level sections are consecutive
+ * runs of the payload — presentational, like the date groups, never a
+ * reorder. Every other sort interleaves levels and gets no sections.
+ */
+function splitLevelRuns(elections: ElectionSummary[]): { level: BallotLevel; elections: ElectionSummary[] }[] {
+  const runs: { level: BallotLevel; elections: ElectionSummary[] }[] = [];
+  for (const election of elections) {
+    const level = ballotLevel(election.office?.scope, election.district.district_type);
+    const lastRun = runs[runs.length - 1];
+    if (lastRun && lastRun.level === level) {
+      lastRun.elections.push(election);
+    } else {
+      runs.push({ level, elections: [election] });
+    }
+  }
+  return runs;
+}
+
+/**
+ * One collapsible level section ("Federal", "County", …), open by default.
+ * The open state is component-local on purpose: it resets on every visit and
+ * whenever the list re-keys (a sort change remounts the sections), so a
+ * collapsed level never persists into a list where it would hide races.
+ */
+function LevelSection({ level, count, children }: { level: BallotLevel; count: number; children: ReactNode }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <section>
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((previous) => !previous)}
+        // 17.5px: a hair above the card titles (subheading, 16-17px) and
+        // under the date heading (19-22px) — user tuned this by eye on
+        // 2026-09-12 (text-lg read a touch too big).
+        className="flex w-full items-center gap-1.5 text-left text-[1.09375rem] font-semibold text-ink hover:text-rausch-deep"
+      >
+        {ballotLevelLabel(level)}
+        <span className="text-sm font-normal text-ink-soft">({count})</span>
+        {/* Chevron trails the label (user choice 2026-09-12: right, not
+            left); points right when collapsed, down when open. */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 20 20"
+          className={`h-4 w-4 shrink-0 transition-transform ${open ? "rotate-90" : ""}`}
+          fill="currentColor"
+        >
+          <path d="M7 5l6 5-6 5V5z" />
+        </svg>
+      </button>
+      {open ? <div className="mt-2 space-y-3">{children}</div> : null}
+    </section>
+  );
+}
+
+/**
  * Date-grouped card list shared by both ballot pages. Elections cluster on
  * election days (a typical ballot is one or two dates), so the date renders
  * once as a group heading instead of being stamped on every card. Grouping
@@ -125,8 +186,13 @@ export function ElectionList({
   contestsPool,
   raceType,
   railSort,
+  sort,
 }: {
   elections: ElectionSummary[];
+  /** The list's engaged sort. The two district-size sorts section each date
+   * by government level (see splitLevelRuns); every other sort renders the
+   * date groups flat. */
+  sort?: BallotSort;
   /**
    * The session holder's saved research areas (useMyResearchAreas().weights):
    * membership decides which chips lead, rank decides their order.
@@ -206,6 +272,22 @@ export function ElectionList({
   for (const election of [...readable, ...awaitingCandidates]) {
     positionById.set(election.id, positionById.size + 1);
   }
+  const levelSections = sort === "district_size" || sort === "district_size_smallest";
+  const renderCards = (cards: ElectionSummary[]) =>
+    splitSeatRuns(cards).map((run) => (
+      <SeatRun key={run.elections[0].id} district={run.district} count={run.elections.length}>
+        {run.elections.map((election) => (
+          <ElectionCard
+            key={election.id}
+            election={election}
+            savedAreaWeights={savedAreaWeights}
+            myChoice={choicesByElectionId?.get(election.id)}
+            navState={navState}
+            position={positionById.get(election.id) ?? 1}
+          />
+        ))}
+      </SeatRun>
+    ));
   return (
     <div className="mt-4 space-y-6">
       {groups.map((group) => (
@@ -217,22 +299,19 @@ export function ElectionList({
               page's identity, so they read as full sentences and lead the
               visual hierarchy. */}
           <h2 className="text-heading font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
-          <div className="mt-2 space-y-3">
-            {splitSeatRuns(group.elections).map((run) => (
-              <SeatRun key={run.elections[0].id} district={run.district} count={run.elections.length}>
-                {run.elections.map((election) => (
-                  <ElectionCard
-                    key={election.id}
-                    election={election}
-                    savedAreaWeights={savedAreaWeights}
-                    myChoice={choicesByElectionId?.get(election.id)}
-                    navState={navState}
-                    position={positionById.get(election.id) ?? 1}
-                  />
-                ))}
-              </SeatRun>
-            ))}
-          </div>
+          {levelSections ? (
+            // Keyed on the sort too, so flipping biggest ↔ smallest remounts
+            // every section open even where a level's first race is unchanged.
+            <div className="mt-3 space-y-5">
+              {splitLevelRuns(group.elections).map((run) => (
+                <LevelSection key={`${sort}-${run.level}-${run.elections[0].id}`} level={run.level} count={run.elections.length}>
+                  {renderCards(run.elections)}
+                </LevelSection>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-2 space-y-3">{renderCards(group.elections)}</div>
+          )}
         </section>
       ))}
       {awaitingCandidates.length > 0 ? (
@@ -245,6 +324,8 @@ export function ElectionList({
               "Elections on {date}" headings above it. */}
           <h2 className="text-heading font-bold text-ink">Elections awaiting candidate information</h2>
           <div className="mt-2 space-y-3">
+            {/* No level sections here: this tail spans dates and levels
+                under one heading, and a card carries its own date already. */}
             {splitSeatRuns(awaitingCandidates).map((run) => (
               <SeatRun key={run.elections[0].id} district={run.district} count={run.elections.length}>
                 {run.elections.map((election) => (

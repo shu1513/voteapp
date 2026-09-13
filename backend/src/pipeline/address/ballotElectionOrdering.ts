@@ -34,9 +34,12 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // the list pages render one "Elections on {date}" section per date); the
 // chosen sort orders the races WITHIN each date. `vote_power` (the default)
 // sorts by the computed vote-power score descending; `district_size` sorts
-// by the election's district population descending (largest electorate first);
-// `district_size_smallest` is the same key ascending. Unknown populations sort
-// last in both directions. Office races with no published candidate list sink
+// by government level (presidential → federal → state → county → city, see
+// ballotLevelRank) and then by district population descending (largest
+// electorate first); `district_size_smallest` reverses both keys. Unknown
+// populations sort last in both directions. The level key is what lets the
+// list pages render one collapsible section per level under these two sorts
+// as consecutive runs of the payload. Office races with no published candidate list sink
 // below every other race under all of these — see hasNothingToRead.
 // `my_areas` sorts by how strongly the election's
 // research areas match the user's saved research-area preferences (summed
@@ -322,6 +325,15 @@ function compareBySort(
     }
   }
   if (sort === "district_size" || sort === "district_size_smallest") {
+    // Level first: population alone interleaves levels (a big county
+    // outranks a House district), and the list pages section these sorts by
+    // level. district_size walks presidential → city; district_size_smallest
+    // walks city → presidential. Unknown levels stay last either way.
+    const aLevel = ballotLevelRank(a, sort);
+    const bLevel = ballotLevelRank(b, sort);
+    if (aLevel !== bLevel) {
+      return aLevel - bLevel;
+    }
     // district_size: larger population first; district_size_smallest: smaller
     // first. Unknown populations (null) sort last in both directions.
     const missing = sort === "district_size" ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
@@ -332,6 +344,34 @@ function compareBySort(
     }
   }
   return compareTail(a, b);
+}
+
+// Government level of a race, biggest first. Mirrors ballotLevel in
+// packages/api-client (ballotLevel.ts), which the list pages use to label the
+// sections — keep the two in step. office.scope leads (a place office on a
+// coextensive county row is still a city race); district_type covers ballot
+// measures, which have no office. School boards fold into the city tier.
+const BALLOT_LEVEL_RANKS: Record<string, number> = {
+  presidential: 0,
+  us_senate: 1,
+  us_house: 1,
+  statewide: 2,
+  state_upper: 2,
+  state_lower: 2,
+  county: 3,
+  place: 4,
+  school_unified: 4,
+  school_elementary: 4,
+  school_secondary: 4,
+};
+const UNKNOWN_LEVEL_RANK = 5;
+
+function ballotLevelRank(election: OrderedBallotElectionSummary, sort: BallotSummarySort): number {
+  const rank = BALLOT_LEVEL_RANKS[election.office?.scope ?? election.district.district_type];
+  if (rank === undefined) {
+    return UNKNOWN_LEVEL_RANK;
+  }
+  return sort === "district_size_smallest" ? UNKNOWN_LEVEL_RANK - 1 - rank : rank;
 }
 
 // The shared tiebreak for equal primary keys — the reader's SQL order:

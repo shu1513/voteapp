@@ -54,24 +54,38 @@ export function DetailPager({
    * state, so the walk continues from every stop. */
   siblingState?: unknown;
 }) {
-  const captionClass = "text-xs text-ink-soft";
-  const linkClass = "font-medium text-ink transition hover:text-rausch";
+  // Captions same size as the label, semibold, soft grey (user 2026-09-12):
+  // the old text-xs version vanished next to the black labels, so the slots
+  // read as three unexplained titles. Not a color: the button shape already
+  // says "control", and every accent hue is spoken for (brand red, stance
+  // green/red, saved-issue purple, undecided yellow, vote-power blues).
+  const captionClass = "font-semibold text-ink-soft";
+  // Button-shaped links (user 2026-09-12): the same outline as the Share
+  // button beside the title, so the three slots read as controls rather
+  // than as three more titles. Still <Link>s — they navigate.
+  const linkClass =
+    "rounded-lg border border-line bg-surface px-3 py-1.5 font-medium text-ink transition hover:border-rausch";
   // truncate / line-clamp: some labels are legal-length ("Elections in
   // Congressional District 1 (119th Congress), Alabama") — the bar must
   // stay a bar, not a paragraph. title= keeps the full text on hover; the
   // aria-label already carries it for screen readers.
   const backSlot = (
-    <p className="min-w-0 truncate text-center">
-      <span className={captionClass}>Back to: </span>
+    <p className="min-w-0 text-center sm:h-full">
+      {/* Hugs its text on narrow screens (it sits alone on its row); on sm+
+          it fills its column and stretches to the row height so the three
+          buttons on one line are the same size. */}
       <Link
         to={backTo.path}
         state={backToState}
         aria-label={`Back to ${backTo.label}`}
         title={backTo.label}
         onClick={() => track("detail_control", { control: "pager_back", value: "none" })}
-        className={linkClass}
+        className={`inline-block max-w-full sm:flex sm:h-full sm:w-full sm:items-center sm:justify-center ${linkClass}`}
       >
-        {backTo.label}
+        <span className="block truncate">
+          <span className={captionClass}>Back to: </span>
+          {backTo.label}
+        </span>
       </Link>
     </p>
   );
@@ -80,14 +94,14 @@ export function DetailPager({
     // one arrowed link at the left edge, where a back link is expected.
     return (
       <nav aria-label={ariaLabel} className="-mt-4 mb-6 border-b border-line pb-3 text-sm">
-        <p className="min-w-0 truncate">
+        <p className="min-w-0">
           <Link
             to={backTo.path}
             state={backToState}
             aria-label={`Back to ${backTo.label}`}
             title={backTo.label}
             onClick={() => track("detail_control", { control: "pager_back", value: "none" })}
-            className={linkClass}
+            className={`inline-block max-w-full truncate ${linkClass}`}
           >
             <span aria-hidden="true">← </span>
             {backTo.label}
@@ -99,7 +113,7 @@ export function DetailPager({
   return (
     <nav
       aria-label={ariaLabel}
-      className="-mt-4 mb-6 border-b border-line pb-3 text-sm sm:grid sm:grid-cols-3 sm:items-start sm:gap-x-3"
+      className="-mt-4 mb-6 border-b border-line pb-3 text-sm sm:grid sm:grid-cols-3 sm:items-stretch sm:gap-x-3"
     >
       {/* Back first on narrow screens (it matches "where you came from"
           reading order and stops Next floating alone above it); sm:order-2
@@ -108,12 +122,12 @@ export function DetailPager({
           match both — DOM follows the mobile layout (this bar's main
           audience; lg+ swaps in the rail), leaving sm-to-lg tab order
           Back -> Prev -> Next. Three links, meaning preserved. */}
-      <div className="mb-1 min-w-0 sm:order-2 sm:mb-0">{backSlot}</div>
+      <div className="mb-1 min-w-0 sm:order-2 sm:mb-0 sm:h-full">{backSlot}</div>
       {/* One flex row for the siblings on narrow screens; sm:contents
           promotes the two cells into the grid so the same markup serves
           both layouts. */}
       <div className="flex items-start justify-between gap-x-4 sm:contents">
-        <p className="min-w-0 max-w-[50%] sm:order-1 sm:max-w-none">
+        <p className="min-w-0 max-w-[50%] sm:order-1 sm:h-full sm:max-w-none">
           {prev ? (
             <Link
               to={prev.path}
@@ -121,15 +135,19 @@ export function DetailPager({
               aria-label={`Previous: ${prev.label}`}
               title={prev.label}
               onClick={() => track("detail_control", { control: "pager_prev", value: "none" })}
-              className={`line-clamp-2 ${linkClass}`}
+              className={`block sm:flex sm:h-full sm:items-center ${linkClass}`}
             >
-              <span aria-hidden="true">← </span>
-              <span className={captionClass}>Prev: </span>
-              {prev.label}
+              {/* Clamp on an inner span: clamping the padded link itself let
+                  the cut third line show through the bottom padding. */}
+              <span className="line-clamp-2">
+                <span aria-hidden="true">← </span>
+                <span className={captionClass}>Prev: </span>
+                {prev.label}
+              </span>
             </Link>
           ) : null}
         </p>
-        <p className="ml-auto min-w-0 max-w-[50%] text-right sm:order-3 sm:ml-0 sm:max-w-none">
+        <p className="ml-auto min-w-0 max-w-[50%] text-right sm:order-3 sm:ml-0 sm:h-full sm:max-w-none">
           {next ? (
             <Link
               to={next.path}
@@ -137,11 +155,13 @@ export function DetailPager({
               aria-label={`Next: ${next.label}`}
               title={next.label}
               onClick={() => track("detail_control", { control: "pager_next", value: "none" })}
-              className={`line-clamp-2 ${linkClass}`}
+              className={`block sm:flex sm:h-full sm:items-center sm:justify-end ${linkClass}`}
             >
-              <span className={captionClass}>Next: </span>
-              {next.label}
-              <span aria-hidden="true"> →</span>
+              <span className="line-clamp-2">
+                <span className={captionClass}>Next: </span>
+                {next.label}
+                <span aria-hidden="true"> →</span>
+              </span>
             </Link>
           ) : null}
         </p>

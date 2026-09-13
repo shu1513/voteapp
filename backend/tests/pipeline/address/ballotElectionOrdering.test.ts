@@ -189,6 +189,44 @@ describe("applyBallotElectionOrdering", () => {
     expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB, electionC]);
   });
 
+  it("walks the government levels before population under the district-size sorts", async () => {
+    // A House district (~760k) is smaller than the county (~9.8M), yet
+    // federal outranks county under district_size — level is the outer key,
+    // population orders within a level. Measures level on district_type.
+    const elections = [
+      { id: electionA, population: 9_800_000 }, // county (no office)
+      { id: electionB, population: 760_000, office_scope: "us_house" },
+      { id: electionC, population: 39_000_000, office_scope: "statewide" },
+      { id: "dddddddd-4444-4444-8444-dddddddddddd", population: 4_000_000, office_scope: "place" },
+      { id: "eeeeeeee-5555-4555-8555-eeeeeeeeeeee", population: 39_000_000, office_scope: "presidential" },
+      { id: "ffffffff-6666-4666-8666-ffffffffffff", population: 20_000, office_scope: "school_unified" },
+    ];
+    const biggest = await applyBallotElectionOrdering({ query: makeFollowsQuery([]) }, makeSummary(elections), {
+      sort: "district_size",
+    });
+    expect(biggest.elections.map((e) => e.office?.scope ?? e.district.district_type)).toEqual([
+      "presidential",
+      "us_house",
+      "statewide",
+      "county",
+      "place",
+      "school_unified",
+    ]);
+
+    const smallest = await applyBallotElectionOrdering({ query: makeFollowsQuery([]) }, makeSummary(elections), {
+      sort: "district_size_smallest",
+    });
+    // Reverse walk, and within the city tier the smaller school district leads.
+    expect(smallest.elections.map((e) => e.office?.scope ?? e.district.district_type)).toEqual([
+      "school_unified",
+      "place",
+      "county",
+      "statewide",
+      "us_house",
+      "presidential",
+    ]);
+  });
+
   it("groups followed elections first by default for authenticated calls and annotates them", async () => {
     const query = makeFollowsQuery([{ election_id: electionA, candidate_id: candidateId, display_name: "Jane Doe" }]);
     const result = await applyBallotElectionOrdering(
