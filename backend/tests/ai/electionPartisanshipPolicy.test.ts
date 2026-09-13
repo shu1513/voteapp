@@ -179,7 +179,7 @@ describe("electionPartisanshipPolicy", () => {
     expect(
       isJudicialRetentionTitle("Shall Presiding Justice THERESE M. STEWART be elected to the office for the term provided by law?")
     ).toBe(true);
-    expect(isJudicialRetentionTitle("Shall Pat Example be elected to the office for the term provided by law?")).toBe(false);
+    expect(isJudicialRetentionTitle("Shall DAVID B. SAPP be elected to the office for the term provided by law?")).toBe(true);
 
     const resolved = resolveElectionIsPartisan({
       draft: {

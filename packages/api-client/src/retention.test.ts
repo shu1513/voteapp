@@ -17,8 +17,9 @@ describe("isJudicialRetentionTitle", () => {
     expect(
       isJudicialRetentionTitle("Shall Associate Justice of the Supreme Court KELLI M. EVANS be elected to the office for the term provided by law?")
     ).toBe(true);
-    // Same phrasing on a non-judicial office is not a retention question.
-    expect(isJudicialRetentionTitle("Shall Pat Example be elected to the office for the term provided by law?")).toBe(false);
+    // The ballot sometimes drops the office word; the prescribed phrase is
+    // judicial on its own.
+    expect(isJudicialRetentionTitle("Shall DAVID B. SAPP be elected to the office for the term provided by law?")).toBe(true);
   });
 
   it("leaves ordinary races alone", () => {
