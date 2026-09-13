@@ -93,13 +93,13 @@ describe("deriveBallotFilters — vote power thresholds", () => {
   const VERY_HIGH = election("vh-1", [], "very_high");
   const HIGH = election("h-1", [], "high");
   const NORMAL = election("m-1", [], "medium");
-  // A long ballot (> LONG_BALLOT_THRESHOLD) with all three tiers plus an
+  // A long ballot (> LONG_BALLOT_THRESHOLD) with every tier plus an
   // unknown, splitting on both thresholds.
   const longMixed = [
     VERY_HIGH,
     HIGH,
     NORMAL,
-    election("m-2", [], "medium"),
+    election("m-2", [], "above_average"),
     election("l-1", [], "low"),
     election("l-2", [], "very_low"),
     election("l-3", [], "unknown"),
@@ -116,7 +116,7 @@ describe("deriveBallotFilters — vote power thresholds", () => {
     expect(view.activeFilterCount).toBe(1);
   });
 
-  it("medium threshold keeps Normal and above", () => {
+  it("medium threshold keeps Average and above, Above average included", () => {
     const view = deriveBallotFilters({ ...OFF, elections: longMixed, impactRequested: "medium" });
     expect(view.impactLevel).toBe("medium");
     expect(view.visibleElections.map((e) => e.id)).toEqual(["vh-1", "h-1", "m-1", "m-2"]);

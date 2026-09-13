@@ -173,8 +173,9 @@ describe("formatVotePowerLabel", () => {
     expect(formatVotePowerLabel("very_low")).toBe("Very low");
     // "Low" reads as a verdict on the voter; the chip says "Below average".
     expect(formatVotePowerLabel("low")).toBe("Below average");
-    // "Medium" is a size word; it ships as "Normal".
-    expect(formatVotePowerLabel("medium")).toBe("Normal");
+    // "Medium" is a size word; it ships as "Average" (the statewide baseline).
+    expect(formatVotePowerLabel("medium")).toBe("Average");
+    expect(formatVotePowerLabel("above_average")).toBe("Above average");
     expect(formatVotePowerLabel("unknown")).toBe("Unknown");
     expect(formatVotePowerLabel("super_high")).toBe("super_high");
   });
